@@ -1,0 +1,44 @@
+{
+  "Trade360": {
+    "InplayMQSettings": {
+      "Host": "frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com",
+      "Port": "5672",
+      "VirtualHost": "StmInPlay",
+      "UserName": "Lsportsrunner",
+      "Password": "6UE4PL5J",
+      "PackageId": 799,
+      "PACKAGE_FORMAT_TYPE": "2",
+      "PrefetchCount": 100,
+      "RABBITMQ_RECOVERY_TIME_IM_MILLISECONDS": "60000",
+      "messageBrokerUrl": "amqp://Lsportsrunner:6UE4PL5J@frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com:5672"
+    },
+    "MQInplaySettings": {
+      "Host": "artistic-wheat-bobcat.rmq6.cloudamqp.com",
+      "Port": "5672",
+      "VirtualHost": "StmInPlay",
+      "PackageId": 430,
+      "UserName": "biana_test@lsports.eu",
+      "Password": "P@ssw0rd!",
+      "PrefetchCount": 100,
+      "AutoAck": true,
+      "RequestedHeartbeatSeconds": 30,
+      "NetworkRecoveryInterval": 30,
+      "DispatchConsumersAsync": true,
+      "AutomaticRecoveryEnabled": true
+    },
+    "MQPrematchSettings": {
+      "RabbitmqHost": "frosty-possum.rmq.cloudamqp.com",
+      "RmqPort": 5672,
+      "VirtualHost": "StmPreMatch",
+      "PackageId": 431,
+      "UserName": "LSPORTS_USERNAME",
+      "Password": "LSPORTS_PASSWORD",
+      "PrefetchCount": 100,
+      "AutoAck": true,
+      "RequestedHeartbeatSeconds": 30,
+      "NetworkRecoveryInterval": 30,
+      "DispatchConsumersAsync": true,
+      "AutomaticRecoveryEnabled": true
+    }
+  }
+}
