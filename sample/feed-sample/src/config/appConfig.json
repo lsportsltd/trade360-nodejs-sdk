@@ -8,8 +8,12 @@
       "Password": "6UE4PL5J",
       "PackageId": 799,
       "PACKAGE_FORMAT_TYPE": "2",
-      "PrefetchCount": 100,
-      "RABBITMQ_RECOVERY_TIME_IM_MILLISECONDS": "60000",
+      "PrefetchCount": 1,
+      "NetworkRecoveryIntervalInMs": 5000,
+      "AutomaticRecoveryEnabled": true,
+      "AutoAck": true,
+      "RequestedHeartbeatSeconds": 30,
+      "DispatchConsumersAsync": true,
       "messageBrokerUrl": "amqp://Lsportsrunner:6UE4PL5J@frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com:5672"
     },
     "MQInplaySettings": {
@@ -22,7 +26,7 @@
       "PrefetchCount": 100,
       "AutoAck": true,
       "RequestedHeartbeatSeconds": 30,
-      "NetworkRecoveryInterval": 30,
+      "NetworkRecoveryIntervalInMs": 30000,
       "DispatchConsumersAsync": true,
       "AutomaticRecoveryEnabled": true
     },
@@ -36,7 +40,7 @@
       "PrefetchCount": 100,
       "AutoAck": true,
       "RequestedHeartbeatSeconds": 30,
-      "NetworkRecoveryInterval": 30,
+      "NetworkRecoveryIntervalInMs": 30000,
       "DispatchConsumersAsync": true,
       "AutomaticRecoveryEnabled": true
     }

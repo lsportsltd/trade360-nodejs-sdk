@@ -15,17 +15,17 @@ const initSample = async () => {
     logger.log(`got new message:\n${JSON.stringify(msg)}\n`);
   });
 
-  await feedInplay.start();
-
-  process.on("exit" || "SIGINT", async () => {
+  process.on("exit" || "SIGINT", async (err) => {
     await feedInplay.stop();
     process.exit(1);
   });
 
+  await feedInplay.start();
+
   await new Promise<void>((resolve) => {
     setTimeout(() => {
       return resolve();
-    }, 30 * 1000);
+    }, 60 * 1000);
   });
 
   await feedInplay.stop();

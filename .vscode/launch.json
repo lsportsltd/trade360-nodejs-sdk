@@ -16,7 +16,7 @@
       "request": "launch",
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["${workspaceFolder}/sample/feed-sample/src/index.ts"],
-      // "preLaunchTask": "tsc: build - tsconfig.json",
+      "preLaunchTask": "tsc: build - tsconfig.json",
       "sourceMaps": true
     }
   ]
