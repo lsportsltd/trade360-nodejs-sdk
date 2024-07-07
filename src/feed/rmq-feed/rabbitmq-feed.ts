@@ -7,29 +7,14 @@ class RabbitMQFeed {
   private channel!: Channel;
   private consume!: Replies.Consume;
   private consumerTag!: string;
-  private connected: boolean = false;
+  private isConnected: boolean = false;
+  private stopTryRecovery: boolean = false;
 
-  private static instance: RabbitMQFeed;
   private defaultMessageHandler!: Function;
 
-  constructor(
-    private mqSettings: MQSettings,
-    private logger: Console
-  ) {
+  constructor(private mqSettings: MQSettings, private logger: Console) {
     this.requestQueue = `_${this.mqSettings.PackageId}_`;
-  }
-
-  static getInstance(
-    mqSettings: MQSettings,
-    logger: Console
-  ): RabbitMQFeed {
-    if (!RabbitMQFeed.instance) {
-      RabbitMQFeed.instance = new RabbitMQFeed(
-        mqSettings,
-        logger
-      );
-    }
-    return RabbitMQFeed.instance;
+    this.stopTryRecovery = false;
   }
 
   setLogger = (logger: Console) => {
@@ -39,39 +24,42 @@ class RabbitMQFeed {
     return this.logger;
   };
 
+  // start action, process connect and consumption action from rabbitmq
   public start = async () => {
-    await this.connect();
+    try {
+      await this.connect();
 
-    this.attachListeners();
+      this.attachListeners();
 
-    this.consume = await this.channel.consume(
-      this.requestQueue,
-      async (msg) => {
-        if (msg && msg.content) {
-          const messageContent = JSON.parse(msg.content.toString());
+      await this.assertQueue();
 
-          this.connection.close();
-          this.connection.emit("close");
+      this.consume = await this.channel.consume(
+        this.requestQueue,
+        async (msg) => {
+          if (msg && msg.content) {
+            const messageContent = JSON.parse(msg.content.toString());
 
-          await this.defaultMessageHandler(messageContent);
+            await this.defaultMessageHandler(messageContent);
 
-          // Acknowledge the processed message
-          // this.channel.ack(msg);
+            // Acknowledge the processed message
+            // this.channel.ack(msg);
+          }
+        },
+        {
+          noAck: this.mqSettings.AutoAck,
         }
-      },
-      {
-        noAck: true,
-      }
-    );
+      );
 
-    this.consumerTag = this.consume.consumerTag;
+      this.consumerTag = this.consume.consumerTag;
+    } catch (err) {}
   };
 
+  // establish connectation to rabbitmq
   private connect = async () => {
-    if (this.connected && this.channel) return;
+    if (this.isConnected && this.channel) return;
 
     try {
-      this.logger.log("Connecting to Rabbit-MQ Server");
+      this.logger.log("connect - Connecting to RabbitMQ Server");
 
       // Establish connection to RabbitMQ server
       const connectionString = `amqp://${this.mqSettings.UserName}:${this.mqSettings.Password}@${this.mqSettings.Host}:${this.mqSettings.Port}/${this.mqSettings.VirtualHost}`;
@@ -79,43 +67,66 @@ class RabbitMQFeed {
         connectionString /*config.msgBrokerURL!*/
       );
       if (!this.connection) {
-        this.logger.error("Failed to connect to RabbitMQ!");
-        throw new Error("Failed to connect to RabbitMQ!");
+        this.logger.error("connect -Failed to connect to RabbitMQ!");
+        throw new Error("connect - Failed to connect to RabbitMQ!");
       }
 
       this.logger.log(
-        "Rabbit MQ Connection is ready!\nconnectionString: " + connectionString
+        "connect - Rabbit MQ Connection is ready!\nconnectionString: " +
+          connectionString
       );
 
-      this.channel = await this.connection.createChannel();
-      this.logger.log("Created RabbitMQ Channel successfully!");
+      this.isConnected = true;
 
-      this.connected = true;
+      // create channel through the connection
+      this.channel = await this.connection.createChannel();
+      this.logger.log("connect - Created RabbitMQ Channel successfully!");
     } catch (error) {
-      this.logger.error(error);
-      this.logger.error(`Not connected to MQ Server`);
+      this.logger.error("connect - Not connected to MQ Server, error:", error);
     }
   };
 
+  // attach listeners for desire invoked events
   private attachListeners = () => {
     this.connection.on("error", this.connectionErrorHandler);
     this.connection.on("close", this.connectionClosedHandler);
   };
 
+  // handle close event invoke for rabbitmq instance
+  // handle reconnection option
   private connectionClosedHandler = async (res: any) => {
-    this.connected = false;
-    this.logger.info("connection to RabbitQM closed!");
-    if (res) setTimeout(async () => await this.start(), 5000); // Restart the  connection after a delay
+    this.logger.log("event handler - connection to RabbitMQ closed!");
+    this.isConnected = false;
+    if (!this.stopTryRecovery)
+      if (this.mqSettings.AutomaticRecoveryEnabled)
+        // Retry establish connection after a delay
+        setTimeout(
+          async () => await this.start(),
+          this.mqSettings.NetworkRecoveryIntervalInMs
+        );
   };
 
+  // handle error event invoke for rabbitmq instance
   private connectionErrorHandler = (err: Error) => {
-    this.logger.info(err.message);
+    this.logger.error(err.message);
   };
 
+  // assert queue configuration and define queue prefetch
+  private assertQueue = async () => {
+    await this.channel.assertQueue(this.requestQueue, { durable: false });
+    // config prefetch value
+    await this.channel.prefetch(this.mqSettings.PrefetchCount, false);
+  };
+
+  // stop action for close rabbitmq channel and connection
   public stop = async () => {
-    await this.channel?.cancel(this.consumerTag);
-    await this.connection?.close();
-    this.logger.log("closed channel and connection to rabbitMQ!");
+    this.stopTryRecovery = true;
+    if (this.isConnected) {
+      await this.channel?.cancel(this.consumerTag);
+      await this.connection?.close();
+    }
+
+    this.logger.log("stop - closed channel and connection to rabbitMQ!");
   };
 
   public addEntityHandler = async (cb: Function) => {
@@ -123,5 +134,4 @@ class RabbitMQFeed {
   };
 }
 
-// export = RabbitMQFeed.getInstance;
 export = RabbitMQFeed;

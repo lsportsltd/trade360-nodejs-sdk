@@ -7,17 +7,17 @@ export interface PackageTypesMQSettings {
   PrematchMQSettings: MQSettings;
 }
 
-export interface MQSettings {
-  Host: string;
-  Port: string;
-  VirtualHost: string;
-  PackageId: number;
-  UserName: string;
-  Password: string;
-  PrefetchCount?: number;
-  AutoAck?: boolean;
-  RequestedHeartbeatSeconds?: number;
-  NetworkRecoveryInterval?: number;
-  DispatchConsumersAsync?: boolean;
-  AutomaticRecoveryEnabled?: boolean;
+export class MQSettings {
+  Host!: string;
+  Port!: string;
+  VirtualHost!: string;
+  PackageId!: number;
+  UserName!: string;
+  Password!: string;
+  PrefetchCount: number = 1;
+  AutoAck: boolean = false;
+  RequestedHeartbeatSeconds: number = 30; // 30 seconds
+  NetworkRecoveryIntervalInMs: number = 10 * 1000; // 5 seconds
+  DispatchConsumersAsync: boolean = true;
+  AutomaticRecoveryEnabled: boolean = true;
 }
