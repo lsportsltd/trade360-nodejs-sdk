@@ -1,7 +1,7 @@
 import amqp, { Channel, Connection, Replies } from "amqplib";
-import { MQSettings } from "../../";
+import { MQSettings, IFeed } from "../../";
 
-class RabbitMQFeed {
+class RabbitMQFeed implements IFeed{
   private requestQueue = "ReqQueue";
   private connection!: Connection;
   private channel!: Channel;
