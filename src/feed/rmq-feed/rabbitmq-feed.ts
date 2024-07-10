@@ -1,6 +1,9 @@
 import amqp, { Channel, Connection, Replies } from "amqplib";
 import { MQSettings, IFeed } from "../../";
 
+/**
+ * Class that represent all the abilities of rabbitmq instance
+ */
 class RabbitMQFeed implements IFeed{
   private requestQueue = "ReqQueue";
   private connection!: Connection;
@@ -24,7 +27,11 @@ class RabbitMQFeed implements IFeed{
     return this.logger;
   };
 
-  // start action, process connect and consumption action from rabbitmq
+  /**
+   * start action, process connect creation, 
+   * attach listeners for reconnection 
+   * and consumption action
+   */
   public start = async () => {
     try {
       await this.connect();
@@ -54,7 +61,9 @@ class RabbitMQFeed implements IFeed{
     } catch (err) {}
   };
 
-  // establish connectation to rabbitmq
+  /**
+   * establish connectation to rabbitmq
+   */
   private connect = async () => {
     if (this.isConnected && this.channel) return;
 
@@ -86,14 +95,19 @@ class RabbitMQFeed implements IFeed{
     }
   };
 
-  // attach listeners for desire invoked events
+  /**
+   * attach listeners for desire invoked events
+   */
   private attachListeners = () => {
     this.connection.on("error", this.connectionErrorHandler);
     this.connection.on("close", this.connectionClosedHandler);
   };
 
-  // handle close event invoke for rabbitmq instance
-  // handle reconnection option
+  /**
+   * handle close event invoke for rabbitmq instance
+   * handle reconnection option
+   * @param res 
+   */
   private connectionClosedHandler = async (res: any) => {
     this.logger.log("event handler - connection to RabbitMQ closed!");
     this.isConnected = false;
@@ -106,19 +120,26 @@ class RabbitMQFeed implements IFeed{
         );
   };
 
-  // handle error event invoke for rabbitmq instance
+  /**
+   * handle error event invoke for rabbitmq instance
+   * @param err error been thrown 
+   */
   private connectionErrorHandler = (err: Error) => {
     this.logger.error(err.message);
   };
 
-  // assert queue configuration and define queue prefetch
+  /**
+   * assert queue configuration and define queue prefetch
+   */
   private assertQueue = async () => {
     await this.channel.assertQueue(this.requestQueue, { durable: false });
     // config prefetch value
     await this.channel.prefetch(this.mqSettings.PrefetchCount, false);
   };
 
-  // stop action for close rabbitmq channel and connection
+  /**
+   * stop action for close rabbitmq channel and connection
+   */
   public stop = async () => {
     this.stopTryRecovery = true;
     if (this.isConnected) {
@@ -129,6 +150,10 @@ class RabbitMQFeed implements IFeed{
     this.logger.log("stop - closed channel and connection to rabbitMQ!");
   };
 
+  /**
+   * add new handler for entity type
+   * @param cb 
+   */
   public addEntityHandler = async (cb: Function) => {
     this.defaultMessageHandler = cb;
   };
