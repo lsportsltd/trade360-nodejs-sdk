@@ -1,5 +1,6 @@
 import { HttpRequestDto } from "../common";
 import { AxiosService } from "./services";
+import { RequestSettingsValidator } from "./vaildators";
 
 export class BaseHttpClient {
   protected axiosService: AxiosService<HttpRequestDto> | undefined;
@@ -9,6 +10,8 @@ export class BaseHttpClient {
     protected requestSettings: HttpRequestDto,
     protected logger: Console
   ) {
+    RequestSettingsValidator.validate(this.requestSettings);
+    
     this.axiosService = new AxiosService<HttpRequestDto>(this.baseUrl);
   }
 
