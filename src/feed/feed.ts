@@ -3,6 +3,7 @@
 import { MessageConsumerMQ } from "./rmq-feed";
 import { MQSettings } from "./types";
 import { IFeed } from "./entities";
+import { MqConnectionSettingsValidator } from "./vaildators";
 
 /**
  * Class that represents all Feed requests
@@ -11,6 +12,8 @@ export class Feed implements IFeed {
   private consumerMq: IFeed;
 
   constructor(private mqSettings: MQSettings, private logger: Console) {
+    MqConnectionSettingsValidator.validate(this.mqSettings);
+
     this.consumerMq = new MessageConsumerMQ(this.mqSettings, this.logger);
   }
 

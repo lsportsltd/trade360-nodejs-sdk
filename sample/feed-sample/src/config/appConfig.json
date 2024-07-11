@@ -2,7 +2,7 @@
   "Trade360": {
     "InplayMQSettings": {
       "Host": "frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com",
-      "Port": "5672",
+      "Port": 5672,
       "VirtualHost": "StmInPlay",
       "UserName": "Lsportsrunner",
       "Password": "6UE4PL5J",

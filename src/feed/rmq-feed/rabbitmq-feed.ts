@@ -132,7 +132,7 @@ class RabbitMQFeed implements IFeed{
    * assert queue configuration and define queue prefetch
    */
   private assertQueue = async () => {
-    await this.channel.assertQueue(this.requestQueue, { durable: false });
+    await this.channel.assertQueue(this.requestQueue, { durable: true });
     // config prefetch value
     await this.channel.prefetch(this.mqSettings.PrefetchCount, false);
   };
