@@ -1,3 +1,3 @@
 export * from './feed'
-export * from './entities'
+export * from './IFeed'
 export * from './types'

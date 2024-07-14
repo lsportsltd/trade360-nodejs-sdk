@@ -12,8 +12,8 @@ export interface AppConfig {
 }
 
 export interface PackageTypesMQSettings {
-  InplayMQSettings: MQSettings;
-  PrematchMQSettings: MQSettings;
+  InplayMQSettings?: MQSettings;
+  PrematchMQSettings?: MQSettings;
 }
 
 export class MQSettings {

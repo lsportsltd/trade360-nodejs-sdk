@@ -2,7 +2,7 @@
 
 import { MessageConsumerMQ } from "./rmq-feed";
 import { MQSettings } from "./types";
-import { IFeed } from "./entities";
+import { IFeed } from "./IFeed";
 import { MqConnectionSettingsValidator } from "./vaildators";
 
 /**
