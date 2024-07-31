@@ -1,12 +1,12 @@
-// import _ from "lodash";
-
+import { BaseEntityClass } from "../entities";
+import { IEntityHandler } from "./IEntityHandler";
+import { IFeed } from "./IFeed";
 import { MessageConsumerMQ } from "./rmq-feed";
 import { MQSettings } from "./types";
-import { IFeed } from "./IFeed";
 import { MqConnectionSettingsValidator } from "./vaildators";
 
 /**
- * Class that represents all Feed requests
+ * Class that represesnts all Feed requests
  */
 export class Feed implements IFeed {
   private consumerMq: IFeed;
@@ -17,27 +17,18 @@ export class Feed implements IFeed {
     this.consumerMq = new MessageConsumerMQ(this.mqSettings, this.logger);
   }
 
-  /**
-   * start consuming messages from mq and handle them with
-   * all the configured desire handlers for messages types
-   */
   public start = async () => {
     await this.consumerMq.start();
   };
 
-  /**
-   * stop consuming messages from mq and handle them with
-   * all the configured desire handlers for entities types
-   */
-  stop = async () => {
+  public stop = async () => {
     await this.consumerMq.stop();
   };
 
-  /**
-   * Add new configured entity handler
-   * @param cb call-back function represents the desire handle procedure
-   */
-  addEntityHandler = async (cb: Function) => {
-    await this.consumerMq.addEntityHandler(cb);
+  public addEntityHandler = async <TEntity extends BaseEntityClass>(
+    entityHandler: IEntityHandler<TEntity>,
+    entityConstructor: new () => TEntity
+  ) => {
+    await this.consumerMq.addEntityHandler(entityHandler, entityConstructor);
   };
 }
