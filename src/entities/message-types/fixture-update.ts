@@ -1,8 +1,7 @@
-import { EntityType } from "../decorators";
+import { EntityKey } from "../decorators";
 import { FixtureEvent } from "../entities";
-import { BasicUpdate } from "./basic-update";
 
-@EntityType(1)
-export class FixtureUpdate extends BasicUpdate{
+@EntityKey(1)
+export class FixtureMetadataUpdate {
   public Events!: FixtureEvent[];
 }
