@@ -1,6 +1,7 @@
-import { Feed } from "trade360-nodejs-sdk";
+import { Feed, FixtureMetadataUpdate } from "trade360-nodejs-sdk";
 
 import { getConfig } from "./config";
+import { FixtureMetadataUpdateHandler } from "./handler";
 
 // Load configuration
 const config = getConfig();
@@ -8,12 +9,17 @@ const config = getConfig();
 let logger = console;
 
 const initSample = async () => {
-  const feedInplay = new Feed(config.Trade360.InplayMQSettings, logger);
+  const feedInplay = new Feed(config.Trade360.InplayMQSettings!, logger);
   // const feedPrematch = Feed(config.Trade360.PrematchMQSettings, logger);
 
-  feedInplay.addEntityHandler((msg: any) => {
-    logger.log(`got new message:\n${JSON.stringify(msg)}\n`);
-  });
+  // feedInplay.addEntityHandler((msg: any) => {
+  //   logger.log(`got new message:\n${JSON.stringify(msg)}\n`);
+  // });
+
+  feedInplay.addEntityHandler(
+    new FixtureMetadataUpdateHandler(),
+    FixtureMetadataUpdate
+  );
 
   process.on("exit" || "SIGINT", async (err) => {
     await feedInplay.stop();
@@ -25,7 +31,7 @@ const initSample = async () => {
   await new Promise<void>((resolve) => {
     setTimeout(() => {
       return resolve();
-    }, 60 * 1000);
+    }, 120 * 1000);
   });
 
   await feedInplay.stop();
