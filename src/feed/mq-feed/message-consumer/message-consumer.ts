@@ -6,6 +6,7 @@ import { IEntityHandler } from "../../IEntityHandler";
 import { ConversionError } from "../../exeptions";
 import { BodyHandler } from "./handler";
 import { IBodyHandler } from "./interfaces";
+import { knownEntityKeys } from "../../../entities";
 
 export class MessageConsumer {
   private bodyHandlers: Map<number, IBodyHandler> = new Map<
@@ -42,7 +43,7 @@ export class MessageConsumer {
         await bodyHandler!.processAsync(body);
       } else {
         // TODO: handle if the entity type is not handled or not exist as entity type
-        const missedEntityType = entityType;
+        const missedEntityType = knownEntityKeys.get(entityType);
 
         if (!isNil(missedEntityType)) {
           this.logger?.warn(
