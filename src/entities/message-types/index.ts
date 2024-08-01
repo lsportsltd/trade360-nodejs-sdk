@@ -1,4 +1,4 @@
-export * from "./fixture-update";
+export * from "./fixture-metadata-update";
 
 export type BaseEntityClass = {
   [key: string]: any; // Allow any properties

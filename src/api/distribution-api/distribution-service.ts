@@ -21,39 +21,28 @@ export class DistributionRequest
     super(TRADE360_BASE_URL, requestSettings, logger);
   }
 
-  /**
-   * open distribution for provider queue
-   * @returns Promise<HttpResponsePayloadDto<T>>
-   */
-  startDistribution = async <T extends ResponseBodyType>(): Promise<
-    HttpResponsePayloadDto<T> | undefined
+  startDistribution = async <TResponse extends ResponseBodyType>(): Promise<
+    HttpResponsePayloadDto<TResponse> | undefined
   > => {
     this.logger.log("run start request...");
 
-    return await this.sendRequest<HttpResponsePayloadDto<T>>(START_PREFIX_URL);
+    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(START_PREFIX_URL);
   };
-  /**
-   * close distribution for provider queue
-   * @returns Promise<HttpResponsePayloadDto<T>>
-   */
-  stopDistribution = async <T extends ResponseBodyType>(): Promise<
-    HttpResponsePayloadDto<T> | undefined
+  
+  stopDistribution = async <TResponse extends ResponseBodyType>(): Promise<
+    HttpResponsePayloadDto<TResponse> | undefined
   > => {
     this.logger.log("run stop request...");
 
-    return await this.sendRequest<HttpResponsePayloadDto<T>>(STOP_PREFIX_URL);
+    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(STOP_PREFIX_URL);
   };
 
-  /**
-   * get distribution status for provider queue
-   * @returns Promise<HttpResponsePayloadDto<T>>
-   */
-  getDistributionStatus = async <T extends ResponseBodyType>(): Promise<
-    HttpResponsePayloadDto<T> | undefined
+  getDistributionStatus = async <TResponse extends ResponseBodyType>(): Promise<
+    HttpResponsePayloadDto<TResponse> | undefined
   > => {
     this.logger.log("run status request...");
 
-    return await this.sendRequest<HttpResponsePayloadDto<T>>(STATUS_PREFIX_URL);
+    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(STATUS_PREFIX_URL);
 
     // TODO: handle errors
   };

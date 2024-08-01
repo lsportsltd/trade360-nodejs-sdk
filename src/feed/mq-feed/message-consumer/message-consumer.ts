@@ -1,14 +1,10 @@
+import { plainToInstance } from "class-transformer";
 import { isNil } from "lodash";
-import {
-  ClassConstructor,
-  deserialize,
-  plainToInstance,
-} from "class-transformer";
-import { MessageHeader } from "../../../entities/message-wrappers/messageHeader";
+
 import { BaseEntityClass, WrappedMessage } from "../../../entities";
-import { ConversionError } from "../../exeptions/convertion-error";
 import { IEntityHandler } from "../../IEntityHandler";
-import { BodyHandler } from "./handler/body-handler";
+import { ConversionError } from "../../exeptions";
+import { BodyHandler } from "./handler";
 import { IBodyHandler } from "./interfaces";
 
 export class MessageConsumer {
@@ -32,8 +28,6 @@ export class MessageConsumer {
       const rawMessage = messageContent.toString();
 
       const { Header: header, Body: body } = ConvertJsonToMessage(rawMessage);
-      // const wrappedMessage: WrappedMessage = ConvertJsonToMessage(rawMessage);
-      // const { Header: header, Body: body } = wrappedMessage;
 
       if (isNil(header)) {
         this.logger?.warn("Invalid message format");
@@ -64,18 +58,14 @@ export class MessageConsumer {
     }
   };
 
-  // public RegisterEntityHandler = <TEntity extends ClassConstructor<TEntity>>(
   public RegisterEntityHandler = <TEntity extends BaseEntityClass>(
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity
   ): void => {
-    const entityTypeConstructor = entityConstructor;
-    console.log("Entity Type:", entityTypeConstructor);
-
     const {
       name,
       prototype: { entityKey },
-    } = entityTypeConstructor;
+    } = entityConstructor;
 
     if (!entityKey) {
       throw new Error(

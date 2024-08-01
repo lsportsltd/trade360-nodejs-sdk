@@ -3,7 +3,7 @@ import { AxiosService } from "./services";
 import { RequestSettingsValidator } from "./vaildators";
 
 export class BaseHttpClient {
-  protected axiosService: AxiosService<HttpRequestDto> | undefined;
+  protected axiosService: AxiosService<HttpRequestDto>;
 
   constructor(
     private baseUrl: string,
@@ -21,10 +21,10 @@ export class BaseHttpClient {
    * @param route string that represent the route expected to be sent to
    * @returns  promise with the R type response type
    */
-  public sendRequest = async <R>(route: string) => {
+  public sendRequest = async <TResponse>(route: string) => {
     const { PackageId, UserName, Password } = this.requestSettings;
 
-    return await this.axiosService?.post<R>(route, {
+    return await this.axiosService?.post<TResponse>(route, {
       PackageId,
       UserName,
       Password,

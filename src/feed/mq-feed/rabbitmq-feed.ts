@@ -1,7 +1,7 @@
 import amqp, { Channel, Connection, Replies } from "amqplib";
 import { isNil } from "lodash";
 
-import { BaseEntityClass, IEntityHandler, IFeed, MQSettings } from "../../";
+import { BaseEntityClass, IEntityHandler, IFeed, MQSettings } from "../..";
 import { MessageConsumer } from "./message-consumer";
 
 /**
@@ -14,13 +14,13 @@ class RabbitMQFeed implements IFeed {
   private consume!: Replies.Consume;
   private consumerTag!: string;
   private isConnected: boolean = false;
-  private stopTryRecovery: boolean = false;
+  private stopTryReconnect: boolean = false;
 
   private readonly consumer: MessageConsumer;
 
   constructor(private mqSettings: MQSettings, private logger: Console) {
     this.requestQueue = `_${this.mqSettings.PackageId}_`;
-    this.stopTryRecovery = false;
+    this.stopTryReconnect = false;
     this.consumer = new MessageConsumer(this.logger);
   }
 
@@ -108,7 +108,7 @@ class RabbitMQFeed implements IFeed {
   private connectionClosedHandler = async (res: any) => {
     this.logger.log("event handler - connection to RabbitMQ closed!");
     this.isConnected = false;
-    if (!this.stopTryRecovery)
+    if (!this.stopTryReconnect)
       if (this.mqSettings.AutomaticRecoveryEnabled)
         // Retry establish connection after a delay
         setTimeout(
@@ -135,7 +135,7 @@ class RabbitMQFeed implements IFeed {
   };
 
   public stop = async () => {
-    this.stopTryRecovery = true;
+    this.stopTryReconnect = true;
     if (this.isConnected) {
       await this.channel?.cancel(this.consumerTag);
       await this.connection?.close();

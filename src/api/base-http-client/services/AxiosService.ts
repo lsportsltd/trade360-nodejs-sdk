@@ -22,9 +22,9 @@ export class AxiosService<T> {
    * @param url String that represent the url expect to sent to
    * @returns Promise with object of R structure 
    */
-  async get<R>(url: string): Promise<R> {
-    const response: AxiosResponse<R> = await this.axiosInstance.get(url);
-    return response.data as R;
+  async get<TResponse>(url: string): Promise<TResponse> {
+    const response: AxiosResponse<TResponse> = await this.axiosInstance.get(url);
+    return response.data as TResponse;
   }
 
   /**
@@ -33,8 +33,8 @@ export class AxiosService<T> {
    * @param body Payload that represent the request body 
    * @returns Promise with object of R structure 
    */
-  async post<R>(url: string, body: T): Promise<R> {
-    const response: AxiosResponse<R> = await this.axiosInstance.post(url, body);
-    return response.data as R;
+  async post<TResponse>(url: string, body: T): Promise<TResponse> {
+    const response: AxiosResponse<TResponse> = await this.axiosInstance.post(url, body);
+    return response.data as TResponse;
   }
 }

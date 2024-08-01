@@ -1,7 +1,7 @@
 import { BaseEntityClass } from "../entities";
 import { IEntityHandler } from "./IEntityHandler";
 import { IFeed } from "./IFeed";
-import { MessageConsumerMQ } from "./rmq-feed";
+import { MessageConsumerMQ } from "./mq-feed";
 import { MQSettings } from "./types";
 import { MqConnectionSettingsValidator } from "./vaildators";
 

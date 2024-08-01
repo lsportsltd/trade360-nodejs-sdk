@@ -8,23 +8,15 @@ import { IBodyHandler } from "../interfaces";
 import { isNil } from "lodash";
 import { BaseEntityClass } from "../../../../entities";
 
-export class BodyHandler<T extends BaseEntityClass> implements IBodyHandler {
+export class BodyHandler<TEntity extends BaseEntityClass> implements IBodyHandler {
   constructor(
-    private readonly entityHandler: IEntityHandler<T>,
-    private readonly entityConstructor: new () => T,
+    private readonly entityHandler: IEntityHandler<TEntity>,
+    private readonly entityConstructor: new () => TEntity,
     private readonly logger?: Console
   ) {}
 
-  async deserialize<T>(
-    json: Record<string, any>,
-    targetClass: new () => T
-  ): Promise<T> {
-    return plainToClass(targetClass, json);
-  }
-
   async processAsync(body: string): Promise<void> {
     try {
-      // entity = !isNil(body) ?? this.deserialize(JSON.parse(body),T);
       const entity = !isNil(body)
         ? plainToInstance(this.entityConstructor, body)
         : undefined;
@@ -36,5 +28,12 @@ export class BodyHandler<T extends BaseEntityClass> implements IBodyHandler {
           .entityConstructor} entity, Due to: ${err}`
       );
     }
+  }
+
+  async deserialize<TEntity>(
+    json: Record<string, any>,
+    targetClass: new () => TEntity
+  ): Promise<TEntity> {
+    return plainToClass(targetClass, json);
   }
 }

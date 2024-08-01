@@ -1,6 +1,6 @@
 import { ResponseBodyType } from "..";
 
-export class HttpResponsePayloadDto<T extends ResponseBodyType> {
+export class HttpResponsePayloadDto<TResponse extends ResponseBodyType> {
     Header!: Record<"HttpStatusCode", number>;
-    Body!: T;
+    Body!: TResponse;
   }
