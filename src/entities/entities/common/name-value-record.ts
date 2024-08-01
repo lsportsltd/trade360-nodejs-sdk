@@ -7,5 +7,3 @@ export class NameValueRecord {
     @Expose({name: 'value'})
     public Value?: string;
 }
-
-// type NameValueRecord = Record<'name' | 'value', string>

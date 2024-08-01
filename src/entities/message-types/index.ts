@@ -10,3 +10,4 @@ export const setNewEntityKeyToMap = (key: number, name: string) => {
 };
 
 export * from "./fixture-metadata-update";
+export * from "./livescore-update";
