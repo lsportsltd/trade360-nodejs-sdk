@@ -5,7 +5,7 @@ import { LivescoreEvent } from "../entities";
 
 @EntityKey(2)
 export class LivescoreUpdate {
-  @Expose({ name: "events" })
-  @Type(() => LivescoreEvent)
+  // @Expose({ name: "events" })
+  // @Type(() => LivescoreEvent)
   Events?: LivescoreEvent[];
 }

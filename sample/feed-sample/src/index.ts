@@ -1,7 +1,7 @@
-import { Feed, FixtureMetadataUpdate } from "trade360-nodejs-sdk";
+import { Feed, FixtureMetadataUpdate, LivescoreUpdate } from "trade360-nodejs-sdk";
 
 import { getConfig } from "./config";
-import { FixtureMetadataUpdateHandler } from "./handler";
+import { FixtureMetadataUpdateHandler, LivescoreUpdateHandler } from "./handler";
 
 // Load configuration
 const config = getConfig();
@@ -21,6 +21,11 @@ const initSample = async () => {
     FixtureMetadataUpdate
   );
 
+  feedInplay.addEntityHandler(
+    new LivescoreUpdateHandler(),
+    LivescoreUpdate
+  );
+  
   process.on("exit" || "SIGINT", async (err) => {
     await feedInplay.stop();
     process.exit(1);
