@@ -3,6 +3,7 @@ import {
   FixtureMetadataUpdate,
   LivescoreUpdate,
   MarketUpdate,
+  SettlementUpdate,
 } from "trade360-nodejs-sdk";
 
 import { getConfig } from "./config";
@@ -10,6 +11,7 @@ import {
   FixtureMetadataUpdateHandler,
   LivescoreUpdateHandler,
   MarketUpdateHandler,
+  SettlementUpdateHandler,
 } from "./handler";
 
 // Load configuration
@@ -33,6 +35,8 @@ const initSample = async () => {
   feedInplay.addEntityHandler(new LivescoreUpdateHandler(), LivescoreUpdate);
 
   feedInplay.addEntityHandler(new MarketUpdateHandler(), MarketUpdate);
+
+  feedInplay.addEntityHandler(new SettlementUpdateHandler(), SettlementUpdate);
 
   process.on("exit" || "SIGINT", async (err) => {
     await feedInplay.stop();
