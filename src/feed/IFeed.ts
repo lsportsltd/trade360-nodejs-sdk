@@ -1,6 +1,9 @@
 import { BaseEntityClass } from "../entities";
 import { IEntityHandler } from "./IEntityHandler";
 
+/**
+ * Interface that represent Feed implementation
+ */
 export interface IFeed {
   /**
    * start consuming messages, process connect creation,

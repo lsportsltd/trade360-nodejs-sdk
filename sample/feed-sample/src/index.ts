@@ -20,7 +20,7 @@ const config = getConfig();
 let logger = console;
 
 const initSample = async () => {
-  const feedInplay = new Feed(config.Trade360.InplayMQSettings!, logger);
+  const feedInplay = new Feed(config.trade360.inplayMQSettings!, logger);
   // const feedPrematch = Feed(config.Trade360.PrematchMQSettings, logger);
 
   // feedInplay.addEntityHandler((msg: any) => {

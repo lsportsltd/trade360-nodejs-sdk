@@ -1,9 +1,9 @@
 {
-  "Trade360": {
-    "InplayMQSettings": {
-      "UserName": "Pavel.T",
-      "Password": "1q2w3e%T",
-      "PackageId": 799
+  "trade360": {
+    "inplayMQSettings": {
+      "userName": "Pavel.T",
+      "password": "1q2w3e%T",
+      "packageId": 799
     },
     "MQInplaySettings": {
       "PackageId": 430,

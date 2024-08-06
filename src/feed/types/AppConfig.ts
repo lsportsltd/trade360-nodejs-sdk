@@ -8,25 +8,25 @@ import {
 } from "./globals";
 
 export interface AppConfig {
-  Trade360: PackageTypesMQSettings;
+  trade360: PackageTypesMQSettings;
 }
 
 export interface PackageTypesMQSettings {
-  InplayMQSettings?: MQSettings;
-  PrematchMQSettings?: MQSettings;
+  inplayMQSettings?: MQSettings;
+  prematchMQSettings?: MQSettings;
 }
 
 export class MQSettings {
-  Host!: string;
-  Port!: string;
-  VirtualHost!: string;
-  PackageId!: number;
-  UserName!: string;
-  Password!: string;
-  PrefetchCount: number = DEFUALT_PREFETCH_COUNT;
-  AutoAck: boolean = DEFUALT_AUTO_ACK;
-  RequestedHeartbeatSeconds: number = DEFUALT_REQUESTED_HEARTBEAT_SECONDS;
-  NetworkRecoveryIntervalInMs: number = DEFUALT_NETWORK_RECOVERY_INTERVAL_IN_MS; 
-  DispatchConsumersAsync: boolean = DEFUALT_DISPATCH_CONSUMERS;
-  AutomaticRecoveryEnabled: boolean = DEFUALT_AUTOMATIC_RECOVERY_ENABLED;
+  host!: string;
+  port!: string;
+  virtualHost!: string;
+  packageId!: number;
+  userName!: string;
+  password!: string;
+  prefetchCount: number = DEFUALT_PREFETCH_COUNT;
+  autoAck: boolean = DEFUALT_AUTO_ACK;
+  requestedHeartbeatSeconds: number = DEFUALT_REQUESTED_HEARTBEAT_SECONDS;
+  networkRecoveryIntervalInMs: number = DEFUALT_NETWORK_RECOVERY_INTERVAL_IN_MS;
+  dispatchConsumersAsync: boolean = DEFUALT_DISPATCH_CONSUMERS;
+  automaticRecoveryEnabled: boolean = DEFUALT_AUTOMATIC_RECOVERY_ENABLED;
 }

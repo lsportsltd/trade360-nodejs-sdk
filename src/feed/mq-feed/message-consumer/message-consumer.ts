@@ -1,13 +1,22 @@
-import { plainToInstance } from "class-transformer";
+import "reflect-metadata";
+
+import { instanceToPlain, plainToInstance } from "class-transformer";
 import { isNil } from "lodash";
 
-import { BaseEntityClass, WrappedMessage } from "../../../entities";
+import {
+  BaseEntityClass,
+  WrappedMessage,
+  knownEntityKeys,
+} from "../../../entities";
 import { IEntityHandler } from "../../IEntityHandler";
 import { ConversionError } from "../../exeptions";
 import { BodyHandler } from "./handler";
 import { IBodyHandler } from "./interfaces";
-import { knownEntityKeys } from "../../../entities";
+import { MessageHeader } from "../../../entities/message-wrappers/messageHeader";
 
+/**
+ * Class that represent message consumption process
+ */
 export class MessageConsumer {
   private bodyHandlers: Map<number, IBodyHandler> = new Map<
     number,
@@ -31,7 +40,7 @@ export class MessageConsumer {
       const { Header: header, Body: body } = ConvertJsonToMessage(rawMessage);
 
       if (isNil(header)) {
-        this.logger?.warn("Invalid message format");
+        this.logger?.warn("invalid message format");
         return;
       }
 
@@ -42,7 +51,6 @@ export class MessageConsumer {
 
         await bodyHandler!.processAsync(body);
       } else {
-        // TODO: handle if the entity type is not handled or not exist as entity type
         const missedEntityType = knownEntityKeys.get(entityType);
 
         if (!isNil(missedEntityType)) {
@@ -55,7 +63,7 @@ export class MessageConsumer {
         return;
       }
     } catch (ex) {
-      this.logger?.error(ex, "Error handling message consumption");
+      this.logger?.error("Error handling message consumption", ex);
     }
   };
 
@@ -96,15 +104,4 @@ const ConvertJsonToMessage = (rawJson: string) => {
       `failed converting json to wrapped message instance!, err: ${err}`
     );
   }
-};
-
-const localHandleBody = <TEntity extends BaseEntityClass>(
-  body: string,
-  entityHandler: IEntityHandler<TEntity>,
-  entityConstructor: new (...args: any[]) => TEntity
-) => {
-  const entity = !isNil(body)
-    ? plainToInstance(entityConstructor, body)
-    : undefined;
-  // return entityHandler.processAsync(entity);
 };

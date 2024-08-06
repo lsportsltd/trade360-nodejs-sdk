@@ -1,19 +1,19 @@
 {
-  "Trade360": {
-    "InplayMQSettings": {
-      "Host": "frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com",
-      "Port": 5672,
-      "VirtualHost": "StmInPlay",
-      "UserName": "Lsportsrunner",
-      "Password": "6UE4PL5J",
-      "PackageId": 799,
+  "trade360": {
+    "inplayMQSettings": {
+      "host": "frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com",
+      "port": 5672,
+      "virtualHost": "StmInPlay",
+      "userName": "Lsportsrunner",
+      "password": "6UE4PL5J",
+      "packageId": 799,
       "PACKAGE_FORMAT_TYPE": "2",
-      "PrefetchCount": 1,
-      "NetworkRecoveryIntervalInMs": 5000,
-      "AutomaticRecoveryEnabled": true,
-      "AutoAck": true,
-      "RequestedHeartbeatSeconds": 30,
-      "DispatchConsumersAsync": true,
+      "prefetchCount": 1,
+      "networkRecoveryIntervalInMs": 5000,
+      "automaticRecoveryEnabled": true,
+      "autoAck": true,
+      "requestedHeartbeatSeconds": 30,
+      "dispatchConsumersAsync": true,
       "messageBrokerUrl": "amqp://Lsportsrunner:6UE4PL5J@frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com:5672"
     },
     "MQInplaySettings": {

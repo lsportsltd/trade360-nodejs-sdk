@@ -19,7 +19,7 @@ class RabbitMQFeed implements IFeed {
   private readonly consumer: MessageConsumer;
 
   constructor(private mqSettings: MQSettings, private logger: Console) {
-    this.requestQueue = `_${this.mqSettings.PackageId}_`;
+    this.requestQueue = `_${this.mqSettings.packageId}_`;
     this.stopTryReconnect = false;
     this.consumer = new MessageConsumer(this.logger);
   }
@@ -50,7 +50,7 @@ class RabbitMQFeed implements IFeed {
           }
         },
         {
-          noAck: this.mqSettings.AutoAck,
+          noAck: this.mqSettings.autoAck,
         }
       );
 
@@ -68,24 +68,24 @@ class RabbitMQFeed implements IFeed {
       this.logger.log("connect - Connecting to RabbitMQ Server");
 
       // Establish connection to RabbitMQ server
-      const connectionString = `amqp://${this.mqSettings.UserName}:${this.mqSettings.Password}@${this.mqSettings.Host}:${this.mqSettings.Port}/${this.mqSettings.VirtualHost}`;
+      const connectionString = `amqp://${this.mqSettings.userName}:${this.mqSettings.password}@${this.mqSettings.host}:${this.mqSettings.port}/${this.mqSettings.virtualHost}`;
       this.connection = await amqp.connect(
         connectionString /*config.msgBrokerURL!*/
       );
+
       if (!this.connection) {
-        this.logger.error("connect -Failed to connect to RabbitMQ!");
+        this.logger.error("connect - Failed to connect to RabbitMQ!");
         throw new Error("connect - Failed to connect to RabbitMQ!");
       }
 
       this.logger.log(
-        "connect - Rabbit MQ Connection is ready!\nconnectionString: " +
-          connectionString
+        `connect - Rabbit MQ Connection is ready!\nconnectionString: ${connectionString}`
       );
 
       this.isConnected = true;
-
       // create channel through the connection
       this.channel = await this.connection.createChannel();
+
       this.logger.log("connect - Created RabbitMQ Channel successfully!");
     } catch (error) {
       this.logger.error("connect - Not connected to MQ Server, error:", error);
@@ -109,11 +109,11 @@ class RabbitMQFeed implements IFeed {
     this.logger.log("event handler - connection to RabbitMQ closed!");
     this.isConnected = false;
     if (!this.stopTryReconnect)
-      if (this.mqSettings.AutomaticRecoveryEnabled)
+      if (this.mqSettings.automaticRecoveryEnabled)
         // Retry establish connection after a delay
         setTimeout(
           async () => await this.start(),
-          this.mqSettings.NetworkRecoveryIntervalInMs
+          this.mqSettings.networkRecoveryIntervalInMs
         );
   };
 
@@ -131,7 +131,7 @@ class RabbitMQFeed implements IFeed {
   private assertQueue = async () => {
     await this.channel.assertQueue(this.requestQueue, { durable: true });
     // config prefetch value
-    await this.channel.prefetch(this.mqSettings.PrefetchCount, false);
+    await this.channel.prefetch(this.mqSettings.prefetchCount, false);
   };
 
   public stop = async () => {
