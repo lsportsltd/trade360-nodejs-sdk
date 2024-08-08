@@ -6,7 +6,7 @@ import {
   MIN_REQUESTED_HEARTBEAT_SECONDS,
   MQSettings,
 } from "../types";
-import { ValidationError } from "../exeptions";
+import { ValidationError } from "../exceptions";
 
 /**
  * Class for vaildate that the configure mq setting is vaild

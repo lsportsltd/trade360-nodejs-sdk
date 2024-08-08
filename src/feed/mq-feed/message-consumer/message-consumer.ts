@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { instanceToPlain, plainToInstance } from "class-transformer";
+import { plainToInstance } from "class-transformer";
 import { isNil } from "lodash";
 
 import {
@@ -9,10 +9,9 @@ import {
   knownEntityKeys,
 } from "../../../entities";
 import { IEntityHandler } from "../../IEntityHandler";
-import { ConversionError } from "../../exeptions";
+import { ConversionError } from "../../exceptions";
 import { BodyHandler } from "./handler";
 import { IBodyHandler } from "./interfaces";
-import { MessageHeader } from "../../../entities/message-wrappers/messageHeader";
 
 /**
  * Class that represent message consumption process
@@ -29,22 +28,21 @@ export class MessageConsumer {
     try {
       if (this.bodyHandlers.size == 0) {
         this.logger?.warn(
-          "there is no configured entities handler, \
-          please config at least one"
+          "there is no configured entities handler, please config at least one"
         );
         return;
       }
 
       const rawMessage = messageContent.toString();
 
-      const { Header: header, Body: body } = ConvertJsonToMessage(rawMessage);
+      const { header, body } = ConvertJsonToMessage(rawMessage);
 
       if (isNil(header)) {
         this.logger?.warn("invalid message format");
         return;
       }
 
-      const { Type: entityType } = header;
+      const { type: entityType } = header;
 
       if (this.bodyHandlers.has(entityType)) {
         const bodyHandler = this.bodyHandlers.get(entityType);
@@ -62,8 +60,9 @@ export class MessageConsumer {
         }
         return;
       }
-    } catch (ex) {
-      this.logger?.error("Error handling message consumption", ex);
+    } catch (err) {
+      this.logger?.error(`Error handling message consumption, error: ${err}`);
+      throw err;
     }
   };
 
@@ -71,24 +70,31 @@ export class MessageConsumer {
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity
   ): void => {
-    const {
-      name,
-      prototype: { entityKey },
-    } = entityConstructor;
+    try {
+      const {
+        name,
+        prototype: { entityKey },
+      } = entityConstructor;
 
-    if (!entityKey) {
-      throw new Error(
-        `${name} isn't trade360 entity. You should use only entities from Trade360SDK!`
+      if (!entityKey) {
+        throw new Error(
+          `${name} isn't trade360 entity. You should use only entities from Trade360SDK!`
+        );
+      }
+
+      const newBodyHandler = new BodyHandler<TEntity>(
+        entityHandler,
+        entityConstructor,
+        this.logger
       );
+
+      this.bodyHandlers.set(entityKey, newBodyHandler);
+    } catch (err) {
+      this.logger?.error(
+        `Error setting registration for new entity handler, error: ${err}`
+      );
+      throw err;
     }
-
-    const newBodyHandler = new BodyHandler<TEntity>(
-      entityHandler,
-      entityConstructor,
-      this.logger
-    );
-
-    this.bodyHandlers.set(entityKey, newBodyHandler);
   };
 }
 

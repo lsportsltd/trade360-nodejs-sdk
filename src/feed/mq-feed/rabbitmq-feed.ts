@@ -51,6 +51,7 @@ class RabbitMQFeed implements IFeed {
         },
         {
           noAck: this.mqSettings.autoAck,
+          // noAck: false,
         }
       );
 
@@ -79,7 +80,7 @@ class RabbitMQFeed implements IFeed {
       }
 
       this.logger.log(
-        `connect - Rabbit MQ Connection is ready!\nconnectionString: ${connectionString}`
+        `connect - Rabbit MQ Connection is ready!\nconnectionString: ${connectionString}\nListen to ${this.requestQueue} queue`
       );
 
       this.isConnected = true;
@@ -87,8 +88,9 @@ class RabbitMQFeed implements IFeed {
       this.channel = await this.connection.createChannel();
 
       this.logger.log("connect - Created RabbitMQ Channel successfully!");
-    } catch (error) {
-      this.logger.error("connect - Not connected to MQ Server, error:", error);
+    } catch (err) {
+      this.logger.error(`connect - Not connected to MQ Server, error: ${err}`);
+      throw err;
     }
   };
 
