@@ -8,40 +8,40 @@ import { Participant } from "./participant";
 import { Sport } from "./sport";
 
 export class Fixture {
-  @Expose({ name: "subscription" })
+  @Expose({ name: "Subscription" })
   @Type(() => Subscription)
-  public Subscription?: Subscription;
+  public subscription?: Subscription;
 
-  @Expose({ name: "sport" })
+  @Expose({ name: "Sport" })
   @Type(() => Sport)
-  public Sport?: Sport;
+  public sport?: Sport;
 
-  @Expose({ name: "location" })
+  @Expose({ name: "Location" })
   @Type(() => Location)
-  public Location?: Location;
+  public location?: Location;
 
-  @Expose({ name: "league" })
+  @Expose({ name: "League" })
   @Type(() => League)
-  public League?: League;
+  public league?: League;
 
-  @Expose({ name: "startDate" })
+  @Expose({ name: "StartDate" })
   @Type(() => Date)
-  public StartDate?: string;
+  public startDate?: string;
 
-  @Expose({ name: "lastUpdate" })
+  @Expose({ name: "LastUpdate" })
   @Type(() => Date)
-  public LastUpdate?: string;
+  public lastUpdate?: string;
 
-  @Expose({ name: "status" })
+  @Expose({ name: "Status" })
   // @Type(() => FixtureStatus)
   // TODO: validate type is one of FixtureStatus
-  public Status?: FixtureStatus;
+  public status?: FixtureStatus;
 
-  @Expose({ name: "participants" })
+  @Expose({ name: "Participants" })
   @Type(() => Participant)
-  public Participants?: Participant[];
+  public participants?: Participant[];
 
-  @Expose({ name: "fixtureExtraData" })
+  @Expose({ name: "FixtureExtraData" })
   @Type(() => NameValueRecord)
-  public FixtureExtraData?: NameValueRecord[];
+  public fixtureExtraData?: NameValueRecord[];
 }

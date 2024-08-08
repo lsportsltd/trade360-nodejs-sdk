@@ -3,16 +3,16 @@ import { Expose, Type } from "class-transformer";
 import { Bet } from "./bet";
 
 export class Market {
-  @Expose({ name: "id" })
-  Id?: number;
+  @Expose({ name: "Id" })
+  id?: number;
 
-  @Expose({ name: "name" })
-  Name?: string;
+  @Expose({ name: "Name" })
+  name?: string;
 
-  @Expose({ name: "bets" })
+  @Expose({ name: "Bets" })
   @Type(() => Bet)
-  Bets?: Bet[];
+  bets?: Bet[];
 
-  @Expose({ name: "mainLine" })
-  MainLine?: string;
+  @Expose({ name: "MainLine" })
+  mainLine?: string;
 }

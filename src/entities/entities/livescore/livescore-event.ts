@@ -4,14 +4,14 @@ import { Fixture } from "../fixture";
 import { Livescore } from "./livescore";
 
 export class LivescoreEvent {
-  @Expose({ name: "fixtureId" })
-  FixtureId?: number;
+  @Expose({ name: "FixtureId" })
+  fixtureId?: number;
 
-  @Expose({ name: "fixture" })
+  @Expose({ name: "Fixture" })
   @Type(() => Fixture)
-  Fixture?: Fixture;
+  fixture?: Fixture;
 
-  @Expose({ name: "livescore" })
+  @Expose({ name: "Livescore" })
   @Type(() => Livescore)
-  Livescore?: Livescore;
+  livescore?: Livescore;
 }

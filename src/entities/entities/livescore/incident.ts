@@ -3,25 +3,25 @@ import { Expose, Type } from "class-transformer";
 import { Result } from "./result";
 
 export class Incident {
-  @Expose({ name: "period" })
-  Period?: number;
+  @Expose({ name: "Period" })
+  period?: number;
 
-  @Expose({ name: "incidentType" })
-  IncidentType?: number;
+  @Expose({ name: "IncidentType" })
+  incidentType?: number;
 
-  @Expose({ name: "seconds" })
-  Seconds?: number;
+  @Expose({ name: "Seconds" })
+  seconds?: number;
 
-  @Expose({ name: "participantPosition" })
-  ParticipantPosition?: string;
+  @Expose({ name: "ParticipantPosition" })
+  participantPosition?: string;
 
-  @Expose({ name: "playerId" })
-  PlayerId?: string;
+  @Expose({ name: "PlayerId" })
+  playerId?: string;
 
-  @Expose({ name: "playerName" })
-  PlayerName?: string;
+  @Expose({ name: "PlayerName" })
+  playerName?: string;
 
-  @Expose({ name: "results" })
+  @Expose({ name: "Results" })
   @Type(() => Result)
-  Results?: Result[];
+  results?: Result[];
 }

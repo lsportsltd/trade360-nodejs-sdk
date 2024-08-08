@@ -5,14 +5,14 @@ import { StatisticType } from "../../enums/statistic-type";
 import { Incident } from "./incident";
 
 export class Statistic {
-  @Expose({ name: "type" })
-  Type?: StatisticType;
+  @Expose({ name: "Type" })
+  type?: StatisticType;
 
-  @Expose({ name: "results" })
+  @Expose({ name: "Results" })
   @Type(() => Result)
-  Results?: Result[];
+  results?: Result[];
 
-  @Expose({ name: "incidents" })
+  @Expose({ name: "Incidents" })
   @Type(() => Incident)
-  Incidents?: Incident[];
+  incidents?: Incident[];
 }

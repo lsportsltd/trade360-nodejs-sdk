@@ -5,7 +5,7 @@ import { MarketEvent } from "../entities";
 
 @EntityKey(35)
 export class SettlementUpdate {
-//   @Expose({ name: "events" })
-//   @Type(() => MarketEvent)
-  Events?: MarketEvent[];
+  @Expose({ name: "Events" })
+  @Type(() => MarketEvent)
+  events?: MarketEvent[];
 }

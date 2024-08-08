@@ -1,9 +1,9 @@
 import { Expose } from "class-transformer";
 
 export class Sport {
-  @Expose({name: 'id'})
-  public Id?: number;
+  @Expose({name: 'Id'})
+  public id?: number;
 
-  @Expose({name: 'name'})
-  public Name?: string;
+  @Expose({name: 'Name'})
+  public name?: string;
 }

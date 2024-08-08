@@ -6,19 +6,19 @@ import { Statistic } from "./statistic";
 import { NameValueRecord } from "../common";
 
 export class Livescore {
-  @Expose({ name: "scoreboard" })
+  @Expose({ name: "Scoreboard" })
   @Type(() => Scoreboard)
-  Scoreboard?: Scoreboard;
+  scoreboard?: Scoreboard;
 
-  @Expose({ name: "periods" })
+  @Expose({ name: "Periods" })
   @Type(() => Period)
-  Periods?: Period[];
+  periods?: Period[];
 
-  @Expose({ name: "statistics" })
+  @Expose({ name: "Statistics" })
   @Type(() => Statistic)
-  Statistics?: Statistic[];
+  statistics?: Statistic[];
 
-  @Expose({ name: "livescoreExtraData" })
+  @Expose({ name: "LivescoreExtraData" })
   @Type(() => NameValueRecord)
-  LivescoreExtraData?: NameValueRecord[];
+  livescoreExtraData?: NameValueRecord[];
 }

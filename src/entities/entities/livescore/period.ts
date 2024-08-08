@@ -4,27 +4,27 @@ import { Result } from "./result";
 import { Incident } from "./incident";
 
 export class Period {
-  @Expose({ name: "type" })
-  Type?: number;
+  @Expose({ name: "Type" })
+  type?: number;
 
-  @Expose({ name: "isFinished" })
-  IsFinished?: boolean;
+  @Expose({ name: "IsFinished" })
+  isFinished?: boolean;
 
-  @Expose({ name: "isConfirmed" })
-  IsConfirmed?: boolean;
+  @Expose({ name: "IsConfirmed" })
+  isConfirmed?: boolean;
 
-  @Expose({ name: "results" })
+  @Expose({ name: "Results" })
   @Type(() => Result)
-  Results?: Result[];
+  results?: Result[];
 
-  @Expose({ name: "incidents" })
+  @Expose({ name: "Incidents" })
   @Type(() => Incident)
-  Incidents?: Incident[];
+  incidents?: Incident[];
 
-  @Expose({ name: "subPeriods" })
+  @Expose({ name: "SubPeriods" })
   @Type(() => Period)
-  SubPeriods?: Period[];
+  subPeriods?: Period[];
 
-  @Expose({ name: "sequenceNumber" })
-  SequenceNumber?: number;
+  @Expose({ name: "SequenceNumber" })
+  sequenceNumber?: number;
 }

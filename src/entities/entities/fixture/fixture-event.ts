@@ -2,11 +2,11 @@ import { Fixture } from "./fixture";
 import { Expose, Type } from "class-transformer";
 
 export class FixtureEvent {
-  @Expose({ name: "fixtureId" })
+  @Expose({ name: "FixtureId" })
   @Type(() => Number)
-  public FixtureId!: number;
+  public fixtureId!: number;
 
-  @Expose({ name: "fixture" })
+  @Expose({ name: "Fixture" })
   @Type(() => Fixture)
-  public Fixture!: Fixture;
+  public fixture!: Fixture;
 }

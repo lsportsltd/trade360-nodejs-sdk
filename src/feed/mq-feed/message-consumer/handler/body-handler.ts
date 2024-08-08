@@ -18,7 +18,9 @@ export class BodyHandler<TEntity extends BaseEntityClass> implements IBodyHandle
   async processAsync(body: string): Promise<void> {
     try {
       const entity = !isNil(body)
-        ? plainToInstance(this.entityConstructor, body)
+        ? plainToInstance(this.entityConstructor, JSON.parse(body),{
+          excludeExtraneousValues: false, // Change this to false if you want to keep all properties
+    })
         : undefined;
 
       return this.entityHandler.processAsync(entity);

@@ -5,19 +5,19 @@ import { StatusDescription } from "../../enums/status-description";
 import { Result } from "./result";
 
 export class Scoreboard {
-  @Expose({ name: "status" })
-  Status?: FixtureStatus;
+  @Expose({ name: "Status" })
+  status?: FixtureStatus;
 
-  @Expose({ name: "description" })
-  Description?: StatusDescription;
+  @Expose({ name: "Description" })
+  description?: StatusDescription;
 
-  @Expose({ name: "currentPeriod" })
-  CurrentPeriod?: number;
+  @Expose({ name: "CurrentPeriod" })
+  currentPeriod?: number;
 
-  @Expose({ name: "time" })
-  Time?: string;
+  @Expose({ name: "Time" })
+  time?: string;
 
-  @Expose({ name: "results" })
+  @Expose({ name: "Results" })
   @Type(() => Result)
-  Results?: Result[];
+  results?: Result[];
 }

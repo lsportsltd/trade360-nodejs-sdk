@@ -1,9 +1,9 @@
 import { Expose } from "class-transformer";
 
 export class Result {
-  @Expose({ name: "position" })
-  Position?: string;
+  @Expose({ name: "Position" })
+  position?: string;
 
-  @Expose({ name: "value" })
-  Value?: string;
+  @Expose({ name: "Value" })
+  value?: string;
 }

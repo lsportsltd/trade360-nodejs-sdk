@@ -3,64 +3,64 @@ import { Expose, Type } from "class-transformer";
 import { BetStatus, SettlementType } from "../../enums";
 
 export class Bet {
-  @Expose({ name: "id" })
-  Id?: number;
+  @Expose({ name: "Id" })
+  id?: number;
 
-  @Expose({ name: "name" })
-  Name?: string;
+  @Expose({ name: "Name" })
+  name?: string;
 
-  @Expose({ name: "line" })
-  Line?: string;
+  @Expose({ name: "Line" })
+  line?: string;
 
-  @Expose({ name: "baseLine" })
-  BaseLine?: string;
+  @Expose({ name: "BaseLine" })
+  baseLine?: string;
 
-  @Expose({ name: "status" })
-  Status?: BetStatus;
+  @Expose({ name: "Status" })
+  status?: BetStatus;
 
-  @Expose({ name: "startPrice" })
-  StartPrice?: string;
+  @Expose({ name: "StartPrice" })
+  startPrice?: string;
 
-  @Expose({ name: "price" })
-  Price?: string;
+  @Expose({ name: "Price" })
+  price?: string;
 
-  @Expose({ name: "priceVolume" })
-  PriceVolume?: string;
+  @Expose({ name: "PriceVolume" })
+  priceVolume?: string;
 
-  @Expose({ name: "settlement" })
-  Settlement?: SettlementType;
+  @Expose({ name: "Settlement" })
+  settlement?: SettlementType;
 
-  @Expose({ name: "providerBetId" })
-  ProviderBetId?: string;
+  @Expose({ name: "ProviderBetId" })
+  providerBetId?: string;
 
-  @Expose({ name: "lastUpdate" })
+  @Expose({ name: "LastUpdate" })
   @Type(() => Date)
-  LastUpdate?: Date;
+  lastUpdate?: Date;
 
-  @Expose({ name: "priceIN" })
-  PriceIN?: string;
+  @Expose({ name: "PriceIN" })
+  priceIN?: string;
 
-  @Expose({ name: "priceUS" })
-  PriceUS?: string;
+  @Expose({ name: "PriceUS" })
+  priceUS?: string;
 
-  @Expose({ name: "priceUK" })
-  PriceUK?: string;
+  @Expose({ name: "PriceUK" })
+  priceUK?: string;
 
-  @Expose({ name: "priceMA" })
-  PriceMA?: string;
+  @Expose({ name: "PriceMA" })
+  priceMA?: string;
 
-  @Expose({ name: "priceHK" })
-  PriceHK?: string;
+  @Expose({ name: "PriceHK" })
+  priceHK?: string;
 
-  @Expose({ name: "isChanged" })
-  IsChanged: number = -1;
+  @Expose({ name: "IsChanged" })
+  isChanged: number = -1;
 
-  @Expose({ name: "probability" })
-  Probability?: number;
+  @Expose({ name: "Probability" })
+  probability?: number;
 
-  @Expose({ name: "participantId" })
-  ParticipantId?: number;
+  @Expose({ name: "ParticipantId" })
+  participantId?: number;
 
-  @Expose({ name: "playerName" })
-  PlayerName?: string;
+  @Expose({ name: "PlayerName" })
+  playerName?: string;
 }
