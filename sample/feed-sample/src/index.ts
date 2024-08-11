@@ -4,6 +4,7 @@ import {
   FixtureMetadataUpdate,
   LivescoreUpdate,
   MarketUpdate,
+  OutrightFixtureUpdate,
   SettlementUpdate,
   ValidationError,
 } from "trade360-nodejs-sdk";
@@ -13,6 +14,7 @@ import {
   FixtureMetadataUpdateHandler,
   LivescoreUpdateHandler,
   MarketUpdateHandler,
+  OutrightFixtureUpdateHandler,
   SettlementUpdateHandler,
 } from "./handler";
 
@@ -44,6 +46,11 @@ const initSample = async () => {
       SettlementUpdate
     );
 
+    feedInplay.addEntityHandler(
+      new OutrightFixtureUpdateHandler(),
+      OutrightFixtureUpdate
+    );
+
     process.on("exit" || "SIGINT", async (err) => {
       await feedInplay.stop();
       process.exit(1);
@@ -60,10 +67,10 @@ const initSample = async () => {
     await feedInplay.stop();
   } catch (err) {
     if (err instanceof ValidationError) {
-      logger.error(`feed sample got err from ValidationError instance: ${err}`)
+      logger.error(`feed sample got err from ValidationError instance: ${err}`);
     }
     if (err instanceof ConversionError) {
-      logger.error(`feed sample got err from ConversionError instance: ${err}`)
+      logger.error(`feed sample got err from ConversionError instance: ${err}`);
     }
   }
 };
