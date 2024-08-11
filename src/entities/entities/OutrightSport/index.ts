@@ -1,0 +1,1 @@
+export * from './outright-fixture-competition'
