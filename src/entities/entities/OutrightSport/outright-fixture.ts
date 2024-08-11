@@ -1,7 +1,8 @@
 import { Expose, Type } from "class-transformer";
 
 import { NameValueRecord, Subscription } from "../common";
-import { Participant, Sport } from "../fixture";
+import {Sport, Location } from "../fixture";
+import { OutrightParticipant } from "./outright-participant";
 
 export class OutrightFixture {
   @Expose({ name: "Subscription" })
@@ -28,8 +29,8 @@ export class OutrightFixture {
   status?: number;
 
   @Expose({ name: "Participants" })
-  @Type(() => Participant)
-  participants?: Participant[];
+  @Type(() => OutrightParticipant)
+  participants?: OutrightParticipant[];
 
   @Expose({ name: "ExtraData" })
   @Type(() => NameValueRecord)
