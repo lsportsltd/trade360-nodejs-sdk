@@ -1,5 +1,6 @@
 import { Expose, Type } from "class-transformer";
 import { NameValueRecord } from "../common";
+import { ActiveParticipant } from "../../enums";
 
 export class OutrightParticipant {
     @Expose({ name: 'Id' })
@@ -12,7 +13,7 @@ export class OutrightParticipant {
     position?: string;
   
     @Expose({ name: 'IsActive' })
-    isActive?: number;
+    isActive?: ActiveParticipant;
   
     @Expose({ name: 'ExtraData' })
     @Type(() => NameValueRecord)

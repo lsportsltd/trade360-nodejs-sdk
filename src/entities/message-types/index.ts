@@ -14,3 +14,4 @@ export * from "./livescore-update";
 export * from "./market-update";
 export * from "./settlement-update";
 export * from "./outright-fixture-update";
+export * from "./outright-score-update"
