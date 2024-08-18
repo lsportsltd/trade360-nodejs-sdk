@@ -55,6 +55,13 @@ export class OutrightFixtureMarketCompetition extends OutrightCompetition<any> {
   events?: MarketEvent[];
 }
 
+export class OutrightSettlementsCompetition extends OutrightCompetition<any> {
+  @Expose({ name: "Events" })
+  @Type(() => MarketEvent)
+  events?: MarketEvent[];
+}
+
+
 /** 
 const eventTypeKey = Symbol("eventType");
 

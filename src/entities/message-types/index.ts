@@ -16,3 +16,4 @@ export * from "./settlement-update";
 export * from "./outright-fixture-update";
 export * from "./outright-score-update";
 export * from "./outright-fixture-market-update";
+export * from "./outright-settlements-update";
