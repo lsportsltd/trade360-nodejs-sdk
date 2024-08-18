@@ -7,6 +7,7 @@ import "reflect-metadata";
 // import { MarketEvent } from "../market";
 
 import { BaseEntityClass } from "../../message-types";
+import { MarketEvent } from "../market";
 
 // export type OutrightEventType =
 //   | OutrightFixtureEvent
@@ -46,6 +47,12 @@ export class OutrightFixtureCompetition extends OutrightCompetition<any> {
   @Expose({ name: "Events" })
   @Type(() => OutrightFixtureEvent)
   events?: OutrightFixtureEvent[];
+}
+
+export class OutrightFixtureMarketCompetition extends OutrightCompetition<any> {
+  @Expose({ name: "Events" })
+  @Type(() => MarketEvent)
+  events?: MarketEvent[];
 }
 
 /** 
