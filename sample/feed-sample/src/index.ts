@@ -7,6 +7,7 @@ import {
   OutrightFixtureMarketUpdate,
   OutrightFixtureUpdate,
   OutrightScoreUpdate,
+  OutrightSettlementsUpdate,
   SettlementUpdate,
   ValidationError,
 } from "trade360-nodejs-sdk";
@@ -19,6 +20,7 @@ import {
   OutrightFixtureMarketUpdateHandler,
   OutrightFixtureUpdateHandler,
   OutrightScoreUpdateHandler,
+  OutrightSettlementsUpdateHandler,
   SettlementUpdateHandler,
 } from "./handler";
 
@@ -63,6 +65,11 @@ const initSample = async () => {
     feedInplay.addEntityHandler(
       new OutrightFixtureMarketUpdateHandler(),
       OutrightFixtureMarketUpdate
+    );
+
+    feedInplay.addEntityHandler(
+      new OutrightSettlementsUpdateHandler(),
+      OutrightSettlementsUpdate
     );
 
     process.on("exit" || "SIGINT", async (err) => {
