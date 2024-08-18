@@ -4,6 +4,7 @@ import {
   FixtureMetadataUpdate,
   LivescoreUpdate,
   MarketUpdate,
+  OutrightFixtureMarketUpdate,
   OutrightFixtureUpdate,
   OutrightScoreUpdate,
   SettlementUpdate,
@@ -15,6 +16,7 @@ import {
   FixtureMetadataUpdateHandler,
   LivescoreUpdateHandler,
   MarketUpdateHandler,
+  OutrightFixtureMarketUpdateHandler,
   OutrightFixtureUpdateHandler,
   OutrightScoreUpdateHandler,
   SettlementUpdateHandler,
@@ -56,6 +58,11 @@ const initSample = async () => {
     feedInplay.addEntityHandler(
       new OutrightScoreUpdateHandler(),
       OutrightScoreUpdate
+    );
+
+    feedInplay.addEntityHandler(
+      new OutrightFixtureMarketUpdateHandler(),
+      OutrightFixtureMarketUpdate
     );
 
     process.on("exit" || "SIGINT", async (err) => {

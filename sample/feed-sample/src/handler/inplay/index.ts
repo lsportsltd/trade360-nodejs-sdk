@@ -4,3 +4,4 @@ export * from "./market-update-handler";
 export * from "./settlement-update-handler";
 export * from "./outright-fixture-update-handler";
 export * from "./outright-score-update-handler";
+export * from "./outright-fixture-market-update-handler";
