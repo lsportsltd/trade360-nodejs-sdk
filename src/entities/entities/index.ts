@@ -2,4 +2,4 @@ export * from "./fixture";
 export * from "./livescore";
 export * from "./market";
 export * from "./outright-sport";
-export * from "./keepAlive";
+export * from "./keep-alive";
