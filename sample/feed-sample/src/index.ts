@@ -2,6 +2,7 @@ import {
   ConversionError,
   Feed,
   FixtureMetadataUpdate,
+  HeartbeatUpdate,
   LivescoreUpdate,
   MarketUpdate,
   OutrightFixtureMarketUpdate,
@@ -15,6 +16,7 @@ import {
 import { getConfig } from "./config";
 import {
   FixtureMetadataUpdateHandler,
+  HeartbeatUpdateHandler,
   LivescoreUpdateHandler,
   MarketUpdateHandler,
   OutrightFixtureMarketUpdateHandler,
@@ -71,6 +73,12 @@ const initSample = async () => {
       new OutrightSettlementsUpdateHandler(),
       OutrightSettlementsUpdate
     );
+
+    feedInplay.addEntityHandler(
+      new HeartbeatUpdateHandler(),
+      HeartbeatUpdate
+    );
+    
 
     process.on("exit" || "SIGINT", async (err) => {
       await feedInplay.stop();
