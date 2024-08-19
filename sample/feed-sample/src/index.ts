@@ -3,6 +3,7 @@ import {
   Feed,
   FixtureMetadataUpdate,
   HeartbeatUpdate,
+  KeepAliveUpdate,
   LivescoreUpdate,
   MarketUpdate,
   OutrightFixtureMarketUpdate,
@@ -17,6 +18,7 @@ import { getConfig } from "./config";
 import {
   FixtureMetadataUpdateHandler,
   HeartbeatUpdateHandler,
+  KeepAliveUpdateHandler,
   LivescoreUpdateHandler,
   MarketUpdateHandler,
   OutrightFixtureMarketUpdateHandler,
@@ -74,11 +76,9 @@ const initSample = async () => {
       OutrightSettlementsUpdate
     );
 
-    feedInplay.addEntityHandler(
-      new HeartbeatUpdateHandler(),
-      HeartbeatUpdate
-    );
-    
+    feedInplay.addEntityHandler(new HeartbeatUpdateHandler(), HeartbeatUpdate);
+
+    feedInplay.addEntityHandler(new KeepAliveUpdateHandler(), KeepAliveUpdate);
 
     process.on("exit" || "SIGINT", async (err) => {
       await feedInplay.stop();

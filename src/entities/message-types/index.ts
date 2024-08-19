@@ -18,3 +18,4 @@ export * from "./outright-score-update";
 export * from "./outright-fixture-market-update";
 export * from "./outright-settlements-update";
 export * from "./heartbeat-update"
+export * from "./keep-alive-update"
