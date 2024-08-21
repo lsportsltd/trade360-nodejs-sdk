@@ -1,4 +1,5 @@
 import { Expose, Type } from "class-transformer";
+
 import { EntityKey } from "../decorators";
 import { OutrightCompetition, OutrightFixtureEvent } from "../entities";
 

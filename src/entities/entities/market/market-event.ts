@@ -4,7 +4,7 @@ import { Market } from "./market";
 
 export class MarketEvent {
   @Expose({ name: "FixtureId" })
-  fixtureId?: number;
+  fixtureId!: number;
 
   @Expose({ name: "Markets" })
   @Type(() => Market)
