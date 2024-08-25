@@ -1,7 +1,7 @@
 import { plainToClass, plainToInstance } from "class-transformer";
 import { isNil } from "lodash";
 
-import { BaseEntity } from "../../../../entities";
+import { BaseEntity, MessageHeader } from "../../../../entities";
 import { IEntityHandler } from "../../../IEntityHandler";
 import { IBodyHandler } from "../interfaces";
 
@@ -13,7 +13,7 @@ export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
     private readonly logger?: Console
   ) {}
 
-  async processAsync(body: string): Promise<void> {
+  async processAsync(header: MessageHeader, body: string): Promise<void> {
     try {
       const entity = !isNil(body)
         ? plainToInstance(this.entityConstructor, JSON.parse(body), {
@@ -21,7 +21,7 @@ export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
           })
         : undefined;
 
-      return this.entityHandler.processAsync(entity);
+      return this.entityHandler.processAsync(header, entity);
     } catch (err) {
       this.logger?.warn(
         `Failed to deserialize ${typeof this

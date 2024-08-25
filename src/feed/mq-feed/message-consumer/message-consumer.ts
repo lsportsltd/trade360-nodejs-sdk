@@ -43,7 +43,7 @@ export class MessageConsumer {
       if (this.bodyHandlers.has(entityType)) {
         const bodyHandler = this.bodyHandlers.get(entityType);
 
-        await bodyHandler!.processAsync(body);
+        await bodyHandler!.processAsync(header, body);
       } else {
         const missedEntityType = knownEntityKeys.get(entityType);
 
