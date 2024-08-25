@@ -3,11 +3,7 @@ import "reflect-metadata";
 import { plainToInstance } from "class-transformer";
 import { isNil } from "lodash";
 
-import {
-  BaseEntityClass,
-  WrappedMessage,
-  knownEntityKeys,
-} from "../../../entities";
+import { BaseEntity, WrappedMessage, knownEntityKeys } from "../../../entities";
 import { IEntityHandler } from "../../IEntityHandler";
 import { ConversionError } from "../../exceptions";
 import { BodyHandler } from "./handler";
@@ -66,7 +62,8 @@ export class MessageConsumer {
     }
   };
 
-  public RegisterEntityHandler = <TEntity extends BaseEntityClass>(
+  // public RegisterEntityHandler = <TEntity extends BaseEntityClass>(
+  public RegisterEntityHandler = <TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity
   ): void => {

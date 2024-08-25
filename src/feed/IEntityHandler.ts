@@ -1,8 +1,9 @@
-import { BaseEntityClass } from "../entities";
+import { BaseEntity } from "../entities";
 
 /**
- * Interface that represent every entity handler required implementation 
+ * Interface that represent every entity handler required implementation
  */
-export interface IEntityHandler<TEntity extends BaseEntityClass> {
-  processAsync: (entity?: TEntity) => Promise<void>; 
+// export interface IEntityHandler<TEntity extends BaseEntityClass> {
+export interface IEntityHandler<TEntity extends BaseEntity> {
+  processAsync: (entity?: TEntity) => Promise<void>;
 }

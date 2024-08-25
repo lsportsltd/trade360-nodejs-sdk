@@ -1,14 +1,12 @@
-import {
-  plainToClass,
-  plainToInstance,
-  ClassConstructor,
-} from "class-transformer";
+import { plainToClass, plainToInstance } from "class-transformer";
+import { isNil } from "lodash";
+
+import { BaseEntity } from "../../../../entities";
 import { IEntityHandler } from "../../../IEntityHandler";
 import { IBodyHandler } from "../interfaces";
-import { isNil } from "lodash";
-import { BaseEntityClass } from "../../../../entities";
 
-export class BodyHandler<TEntity extends BaseEntityClass> implements IBodyHandler {
+// export class BodyHandler<TEntity extends BaseEntityClass> implements IBodyHandler {
+export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
   constructor(
     private readonly entityHandler: IEntityHandler<TEntity>,
     private readonly entityConstructor: new () => TEntity,
@@ -18,9 +16,9 @@ export class BodyHandler<TEntity extends BaseEntityClass> implements IBodyHandle
   async processAsync(body: string): Promise<void> {
     try {
       const entity = !isNil(body)
-        ? plainToInstance(this.entityConstructor, JSON.parse(body),{
-          excludeExtraneousValues: false, // Change this to false if you want to keep all properties
-    })
+        ? plainToInstance(this.entityConstructor, JSON.parse(body), {
+            excludeExtraneousValues: false, // Change this to false if you want to keep all properties
+          })
         : undefined;
 
       return this.entityHandler.processAsync(entity);

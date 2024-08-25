@@ -1,4 +1,4 @@
-import { BaseEntityClass } from "../entities";
+import { BaseEntity } from "../entities";
 import { IEntityHandler } from "./IEntityHandler";
 import { IFeed } from "./IFeed";
 import { MessageConsumerMQ } from "./mq-feed";
@@ -25,7 +25,8 @@ export class Feed implements IFeed {
     await this.consumerMq.stop();
   };
 
-  public addEntityHandler = async <TEntity extends BaseEntityClass>(
+  // public addEntityHandler = async <TEntity extends BaseEntityClass>(
+  public addEntityHandler = async <TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity
   ) => {
