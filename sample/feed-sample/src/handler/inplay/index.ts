@@ -12,3 +12,4 @@ export * from "./heartbeat-update-handler";
 export * from "./keep-alive-update-handler";
 
 export * from "./outright-league-fixture-update-handler";
+export * from "./outright-league-market-update-handler";

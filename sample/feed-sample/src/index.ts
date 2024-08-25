@@ -9,6 +9,7 @@ import {
   OutrightFixtureMarketUpdate,
   OutrightFixtureUpdate,
   OutrightLeagueFixtureUpdate,
+  OutrightLeagueMarketUpdate,
   OutrightScoreUpdate,
   OutrightSettlementsUpdate,
   SettlementUpdate,
@@ -25,6 +26,7 @@ import {
   OutrightFixtureMarketUpdateHandler,
   OutrightFixtureUpdateHandler,
   OutrightLeagueFixtureUpdateHandler,
+  OutrightLeagueMarketUpdateHandler,
   OutrightScoreUpdateHandler,
   OutrightSettlementsUpdateHandler,
   SettlementUpdateHandler,
@@ -85,6 +87,11 @@ const initSample = async () => {
     feedInplay.addEntityHandler(
       new OutrightLeagueFixtureUpdateHandler(),
       OutrightLeagueFixtureUpdate
+    );
+
+    feedInplay.addEntityHandler(
+      new OutrightLeagueMarketUpdateHandler(),
+      OutrightLeagueMarketUpdate
     );
 
     process.on("exit" || "SIGINT", async (err) => {
