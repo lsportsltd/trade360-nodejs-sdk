@@ -31,3 +31,4 @@ export * from "./heartbeat-update";
 export * from "./keep-alive-update";
 
 export * from "./outright-league-fixture-update";
+export * from "./outright-league-market-update";
