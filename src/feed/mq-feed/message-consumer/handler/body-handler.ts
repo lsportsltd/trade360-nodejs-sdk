@@ -5,7 +5,6 @@ import { BaseEntity, MessageHeader } from "../../../../entities";
 import { IEntityHandler } from "../../../IEntityHandler";
 import { IBodyHandler } from "../interfaces";
 
-// export class BodyHandler<TEntity extends BaseEntityClass> implements IBodyHandler {
 export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
   constructor(
     private readonly entityHandler: IEntityHandler<TEntity>,

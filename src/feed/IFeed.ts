@@ -27,7 +27,6 @@ export interface IFeed {
    * @param entityConstructor class constructor represent the entity
    * @returns void
    */
-  // addEntityHandler: <TEntity extends BaseEntityClass>(
   addEntityHandler: <TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity

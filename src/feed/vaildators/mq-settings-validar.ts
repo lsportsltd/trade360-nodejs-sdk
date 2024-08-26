@@ -1,12 +1,12 @@
 import { isNil, isNumber, isString } from "lodash";
 
+import { ValidationError } from "../exceptions";
 import {
   MIN_NETWORK_RECOVERY_INTERVAL_IN_MS,
   MIN_PREFETCH_COUNT,
   MIN_REQUESTED_HEARTBEAT_SECONDS,
   MQSettings,
 } from "../types";
-import { ValidationError } from "../exceptions";
 
 /**
  * Class for vaildate that the configure mq setting is vaild
@@ -25,7 +25,7 @@ export class MqConnectionSettingsValidator {
       networkRecoveryIntervalInMs,
     } = mqSettings;
 
-    if (isNil(host) || !isString(host)) 
+    if (isNil(host) || !isString(host))
       throw new ValidationError("Host is required and need to be string");
 
     if (isNil(port) || !isNumber(port) || port <= 0)
@@ -64,6 +64,8 @@ export class MqConnectionSettingsValidator {
       !isNumber(networkRecoveryIntervalInMs) ||
       networkRecoveryIntervalInMs < +MIN_NETWORK_RECOVERY_INTERVAL_IN_MS
     )
-      throw new ValidationError("NetworkRecoveryInterval must be a positive integer");
+      throw new ValidationError(
+        "NetworkRecoveryInterval must be a positive integer"
+      );
   }
 }

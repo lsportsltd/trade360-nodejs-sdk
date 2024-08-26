@@ -62,7 +62,6 @@ export class MessageConsumer {
     }
   };
 
-  // public RegisterEntityHandler = <TEntity extends BaseEntityClass>(
   public RegisterEntityHandler = <TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity

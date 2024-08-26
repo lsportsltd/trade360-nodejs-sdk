@@ -25,7 +25,6 @@ export class Feed implements IFeed {
     await this.consumerMq.stop();
   };
 
-  // public addEntityHandler = async <TEntity extends BaseEntityClass>(
   public addEntityHandler = async <TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity

@@ -1,12 +1,7 @@
 import amqp, { Channel, Connection, Replies } from "amqplib";
 import { isNil } from "lodash";
 
-import {
-  BaseEntity,
-  IEntityHandler,
-  IFeed,
-  MQSettings
-} from "../..";
+import { BaseEntity, IEntityHandler, IFeed, MQSettings } from "../..";
 import { MessageConsumer } from "./message-consumer";
 
 /**
@@ -60,7 +55,6 @@ class RabbitMQFeed implements IFeed {
         }
       );
 
-      // this.consumerTag = this.consume.consumerTag;
       this.consumerTag = consumerTag;
     } catch (err) {
       // TODO: handle or not handle error
@@ -154,7 +148,6 @@ class RabbitMQFeed implements IFeed {
     this.logger.log("stop - closed channel and connection to rabbitMQ!");
   };
 
-  // public addEntityHandler = async <TEntity extends BaseEntityClass>(
   public addEntityHandler = async <TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity
