@@ -18,7 +18,7 @@ let logger = console;
 
 const initApiSample = async () => {
   const requestApi: DistributionRequest = new DistributionRequest(
-    config.Trade360.InplayMQSettings as HttpRequestDto,
+    config.trade360.inplayMQSettings as HttpRequestDto,
     logger
   );
 

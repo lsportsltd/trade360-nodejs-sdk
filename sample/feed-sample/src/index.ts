@@ -99,7 +99,7 @@ const initSample = async () => {
       process.exit(1);
     });
 
-    await feedInplay.start();
+    await feedInplay.start(true);
 
     await new Promise<void>((resolve) => {
       setTimeout(() => {

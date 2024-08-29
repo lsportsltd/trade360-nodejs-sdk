@@ -1,12 +1,19 @@
 {
   "trade360": {
+    "draft": {
+      "userName": "Lsportsrunner",
+      "password": "6UE4PL5J",
+      "packageId": 799
+    },
     "inplayMQSettings": {
       "host": "frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com",
       "port": 5672,
       "virtualHost": "StmInPlay",
-      "userName": "Lsportsrunner",
-      "password": "6UE4PL5J",
+
+      "userName": "Pavel.T",
+      "password": "1q2w3e%T",
       "packageId": 799,
+
       "PACKAGE_FORMAT_TYPE": "2",
       "prefetchCount": 1,
       "networkRecoveryIntervalInMs": 5000,
