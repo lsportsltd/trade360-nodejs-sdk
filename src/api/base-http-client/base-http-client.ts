@@ -11,7 +11,7 @@ export class BaseHttpClient {
     protected logger: Console
   ) {
     RequestSettingsValidator.validate(this.requestSettings);
-    
+
     this.axiosService = new AxiosService<HttpRequestDto>(this.baseUrl);
   }
 
@@ -22,12 +22,12 @@ export class BaseHttpClient {
    * @returns  promise with the R type response type
    */
   public sendRequest = async <TResponse>(route: string) => {
-    const { PackageId, UserName, Password } = this.requestSettings;
+    const { packageId, userName, password } = this.requestSettings;
 
     return await this.axiosService?.post<TResponse>(route, {
-      PackageId,
-      UserName,
-      Password,
+      packageId,
+      userName,
+      password,
     });
   };
 }

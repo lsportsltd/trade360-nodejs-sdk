@@ -1,5 +1,10 @@
+import { Expose } from "class-transformer";
+
 export class HttpRequestDto {
-  PackageId!: number;
-  UserName!: string;
-  Password!: string;
+  @Expose()
+  packageId!: number;
+  @Expose()
+  userName!: string;
+  @Expose()
+  password!: string;
 }

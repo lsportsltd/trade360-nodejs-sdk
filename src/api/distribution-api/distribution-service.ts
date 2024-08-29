@@ -26,15 +26,19 @@ export class DistributionRequest
   > => {
     this.logger.log("run start request...");
 
-    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(START_PREFIX_URL);
+    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(
+      START_PREFIX_URL
+    );
   };
-  
+
   stopDistribution = async <TResponse extends ResponseBodyType>(): Promise<
     HttpResponsePayloadDto<TResponse> | undefined
   > => {
     this.logger.log("run stop request...");
 
-    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(STOP_PREFIX_URL);
+    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(
+      STOP_PREFIX_URL
+    );
   };
 
   getDistributionStatus = async <TResponse extends ResponseBodyType>(): Promise<
@@ -42,7 +46,9 @@ export class DistributionRequest
   > => {
     this.logger.log("run status request...");
 
-    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(STATUS_PREFIX_URL);
+    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(
+      STATUS_PREFIX_URL
+    );
 
     // TODO: handle errors
   };
