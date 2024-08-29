@@ -10,9 +10,12 @@ export interface IFeed {
    * attach listeners for reconnection and consumption
    * process and handle them with all the configured
    * desired handlers for entities types
+   * @param preConnectionAtStart boolean to determine
+   * whether to run a pre-connection process, check
+   * distribution status and if necessary start distribution
    * @returns void
    */
-  start: () => Promise<void>;
+  start: (preConnectionAtStart?: boolean) => Promise<void>;
 
   /**
    * stop consuming messages from mq and handle them with
