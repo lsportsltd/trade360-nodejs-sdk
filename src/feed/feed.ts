@@ -14,6 +14,7 @@ import {
   HttpResponsePayloadDto,
   IStartResponseBody,
   IStatusResponseBody,
+  IStopResponseBody,
 } from "../api";
 
 /**
@@ -22,6 +23,7 @@ import {
 export class Feed implements IFeed {
   private consumerMq: IFeed;
   private requestApi?: DistributionRequest;
+  private preConnectionAtStart: boolean = false;
 
   constructor(private mqSettings: MQSettings, private logger: Console) {
     MqConnectionSettingsValidator.validate(this.mqSettings);
@@ -31,15 +33,18 @@ export class Feed implements IFeed {
     // TODO: do we need to add initializer for distribution api?
   }
 
-  public start = async (preConnectionAtStart?: boolean) => {
-    if (!isNil(preConnectionAtStart)) {
-      await this.preConnectionInitialization();
-    }
+  public start = async (preConnectionAtStart: boolean = false) => {
+    this.preConnectionAtStart = preConnectionAtStart;
 
-    await this.consumerMq.start(preConnectionAtStart);
+    if (!isNil(this.preConnectionAtStart))
+      await this.preConnectionInitialization();
+
+    await this.consumerMq.start();
   };
 
   private preConnectionInitialization = async () => {
+    const delayMilliseconds = 2000;
+
     this.requestApi = new DistributionRequest(
       plainToInstance(HttpRequestDto, this.mqSettings, {
         excludeExtraneousValues: true, // Change this to false if you want to keep all properties
@@ -61,6 +66,10 @@ export class Feed implements IFeed {
       } = distributionStatus;
 
       if (httpStatusCode >= 200 && httpStatusCode < 300 && !isDistributionOn) {
+        this.logger.log(
+          "Distribution flow is off, will trying to start the flow"
+        );
+
         const startRequest:
           | HttpResponsePayloadDto<IStartResponseBody>
           | undefined =
@@ -68,12 +77,30 @@ export class Feed implements IFeed {
 
         if (!isNil(startRequest) && !isNil(startRequest.Body))
           this.logger.log(startRequest.Body.Message);
+
+        await new Promise<void>((resolve) => {
+          setTimeout(() => {
+            return resolve();
+          }, delayMilliseconds);
+        });
+      } else if (isDistributionOn) {
+        this.logger.log("Distribution flow is already on");
       }
     }
   };
 
   public stop = async () => {
     await this.consumerMq.stop();
+
+    if (!isNil(this.preConnectionAtStart)) await this.closeDistributionFlow();
+  };
+
+  private closeDistributionFlow = async () => {
+    const stopRequest: HttpResponsePayloadDto<IStopResponseBody> | undefined =
+      await this.requestApi?.stopDistribution<IStopResponseBody>();
+
+    if (!isNil(stopRequest) && !isNil(stopRequest.Body))
+      this.logger.log(stopRequest.Body.Message);
   };
 
   public addEntityHandler = async <TEntity extends BaseEntity>(
