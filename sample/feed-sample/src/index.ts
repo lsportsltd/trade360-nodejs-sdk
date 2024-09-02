@@ -1,5 +1,4 @@
 import {
-  ConversionError,
   Feed,
   FixtureMetadataUpdate,
   HeartbeatUpdate,
@@ -14,6 +13,8 @@ import {
   OutrightSettlementsUpdate,
   SettlementUpdate,
   ValidationError,
+  ConversionError,
+  ProcessingMessageError,
 } from "trade360-nodejs-sdk";
 
 import { getConfig } from "./config";
@@ -32,7 +33,7 @@ import {
   SettlementUpdateHandler,
 } from "./handler";
 
-// Load configuration
+// Load configuration from appConfig file
 const config = getConfig();
 
 let logger = console;
@@ -114,6 +115,11 @@ const initSample = async () => {
     }
     if (err instanceof ConversionError) {
       logger.error(`feed sample got err from ConversionError instance: ${err}`);
+    }
+    if (err instanceof ProcessingMessageError) {
+      logger.error(
+        `feed sample got err from ProcessingMessageError instance: ${err}`
+      );
     }
   }
 };

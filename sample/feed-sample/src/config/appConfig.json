@@ -18,7 +18,7 @@
       "prefetchCount": 1,
       "networkRecoveryIntervalInMs": 5000,
       "automaticRecoveryEnabled": true,
-      "autoAck": true,
+      "autoAck": false,
       "requestedHeartbeatSeconds": 30,
       "dispatchConsumersAsync": true,
       "messageBrokerUrl": "amqp://Lsportsrunner:6UE4PL5J@frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com:5672"
