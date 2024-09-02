@@ -1,7 +1,13 @@
 import amqp, { Channel, Connection, Replies } from "amqplib";
 import { isNil } from "lodash";
 
-import { BaseEntity, IEntityHandler, IFeed, MQSettings } from "../..";
+import {
+  BaseEntity,
+  IEntityHandler,
+  IFeed,
+  MQSettings,
+  ProcessingMessageError,
+} from "../..";
 import { MessageConsumer } from "./message-consumer";
 
 /**
@@ -37,27 +43,40 @@ class RabbitMQFeed implements IFeed {
 
       this.attachListeners();
 
-      await this.assertQueue();
+      // await this.assertQueue();
+
+      // config prefetch value
+      await this.channel.prefetch(this.mqSettings.prefetchCount, false);
+
+      const isAutoAck: boolean = this.mqSettings.autoAck;
 
       const { consumerTag } = await this.channel.consume(
         this.requestQueue,
         async (msg) => {
           if (!isNil(msg) && !isNil(msg.content)) {
-            await this.consumer.HandleBasicMessage(msg.content);
+            try {
+              await this.consumer.HandleBasicMessage(msg.content);
 
-            // Acknowledge the processed message
-            // this.channel.ack(msg);
+              // Manually acknowledge the processed message
+              if (!isAutoAck) await this.channel.ack(msg);
+            } catch (err) {
+              if (!isAutoAck) await this.channel.nack(msg, false, true);
+
+              throw new ProcessingMessageError(
+                `Error processing message, Error: ${err}`
+              );
+            }
           }
         },
         {
-          noAck: this.mqSettings.autoAck,
-          // noAck: false,
+          noAck: isAutoAck,
         }
       );
 
       this.consumerTag = consumerTag;
     } catch (err) {
       // TODO: handle or not handle error
+      throw err;
     }
   };
 
@@ -71,7 +90,10 @@ class RabbitMQFeed implements IFeed {
       this.logger.log("connect - Connecting to RabbitMQ Server");
 
       // Establish connection to RabbitMQ server
-      const connectionString = `amqp://${this.mqSettings.userName}:${this.mqSettings.password}@${this.mqSettings.host}:${this.mqSettings.port}/${this.mqSettings.virtualHost}`;
+      const connectionString = encodeURI(
+        `amqp://${this.mqSettings.userName}:${this.mqSettings.password}@${this.mqSettings.host}:${this.mqSettings.port}/${this.mqSettings.virtualHost}`
+      );
+
       this.connection = await amqp.connect(
         connectionString /*config.msgBrokerURL!*/
       );
@@ -133,9 +155,25 @@ class RabbitMQFeed implements IFeed {
    * assert queue configuration and define queue prefetch
    */
   private assertQueue = async () => {
-    await this.channel.assertQueue(this.requestQueue, { durable: true });
-    // config prefetch value
-    await this.channel.prefetch(this.mqSettings.prefetchCount, false);
+    try {
+      // Define queue options
+      const queueOptions: amqp.Options.AssertQueue = {
+        durable: true, // Queue survives broker restart
+      };
+
+      // Assert the queue with the specified options
+      await this.channel.assertQueue(this.requestQueue, queueOptions);
+
+      // config prefetch value
+      await this.channel.prefetch(this.mqSettings.prefetchCount, false);
+
+      this.logger.log(
+        `Queue '${this.requestQueue}' has been set up successfully`
+      );
+    } catch (error) {
+      this.logger.error("Error setting up the queue:", error);
+      throw error;
+    }
   };
 
   public stop = async () => {
