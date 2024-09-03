@@ -5,7 +5,7 @@
       "password": "6UE4PL5J",
       "packageId": 799
     },
-    "inplayMQSettings": {
+    "inPlayMQSettings": {
       "host": "frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com",
       "port": 5672,
       "virtualHost": "StmInPlay",
@@ -23,7 +23,7 @@
       "dispatchConsumersAsync": true,
       "messageBrokerUrl": "amqp://Lsportsrunner:6UE4PL5J@frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com:5672"
     },
-    "MQInplaySettings": {
+    "MQInPlaySettings": {
       "Host": "artistic-wheat-bobcat.rmq6.cloudamqp.com",
       "Port": "5672",
       "VirtualHost": "StmInPlay",
@@ -37,7 +37,7 @@
       "DispatchConsumersAsync": true,
       "AutomaticRecoveryEnabled": true
     },
-    "MQPrematchSettings": {
+    "MQPreMatchSettings": {
       "RabbitmqHost": "frosty-possum.rmq.cloudamqp.com",
       "RmqPort": 5672,
       "VirtualHost": "StmPreMatch",

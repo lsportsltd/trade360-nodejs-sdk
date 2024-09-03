@@ -41,67 +41,67 @@ let logger = console;
 
 const initSample = async () => {
   try {
-    const feedInplay = new Feed(config.trade360.inplayMQSettings!, logger);
-    // const feedPrematch = Feed(config.Trade360.PrematchMQSettings, logger);
+    const feedInPlay = new Feed(config.trade360.inPlayMQSettings!, logger);
+    // const feedPreMatch = Feed(config.Trade360.PreMatchMQSettings, logger);
 
-    // feedInplay.addEntityHandler((msg: any) => {
+    // feedInPlay.addEntityHandler((msg: any) => {
     //   logger.log(`got new message:\n${JSON.stringify(msg)}\n`);
     // });
 
-    feedInplay.addEntityHandler(
+    feedInPlay.addEntityHandler(
       new FixtureMetadataUpdateHandler(),
       FixtureMetadataUpdate
     );
 
-    feedInplay.addEntityHandler(new LivescoreUpdateHandler(), LivescoreUpdate);
+    feedInPlay.addEntityHandler(new LivescoreUpdateHandler(), LivescoreUpdate);
 
-    feedInplay.addEntityHandler(new MarketUpdateHandler(), MarketUpdate);
+    feedInPlay.addEntityHandler(new MarketUpdateHandler(), MarketUpdate);
 
-    feedInplay.addEntityHandler(
+    feedInPlay.addEntityHandler(
       new SettlementUpdateHandler(),
       SettlementUpdate
     );
 
-    feedInplay.addEntityHandler(
+    feedInPlay.addEntityHandler(
       new OutrightFixtureUpdateHandler(),
       OutrightFixtureUpdate
     );
 
-    feedInplay.addEntityHandler(
+    feedInPlay.addEntityHandler(
       new OutrightScoreUpdateHandler(),
       OutrightScoreUpdate
     );
 
-    feedInplay.addEntityHandler(
+    feedInPlay.addEntityHandler(
       new OutrightFixtureMarketUpdateHandler(),
       OutrightFixtureMarketUpdate
     );
 
-    feedInplay.addEntityHandler(
+    feedInPlay.addEntityHandler(
       new OutrightSettlementsUpdateHandler(),
       OutrightSettlementsUpdate
     );
 
-    feedInplay.addEntityHandler(new HeartbeatUpdateHandler(), HeartbeatUpdate);
+    feedInPlay.addEntityHandler(new HeartbeatUpdateHandler(), HeartbeatUpdate);
 
-    feedInplay.addEntityHandler(new KeepAliveUpdateHandler(), KeepAliveUpdate);
+    feedInPlay.addEntityHandler(new KeepAliveUpdateHandler(), KeepAliveUpdate);
 
-    feedInplay.addEntityHandler(
+    feedInPlay.addEntityHandler(
       new OutrightLeagueFixtureUpdateHandler(),
       OutrightLeagueFixtureUpdate
     );
 
-    feedInplay.addEntityHandler(
+    feedInPlay.addEntityHandler(
       new OutrightLeagueMarketUpdateHandler(),
       OutrightLeagueMarketUpdate
     );
 
     process.on("exit" || "SIGINT", async (err) => {
-      await feedInplay.stop();
+      await feedInPlay.stop();
       process.exit(1);
     });
 
-    await feedInplay.start(true);
+    await feedInPlay.start(true);
 
     await new Promise<void>((resolve) => {
       setTimeout(() => {
@@ -109,7 +109,7 @@ const initSample = async () => {
       }, 5 * 1000);
     });
 
-    await feedInplay.stop();
+    await feedInPlay.stop();
   } catch (err) {
     if (err instanceof ValidationError) {
       logger.error(`feed sample got err from ValidationError instance: ${err}`);
