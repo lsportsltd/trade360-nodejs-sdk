@@ -43,9 +43,7 @@ class RabbitMQFeed implements IFeed {
 
       this.attachListeners();
 
-      // await this.assertQueue();
-
-      // config prefetch value
+      // config and define queue prefetch
       await this.channel.prefetch(this.mqSettings.prefetchCount, false);
 
       const isAutoAck: boolean = this.mqSettings.autoAck;
@@ -149,31 +147,6 @@ class RabbitMQFeed implements IFeed {
    */
   private connectionErrorHandler = (err: Error) => {
     this.logger.error(err.message);
-  };
-
-  /**
-   * assert queue configuration and define queue prefetch
-   */
-  private assertQueue = async () => {
-    try {
-      // Define queue options
-      const queueOptions: amqp.Options.AssertQueue = {
-        durable: true, // Queue survives broker restart
-      };
-
-      // Assert the queue with the specified options
-      await this.channel.assertQueue(this.requestQueue, queueOptions);
-
-      // config prefetch value
-      await this.channel.prefetch(this.mqSettings.prefetchCount, false);
-
-      this.logger.log(
-        `Queue '${this.requestQueue}' has been set up successfully`
-      );
-    } catch (error) {
-      this.logger.error("Error setting up the queue:", error);
-      throw error;
-    }
   };
 
   public stop = async () => {
