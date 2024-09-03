@@ -1,4 +1,3 @@
-import { plainToInstance } from "class-transformer";
 import { isNil } from "lodash";
 
 import { BaseEntity } from "../entities";
@@ -8,14 +7,8 @@ import { MessageConsumerMQ } from "./mq-feed";
 import { MQSettings } from "./types";
 import { MqConnectionSettingsValidator } from "./vaildators";
 
-import {
-  DistributionRequest,
-  HttpRequestDto,
-  HttpResponsePayloadDto,
-  IStartResponseBody,
-  IStatusResponseBody,
-  IStopResponseBody,
-} from "../api";
+import { DistributionRequest } from "../api";
+import { DistributionUtil, withRetry } from "./utilies";
 
 /**
  * Class that represesnts all Feed requests
@@ -43,46 +36,39 @@ export class Feed implements IFeed {
   };
 
   private preConnectionInitialization = async () => {
-    const delayMilliseconds = 2000;
+    const options = { maxAttempts: 5, delayMs: 2000, backoffFactor: 2 };
 
-    this.requestApi = new DistributionRequest(
-      plainToInstance(HttpRequestDto, this.mqSettings, {
-        excludeExtraneousValues: true, // Change this to false if you want to keep all properties
-        exposeUnsetFields: false,
-      }),
-      // this.mqSettings as HttpRequestDto,
-      this.logger
-    );
+    new DistributionUtil(this.mqSettings, this.logger);
 
-    const distributionStatus:
-      | HttpResponsePayloadDto<IStatusResponseBody>
-      | undefined =
-      await this.requestApi.getDistributionStatus<IStatusResponseBody>();
+    const distributionStatus = await DistributionUtil.checkStatus();
 
-    if (!isNil(distributionStatus) && !isNil(distributionStatus.Body)) {
-      const {
-        Header: { HttpStatusCode: httpStatusCode },
-        Body: { IsDistributionOn: isDistributionOn },
-      } = distributionStatus;
+    if (!isNil(distributionStatus)) {
+      const { httpStatusCode, isDistributionOn } = distributionStatus;
 
       if (httpStatusCode >= 200 && httpStatusCode < 300 && !isDistributionOn) {
         this.logger.log(
           "Distribution flow is off, will trying to start the flow"
         );
 
-        const startRequest:
-          | HttpResponsePayloadDto<IStartResponseBody>
-          | undefined =
-          await this.requestApi.startDistribution<IStartResponseBody>();
+        return await withRetry(
+          async () => {
+            await DistributionUtil.start();
 
-        if (!isNil(startRequest) && !isNil(startRequest.Body))
-          this.logger.log(startRequest.Body.Message);
+            const distributionStatusAfterStartOperation =
+              await DistributionUtil.checkStatus();
 
-        await new Promise<void>((resolve) => {
-          setTimeout(() => {
-            return resolve();
-          }, delayMilliseconds);
-        });
+            if (
+              !isNil(distributionStatusAfterStartOperation) &&
+              distributionStatusAfterStartOperation.isDistributionOn
+            ) {
+              this.logger.log("Distribution is activated successfully");
+              return;
+            }
+          },
+          options,
+          "Start distribution",
+          this.logger
+        );
       } else if (isDistributionOn) {
         this.logger.log("Distribution flow is already on");
       }
@@ -92,15 +78,7 @@ export class Feed implements IFeed {
   public stop = async () => {
     await this.consumerMq.stop();
 
-    if (!isNil(this.preConnectionAtStart)) await this.closeDistributionFlow();
-  };
-
-  private closeDistributionFlow = async () => {
-    const stopRequest: HttpResponsePayloadDto<IStopResponseBody> | undefined =
-      await this.requestApi?.stopDistribution<IStopResponseBody>();
-
-    if (!isNil(stopRequest) && !isNil(stopRequest.Body))
-      this.logger.log(stopRequest.Body.Message);
+    if (!isNil(this.preConnectionAtStart)) await DistributionUtil.stop();
   };
 
   public addEntityHandler = async <TEntity extends BaseEntity>(

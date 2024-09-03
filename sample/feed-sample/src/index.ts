@@ -15,6 +15,7 @@ import {
   ValidationError,
   ConversionError,
   ProcessingMessageError,
+  RetryError,
 } from "trade360-nodejs-sdk";
 
 import { getConfig } from "./config";
@@ -105,7 +106,7 @@ const initSample = async () => {
     await new Promise<void>((resolve) => {
       setTimeout(() => {
         return resolve();
-      }, 120 * 1000);
+      }, 5 * 1000);
     });
 
     await feedInplay.stop();
@@ -120,6 +121,9 @@ const initSample = async () => {
       logger.error(
         `feed sample got err from ProcessingMessageError instance: ${err}`
       );
+    }
+    if (err instanceof RetryError) {
+      logger.error(`feed sample got err from RetryError instance: ${err}`);
     }
   }
 };
