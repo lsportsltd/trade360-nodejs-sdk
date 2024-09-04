@@ -7,23 +7,19 @@ import { MessageConsumerMQ } from "./mq-feed";
 import { MQSettings } from "./types";
 import { MqConnectionSettingsValidator } from "./vaildators";
 
-import { DistributionRequest } from "../api";
-import { DistributionUtil, withRetry } from "./utilies";
+import { DistributionUtil, withRetry } from "../common";
 
 /**
  * Class that represesnts all Feed requests
  */
 export class Feed implements IFeed {
   private consumerMq: IFeed;
-  private requestApi?: DistributionRequest;
   private preConnectionAtStart: boolean = false;
 
   constructor(private mqSettings: MQSettings, private logger: Console) {
     MqConnectionSettingsValidator.validate(this.mqSettings);
 
     this.consumerMq = new MessageConsumerMQ(this.mqSettings, this.logger);
-
-    // TODO: do we need to add initializer for distribution api?
   }
 
   public start = async (preConnectionAtStart: boolean = false) => {

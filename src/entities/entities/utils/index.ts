@@ -1,6 +1,6 @@
-import { plainToInstance } from "class-transformer";
 import { find, has, isArray, isEmpty, isNil, keys } from "lodash";
 
+import { TransformerUtil } from "../../../common";
 import { MarketEvent } from "../market";
 import { OutrightLeagueFixtureEvent } from "../outright-league";
 import { OutrightFixtureEvent, OutrightScoreEvent } from "../outright-sport";
@@ -32,9 +32,7 @@ export const deserializeToEventClass = (value: any) => {
 
   const propertyEventClass = getEventClass(value[0]);
 
-  return value.map((event: any) => {
-    if (!isNil(propertyEventClass))
-      return plainToInstance(propertyEventClass, event);
-    return event;
-  });
+  if (!isNil(propertyEventClass))
+    return TransformerUtil.deserializeArray(value, propertyEventClass);
+  return value;
 };

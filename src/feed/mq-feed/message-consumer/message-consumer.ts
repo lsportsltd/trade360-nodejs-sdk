@@ -1,11 +1,10 @@
 import "reflect-metadata";
 
-import { plainToInstance } from "class-transformer";
 import { isNil } from "lodash";
 
+import { ConversionError, TransformerUtil } from "../../../common";
 import { BaseEntity, WrappedMessage, knownEntityKeys } from "../../../entities";
 import { IEntityHandler } from "../../IEntityHandler";
-import { ConversionError } from "../../exceptions";
 import { BodyHandler } from "./handler";
 import { IBodyHandler } from "./interfaces";
 
@@ -96,9 +95,10 @@ export class MessageConsumer {
 
 const ConvertJsonToMessage = (rawJson: string) => {
   try {
-    const doc = JSON.parse(rawJson);
-
-    const message: WrappedMessage = plainToInstance(WrappedMessage, doc);
+    const message: WrappedMessage = TransformerUtil.deserialize(
+      JSON.parse(rawJson),
+      WrappedMessage
+    );
 
     return message;
   } catch (err) {

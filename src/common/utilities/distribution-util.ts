@@ -1,4 +1,3 @@
-import { plainToInstance } from "class-transformer";
 import { isNil } from "lodash";
 
 import {
@@ -10,18 +9,17 @@ import {
   IStopResponseBody,
 } from "../../api";
 
+import { TransformerUtil } from ".";
+
 export class DistributionUtil {
   private static requestApi?: DistributionRequest;
   private static logger?: Console;
 
-  private static delayMilliseconds = 2000;
+  private static delayMs = 2000;
 
-  constructor(mqSettings: HttpRequestDto, logger: Console) {
+  constructor(settings: HttpRequestDto, logger: Console) {
     DistributionUtil.requestApi = new DistributionRequest(
-      plainToInstance(HttpRequestDto, mqSettings, {
-        excludeExtraneousValues: true, // Change this to false if you want to keep all properties
-        exposeUnsetFields: false,
-      }),
+      TransformerUtil.deserialize(settings, HttpRequestDto),
       (DistributionUtil.logger = logger)
     );
   }
@@ -58,7 +56,7 @@ export class DistributionUtil {
     await new Promise<void>((resolve) => {
       setTimeout(() => {
         return resolve();
-      }, DistributionUtil.delayMilliseconds);
+      }, DistributionUtil.delayMs);
     });
   };
 

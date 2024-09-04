@@ -1,7 +1,7 @@
-import { plainToClass, plainToInstance } from "class-transformer";
 import { isNil } from "lodash";
 
 import { BaseEntity, MessageHeader } from "../../../../entities";
+import { TransformerUtil } from "../../../../common";
 import { IEntityHandler } from "../../../IEntityHandler";
 import { IBodyHandler } from "../interfaces";
 
@@ -15,9 +15,7 @@ export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
   async processAsync(header: MessageHeader, body: string): Promise<void> {
     try {
       const entity = !isNil(body)
-        ? plainToInstance(this.entityConstructor, JSON.parse(body), {
-            excludeExtraneousValues: false, // Change this to false if you want to keep all properties
-          })
+        ? TransformerUtil.deserialize(JSON.parse(body), this.entityConstructor)
         : undefined;
 
       return this.entityHandler.processAsync(header, entity);
@@ -27,12 +25,5 @@ export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
           .entityConstructor} entity, Due to: ${err}`
       );
     }
-  }
-
-  async deserialize<TEntity>(
-    json: Record<string, any>,
-    targetClass: new () => TEntity
-  ): Promise<TEntity> {
-    return plainToClass(targetClass, json);
   }
 }

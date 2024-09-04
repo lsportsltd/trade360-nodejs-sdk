@@ -1,14 +1,9 @@
 import amqp, { Channel, Connection, Replies } from "amqplib";
 import { isNil } from "lodash";
 
-import {
-  BaseEntity,
-  IEntityHandler,
-  IFeed,
-  MQSettings,
-  ProcessingMessageError,
-} from "../..";
+import { BaseEntity, IEntityHandler, IFeed, MQSettings } from "../..";
 import { MessageConsumer } from "./message-consumer";
+import { ProcessingMessageError } from "../../common";
 
 /**
  * Class that represent all the abilities of rabbitmq instance

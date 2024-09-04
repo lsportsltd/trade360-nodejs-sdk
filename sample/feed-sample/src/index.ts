@@ -106,7 +106,7 @@ const initSample = async () => {
     await new Promise<void>((resolve) => {
       setTimeout(() => {
         return resolve();
-      }, 5 * 1000);
+      }, 120 * 1000);
     });
 
     await feedInPlay.stop();

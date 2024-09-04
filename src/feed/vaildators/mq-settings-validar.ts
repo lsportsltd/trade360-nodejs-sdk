@@ -1,6 +1,6 @@
 import { isNil, isNumber, isString } from "lodash";
 
-import { ValidationError } from "../exceptions";
+import { ValidationError } from "../../common";
 import {
   MIN_NETWORK_RECOVERY_INTERVAL_IN_MS,
   MIN_PREFETCH_COUNT,
