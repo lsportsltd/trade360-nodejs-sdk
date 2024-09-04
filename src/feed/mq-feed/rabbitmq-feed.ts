@@ -1,9 +1,9 @@
-import amqp, { Channel, Connection, Replies } from "amqplib";
+import amqp, { Channel, Connection, ConsumeMessage, Replies } from "amqplib";
 import { isNil } from "lodash";
 
 import { BaseEntity, IEntityHandler, IFeed, MQSettings } from "../..";
-import { MessageConsumer } from "./message-consumer";
 import { ProcessingMessageError } from "../../common";
+import { MessageConsumer } from "./message-consumer";
 
 /**
  * Class that represent all the abilities of rabbitmq instance
@@ -49,6 +49,8 @@ class RabbitMQFeed implements IFeed {
           if (!isNil(msg) && !isNil(msg.content)) {
             try {
               await this.consumer.HandleBasicMessage(msg.content);
+
+              this.handleLatency(msg);
 
               // Manually acknowledge the processed message
               if (!isAutoAck) await this.channel.ack(msg);
@@ -143,6 +145,58 @@ class RabbitMQFeed implements IFeed {
   private connectionErrorHandler = (err: Error) => {
     this.logger.error(err.message);
   };
+
+  private handleLatency = async (msg: ConsumeMessage) => {
+    this.checkConsumptionLatency(msg);
+  };
+
+  private checkConsumptionLatency = (msg: ConsumeMessage): void => {
+    const consumptionTimestamp = Date.now();
+    const rabbitMqTimestamp = this.getRabbitMqTimestamp(msg);
+    const thresholdInSeconds = this.mqSettings.consumptionLatencyThreshold;
+
+    const {
+      properties: { messageId },
+    } = msg;
+
+    if (!isNil(rabbitMqTimestamp)) {
+      const delayInSeconds = (consumptionTimestamp - rabbitMqTimestamp) / 1000;
+
+      if (delayInSeconds > thresholdInSeconds) {
+        this.logger.warn("Message processing delay exceeded threshold", {
+          delayInSeconds,
+          thresholdInSeconds,
+          messageId,
+          rabbitMqTimestamp,
+          consumptionTimestamp,
+        });
+      } else {
+        this.logger.info("Message processed within threshold", {
+          delayInSeconds,
+          thresholdInSeconds,
+          messageId,
+        });
+      }
+    } else {
+      this.logger.warn(
+        "Unable to check message delay: Missing RabbitMQ timestamp",
+        { messageId }
+      );
+    }
+  };
+
+  private getRabbitMqTimestamp(message: ConsumeMessage): number | undefined {
+    const timestamp = message.properties.timestamp;
+
+    if (typeof timestamp === "number") {
+      // RabbitMQ timestamps are in seconds, so convert to milliseconds
+      return timestamp * 1000;
+    } else if (timestamp instanceof Date) {
+      return timestamp.getTime();
+    }
+
+    return;
+  }
 
   public stop = async () => {
     this.stopTryReconnect = true;

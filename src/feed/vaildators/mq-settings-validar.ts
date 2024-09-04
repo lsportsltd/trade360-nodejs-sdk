@@ -21,34 +21,37 @@ export class MqConnectionSettingsValidator {
       userName,
       password,
       prefetchCount,
-      requestedHeartbeatSeconds,
       networkRecoveryIntervalInMs,
+      consumptionLatencyThreshold,
+      requestedHeartbeatSeconds,
     } = mqSettings;
 
     if (isNil(host) || !isString(host))
-      throw new ValidationError("Host is required and need to be string");
+      throw new ValidationError("host is required and need to be string");
 
     if (isNil(port) || !isNumber(port) || port <= 0)
-      throw new ValidationError("Port must be a positive integer");
+      throw new ValidationError("port must be a positive integer");
 
     if (isNil(virtualHost) || !isString(virtualHost))
-      throw new ValidationError("VirtualHost is required");
+      throw new ValidationError("virtualHost is required");
 
     if (isNil(packageId) || !isNumber(packageId) || packageId <= 0)
-      throw new ValidationError("PackageId must be a positive integer");
+      throw new ValidationError("packageId must be a positive integer");
 
     if (isNil(userName) || !isString(userName))
-      throw new ValidationError("UserName is required and need to be string");
+      throw new ValidationError("userName is required and need to be string");
 
     if (isNil(password) || !isString(password))
-      throw new ValidationError("Password is required and need to be string");
+      throw new ValidationError("password is required and need to be string");
 
     if (
       isNil(prefetchCount) ||
       !isNumber(prefetchCount) ||
       prefetchCount < +MIN_PREFETCH_COUNT
     )
-      throw new ValidationError("PrefetchCount must be a positive integer");
+      throw new ValidationError(
+        `prefetchCount must be a positive integer - larger then ${MIN_PREFETCH_COUNT}`
+      );
 
     if (
       isNil(requestedHeartbeatSeconds) ||
@@ -56,7 +59,7 @@ export class MqConnectionSettingsValidator {
       requestedHeartbeatSeconds <= +MIN_REQUESTED_HEARTBEAT_SECONDS
     )
       throw new ValidationError(
-        "RequestedHeartbeatSeconds must be a positive integer - Larger then 10"
+        `requestedHeartbeatSeconds must be a positive integer - larger then ${requestedHeartbeatSeconds}`
       );
 
     if (
@@ -65,7 +68,16 @@ export class MqConnectionSettingsValidator {
       networkRecoveryIntervalInMs < +MIN_NETWORK_RECOVERY_INTERVAL_IN_MS
     )
       throw new ValidationError(
-        "NetworkRecoveryInterval must be a positive integer"
+        `networkRecoveryInterval must be a positive integer - larger then ${MIN_NETWORK_RECOVERY_INTERVAL_IN_MS}`
+      );
+
+    if (
+      (!isNil(consumptionLatencyThreshold) &&
+        !isNumber(consumptionLatencyThreshold)) ||
+      consumptionLatencyThreshold <= 0
+    )
+      throw new ValidationError(
+        "consumptionLatencyThreshold must be a positive integer"
       );
   }
 }
