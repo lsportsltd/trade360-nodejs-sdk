@@ -23,6 +23,7 @@ export class MqConnectionSettingsValidator {
       prefetchCount,
       networkRecoveryIntervalInMs,
       consumptionLatencyThreshold,
+      lsportsProcessingLatencyThreshold,
       requestedHeartbeatSeconds,
     } = mqSettings;
 
@@ -78,6 +79,15 @@ export class MqConnectionSettingsValidator {
     )
       throw new ValidationError(
         "consumptionLatencyThreshold must be a positive integer"
+      );
+
+    if (
+      (!isNil(lsportsProcessingLatencyThreshold) &&
+        !isNumber(lsportsProcessingLatencyThreshold)) ||
+      lsportsProcessingLatencyThreshold <= 0
+    )
+      throw new ValidationError(
+        "lsportsProcessingLatencyThreshold must be a positive integer"
       );
   }
 }

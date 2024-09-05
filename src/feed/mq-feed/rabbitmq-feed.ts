@@ -148,6 +148,7 @@ class RabbitMQFeed implements IFeed {
 
   private handleLatency = async (msg: ConsumeMessage) => {
     this.checkConsumptionLatency(msg);
+    this.checkProcessingLatency(msg);
   };
 
   private checkConsumptionLatency = (msg: ConsumeMessage): void => {
@@ -163,7 +164,7 @@ class RabbitMQFeed implements IFeed {
       const delayInSeconds = (consumptionTimestamp - rabbitMqTimestamp) / 1000;
 
       if (delayInSeconds > thresholdInSeconds) {
-        this.logger.warn("Message processing delay exceeded threshold", {
+        this.logger.warn("Message consumption delay exceeded threshold", {
           delayInSeconds,
           thresholdInSeconds,
           messageId,
@@ -171,7 +172,7 @@ class RabbitMQFeed implements IFeed {
           consumptionTimestamp,
         });
       } else {
-        this.logger.info("Message processed within threshold", {
+        this.logger.info("Message consumed within threshold", {
           delayInSeconds,
           thresholdInSeconds,
           messageId,
@@ -179,14 +180,58 @@ class RabbitMQFeed implements IFeed {
       }
     } else {
       this.logger.warn(
-        "Unable to check message delay: Missing RabbitMQ timestamp",
+        "Unable to check message consumption delay: Missing RabbitMQ timestamp",
         { messageId }
       );
     }
   };
 
-  private getRabbitMqTimestamp(message: ConsumeMessage): number | undefined {
-    const timestamp = message.properties.timestamp;
+  private checkProcessingLatency = (msg: ConsumeMessage): void => {
+    const rabbitMqTimestamp = this.getRabbitMqTimestamp(msg);
+    const processingTimestamp = this.getServerTimestamp(msg);
+    const thresholdInSeconds =
+      this.mqSettings.lsportsProcessingLatencyThreshold;
+
+    const {
+      properties: { messageId },
+    } = msg;
+
+    if (isNil(rabbitMqTimestamp))
+      this.logger.warn(
+        "Unable to check message processing delay: Missing RabbitMQ timestamp",
+        { messageId }
+      );
+    else if (isNil(processingTimestamp))
+      this.logger.warn(
+        "Unable to check message processing delay: Missing LSports Server timestamp",
+        { messageId }
+      );
+    else {
+      const delayInSeconds = (rabbitMqTimestamp - processingTimestamp) / 1000;
+
+      if (delayInSeconds > thresholdInSeconds) {
+        this.logger.warn(
+          "Message LSports processing delay exceeded threshold",
+          {
+            delayInSeconds,
+            thresholdInSeconds,
+            messageId,
+            rabbitMqTimestamp,
+            processingTimestamp,
+          }
+        );
+      } else {
+        this.logger.info("Message LSports processed within threshold", {
+          delayInSeconds,
+          thresholdInSeconds,
+          messageId,
+        });
+      }
+    }
+  };
+
+  private getRabbitMqTimestamp = (msg: ConsumeMessage): number | undefined => {
+    const timestamp = msg.properties.timestamp;
 
     if (typeof timestamp === "number") {
       // RabbitMQ timestamps are in seconds, so convert to milliseconds
@@ -196,7 +241,31 @@ class RabbitMQFeed implements IFeed {
     }
 
     return;
-  }
+  };
+
+  private getServerTimestamp = (msg: ConsumeMessage): number | undefined => {
+    const rawMessage = !isNil(msg.content.toString())
+      ? JSON.parse(msg.content.toString())
+      : undefined;
+
+    if (
+      isNil(rawMessage) ||
+      isNil(rawMessage.Header) ||
+      isNil(rawMessage.Header.ServerTimestamp)
+    )
+      return;
+
+    const timestamp = rawMessage.Header.ServerTimestamp;
+
+    if (typeof timestamp === "number") {
+      // Lsports ServerTimestamp is in milliseconds
+      return timestamp;
+    } else if (timestamp instanceof Date) {
+      return timestamp.getTime();
+    }
+
+    return;
+  };
 
   public stop = async () => {
     this.stopTryReconnect = true;
