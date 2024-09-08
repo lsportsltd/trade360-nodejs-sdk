@@ -11,7 +11,21 @@
     "forceConsistentCasingInFileNames": true,
     "useUnknownInCatchVariables": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@feed": ["src/feed"],
+      "@feed/*": ["src/feed/*"],
+      "@entities": ["src/entities"],
+      "@lsports/entities": ["src/entities/entities"],
+      "@lsports/entities/*": ["src/entities/entities/*"],
+      "@lsports/decorators": ["src/entities/decorators"],
+      "@lsports/enums": ["src/entities/enums"],
+      "@api": ["src/api"],
+      "@api/*": ["src/api/*"],
+      "@httpClient": ["src/api/base-http-client"],
+      "@common": ["src/common"]
+    }
   },
   "include": ["src/**/**/**/*"],
   "exclude": ["node_modules", "dist", "sample"]

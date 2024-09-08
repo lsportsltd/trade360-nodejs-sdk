@@ -1,8 +1,8 @@
 import { Expose, Type } from "class-transformer";
 
-import { FixtureStatus } from "../../enums";
-import { NameValueRecord, Subscription } from "../common";
-import { Location, Sport } from "../fixture";
+import { Location, Sport } from "@lsports/entities";
+import { FixtureStatus } from "@lsports/enums";
+import { NameValueRecord, Subscription } from "@lsports/entities/common";
 
 export class OutrightLeagueFixture {
   @Expose({ name: "Subscription" })

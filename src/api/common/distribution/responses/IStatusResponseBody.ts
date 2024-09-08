@@ -3,4 +3,4 @@ export interface IStatusResponseBody {
   Consumers: string[];
   NumberMessagesInQueue: number;
   MessagesPerSecond: number;
-};
+}

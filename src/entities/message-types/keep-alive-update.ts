@@ -1,7 +1,7 @@
 import { Expose, Type } from "class-transformer";
 
-import { EntityKey } from "../decorators";
-import { KeepAlive } from "../entities";
+import { EntityKey } from "@lsports/decorators";
+import { KeepAlive } from "@lsports/entities";
 
 @EntityKey(31)
 export class KeepAliveUpdate {

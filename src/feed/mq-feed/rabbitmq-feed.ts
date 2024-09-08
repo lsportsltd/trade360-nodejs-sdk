@@ -1,8 +1,10 @@
 import amqp, { Channel, Connection, ConsumeMessage, Replies } from "amqplib";
 import { isNil } from "lodash";
 
-import { BaseEntity, IEntityHandler, IFeed, MQSettings } from "../..";
-import { ProcessingMessageError } from "../../common";
+import { IEntityHandler, IFeed, MQSettings } from "@feed";
+import { ProcessingMessageError } from "@common";
+import { BaseEntity } from "@entities";
+
 import { MessageConsumer } from "./message-consumer";
 
 /**

@@ -1,12 +1,12 @@
 import { isNil, isNumber, isString } from "lodash";
 
-import { ValidationError } from "../../common";
 import {
   MIN_NETWORK_RECOVERY_INTERVAL_IN_MS,
   MIN_PREFETCH_COUNT,
   MIN_REQUESTED_HEARTBEAT_SECONDS,
   MQSettings,
-} from "../types";
+} from "@feed";
+import { ValidationError } from "@common";
 
 /**
  * Class for vaildate that the configure mq setting is vaild

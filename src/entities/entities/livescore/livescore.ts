@@ -1,9 +1,10 @@
 import { Expose, Type } from "class-transformer";
 
-import { Scoreboard } from "./scoreboard";
+import { NameValueRecord } from "@lsports/entities/common";
+
 import { Period } from "./period";
+import { Scoreboard } from "./scoreboard";
 import { Statistic } from "./statistic";
-import { NameValueRecord } from "../common";
 
 export class Livescore {
   @Expose({ name: "Scoreboard" })

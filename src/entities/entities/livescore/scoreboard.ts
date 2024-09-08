@@ -1,7 +1,7 @@
 import { Expose, Type } from "class-transformer";
 
-import { FixtureStatus } from "../../enums";
-import { StatusDescription } from "../../enums/status-description";
+import { FixtureStatus, StatusDescription } from "@lsports/enums";
+
 import { Result } from "./result";
 
 export class Scoreboard {

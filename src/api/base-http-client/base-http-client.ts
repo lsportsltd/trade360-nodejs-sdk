@@ -1,4 +1,5 @@
-import { HttpRequestDto } from "../common";
+import { HttpRequestDto } from "@api/common";
+
 import { AxiosService } from "./services";
 import { RequestSettingsValidator } from "./vaildators";
 

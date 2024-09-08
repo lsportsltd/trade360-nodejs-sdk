@@ -1,7 +1,7 @@
 import { Expose, Transform } from "class-transformer";
 
-import { BaseEntity } from "../../message-types";
-import { deserializeToEventClass } from "../utils";
+import { BaseEntity } from "@entities";
+import { deserializeToEventClass } from "@lsports/entities/utils";
 
 export class OutrightCompetition<TEvent extends BaseEntity> {
   @Expose({ name: "Id" })

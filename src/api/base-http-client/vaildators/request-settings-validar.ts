@@ -1,5 +1,6 @@
 import { isNil, isNumber, isString } from "lodash";
-import { HttpRequestDto } from "../../common";
+
+import { HttpRequestDto } from "@api/common";
 
 /**
  * Class for vaildate that the configure request setting is vaild

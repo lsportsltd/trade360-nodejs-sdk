@@ -1,14 +1,18 @@
+import { BaseHttpClient } from "@httpClient";
+
 import {
-  HttpRequestDto,
-  HttpResponsePayloadDto,
-  IDistributionHttpClient,
-  ResponseBodyType,
   START_PREFIX_URL,
   STATUS_PREFIX_URL,
   STOP_PREFIX_URL,
   TRADE360_BASE_URL,
-} from "../";
-import { BaseHttpClient } from "../base-http-client";
+  IDistributionHttpClient,
+} from "@api/distribution-api";
+
+import {
+  HttpRequestDto,
+  HttpResponsePayloadDto,
+  ResponseBodyType,
+} from "@api/common";
 
 /**
  * Class that represent all distribution requests

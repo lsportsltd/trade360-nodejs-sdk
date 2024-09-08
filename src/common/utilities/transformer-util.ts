@@ -1,6 +1,6 @@
 import { plainToInstance } from "class-transformer";
 
-import { BaseEntity } from "../../entities";
+import { BaseEntity } from "@entities";
 
 export class TransformerUtil {
   /**

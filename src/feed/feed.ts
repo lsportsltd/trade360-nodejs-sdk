@@ -1,13 +1,11 @@
 import { isNil } from "lodash";
 
-import { BaseEntity } from "../entities";
-import { IEntityHandler } from "./IEntityHandler";
-import { IFeed } from "./IFeed";
-import { MessageConsumerMQ } from "./mq-feed";
-import { MQSettings } from "./types";
-import { MqConnectionSettingsValidator } from "./vaildators";
+import { IFeed, MQSettings, IEntityHandler } from "@feed";
+import { BaseEntity } from "@entities";
+import { DistributionUtil, withRetry } from "@common";
 
-import { DistributionUtil, withRetry } from "../common";
+import { MessageConsumerMQ } from "./mq-feed";
+import { MqConnectionSettingsValidator } from "./vaildators";
 
 /**
  * Class that represesnts all Feed requests

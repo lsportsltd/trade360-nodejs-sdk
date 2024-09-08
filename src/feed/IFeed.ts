@@ -1,4 +1,5 @@
-import { BaseEntity } from "../entities";
+import { BaseEntity } from "@entities";
+
 import { IEntityHandler } from "./IEntityHandler";
 
 /**

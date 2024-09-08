@@ -2,9 +2,10 @@ import "reflect-metadata";
 
 import { isNil } from "lodash";
 
-import { ConversionError, TransformerUtil } from "../../../common";
-import { BaseEntity, WrappedMessage, knownEntityKeys } from "../../../entities";
-import { IEntityHandler } from "../../IEntityHandler";
+import { IEntityHandler } from "@feed";
+import { ConversionError, TransformerUtil } from "@common";
+import { BaseEntity, WrappedMessage, knownEntityKeys } from "@entities";
+
 import { BodyHandler } from "./handler";
 import { IBodyHandler } from "./interfaces";
 

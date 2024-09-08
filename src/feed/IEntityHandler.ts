@@ -1,4 +1,4 @@
-import { BaseEntity, MessageHeader } from "../entities";
+import { BaseEntity, MessageHeader } from "@entities";
 
 /**
  * Interface that represent every entity handler required implementation

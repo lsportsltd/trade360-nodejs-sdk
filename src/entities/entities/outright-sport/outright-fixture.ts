@@ -1,7 +1,8 @@
 import { Expose, Type } from "class-transformer";
 
-import { NameValueRecord, Subscription } from "../common";
-import {Sport, Location } from "../fixture";
+import { Sport, Location } from "@lsports/entities";
+import { NameValueRecord, Subscription } from "@lsports/entities/common";
+
 import { OutrightParticipant } from "./outright-participant";
 
 export class OutrightFixture {

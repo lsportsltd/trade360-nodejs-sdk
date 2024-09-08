@@ -1,4 +1,4 @@
-import { RetryError } from "../exceptions";
+import { RetryError } from "@common";
 
 interface RetryOptions {
   maxAttempts: number;

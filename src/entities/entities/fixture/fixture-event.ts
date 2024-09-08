@@ -1,5 +1,6 @@
-import { Fixture } from "./fixture";
 import { Expose, Type } from "class-transformer";
+
+import { Fixture } from "./fixture";
 
 export class FixtureEvent {
   @Expose({ name: "FixtureId" })

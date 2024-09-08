@@ -7,9 +7,8 @@ import {
   IStartResponseBody,
   IStatusResponseBody,
   IStopResponseBody,
-} from "../../api";
-
-import { TransformerUtil } from ".";
+} from "@api";
+import { TransformerUtil } from "@common";
 
 export class DistributionUtil {
   private static requestApi?: DistributionRequest;

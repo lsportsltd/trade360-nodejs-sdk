@@ -1,7 +1,7 @@
 import { Expose, Type } from "class-transformer";
 
-import { EntityKey } from "../decorators";
-import { LivescoreEvent } from "../entities";
+import { EntityKey } from "@lsports/decorators";
+import { LivescoreEvent } from "@lsports/entities";
 
 @EntityKey(2)
 export class LivescoreUpdate {

@@ -1,10 +1,10 @@
 import { Expose, Type } from "class-transformer";
 
-import { EntityKey } from "../decorators";
+import { EntityKey } from "@lsports/decorators";
 import {
   OutrightLeagueCompetition,
   OutrightLeagueFixtureEvent,
-} from "../entities";
+} from "@lsports/entities";
 
 @EntityKey(38)
 export class OutrightLeagueFixtureUpdate {

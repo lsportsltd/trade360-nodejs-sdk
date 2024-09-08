@@ -1,9 +1,12 @@
 import { find, has, isArray, isEmpty, isNil, keys } from "lodash";
 
-import { TransformerUtil } from "../../../common";
-import { MarketEvent } from "../market";
-import { OutrightLeagueFixtureEvent } from "../outright-league";
-import { OutrightFixtureEvent, OutrightScoreEvent } from "../outright-sport";
+import { TransformerUtil } from "@common";
+import {
+  MarketEvent,
+  OutrightFixtureEvent,
+  OutrightScoreEvent,
+  OutrightLeagueFixtureEvent,
+} from "@lsports/entities";
 
 interface IEventTypeMap {
   OutrightScore: typeof OutrightScoreEvent;

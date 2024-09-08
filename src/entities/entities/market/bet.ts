@@ -1,6 +1,6 @@
 import { Expose, Type } from "class-transformer";
 
-import { BetStatus, SettlementType } from "../../enums";
+import { BetStatus, SettlementType } from "@lsports/enums";
 
 export class Bet {
   @Expose({ name: "Id" })

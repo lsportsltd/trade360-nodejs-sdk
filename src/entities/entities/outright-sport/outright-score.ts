@@ -1,6 +1,7 @@
 import { Expose, Type } from "class-transformer";
 
-import { OutrightScoreStatus } from "../../enums";
+import { OutrightScoreStatus } from "@lsports/enums";
+
 import { ParticipantResult } from "./participant-result";
 
 export class OutrightScore {

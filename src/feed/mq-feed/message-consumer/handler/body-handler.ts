@@ -1,8 +1,9 @@
 import { isNil } from "lodash";
 
-import { BaseEntity, MessageHeader } from "../../../../entities";
-import { TransformerUtil } from "../../../../common";
-import { IEntityHandler } from "../../../IEntityHandler";
+import { IEntityHandler } from "@feed";
+import { BaseEntity, MessageHeader } from "@entities";
+import { TransformerUtil } from "@common";
+
 import { IBodyHandler } from "../interfaces";
 
 export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
