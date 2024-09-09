@@ -19,8 +19,7 @@
       "automaticRecoveryEnabled": true,
       "autoAck": false,
 
-      "consumptionLatencyThreshold": 10,
-      "lsportsProcessingLatencyThreshold": 5,
+      "consumptionLatencyThreshold": 5,
 
       "PACKAGE_FORMAT_TYPE": "2",
       "requestedHeartbeatSeconds": 30,
