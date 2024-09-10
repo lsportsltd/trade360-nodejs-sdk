@@ -23,7 +23,7 @@ export class Feed implements IFeed {
   public start = async (preConnectionAtStart: boolean = false) => {
     this.preConnectionAtStart = preConnectionAtStart;
 
-    if (!isNil(this.preConnectionAtStart))
+    if (this.preConnectionAtStart)
       await this.preConnectionInitialization();
 
     await this.consumerMq.start();
@@ -72,7 +72,7 @@ export class Feed implements IFeed {
   public stop = async () => {
     await this.consumerMq.stop();
 
-    if (!isNil(this.preConnectionAtStart)) await DistributionUtil.stop();
+    if (this.preConnectionAtStart) await DistributionUtil.stop();
   };
 
   public addEntityHandler = async <TEntity extends BaseEntity>(

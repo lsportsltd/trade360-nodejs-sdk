@@ -18,7 +18,6 @@
       "networkRecoveryIntervalInMs": 5000,
       "automaticRecoveryEnabled": true,
       "autoAck": false,
-
       "consumptionLatencyThreshold": 5,
 
       "PACKAGE_FORMAT_TYPE": "2",

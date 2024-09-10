@@ -1,11 +1,12 @@
 import amqp, { Channel, Connection, MessageProperties } from "amqplib";
 import { isNil } from "lodash";
 
-import { IEntityHandler, IFeed, MQSettings } from "@feed";
 import { BaseEntity } from "@entities";
+import { IEntityHandler, IFeed, MQSettings } from "@feed";
+import { ConsumptionMessageError } from "@lsports/exceptions";
+import { AsyncLock, withRetry } from "@utilities";
 
 import { MessageConsumer } from "./message-consumer";
-import { ConsumptionMessageError } from "@lsports/exceptions";
 
 /**
  * Class that represent all the abilities of rabbitmq instance
@@ -15,8 +16,11 @@ class RabbitMQFeed implements IFeed {
   private connection!: Connection;
   private channel!: Channel;
   private consumerTag!: string;
+
   private isConnected: boolean = false;
   private stopTryReconnect: boolean = false;
+  private readonly reconnectionLock: AsyncLock = new AsyncLock();
+  private isReconnecting: boolean = false;
 
   private readonly consumer: MessageConsumer;
 
@@ -143,10 +147,34 @@ class RabbitMQFeed implements IFeed {
     const { automaticRecoveryEnabled, networkRecoveryIntervalInMs } =
       this.mqSettings;
 
-    if (!this.stopTryReconnect)
-      if (automaticRecoveryEnabled)
+    const options = {
+      maxAttempts: 12,
+      delayMs: networkRecoveryIntervalInMs,
+      backoffFactor: 1,
+    };
+
+    if (!this.stopTryReconnect && !this.isConnected)
+      if (automaticRecoveryEnabled) {
         // Retry establish connection after a delay
-        setTimeout(async () => await this.start(), networkRecoveryIntervalInMs);
+        await this.reconnectionLock.acquire();
+
+        try {
+          if (this.isReconnecting) return; // Already reconnecting, exit to prevent multiple attempts
+          this.isReconnecting = true;
+
+          return await withRetry(
+            async () => {
+              await this.start();
+            },
+            options,
+            "Retry establish connection after a delay",
+            this.logger
+          );
+        } finally {
+          this.isReconnecting = false;
+          this.reconnectionLock.release();
+        }
+      }
   };
 
   /**
