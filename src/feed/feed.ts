@@ -2,7 +2,7 @@ import { isNil } from "lodash";
 
 import { IFeed, MQSettings, IEntityHandler } from "@feed";
 import { BaseEntity } from "@entities";
-import { DistributionUtil, withRetry } from "@common";
+import { DistributionUtil, withRetry } from "@utilities";
 
 import { MessageConsumerMQ } from "./mq-feed";
 import { MqConnectionSettingsValidator } from "./vaildators";

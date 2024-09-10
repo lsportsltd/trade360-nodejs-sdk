@@ -3,12 +3,17 @@ import "reflect-metadata";
 import { isNil } from "lodash";
 
 import { IEntityHandler } from "@feed";
-import { ConversionError, TransformerUtil } from "@common";
-import { BaseEntity, WrappedMessage, knownEntityKeys } from "@entities";
+import {
+  BaseEntity,
+  WrappedMessage,
+  knownEntityKeys,
+  ConversionError,
+} from "@entities";
 import { MessageConsumerMQ } from "@feed/mq-feed";
 
 import { BodyHandler } from "./handler";
 import { IBodyHandler } from "./interfaces";
+import { TransformerUtil } from "@lsports/entities";
 
 /**
  * Class that represent message consumption process

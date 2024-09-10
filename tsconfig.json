@@ -19,14 +19,15 @@
       "@entities": ["src/entities"],
       "@lsports/entities": ["src/entities/entities"],
       "@lsports/entities/*": ["src/entities/entities/*"],
+      "@lsports/enums": ["src/entities/entities/enums"],
       "@lsports/decorators": ["src/entities/decorators"],
-      "@lsports/enums": ["src/entities/enums"],
+      "@lsports/exceptions": ["src/entities/exceptions"],
       "@api": ["src/api"],
       "@api/*": ["src/api/*"],
       "@httpClient": ["src/api/base-http-client"],
-      "@common": ["src/common"]
+      "@utilities": ["src/utilities"]
     }
   },
-  "include": ["src/**/**/**/*"],
+  "include": ["src/**/**/**/**/**/**/**/**/*"],
   "exclude": ["node_modules", "dist", "sample"]
 }

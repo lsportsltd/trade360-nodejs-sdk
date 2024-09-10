@@ -1,4 +1,4 @@
-import { RetryError } from "@common";
+import { RetryError } from "@lsports/exceptions";
 
 interface RetryOptions {
   maxAttempts: number;
@@ -7,6 +7,7 @@ interface RetryOptions {
 }
 
 export async function withRetry<T>(
+  // TODO: enable operation to get arguments
   operation: () => Promise<T>,
   options: RetryOptions,
   operationName: string,

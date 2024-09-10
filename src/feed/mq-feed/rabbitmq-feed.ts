@@ -2,10 +2,10 @@ import amqp, { Channel, Connection, MessageProperties } from "amqplib";
 import { isNil } from "lodash";
 
 import { IEntityHandler, IFeed, MQSettings } from "@feed";
-import { ProcessingMessageError } from "@common";
 import { BaseEntity } from "@entities";
 
 import { MessageConsumer } from "./message-consumer";
+import { ConsumptionMessageError } from "@lsports/exceptions";
 
 /**
  * Class that represent all the abilities of rabbitmq instance
@@ -64,7 +64,7 @@ class RabbitMQFeed implements IFeed {
             } catch (err) {
               if (!isAutoAck) await this.channel.nack(msg, false, true);
 
-              throw new ProcessingMessageError(
+              throw new ConsumptionMessageError(
                 `Error processing message, Error: ${err}`
               );
             }

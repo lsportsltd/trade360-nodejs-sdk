@@ -1,11 +1,11 @@
 import { BaseHttpClient } from "@httpClient";
 
 import {
+  IDistributionHttpClient,
   START_PREFIX_URL,
   STATUS_PREFIX_URL,
   STOP_PREFIX_URL,
   TRADE360_BASE_URL,
-  IDistributionHttpClient,
 } from "@api/distribution-api";
 
 import {
@@ -53,7 +53,5 @@ export class DistributionRequest
     return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(
       STATUS_PREFIX_URL
     );
-
-    // TODO: handle errors
   };
 }

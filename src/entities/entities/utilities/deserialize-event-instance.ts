@@ -1,11 +1,11 @@
 import { find, has, isArray, isEmpty, isNil, keys } from "lodash";
 
-import { TransformerUtil } from "@common";
 import {
   MarketEvent,
   OutrightFixtureEvent,
-  OutrightScoreEvent,
   OutrightLeagueFixtureEvent,
+  OutrightScoreEvent,
+  TransformerUtil,
 } from "@lsports/entities";
 
 interface IEventTypeMap {
@@ -22,15 +22,7 @@ const eventTypeMap: IEventTypeMap = {
   OutrightLeague: OutrightLeagueFixtureEvent,
 };
 
-const getEventClass = (obj: Record<any, any>) => {
-  const eventType = find(
-    keys(eventTypeMap),
-    (key) => has(obj, key) && !isNil(obj[key])
-  );
-  return eventTypeMap[eventType as keyof IEventTypeMap];
-};
-
-export const deserializeToEventClass = (value: any) => {
+export const deserializeToEventInstance = (value: any) => {
   if (!isArray(value) || (isArray(value) && isEmpty(value))) return value;
 
   const propertyEventClass = getEventClass(value[0]);
@@ -38,4 +30,12 @@ export const deserializeToEventClass = (value: any) => {
   if (!isNil(propertyEventClass))
     return TransformerUtil.deserializeArray(value, propertyEventClass);
   return value;
+};
+
+const getEventClass = (obj: Record<any, any>) => {
+  const eventType = find(
+    keys(eventTypeMap),
+    (key) => has(obj, key) && !isNil(obj[key])
+  );
+  return eventTypeMap[eventType as keyof IEventTypeMap];
 };

@@ -6,7 +6,7 @@ import {
   MIN_REQUESTED_HEARTBEAT_SECONDS,
   MQSettings,
 } from "@feed";
-import { ValidationError } from "@common";
+import { ValidationError } from "@lsports/exceptions";
 
 /**
  * Class for vaildate that the configure mq setting is vaild

@@ -8,7 +8,7 @@ import {
   IStatusResponseBody,
   IStopResponseBody,
 } from "@api";
-import { TransformerUtil } from "@common";
+import { TransformerUtil } from "@lsports/entities";
 
 export class DistributionUtil {
   private static requestApi?: DistributionRequest;

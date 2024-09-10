@@ -34,8 +34,6 @@ export class Fixture {
   public lastUpdate?: string;
 
   @Expose({ name: "Status" })
-  // @Type(() => FixtureStatus)
-  // TODO: validate type is one of FixtureStatus
   public status?: FixtureStatus;
 
   @Expose({ name: "Participants" })

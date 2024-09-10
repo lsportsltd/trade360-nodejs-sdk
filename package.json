@@ -34,11 +34,12 @@
     "@entities": "dist/entities",
     "@lsports/entities": "dist/entities/entities",
     "@lsports/entities/*": "dist/entities/entities/*",
+    "@lsports/enums": "src/entities/entities/enums",
     "@lsports/decorators": "dist/entities/decorators",
-    "@lsports/enums": "dist/entities/enums",
+    "@lsports/exceptions": "dist/entities/exceptions",
     "@api": "dist/api",
     "@api/*": "dist/api/*",
     "@httpClient": "dist/api/base-http-client",
-    "@common": "dist/common"
+    "@utilities": "src/utilities"
   }
 }

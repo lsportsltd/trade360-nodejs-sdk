@@ -2,9 +2,9 @@ import { isNil } from "lodash";
 
 import { IEntityHandler } from "@feed";
 import { BaseEntity, MessageHeader } from "@entities";
-import { TransformerUtil } from "@common";
 
 import { IBodyHandler } from "../interfaces";
+import { TransformerUtil } from "@lsports/entities";
 
 export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
   constructor(

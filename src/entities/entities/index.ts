@@ -1,4 +1,4 @@
-export * from "./utils";
+export * from "./utilities";
 
 export * from "./fixture";
 export * from "./livescore";

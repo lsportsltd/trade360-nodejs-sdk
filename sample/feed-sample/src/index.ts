@@ -14,7 +14,7 @@ import {
   SettlementUpdate,
   ValidationError,
   ConversionError,
-  ProcessingMessageError,
+  ConsumptionMessageError,
   RetryError,
 } from "trade360-nodejs-sdk";
 
@@ -117,9 +117,9 @@ const initSample = async () => {
     if (err instanceof ConversionError) {
       logger.error(`feed sample got err from ConversionError instance: ${err}`);
     }
-    if (err instanceof ProcessingMessageError) {
+    if (err instanceof ConsumptionMessageError) {
       logger.error(
-        `feed sample got err from ProcessingMessageError instance: ${err}`
+        `feed sample got err from ConsumptionMessageError instance: ${err}`
       );
     }
     if (err instanceof RetryError) {
