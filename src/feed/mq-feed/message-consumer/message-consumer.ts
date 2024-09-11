@@ -12,7 +12,7 @@ import { IEntityHandler } from "@feed";
 
 import { TransformerUtil } from "@lsports/entities";
 import { BodyHandler } from "./handler";
-import { IBodyHandler } from "./interfaces";
+import { IBodyHandler, IConsumptionLantency } from "./interfaces";
 
 /**
  * Class that represent message consumption process
@@ -27,8 +27,7 @@ export class MessageConsumer {
 
   public HandleBasicMessage = async (
     messageContent: Uint8Array,
-    messageMqTimestamp?: number,
-    consumptionLatencyThreshold?: number
+    { messageMqTimestamp, consumptionLatencyThreshold }: IConsumptionLantency
   ) => {
     try {
       if (this.bodyHandlers.size == 0) {
@@ -47,17 +46,18 @@ export class MessageConsumer {
         return;
       }
 
-      const { type: entityType } = header;
+      const { type: entityType, msgGuid } = header;
 
       if (this.bodyHandlers.has(entityType)) {
         const bodyHandler = this.bodyHandlers.get(entityType);
 
         await bodyHandler!.processAsync(header, body);
 
-        this.checkConsumptionLatency(
+        this.checkConsumptionLatency({
           messageMqTimestamp,
-          consumptionLatencyThreshold
-        );
+          consumptionLatencyThreshold,
+          msgGuid,
+        });
       } else {
         const missedEntityType = knownEntityKeys.get(entityType);
 
@@ -76,13 +76,15 @@ export class MessageConsumer {
     }
   };
 
-  public checkConsumptionLatency = (
-    messageMqTimestamp?: number,
-    thresholdInSeconds?: number
-  ): void => {
+  public checkConsumptionLatency = ({
+    messageMqTimestamp,
+    consumptionLatencyThreshold: thresholdInSeconds,
+    msgGuid,
+  }: IConsumptionLantency): void => {
     if (isNil(messageMqTimestamp) || isNil(thresholdInSeconds)) {
       this.logger.warn(
-        "Unable to check message consumption delay: missing message timestamp or threshold"
+        "Unable to check message consumption delay: missing message timestamp or threshold",
+        { msgGuid }
       );
     } else {
       const consumptionTimestamp = Date.now();
@@ -94,11 +96,13 @@ export class MessageConsumer {
           thresholdInSeconds,
           messageMqTimestamp,
           consumptionTimestamp,
+          msgGuid,
         });
       } else {
         this.logger.info("Message consumed within threshold", {
           delayInSeconds,
           thresholdInSeconds,
+          msgGuid,
         });
       }
     }

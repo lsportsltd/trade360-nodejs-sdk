@@ -57,11 +57,10 @@ class RabbitMQFeed implements IFeed {
           if (!isNil(msg) && !isNil(msg.content)) {
             try {
               const { content, properties } = msg;
-              await this.consumer.HandleBasicMessage(
-                content,
-                this.getMessageMqTimestamp(properties),
-                consumptionLatencyThreshold
-              );
+              await this.consumer.HandleBasicMessage(content, {
+                messageMqTimestamp: this.getMessageMqTimestamp(properties),
+                consumptionLatencyThreshold,
+              });
 
               // Manually acknowledge the processed message
               if (!isAutoAck) await this.channel.ack(msg);

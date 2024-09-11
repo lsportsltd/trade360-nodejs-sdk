@@ -1,1 +1,2 @@
-export * from './IBodyHandler';
+export * from "./IBodyHandler";
+export * from "./IConsumptionLatency";
