@@ -59,7 +59,7 @@ class RabbitMQFeed implements IFeed {
               const { content, properties } = msg;
               await this.consumer.HandleBasicMessage(
                 content,
-                properties,
+                this.getMessageMqTimestamp(properties),
                 consumptionLatencyThreshold
               );
 
@@ -185,7 +185,7 @@ class RabbitMQFeed implements IFeed {
     this.logger.error(err.message);
   };
 
-  public static getMessageMqTimestamp = (
+  public getMessageMqTimestamp = (
     msgProperties: MessageProperties
   ): number | undefined => {
     if (isNil(msgProperties)) return;

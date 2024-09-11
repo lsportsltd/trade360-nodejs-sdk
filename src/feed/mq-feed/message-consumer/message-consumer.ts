@@ -2,18 +2,17 @@ import "reflect-metadata";
 
 import { isNil } from "lodash";
 
-import { IEntityHandler } from "@feed";
 import {
   BaseEntity,
+  ConversionError,
   WrappedMessage,
   knownEntityKeys,
-  ConversionError,
 } from "@entities";
-import { MessageConsumerMQ } from "@feed/mq-feed";
+import { IEntityHandler } from "@feed";
 
+import { TransformerUtil } from "@lsports/entities";
 import { BodyHandler } from "./handler";
 import { IBodyHandler } from "./interfaces";
-import { TransformerUtil } from "@lsports/entities";
 
 /**
  * Class that represent message consumption process
@@ -27,8 +26,8 @@ export class MessageConsumer {
   constructor(private logger: Console) {}
 
   public HandleBasicMessage = async (
-    messageContent: any,
-    properties?: any,
+    messageContent: Uint8Array,
+    messageMqTimestamp?: number,
     consumptionLatencyThreshold?: number
   ) => {
     try {
@@ -55,7 +54,10 @@ export class MessageConsumer {
 
         await bodyHandler!.processAsync(header, body);
 
-        this.checkConsumptionLatency(properties, consumptionLatencyThreshold);
+        this.checkConsumptionLatency(
+          messageMqTimestamp,
+          consumptionLatencyThreshold
+        );
       } else {
         const missedEntityType = knownEntityKeys.get(entityType);
 
@@ -75,14 +77,15 @@ export class MessageConsumer {
   };
 
   public checkConsumptionLatency = (
-    properties?: any,
+    messageMqTimestamp?: number,
     thresholdInSeconds?: number
   ): void => {
-    const consumptionTimestamp = Date.now();
-    const messageMqTimestamp =
-      MessageConsumerMQ.getMessageMqTimestamp(properties);
-
-    if (!isNil(messageMqTimestamp) && !isNil(thresholdInSeconds)) {
+    if (isNil(messageMqTimestamp) || isNil(thresholdInSeconds)) {
+      this.logger.warn(
+        "Unable to check message consumption delay: missing message timestamp or threshold"
+      );
+    } else {
+      const consumptionTimestamp = Date.now();
       const delayInSeconds = (consumptionTimestamp - messageMqTimestamp) / 1000;
 
       if (delayInSeconds > thresholdInSeconds) {
@@ -98,10 +101,6 @@ export class MessageConsumer {
           thresholdInSeconds,
         });
       }
-    } else {
-      this.logger.warn(
-        "Unable to check message consumption delay: missing RabbitMQ timestamp or threshold"
-      );
     }
   };
 
