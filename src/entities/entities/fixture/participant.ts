@@ -1,12 +1,12 @@
-import { Expose } from "class-transformer";
+import { Expose } from 'class-transformer';
 
 export class Participant {
-  @Expose({ name: "Id" })
+  @Expose({ name: 'Id' })
   public id?: number;
 
-  @Expose({ name: "Name" })
+  @Expose({ name: 'Name' })
   public name?: string;
 
-  @Expose({ name: "Position" })
+  @Expose({ name: 'Position' })
   public position?: string;
 }

@@ -1,15 +1,15 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { NameValueRecord } from "@lsports/entities/common";
+import { NameValueRecord } from '@lsports/entities/common';
 
 export class KeepAlive {
-  @Expose({ name: "ActiveEvents" })
+  @Expose({ name: 'ActiveEvents' })
   public activeEvents?: number[];
 
-  @Expose({ name: "ExtraData" })
+  @Expose({ name: 'ExtraData' })
   @Type(() => NameValueRecord)
   public extraData?: NameValueRecord[];
 
-  @Expose({ name: "ProviderId" })
+  @Expose({ name: 'ProviderId' })
   public providerId?: number;
 }

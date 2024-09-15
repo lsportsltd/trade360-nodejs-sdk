@@ -1,4 +1,4 @@
-import { RetryError } from "@lsports/exceptions";
+import { RetryError } from '@lsports/exceptions';
 
 interface RetryOptions {
   maxAttempts: number;
@@ -11,14 +11,14 @@ export async function withRetry<T>(
   operation: () => Promise<T>,
   options: RetryOptions,
   operationName: string,
-  logger: Console
+  logger: Console,
 ): Promise<T> {
   const { maxAttempts, delayMs, backoffFactor = 1 } = options;
 
   return new Promise<T>((resolve, reject) => {
     let attempts = 0;
 
-    const executeRetry = async () => {
+    const executeRetry = async (): Promise<void> => {
       attempts++;
 
       try {
@@ -29,12 +29,7 @@ export async function withRetry<T>(
         logger.warn(`Attempt ${attempts} failed: ${error}`);
 
         if (attempts >= maxAttempts) {
-          reject(
-            new RetryError(
-              `${operationName} failed after ${maxAttempts} attempts`,
-              attempts
-            )
-          );
+          reject(new RetryError(`${operationName} failed after ${maxAttempts} attempts`, attempts));
         } else {
           const nextDelay = delayMs * Math.pow(backoffFactor, attempts - 1);
           logger.log(`Retrying in ${nextDelay}ms...`);

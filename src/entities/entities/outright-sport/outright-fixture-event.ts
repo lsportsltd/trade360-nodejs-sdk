@@ -1,12 +1,12 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { OutrightFixture } from "./outright-fixture";
+import { OutrightFixture } from './outright-fixture';
 
 export class OutrightFixtureEvent {
-  @Expose({ name: "FixtureId" })
+  @Expose({ name: 'FixtureId' })
   fixtureId!: number;
 
-  @Expose({ name: "OutrightFixture" })
+  @Expose({ name: 'OutrightFixture' })
   @Type(() => OutrightFixture)
   outrightFixture?: OutrightFixture;
 }

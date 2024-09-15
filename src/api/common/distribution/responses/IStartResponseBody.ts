@@ -1,4 +1,4 @@
-import { StartMessage } from "@api/common";
+import { StartMessage } from '@api/common';
 
 export interface IStartResponseBody {
   Message: StartMessage;

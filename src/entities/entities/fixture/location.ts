@@ -1,8 +1,9 @@
-import { Expose } from "class-transformer";
+import { Expose } from 'class-transformer';
 
 export class Location {
-  @Expose({name: 'Id'})
+  @Expose({ name: 'Id' })
   public id?: number;
-  @Expose({name: 'Name'})
+
+  @Expose({ name: 'Name' })
   public name?: string;
 }

@@ -1,4 +1,4 @@
-import { BaseHttpClient } from "@httpClient";
+import { BaseHttpClient } from '@httpClient';
 
 import {
   IDistributionHttpClient,
@@ -6,21 +6,14 @@ import {
   STATUS_PREFIX_URL,
   STOP_PREFIX_URL,
   TRADE360_BASE_URL,
-} from "@api/distribution-api";
+} from '@api/distribution-api';
 
-import {
-  HttpRequestDto,
-  HttpResponsePayloadDto,
-  ResponseBodyType,
-} from "@api/common";
+import { HttpRequestDto, HttpResponsePayloadDto, ResponseBodyType } from '@api/common';
 
 /**
  * Class that represent all distribution requests
  */
-export class DistributionRequest
-  extends BaseHttpClient
-  implements IDistributionHttpClient
-{
+export class DistributionRequest extends BaseHttpClient implements IDistributionHttpClient {
   constructor(requestSettings: HttpRequestDto, logger: Console) {
     super(TRADE360_BASE_URL, requestSettings, logger);
   }
@@ -28,30 +21,24 @@ export class DistributionRequest
   startDistribution = async <TResponse extends ResponseBodyType>(): Promise<
     HttpResponsePayloadDto<TResponse> | undefined
   > => {
-    this.logger.log("run start request...");
+    this.logger.log('run start request...');
 
-    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(
-      START_PREFIX_URL
-    );
+    return this.sendRequest<HttpResponsePayloadDto<TResponse>>(START_PREFIX_URL);
   };
 
   stopDistribution = async <TResponse extends ResponseBodyType>(): Promise<
     HttpResponsePayloadDto<TResponse> | undefined
   > => {
-    this.logger.log("run stop request...");
+    this.logger.log('run stop request...');
 
-    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(
-      STOP_PREFIX_URL
-    );
+    return this.sendRequest<HttpResponsePayloadDto<TResponse>>(STOP_PREFIX_URL);
   };
 
   getDistributionStatus = async <TResponse extends ResponseBodyType>(): Promise<
     HttpResponsePayloadDto<TResponse> | undefined
   > => {
-    this.logger.log("run status request...");
+    this.logger.log('run status request...');
 
-    return await this.sendRequest<HttpResponsePayloadDto<TResponse>>(
-      STATUS_PREFIX_URL
-    );
+    return this.sendRequest<HttpResponsePayloadDto<TResponse>>(STATUS_PREFIX_URL);
   };
 }

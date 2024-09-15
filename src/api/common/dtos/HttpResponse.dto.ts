@@ -1,6 +1,7 @@
-import { ResponseBodyType } from "@api/common";
+import { ResponseBodyType } from '@api/common';
 
 export class HttpResponsePayloadDto<TResponse extends ResponseBodyType> {
-  Header!: Record<"HttpStatusCode", number>;
+  Header!: Record<'HttpStatusCode', number>;
+
   Body!: TResponse;
 }

@@ -1,66 +1,66 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { BetStatus, SettlementType } from "@lsports/enums";
+import { BetStatus, SettlementType } from '@lsports/enums';
 
 export class Bet {
-  @Expose({ name: "Id" })
+  @Expose({ name: 'Id' })
   id?: number;
 
-  @Expose({ name: "Name" })
+  @Expose({ name: 'Name' })
   name?: string;
 
-  @Expose({ name: "Line" })
+  @Expose({ name: 'Line' })
   line?: string;
 
-  @Expose({ name: "BaseLine" })
+  @Expose({ name: 'BaseLine' })
   baseLine?: string;
 
-  @Expose({ name: "Status" })
+  @Expose({ name: 'Status' })
   status?: BetStatus;
 
-  @Expose({ name: "StartPrice" })
+  @Expose({ name: 'StartPrice' })
   startPrice?: string;
 
-  @Expose({ name: "Price" })
+  @Expose({ name: 'Price' })
   price?: string;
 
-  @Expose({ name: "PriceVolume" })
+  @Expose({ name: 'PriceVolume' })
   priceVolume?: string;
 
-  @Expose({ name: "Settlement" })
+  @Expose({ name: 'Settlement' })
   settlement?: SettlementType;
 
-  @Expose({ name: "ProviderBetId" })
+  @Expose({ name: 'ProviderBetId' })
   providerBetId?: string;
 
-  @Expose({ name: "LastUpdate" })
+  @Expose({ name: 'LastUpdate' })
   @Type(() => Date)
   lastUpdate?: Date;
 
-  @Expose({ name: "PriceIN" })
+  @Expose({ name: 'PriceIN' })
   priceIN?: string;
 
-  @Expose({ name: "PriceUS" })
+  @Expose({ name: 'PriceUS' })
   priceUS?: string;
 
-  @Expose({ name: "PriceUK" })
+  @Expose({ name: 'PriceUK' })
   priceUK?: string;
 
-  @Expose({ name: "PriceMA" })
+  @Expose({ name: 'PriceMA' })
   priceMA?: string;
 
-  @Expose({ name: "PriceHK" })
+  @Expose({ name: 'PriceHK' })
   priceHK?: string;
 
-  @Expose({ name: "IsChanged" })
+  @Expose({ name: 'IsChanged' })
   isChanged: number = -1;
 
-  @Expose({ name: "Probability" })
+  @Expose({ name: 'Probability' })
   probability?: number;
 
-  @Expose({ name: "ParticipantId" })
+  @Expose({ name: 'ParticipantId' })
   participantId?: number;
 
-  @Expose({ name: "PlayerName" })
+  @Expose({ name: 'PlayerName' })
   playerName?: string;
 }

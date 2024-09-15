@@ -1,1 +1,1 @@
-export * from "./mq-settings-validar";
+export * from './mq-settings-validar';

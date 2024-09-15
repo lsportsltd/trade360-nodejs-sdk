@@ -1,4 +1,4 @@
-import { MessageHeader } from "@entities";
+import { MessageHeader } from '@entities';
 
 export interface IBodyHandler {
   /**

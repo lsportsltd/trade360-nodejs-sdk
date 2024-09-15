@@ -1,5 +1,4 @@
 export enum CompetitionType {
-    Unknown = 0,
-    Regular = 1,
-  }
-  
+  Unknown = 0,
+  Regular = 1,
+}

@@ -1,5 +1,6 @@
 export class AsyncLock {
   private locked: boolean = false;
+
   private waitingResolvers: (() => void)[] = [];
 
   async acquire(): Promise<void> {

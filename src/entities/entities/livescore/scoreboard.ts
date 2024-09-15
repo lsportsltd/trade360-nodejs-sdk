@@ -1,23 +1,23 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { FixtureStatus, StatusDescription } from "@lsports/enums";
+import { FixtureStatus, StatusDescription } from '@lsports/enums';
 
-import { Result } from "./result";
+import { Result } from './result';
 
 export class Scoreboard {
-  @Expose({ name: "Status" })
+  @Expose({ name: 'Status' })
   status?: FixtureStatus;
 
-  @Expose({ name: "Description" })
+  @Expose({ name: 'Description' })
   description?: StatusDescription;
 
-  @Expose({ name: "CurrentPeriod" })
+  @Expose({ name: 'CurrentPeriod' })
   currentPeriod?: number;
 
-  @Expose({ name: "Time" })
+  @Expose({ name: 'Time' })
   time?: string;
 
-  @Expose({ name: "Results" })
+  @Expose({ name: 'Results' })
   @Type(() => Result)
   results?: Result[];
 }

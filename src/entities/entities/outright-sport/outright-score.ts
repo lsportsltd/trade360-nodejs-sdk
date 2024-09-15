@@ -1,14 +1,14 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { OutrightScoreStatus } from "@lsports/enums";
+import { OutrightScoreStatus } from '@lsports/enums';
 
-import { ParticipantResult } from "./participant-result";
+import { ParticipantResult } from './participant-result';
 
 export class OutrightScore {
-  @Expose({ name: "ParticipantResults" })
+  @Expose({ name: 'ParticipantResults' })
   @Type(() => ParticipantResult)
   participantResults?: ParticipantResult[];
 
-  @Expose({ name: "Status" })
+  @Expose({ name: 'Status' })
   status?: OutrightScoreStatus;
 }

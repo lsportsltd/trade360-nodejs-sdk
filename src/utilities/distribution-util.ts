@@ -1,4 +1,4 @@
-import { isNil } from "lodash";
+import { isNil } from 'lodash';
 
 import {
   DistributionRequest,
@@ -7,11 +7,12 @@ import {
   IStartResponseBody,
   IStatusResponseBody,
   IStopResponseBody,
-} from "@api";
-import { TransformerUtil } from "@lsports/entities";
+} from '@api';
+import { TransformerUtil } from '@lsports/entities';
 
 export class DistributionUtil {
   private static requestApi?: DistributionRequest;
+
   private static logger?: Console;
 
   private static delayMs = 2000;
@@ -19,17 +20,20 @@ export class DistributionUtil {
   constructor(settings: HttpRequestDto, logger: Console) {
     DistributionUtil.requestApi = new DistributionRequest(
       TransformerUtil.deserialize(settings, HttpRequestDto),
-      (DistributionUtil.logger = logger)
+      (DistributionUtil.logger = logger),
     );
   }
 
-  static checkStatus = async () => {
-    if (isNil(DistributionUtil.requestApi))
-      throw new Error("initialize distribution api first!");
+  static checkStatus = async (): Promise<
+    | {
+        httpStatusCode: number;
+        isDistributionOn: boolean;
+      }
+    | undefined
+  > => {
+    if (isNil(DistributionUtil.requestApi)) throw new Error('initialize distribution api first!');
 
-    const distributionStatus:
-      | HttpResponsePayloadDto<IStatusResponseBody>
-      | undefined =
+    const distributionStatus: HttpResponsePayloadDto<IStatusResponseBody> | undefined =
       await DistributionUtil.requestApi.getDistributionStatus<IStatusResponseBody>();
 
     if (!isNil(distributionStatus) && !isNil(distributionStatus.Body)) {
@@ -42,9 +46,8 @@ export class DistributionUtil {
     }
   };
 
-  static start = async () => {
-    if (isNil(DistributionUtil.requestApi))
-      throw new Error("initialize distribution api first!");
+  static start = async (): Promise<void> => {
+    if (isNil(DistributionUtil.requestApi)) throw new Error('initialize distribution api first!');
 
     const startRequest: HttpResponsePayloadDto<IStartResponseBody> | undefined =
       await DistributionUtil.requestApi.startDistribution<IStartResponseBody>();
@@ -59,9 +62,8 @@ export class DistributionUtil {
     });
   };
 
-  static stop = async () => {
-    if (isNil(DistributionUtil.requestApi))
-      throw new Error("initialize distribution api first!");
+  static stop = async (): Promise<void> => {
+    if (isNil(DistributionUtil.requestApi)) throw new Error('initialize distribution api first!');
 
     const stopRequest: HttpResponsePayloadDto<IStopResponseBody> | undefined =
       await DistributionUtil.requestApi.stopDistribution<IStopResponseBody>();

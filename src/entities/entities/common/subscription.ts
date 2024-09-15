@@ -1,11 +1,11 @@
-import { Expose } from "class-transformer";
+import { Expose } from 'class-transformer';
 
-import { SubscriptionStatus, SubscriptionType } from "@lsports/enums";
+import { SubscriptionStatus, SubscriptionType } from '@lsports/enums';
 
 export class Subscription {
-  @Expose({ name: "Type" })
+  @Expose({ name: 'Type' })
   public type!: SubscriptionType;
 
-  @Expose({ name: "Status" })
+  @Expose({ name: 'Status' })
   public status!: keyof typeof SubscriptionStatus;
 }

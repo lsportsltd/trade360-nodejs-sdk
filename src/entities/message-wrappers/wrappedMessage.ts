@@ -1,14 +1,14 @@
-import { Expose, Transform, Type } from "class-transformer";
-import "reflect-metadata";
+import { Expose, Transform, Type } from 'class-transformer';
+import 'reflect-metadata';
 
-import { MessageHeader } from "./messageHeader";
+import { MessageHeader } from './messageHeader';
 
 export class WrappedMessage {
-  @Expose({ name: "Header" })
+  @Expose({ name: 'Header' })
   @Type(() => MessageHeader)
   public header!: MessageHeader;
 
-  @Expose({ name: "Body" })
+  @Expose({ name: 'Body' })
   @Transform(({ obj }) => JSON.stringify(obj.Body))
   public body?: string;
 }

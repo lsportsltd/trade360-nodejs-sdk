@@ -1,39 +1,42 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 
-import { isNil } from "lodash";
+import { isNil } from 'lodash';
 
-import {
-  BaseEntity,
-  ConversionError,
-  WrappedMessage,
-  knownEntityKeys,
-} from "@entities";
-import { IEntityHandler } from "@feed";
+import { BaseEntity, ConversionError, WrappedMessage, knownEntityKeys } from '@entities';
+import { IEntityHandler } from '@feed';
 
-import { TransformerUtil } from "@lsports/entities";
-import { BodyHandler } from "./handler";
-import { IBodyHandler, IConsumptionLantency } from "./interfaces";
+import { TransformerUtil } from '@lsports/entities';
+import { BodyHandler } from './handler';
+import { IBodyHandler, IConsumptionLantency } from './interfaces';
+
+const ConvertJsonToMessage = (rawJson: string): WrappedMessage => {
+  try {
+    const message: WrappedMessage = TransformerUtil.deserialize(
+      JSON.parse(rawJson),
+      WrappedMessage,
+    );
+
+    return message;
+  } catch (err) {
+    throw new ConversionError(`failed converting json to wrapped message instance!, err: ${err}`);
+  }
+};
 
 /**
  * Class that represent message consumption process
  */
 export class MessageConsumer {
-  private bodyHandlers: Map<number, IBodyHandler> = new Map<
-    number,
-    IBodyHandler
-  >();
+  private bodyHandlers: Map<number, IBodyHandler> = new Map<number, IBodyHandler>();
 
   constructor(private logger: Console) {}
 
   public HandleBasicMessage = async (
     messageContent: Uint8Array,
-    { messageMqTimestamp, consumptionLatencyThreshold }: IConsumptionLantency
-  ) => {
+    { messageMqTimestamp, consumptionLatencyThreshold }: IConsumptionLantency,
+  ): Promise<void> => {
     try {
       if (this.bodyHandlers.size == 0) {
-        this.logger?.warn(
-          "there is no configured entities handler, please config at least one"
-        );
+        this.logger?.warn('there is no configured entities handler, please config at least one');
         return;
       }
 
@@ -42,7 +45,7 @@ export class MessageConsumer {
       const { header, body } = ConvertJsonToMessage(rawMessage);
 
       if (isNil(header)) {
-        this.logger?.warn("invalid message format");
+        this.logger?.warn('invalid message format');
         return;
       }
 
@@ -62,9 +65,7 @@ export class MessageConsumer {
         const missedEntityType = knownEntityKeys.get(entityType);
 
         if (!isNil(missedEntityType)) {
-          this.logger?.warn(
-            `entity handler for ${missedEntityType} is not configured`
-          );
+          this.logger?.warn(`entity handler for ${missedEntityType} is not configured`);
         } else {
           this.logger?.warn(`received unknown entity type ${entityType}`);
         }
@@ -83,15 +84,15 @@ export class MessageConsumer {
   }: IConsumptionLantency): void => {
     if (isNil(messageMqTimestamp) || isNil(thresholdInSeconds)) {
       this.logger.warn(
-        "Unable to check message consumption delay: missing message timestamp or threshold",
-        { msgGuid }
+        'Unable to check message consumption delay: missing message timestamp or threshold',
+        { msgGuid },
       );
     } else {
       const consumptionTimestamp = Date.now();
       const delayInSeconds = (consumptionTimestamp - messageMqTimestamp) / 1000;
 
       if (delayInSeconds > thresholdInSeconds) {
-        this.logger.warn("Message consumption delay exceeded threshold", {
+        this.logger.warn('Message consumption delay exceeded threshold', {
           delayInSeconds,
           thresholdInSeconds,
           messageMqTimestamp,
@@ -99,7 +100,7 @@ export class MessageConsumer {
           msgGuid,
         });
       } else {
-        this.logger.info("Message consumed within threshold", {
+        this.logger.info('Message consumed within threshold', {
           delayInSeconds,
           thresholdInSeconds,
           msgGuid,
@@ -110,7 +111,7 @@ export class MessageConsumer {
 
   public RegisterEntityHandler = <TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
-    entityConstructor: new () => TEntity
+    entityConstructor: new () => TEntity,
   ): void => {
     try {
       const {
@@ -120,37 +121,20 @@ export class MessageConsumer {
 
       if (!entityKey) {
         throw new Error(
-          `${name} isn't trade360 entity. You should use only entities from Trade360SDK!`
+          `${name} isn't trade360 entity. You should use only entities from Trade360SDK!`,
         );
       }
 
       const newBodyHandler = new BodyHandler<TEntity>(
         entityHandler,
         entityConstructor,
-        this.logger
+        this.logger,
       );
 
       this.bodyHandlers.set(entityKey, newBodyHandler);
     } catch (err) {
-      this.logger?.error(
-        `Error setting registration for new entity handler, error: ${err}`
-      );
+      this.logger?.error(`Error setting registration for new entity handler, error: ${err}`);
       throw err;
     }
   };
 }
-
-const ConvertJsonToMessage = (rawJson: string) => {
-  try {
-    const message: WrappedMessage = TransformerUtil.deserialize(
-      JSON.parse(rawJson),
-      WrappedMessage
-    );
-
-    return message;
-  } catch (err) {
-    throw new ConversionError(
-      `failed converting json to wrapped message instance!, err: ${err}`
-    );
-  }
-};

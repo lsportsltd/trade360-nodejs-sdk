@@ -1,6 +1,6 @@
-import { BaseEntity } from "@entities";
+import { BaseEntity } from '@entities';
 
-import { IEntityHandler } from "./IEntityHandler";
+import { IEntityHandler } from './IEntityHandler';
 
 /**
  * Interface that represent Feed implementation
@@ -33,6 +33,6 @@ export interface IFeed {
    */
   addEntityHandler: <TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
-    entityConstructor: new () => TEntity
+    entityConstructor: new () => TEntity,
   ) => void;
 }

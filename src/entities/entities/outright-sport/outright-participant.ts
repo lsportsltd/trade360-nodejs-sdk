@@ -1,22 +1,22 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { ActiveParticipant } from "@lsports/enums";
-import { NameValueRecord } from "@lsports/entities/common";
+import { ActiveParticipant } from '@lsports/enums';
+import { NameValueRecord } from '@lsports/entities/common';
 
 export class OutrightParticipant {
-  @Expose({ name: "Id" })
+  @Expose({ name: 'Id' })
   id?: number;
 
-  @Expose({ name: "Name" })
+  @Expose({ name: 'Name' })
   name?: string;
 
-  @Expose({ name: "Position" })
+  @Expose({ name: 'Position' })
   position?: string;
 
-  @Expose({ name: "IsActive" })
+  @Expose({ name: 'IsActive' })
   isActive?: ActiveParticipant;
 
-  @Expose({ name: "ExtraData" })
+  @Expose({ name: 'ExtraData' })
   @Type(() => NameValueRecord)
   extraData?: NameValueRecord[];
 }

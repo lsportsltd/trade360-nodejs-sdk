@@ -1,12 +1,12 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { OutrightLeagueFixture } from "./outright-league-fixture";
+import { OutrightLeagueFixture } from './outright-league-fixture';
 
 export class OutrightLeagueFixtureEvent {
-  @Expose({ name: "FixtureId" })
+  @Expose({ name: 'FixtureId' })
   fixtureId!: number;
 
-  @Expose({ name: "OutrightLeague" })
+  @Expose({ name: 'OutrightLeague' })
   @Type(() => OutrightLeagueFixture)
   outrightLeague?: OutrightLeagueFixture;
 }

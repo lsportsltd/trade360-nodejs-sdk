@@ -1,2 +1,2 @@
-export * from "./appConfig";
-export * from "./globals";
+export * from './appConfig';
+export * from './globals';

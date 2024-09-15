@@ -1,12 +1,12 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { Market } from "./market";
+import { Market } from './market';
 
 export class MarketEvent {
-  @Expose({ name: "FixtureId" })
+  @Expose({ name: 'FixtureId' })
   fixtureId!: number;
 
-  @Expose({ name: "Markets" })
+  @Expose({ name: 'Markets' })
   @Type(() => Market)
   markets?: Market[];
 }

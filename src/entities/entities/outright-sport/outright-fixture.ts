@@ -1,39 +1,39 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { Sport, Location } from "@lsports/entities";
-import { NameValueRecord, Subscription } from "@lsports/entities/common";
+import { Sport, Location } from '@lsports/entities';
+import { NameValueRecord, Subscription } from '@lsports/entities/common';
 
-import { OutrightParticipant } from "./outright-participant";
+import { OutrightParticipant } from './outright-participant';
 
 export class OutrightFixture {
-  @Expose({ name: "Subscription" })
+  @Expose({ name: 'Subscription' })
   @Type(() => Subscription)
   subscription?: Subscription;
 
-  @Expose({ name: "Sport" })
+  @Expose({ name: 'Sport' })
   @Type(() => Sport)
   sport?: Sport;
 
-  @Expose({ name: "Location" })
+  @Expose({ name: 'Location' })
   @Type(() => Location)
   location?: Location;
 
-  @Expose({ name: "StartDate" })
+  @Expose({ name: 'StartDate' })
   @Type(() => Date)
   startDate?: Date;
 
-  @Expose({ name: "LastUpdate" })
+  @Expose({ name: 'LastUpdate' })
   @Type(() => Date)
   lastUpdate?: Date;
 
-  @Expose({ name: "Status" })
+  @Expose({ name: 'Status' })
   status?: number;
 
-  @Expose({ name: "Participants" })
+  @Expose({ name: 'Participants' })
   @Type(() => OutrightParticipant)
   participants?: OutrightParticipant[];
 
-  @Expose({ name: "ExtraData" })
+  @Expose({ name: 'ExtraData' })
   @Type(() => NameValueRecord)
   extraData?: NameValueRecord[];
 }

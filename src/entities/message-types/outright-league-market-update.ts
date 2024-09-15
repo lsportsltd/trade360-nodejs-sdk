@@ -1,11 +1,11 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { EntityKey } from "@lsports/decorators";
-import { MarketEvent, OutrightLeagueCompetition } from "@lsports/entities";
+import { EntityKey } from '@lsports/decorators';
+import { MarketEvent, OutrightLeagueCompetition } from '@lsports/entities';
 
 @EntityKey(40)
 export class OutrightLeagueMarketUpdate {
-  @Expose({ name: "Competition" })
+  @Expose({ name: 'Competition' })
   @Type(() => OutrightLeagueCompetition)
   competition?: OutrightLeagueCompetition<MarketEvent>;
 }

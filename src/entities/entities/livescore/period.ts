@@ -1,30 +1,30 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { Result } from "./result";
-import { Incident } from "./incident";
+import { Result } from './result';
+import { Incident } from './incident';
 
 export class Period {
-  @Expose({ name: "Type" })
+  @Expose({ name: 'Type' })
   type?: number;
 
-  @Expose({ name: "IsFinished" })
+  @Expose({ name: 'IsFinished' })
   isFinished?: boolean;
 
-  @Expose({ name: "IsConfirmed" })
+  @Expose({ name: 'IsConfirmed' })
   isConfirmed?: boolean;
 
-  @Expose({ name: "Results" })
+  @Expose({ name: 'Results' })
   @Type(() => Result)
   results?: Result[];
 
-  @Expose({ name: "Incidents" })
+  @Expose({ name: 'Incidents' })
   @Type(() => Incident)
   incidents?: Incident[];
 
-  @Expose({ name: "SubPeriods" })
+  @Expose({ name: 'SubPeriods' })
   @Type(() => Period)
   subPeriods?: Period[];
 
-  @Expose({ name: "SequenceNumber" })
+  @Expose({ name: 'SequenceNumber' })
   sequenceNumber?: number;
 }

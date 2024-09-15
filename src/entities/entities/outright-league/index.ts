@@ -1,2 +1,2 @@
-export * from "./outright-league-competition";
-export * from "./outright-league-fixture-event";
+export * from './outright-league-competition';
+export * from './outright-league-fixture-event';

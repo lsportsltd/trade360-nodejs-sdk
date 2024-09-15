@@ -1,7 +1,7 @@
-import { HttpResponsePayloadDto, ResponseBodyType } from "../../common";
+import { HttpResponsePayloadDto, ResponseBodyType } from '../../common';
 
 export interface IDistributionHttpClient {
-   /**
+  /**
    * open distribution for provider queue
    * @returns Promise<HttpResponsePayloadDto<TResponse>>
    */

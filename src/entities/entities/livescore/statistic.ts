@@ -1,19 +1,19 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
-import { StatisticType } from "@lsports/enums";
+import { StatisticType } from '@lsports/enums';
 
-import { Incident } from "./incident";
-import { Result } from "./result";
+import { Incident } from './incident';
+import { Result } from './result';
 
 export class Statistic {
-  @Expose({ name: "Type" })
+  @Expose({ name: 'Type' })
   type?: StatisticType;
 
-  @Expose({ name: "Results" })
+  @Expose({ name: 'Results' })
   @Type(() => Result)
   results?: Result[];
 
-  @Expose({ name: "Incidents" })
+  @Expose({ name: 'Incidents' })
   @Type(() => Incident)
   incidents?: Incident[];
 }

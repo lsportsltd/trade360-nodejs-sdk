@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 /** Axios service instance for different API endpoints with varying request and response types.
  * class with a generic type T for the request body:
@@ -12,7 +12,7 @@ export class AxiosService<T> {
     this.axiosInstance = axios.create({
       baseURL,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
   }
@@ -23,9 +23,7 @@ export class AxiosService<T> {
    * @returns Promise with object of R structure
    */
   async get<TResponse>(url: string): Promise<TResponse> {
-    const response: AxiosResponse<TResponse> = await this.axiosInstance.get(
-      url
-    );
+    const response: AxiosResponse<TResponse> = await this.axiosInstance.get(url);
     return response.data as TResponse;
   }
 
@@ -36,10 +34,7 @@ export class AxiosService<T> {
    * @returns Promise with object of R structure
    */
   async post<TResponse>(url: string, body: T): Promise<TResponse> {
-    const response: AxiosResponse<TResponse> = await this.axiosInstance.post(
-      url,
-      body
-    );
+    const response: AxiosResponse<TResponse> = await this.axiosInstance.post(url, body);
     return response.data as TResponse;
   }
 }
