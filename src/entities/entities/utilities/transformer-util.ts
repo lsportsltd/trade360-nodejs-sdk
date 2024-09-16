@@ -1,6 +1,6 @@
-import { plainToInstance } from "class-transformer";
+import { plainToInstance } from 'class-transformer';
 
-import { BaseEntity } from "@entities";
+import { BaseEntity } from '@entities';
 
 export class TransformerUtil {
   /**
@@ -10,8 +10,8 @@ export class TransformerUtil {
    * @returns
    */
   public static deserialize = <TEntity extends BaseEntity>(
-    plainObject: Record<string, any>,
-    targetClass: new () => TEntity
+    plainObject: Record<string, never> | BaseEntity,
+    targetClass: new () => TEntity,
   ): TEntity => {
     return plainToInstance(targetClass, plainObject, {
       excludeExtraneousValues: true, // Change this to false if you want to keep all properties
@@ -25,8 +25,8 @@ export class TransformerUtil {
    * @param targetClass The class to instantiate
    */
   static deserializeArray = <TEntity extends BaseEntity>(
-    plainArray: Record<string, any>[],
-    targetClass: new () => TEntity
+    plainArray: Record<string, unknown>[],
+    targetClass: new () => TEntity,
   ): TEntity[] => {
     return plainToInstance(targetClass, plainArray, {
       excludeExtraneousValues: true, // Change this to false if you want to keep all properties

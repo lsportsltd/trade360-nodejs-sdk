@@ -9,6 +9,7 @@ import {
   IStopResponseBody,
 } from '@api';
 import { TransformerUtil } from '@lsports/entities';
+import { MQSettings } from '@feed';
 
 export class DistributionUtil {
   private static requestApi?: DistributionRequest;
@@ -17,7 +18,7 @@ export class DistributionUtil {
 
   private static delayMs = 2000;
 
-  constructor(settings: HttpRequestDto, logger: Console) {
+  constructor(settings: MQSettings, logger: Console) {
     DistributionUtil.requestApi = new DistributionRequest(
       TransformerUtil.deserialize(settings, HttpRequestDto),
       (DistributionUtil.logger = logger),

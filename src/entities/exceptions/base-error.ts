@@ -1,17 +1,3 @@
-function ensureError(value: unknown): Error {
-  if (value instanceof Error) return value;
-
-  let stringified = "[Unable to stringify the thrown value]";
-  try {
-    stringified = JSON.stringify(value);
-  } catch {}
-
-  const error = new Error(
-    `This value was thrown as is, not through an Error: ${stringified}`
-  );
-  return error;
-}
-
 type Jsonable =
   | string
   | number
@@ -30,11 +16,13 @@ export class BaseError extends Error {
 
   constructor(
     message: string,
-    options: { error?: Error; context?: Jsonable; cause?: BaseError } = {}
+    options: { error?: Error; context?: Jsonable; cause?: BaseError } = {},
   ) {
-    const { cause, context } = options;
+    // const { cause, context } = options;
+    const { context } = options;
 
-    super(message, { cause });
+    // super(message, { cause });
+    super(message);
     this.name = this.constructor.name;
 
     this.context = context;

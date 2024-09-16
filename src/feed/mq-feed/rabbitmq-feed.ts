@@ -1,124 +1,124 @@
-import amqp, { Channel, Connection, MessageProperties } from "amqplib";
-import { isNil } from "lodash";
+import { Channel, Connection, MessageProperties, connect } from 'amqplib';
+import { isNil } from 'lodash';
 
-import { BaseEntity } from "@entities";
-import { IEntityHandler, IFeed, MQSettings } from "@feed";
-import { ConsumptionMessageError } from "@lsports/exceptions";
-import { AsyncLock, withRetry } from "@utilities";
+import { BaseEntity } from '@entities';
+import { IEntityHandler, IFeed, MQSettings } from '@feed';
+import { ConsumptionMessageError } from '@lsports/exceptions';
+import { AsyncLock, withRetry } from '@utilities';
 
-import { MessageConsumer } from "./message-consumer";
+import { MessageConsumer } from './message-consumer';
 
 /**
  * Class that represent all the abilities of rabbitmq instance
  */
 class RabbitMQFeed implements IFeed {
-  private requestQueue = "ReqQueue";
+  private requestQueue = 'ReqQueue';
+
   private connection!: Connection;
+
   private channel!: Channel;
+
   private consumerTag!: string;
 
   private isConnected: boolean = false;
+
   private stopTryReconnect: boolean = false;
+
   private readonly reconnectionLock: AsyncLock = new AsyncLock();
+
   private isReconnecting: boolean = false;
 
   private readonly consumer: MessageConsumer;
 
-  constructor(private mqSettings: MQSettings, private logger: Console) {
+  constructor(
+    private mqSettings: MQSettings,
+    private logger: Console,
+  ) {
     this.requestQueue = `_${this.mqSettings.packageId}_`;
     this.stopTryReconnect = false;
     this.consumer = new MessageConsumer(this.logger);
   }
 
-  setLogger = (logger: Console) => {
+  setLogger = (logger: Console): void => {
     this.logger = logger;
   };
-  getLogger = () => {
+
+  getLogger = (): Console => {
     return this.logger;
   };
 
-  public start = async () => {
-    try {
-      await this.connect();
+  public start = async (): Promise<void> => {
+    await this.connect();
 
-      this.attachListeners();
+    this.attachListeners();
 
-      const { prefetchCount, autoAck, consumptionLatencyThreshold } =
-        this.mqSettings;
+    const { prefetchCount, autoAck, consumptionLatencyThreshold } = this.mqSettings;
 
-      // config and define queue prefetch
-      await this.channel.prefetch(prefetchCount, false);
+    // config and define queue prefetch
+    await this.channel.prefetch(prefetchCount, false);
 
-      const isAutoAck: boolean = autoAck;
+    const isAutoAck: boolean = autoAck;
 
-      const { consumerTag } = await this.channel.consume(
-        this.requestQueue,
-        async (msg) => {
-          if (!isNil(msg) && !isNil(msg.content)) {
-            try {
-              const { content, properties } = msg;
-              await this.consumer.HandleBasicMessage(content, {
-                messageMqTimestamp: this.getMessageMqTimestamp(properties),
-                consumptionLatencyThreshold,
-              });
+    const { consumerTag } = await this.channel.consume(
+      this.requestQueue,
+      async (msg) => {
+        if (!isNil(msg) && !isNil(msg.content)) {
+          try {
+            const { content, properties } = msg;
+            await this.consumer.HandleBasicMessage(content, {
+              messageMqTimestamp: this.getMessageMqTimestamp(properties),
+              consumptionLatencyThreshold,
+            });
 
-              // Manually acknowledge the processed message
-              if (!isAutoAck) await this.channel.ack(msg);
-            } catch (err) {
-              if (!isAutoAck) await this.channel.nack(msg, false, true);
+            // Manually acknowledge the processed message
+            if (!isAutoAck) await this.channel.ack(msg);
+          } catch (err) {
+            if (!isAutoAck) await this.channel.nack(msg, false, true);
 
-              throw new ConsumptionMessageError(
-                `Error processing message, Error: ${err}`
-              );
-            }
+            throw new ConsumptionMessageError(`Error processing message, Error: ${err}`);
           }
-        },
-        {
-          noAck: isAutoAck,
         }
-      );
+      },
+      {
+        noAck: isAutoAck,
+      },
+    );
 
-      this.consumerTag = consumerTag;
-    } catch (err) {
-      // TODO: handle or not handle error
-      throw err;
-    }
+    this.consumerTag = consumerTag;
   };
 
   /**
    * establish connectation to rabbitmq
    */
-  private connect = async () => {
+  private connect = async (): Promise<void> => {
     if (this.isConnected && this.channel) return;
 
     const { host, port, userName, password, virtualHost } = this.mqSettings;
 
     try {
-      this.logger.log("connect - Connecting to RabbitMQ Server");
+      this.logger.log('connect - Connecting to RabbitMQ Server');
 
       // Establish connection to RabbitMQ server
       const connectionString = encodeURI(
-        `amqp://${userName}:${password}@${host}:${port}/${virtualHost}`
+        `amqp://${userName}:${password}@${host}:${port}/${virtualHost}`,
       );
 
-      this.connection = await amqp.connect(
-        connectionString /*config.msgBrokerURL!*/
-      );
+      this.connection = await connect(connectionString /*config.msgBrokerURL!*/);
 
       if (!this.connection) {
-        this.logger.error("connect - Failed to connect to RabbitMQ!");
-        throw new Error("connect - Failed to connect to RabbitMQ!");
+        this.logger.error('connect - Failed to connect to RabbitMQ!');
+        throw new Error('connect - Failed to connect to RabbitMQ!');
       }
 
       this.logger.log(
-        `connect - Rabbit MQ Connection is ready!\nconnectionString: ${connectionString}\nListen to ${this.requestQueue} queue`
+        `connect - Rabbit MQ Connection is ready!\nconnectionString: ${connectionString}\nListen to ${this.requestQueue} queue`,
       );
 
       this.isConnected = true;
       // create channel through the connection
       this.channel = await this.connection.createChannel();
 
-      this.logger.log("connect - Created RabbitMQ Channel successfully!");
+      this.logger.log('connect - Created RabbitMQ Channel successfully!');
     } catch (err) {
       this.logger.error(`connect - Not connected to MQ Server, error: ${err}`);
       throw err;
@@ -128,23 +128,21 @@ class RabbitMQFeed implements IFeed {
   /**
    * attach listeners for desire invoked events
    */
-  private attachListeners = () => {
-    this.connection.on("error", this.connectionErrorHandler);
-    this.connection.on("close", this.connectionClosedHandler);
+  private attachListeners = (): void => {
+    this.connection.on('error', this.connectionErrorHandler);
+    this.connection.on('close', this.connectionClosedHandler);
   };
 
   /**
    * handle close event invoke for rabbitmq instance
    * handle reconnection option
-   * @param res
    */
-  private connectionClosedHandler = async (res: any) => {
-    this.logger.log("event handler - connection to RabbitMQ closed!");
+  private connectionClosedHandler = async (): Promise<void> => {
+    this.logger.log('event handler - connection to RabbitMQ closed!');
 
     this.isConnected = false;
 
-    const { automaticRecoveryEnabled, networkRecoveryIntervalInMs } =
-      this.mqSettings;
+    const { automaticRecoveryEnabled, networkRecoveryIntervalInMs } = this.mqSettings;
 
     const options = {
       maxAttempts: 12,
@@ -166,8 +164,8 @@ class RabbitMQFeed implements IFeed {
               await this.start();
             },
             options,
-            "Retry establish connection after a delay",
-            this.logger
+            'Retry establish connection after a delay',
+            this.logger,
           );
         } finally {
           this.isReconnecting = false;
@@ -180,13 +178,11 @@ class RabbitMQFeed implements IFeed {
    * handle error event invoke for rabbitmq instance
    * @param err error been thrown
    */
-  private connectionErrorHandler = (err: Error) => {
+  private connectionErrorHandler = (err: Error): void => {
     this.logger.error(err.message);
   };
 
-  public getMessageMqTimestamp = (
-    msgProperties: MessageProperties
-  ): number | undefined => {
+  public getMessageMqTimestamp = (msgProperties: MessageProperties): number | undefined => {
     if (isNil(msgProperties)) return;
 
     const { timestamp, headers } = msgProperties;
@@ -194,7 +190,7 @@ class RabbitMQFeed implements IFeed {
     const timestampInMs = headers?.timestamp_in_ms;
 
     if (!isNil(timestampInMs)) return timestampInMs;
-    if (typeof timestamp === "number") {
+    if (typeof timestamp === 'number') {
       // RabbitMQ timestamps are in seconds, so convert to milliseconds
       return timestamp * 1000;
     } else if (timestamp instanceof Date) {
@@ -204,20 +200,20 @@ class RabbitMQFeed implements IFeed {
     return;
   };
 
-  public stop = async () => {
+  public stop = async (): Promise<void> => {
     this.stopTryReconnect = true;
     if (this.isConnected) {
       await this.channel?.cancel(this.consumerTag);
       await this.connection?.close();
     }
 
-    this.logger.log("stop - closed channel and connection to rabbitMQ!");
+    this.logger.log('stop - closed channel and connection to rabbitMQ!');
   };
 
   public addEntityHandler = async <TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
-    entityConstructor: new () => TEntity
-  ) => {
+    entityConstructor: new () => TEntity,
+  ): Promise<void> => {
     this.consumer.RegisterEntityHandler(entityHandler, entityConstructor);
   };
 }
