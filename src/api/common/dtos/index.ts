@@ -1,2 +1,2 @@
-export * from './HttpRequest.dto';
-export * from './HttpResponse.dto';
+export * from './http-request.dto';
+export * from './http-response.dto';
