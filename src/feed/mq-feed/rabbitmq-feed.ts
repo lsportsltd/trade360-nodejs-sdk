@@ -3,7 +3,7 @@ import { isNil } from 'lodash';
 
 import { BaseEntity } from '@entities';
 import { IEntityHandler, IFeed, MQSettings } from '@feed';
-import { ConsumptionMessageError } from '@lsports/exceptions';
+import { ConsumptionMessageError } from '@lsports/errors';
 import { AsyncLock, withRetry } from '@utilities';
 import { ILogger } from '@logger';
 
@@ -151,28 +151,29 @@ class RabbitMQFeed implements IFeed {
       backoffFactor: 1,
     };
 
-    if (!this.stopTryReconnect && !this.isConnected)
-      if (automaticRecoveryEnabled) {
-        // Retry establish connection after a delay
-        await this.reconnectionLock.acquire();
+    if (this.stopTryReconnect || this.isConnected || !automaticRecoveryEnabled) {
+      return;
+    }
 
-        try {
-          if (this.isReconnecting) return; // Already reconnecting, exit to prevent multiple attempts
-          this.isReconnecting = true;
+    // Retry establish connection after a delay
+    await this.reconnectionLock.acquire();
 
-          return await withRetry(
-            async () => {
-              await this.start();
-            },
-            options,
-            'Retry establish connection after a delay',
-            this.logger,
-          );
-        } finally {
-          this.isReconnecting = false;
-          this.reconnectionLock.release();
-        }
-      }
+    try {
+      if (this.isReconnecting) return; // Already reconnecting, exit to prevent multiple attempts
+      this.isReconnecting = true;
+
+      return await withRetry(
+        async () => {
+          await this.start();
+        },
+        options,
+        'Retry establish connection after a delay',
+        this.logger,
+      );
+    } finally {
+      this.isReconnecting = false;
+      this.reconnectionLock.release();
+    }
   };
 
   /**

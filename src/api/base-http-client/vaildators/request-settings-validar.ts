@@ -1,7 +1,7 @@
 import { isNil, isNumber, isString } from 'lodash';
 
 import { HttpRequestDto } from '@api/common';
-import { ValidationError } from '@lsports/exceptions';
+import { ValidationError } from '@lsports/errors';
 
 /**
  * Class for vaildate that the configure request setting is vaild

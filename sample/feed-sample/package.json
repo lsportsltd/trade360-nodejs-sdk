@@ -13,7 +13,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "fs": "^0.0.1-security",
-    "trade360-nodejs-sdk": "file:../../"
+    "trade360-nodejs-sdk": "trade360-nodejs-sdk"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",

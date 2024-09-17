@@ -45,13 +45,13 @@
     "@entities": "dist/entities",
     "@lsports/entities": "dist/entities/entities",
     "@lsports/entities/*": "dist/entities/entities/*",
-    "@lsports/enums": "src/entities/entities/enums",
+    "@lsports/enums": "dist/entities/entities/enums",
     "@lsports/decorators": "dist/entities/decorators",
-    "@lsports/exceptions": "dist/entities/exceptions",
+    "@lsports/errors": "dist/entities/errors",
     "@api": "dist/api",
     "@api/*": "dist/api/*",
     "@httpClient": "dist/api/base-http-client",
-    "@utilities": "src/utilities",
-    "@logger": "src/logger"
+    "@utilities": "dist/utilities",
+    "@logger": "dist/logger"
   }
 }

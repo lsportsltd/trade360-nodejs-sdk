@@ -1,4 +1,4 @@
-import { RetryError } from '@lsports/exceptions';
+import { RetryError } from '@lsports/errors';
 import { ILogger } from '@logger';
 
 interface RetryOptions {

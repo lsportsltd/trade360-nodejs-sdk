@@ -21,7 +21,7 @@
       "@lsports/entities/*": ["src/entities/entities/*"],
       "@lsports/enums": ["src/entities/entities/enums"],
       "@lsports/decorators": ["src/entities/decorators"],
-      "@lsports/exceptions": ["src/entities/exceptions"],
+      "@lsports/errors": ["src/entities/errors"],
       "@api": ["src/api"],
       "@api/*": ["src/api/*"],
       "@httpClient": ["src/api/base-http-client"],

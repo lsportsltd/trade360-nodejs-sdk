@@ -52,10 +52,10 @@ export class MessageConsumer {
 
       const { type: entityType, msgGuid } = header;
 
-      if (this.bodyHandlers.has(entityType)) {
-        const bodyHandler = this.bodyHandlers.get(entityType);
+      const bodyHandler = this.bodyHandlers.get(entityType);
 
-        await bodyHandler!.processAsync(header, body);
+      if (!isNil(bodyHandler)) {
+        await bodyHandler.processAsync(header, body);
 
         this.checkConsumptionLatency({
           messageMqTimestamp,
