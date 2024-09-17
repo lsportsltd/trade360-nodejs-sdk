@@ -8,13 +8,13 @@ import { ValidationError } from '@lsports/errors';
  */
 export class RequestSettingsValidator {
   public static validate(requestSettings: HttpRequestDto): void {
-    const { packageId, userName, password } = requestSettings;
+    const { packageId, username, password } = requestSettings;
 
     if (isNil(packageId) || !isNumber(packageId) || packageId <= 0)
       throw new ValidationError('packageId must be a positive integer');
 
-    if (isNil(userName) || !isString(userName))
-      throw new ValidationError('UserName is required and need to be string');
+    if (isNil(username) || !isString(username))
+      throw new ValidationError('Username is required and need to be string');
 
     if (isNil(password) || !isString(password))
       throw new ValidationError('Password is required and need to be string');

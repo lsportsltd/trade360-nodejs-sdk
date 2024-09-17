@@ -24,11 +24,11 @@ export class BaseHttpClient {
    * @returns  promise with the TResponse type response type
    */
   public async sendRequest<TResponse>(route: string): Promise<TResponse> {
-    const { packageId, userName, password } = this.requestSettings;
+    const { packageId, username, password } = this.requestSettings;
 
     return this.axiosService?.post<TResponse>(route, {
       packageId,
-      userName,
+      username,
       password,
     });
   }

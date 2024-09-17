@@ -1,3 +1,5 @@
+import { Options } from 'amqplib';
+
 import {
   DEFUALT_AUTOMATIC_RECOVERY_ENABLED,
   DEFUALT_AUTO_ACK,
@@ -18,17 +20,17 @@ export interface PackageTypesMQSettings {
 }
 
 export class MQSettings {
-  host!: string;
+  // host!: string;
 
-  port!: string;
+  // port!: string;
 
-  virtualHost!: string;
+  // virtualHost!: string;
+
+  // userName!: string;
+
+  // password!: string;
 
   packageId!: number;
-
-  userName!: string;
-
-  password!: string;
 
   prefetchCount: number = DEFUALT_PREFETCH_COUNT;
 
@@ -44,3 +46,5 @@ export class MQSettings {
 
   automaticRecoveryEnabled: boolean = DEFUALT_AUTOMATIC_RECOVERY_ENABLED;
 }
+
+export type MQSettingsOptions = MQSettings & Options.Connect;

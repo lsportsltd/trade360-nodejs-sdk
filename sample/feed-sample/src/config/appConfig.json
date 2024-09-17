@@ -6,12 +6,12 @@
       "packageId": 799
     },
     "inPlayMQSettings": {
-      "host": "frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com",
+      "hostname": "frizzy-magenta-pronghorn.in.rmq4.cloudamqp.com",
       "port": 5672,
-      "virtualHost": "StmInPlay",
-
-      "userName": "Pavel.T",
+      "vhost": "StmInPlay",
+      "username": "Pavel.T",
       "password": "1q2w3e%T",
+
       "packageId": 799,
 
       "prefetchCount": 1,

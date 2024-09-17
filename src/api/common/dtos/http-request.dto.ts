@@ -5,7 +5,7 @@ export class HttpRequestDto {
   packageId!: number;
 
   @Expose()
-  userName!: string;
+  username!: string;
 
   @Expose()
   password!: string;

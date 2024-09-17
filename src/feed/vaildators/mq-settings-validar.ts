@@ -4,7 +4,7 @@ import {
   MIN_NETWORK_RECOVERY_INTERVAL_IN_MS,
   MIN_PREFETCH_COUNT,
   MIN_REQUESTED_HEARTBEAT_SECONDS,
-  MQSettings,
+  MQSettingsOptions,
 } from '@feed';
 import { ValidationError } from '@lsports/errors';
 
@@ -12,13 +12,13 @@ import { ValidationError } from '@lsports/errors';
  * Class for vaildate that the configure mq setting is vaild
  */
 export class MqConnectionSettingsValidator {
-  public static validate(mqSettings: MQSettings): void {
+  public static validate(mqSettings: MQSettingsOptions): void {
     const {
-      host,
+      hostname,
       port,
-      virtualHost,
+      vhost,
       packageId,
-      userName,
+      username,
       password,
       prefetchCount,
       networkRecoveryIntervalInMs,
@@ -26,20 +26,19 @@ export class MqConnectionSettingsValidator {
       requestedHeartbeatSeconds,
     } = mqSettings;
 
-    if (isNil(host) || !isString(host))
-      throw new ValidationError('host is required and need to be string');
+    if (isNil(hostname) || !isString(hostname))
+      throw new ValidationError('hostname is required and need to be string');
 
     if (isNil(port) || !isNumber(port) || port <= 0)
       throw new ValidationError('port must be a positive integer');
 
-    if (isNil(virtualHost) || !isString(virtualHost))
-      throw new ValidationError('virtualHost is required');
+    if (isNil(vhost) || !isString(vhost)) throw new ValidationError('vhost is required');
 
     if (isNil(packageId) || !isNumber(packageId) || packageId <= 0)
       throw new ValidationError('packageId must be a positive integer');
 
-    if (isNil(userName) || !isString(userName))
-      throw new ValidationError('userName is required and need to be string');
+    if (isNil(username) || !isString(username))
+      throw new ValidationError('username is required and need to be string');
 
     if (isNil(password) || !isString(password))
       throw new ValidationError('password is required and need to be string');

@@ -2,10 +2,10 @@ import { Channel, Connection, MessageProperties, connect } from 'amqplib';
 import { isNil } from 'lodash';
 
 import { BaseEntity } from '@entities';
-import { IEntityHandler, IFeed, MQSettings } from '@feed';
+import { IEntityHandler, IFeed, MQSettingsOptions } from '@feed';
+import { ILogger } from '@logger';
 import { ConsumptionMessageError } from '@lsports/errors';
 import { AsyncLock, withRetry } from '@utilities';
-import { ILogger } from '@logger';
 
 import { MessageConsumer } from './message-consumer';
 
@@ -32,7 +32,7 @@ class RabbitMQFeed implements IFeed {
   private readonly consumer: MessageConsumer;
 
   constructor(
-    private mqSettings: MQSettings,
+    private mqSettings: MQSettingsOptions,
     private logger: ILogger,
   ) {
     this.requestQueue = `_${this.mqSettings.packageId}_`;
@@ -94,14 +94,14 @@ class RabbitMQFeed implements IFeed {
   private async connect(): Promise<void> {
     if (this.isConnected && this.channel) return;
 
-    const { host, port, userName, password, virtualHost } = this.mqSettings;
+    const { hostname, port, username, password, vhost } = this.mqSettings;
 
     try {
       this.logger.info('connect - Connecting to RabbitMQ Server');
 
       // Establish connection to RabbitMQ server
       const connectionString = encodeURI(
-        `amqp://${userName}:${password}@${host}:${port}/${virtualHost}`,
+        `amqp://${username}:${password}@${hostname}:${port}/${vhost}`,
       );
 
       this.connection = await connect(connectionString /*config.msgBrokerURL!*/);
