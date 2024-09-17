@@ -19,27 +19,27 @@ export class DistributionRequest extends BaseHttpClient implements IDistribution
     super(TRADE360_BASE_URL, requestSettings, logger);
   }
 
-  startDistribution = async <TResponse extends ResponseBodyType>(): Promise<
+  public async startDistribution<TResponse extends ResponseBodyType>(): Promise<
     HttpResponsePayloadDto<TResponse> | undefined
-  > => {
+  > {
     this.logger.debug('run start request...');
 
     return this.sendRequest<HttpResponsePayloadDto<TResponse>>(START_PREFIX_URL);
-  };
+  }
 
-  stopDistribution = async <TResponse extends ResponseBodyType>(): Promise<
+  public async stopDistribution<TResponse extends ResponseBodyType>(): Promise<
     HttpResponsePayloadDto<TResponse> | undefined
-  > => {
+  > {
     this.logger.debug('run stop request...');
 
     return this.sendRequest<HttpResponsePayloadDto<TResponse>>(STOP_PREFIX_URL);
-  };
+  }
 
-  getDistributionStatus = async <TResponse extends ResponseBodyType>(): Promise<
+  public async getDistributionStatus<TResponse extends ResponseBodyType>(): Promise<
     HttpResponsePayloadDto<TResponse> | undefined
-  > => {
+  > {
     this.logger.debug('run status request...');
 
     return this.sendRequest<HttpResponsePayloadDto<TResponse>>(STATUS_PREFIX_URL);
-  };
+  }
 }

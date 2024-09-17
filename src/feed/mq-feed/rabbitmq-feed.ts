@@ -40,15 +40,15 @@ class RabbitMQFeed implements IFeed {
     this.consumer = new MessageConsumer(this.logger);
   }
 
-  setLogger = (logger: ILogger): void => {
+  setLogger(logger: ILogger): void {
     this.logger = logger;
-  };
+  }
 
-  getLogger = (): ILogger => {
+  getLogger(): ILogger {
     return this.logger;
-  };
+  }
 
-  public start = async (): Promise<void> => {
+  public async start(): Promise<void> {
     await this.connect();
 
     this.attachListeners();
@@ -66,7 +66,7 @@ class RabbitMQFeed implements IFeed {
         if (!isNil(msg) && !isNil(msg.content)) {
           try {
             const { content, properties } = msg;
-            await this.consumer.HandleBasicMessage(content, {
+            await this.consumer.handleBasicMessage(content, {
               messageMqTimestamp: this.getMessageMqTimestamp(properties),
               consumptionLatencyThreshold,
             });
@@ -86,12 +86,12 @@ class RabbitMQFeed implements IFeed {
     );
 
     this.consumerTag = consumerTag;
-  };
+  }
 
   /**
    * establish connectation to rabbitmq
    */
-  private connect = async (): Promise<void> => {
+  private async connect(): Promise<void> {
     if (this.isConnected && this.channel) return;
 
     const { host, port, userName, password, virtualHost } = this.mqSettings;
@@ -124,21 +124,21 @@ class RabbitMQFeed implements IFeed {
       this.logger.error(`connect - Not connected to MQ Server, error: ${err}`);
       throw err;
     }
-  };
+  }
 
   /**
    * attach listeners for desire invoked events
    */
-  private attachListeners = (): void => {
+  private attachListeners(): void {
     this.connection.on('error', this.connectionErrorHandler);
     this.connection.on('close', this.connectionClosedHandler);
-  };
+  }
 
   /**
    * handle close event invoke for rabbitmq instance
    * handle reconnection option
    */
-  private connectionClosedHandler = async (): Promise<void> => {
+  private async connectionClosedHandler(): Promise<void> {
     this.logger.debug('event handler - connection to RabbitMQ closed!');
 
     this.isConnected = false;
@@ -174,17 +174,17 @@ class RabbitMQFeed implements IFeed {
       this.isReconnecting = false;
       this.reconnectionLock.release();
     }
-  };
+  }
 
   /**
    * handle error event invoke for rabbitmq instance
    * @param err error been thrown
    */
-  private connectionErrorHandler = (err: Error): void => {
+  private connectionErrorHandler(err: Error): void {
     this.logger.error(err.message);
-  };
+  }
 
-  public getMessageMqTimestamp = (msgProperties: MessageProperties): number | undefined => {
+  public getMessageMqTimestamp(msgProperties: MessageProperties): number | undefined {
     if (isNil(msgProperties)) return;
 
     const { timestamp, headers } = msgProperties;
@@ -200,9 +200,9 @@ class RabbitMQFeed implements IFeed {
     }
 
     return;
-  };
+  }
 
-  public stop = async (): Promise<void> => {
+  public async stop(): Promise<void> {
     this.stopTryReconnect = true;
     if (this.isConnected) {
       await this.channel?.cancel(this.consumerTag);
@@ -210,14 +210,14 @@ class RabbitMQFeed implements IFeed {
     }
 
     this.logger.info('stop - closed channel and connection to rabbitMQ!');
-  };
+  }
 
-  public addEntityHandler = async <TEntity extends BaseEntity>(
+  public async addEntityHandler<TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity,
-  ): Promise<void> => {
+  ): Promise<void> {
     this.consumer.RegisterEntityHandler(entityHandler, entityConstructor);
-  };
+  }
 }
 
 export = RabbitMQFeed;

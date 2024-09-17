@@ -8,9 +8,9 @@ export type BaseEntity = InstanceType<BaseEntityClass>;
 
 export const knownEntityKeys: Map<number, string> = new Map<number, string>();
 
-export const setNewEntityKeyToMap = (key: number, name: string): void => {
+export function setNewEntityKeyToMap(key: number, name: string): void {
   knownEntityKeys.set(key, name);
-};
+}
 
 export * from './fixture-metadata-update';
 export * from './livescore-update';

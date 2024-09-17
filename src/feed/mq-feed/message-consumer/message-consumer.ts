@@ -10,7 +10,7 @@ import { ILogger } from '@logger';
 import { BodyHandler } from './handler';
 import { IBodyHandler, IConsumptionLantency } from './interfaces';
 
-const ConvertJsonToMessage = (rawJson: string): WrappedMessage => {
+function ConvertJsonToMessage(rawJson: string): WrappedMessage {
   try {
     const message: WrappedMessage = TransformerUtil.deserialize(
       JSON.parse(rawJson),
@@ -21,7 +21,7 @@ const ConvertJsonToMessage = (rawJson: string): WrappedMessage => {
   } catch (err) {
     throw new ConversionError(`failed converting json to wrapped message instance!, err: ${err}`);
   }
-};
+}
 
 /**
  * Class that represent message consumption process
@@ -31,10 +31,10 @@ export class MessageConsumer {
 
   constructor(private logger: ILogger) {}
 
-  public HandleBasicMessage = async (
+  public async handleBasicMessage(
     messageContent: Uint8Array,
     { messageMqTimestamp, consumptionLatencyThreshold }: IConsumptionLantency,
-  ): Promise<void> => {
+  ): Promise<void> {
     try {
       if (this.bodyHandlers.size == 0) {
         this.logger?.warn('there is no configured entities handler, please config at least one');
@@ -76,13 +76,13 @@ export class MessageConsumer {
       this.logger?.error(`Error handling message consumption, error: ${err}`);
       throw err;
     }
-  };
+  }
 
-  public checkConsumptionLatency = ({
+  public checkConsumptionLatency({
     messageMqTimestamp,
     consumptionLatencyThreshold: thresholdInSeconds,
     msgGuid,
-  }: IConsumptionLantency): void => {
+  }: IConsumptionLantency): void {
     if (isNil(messageMqTimestamp) || isNil(thresholdInSeconds)) {
       this.logger.warn(
         'Unable to check message consumption delay: missing message timestamp or threshold',
@@ -108,12 +108,12 @@ export class MessageConsumer {
         });
       }
     }
-  };
+  }
 
-  public RegisterEntityHandler = <TEntity extends BaseEntity>(
+  public RegisterEntityHandler<TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity,
-  ): void => {
+  ): void {
     try {
       const {
         name,
@@ -137,5 +137,5 @@ export class MessageConsumer {
       this.logger?.error(`Error setting registration for new entity handler, error: ${err}`);
       throw err;
     }
-  };
+  }
 }

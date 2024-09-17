@@ -22,25 +22,20 @@ const eventTypeMap: IEventTypeMap = {
   OutrightLeague: OutrightLeagueFixtureEvent,
 };
 
-const getEventClass = (
+function getEventClass(
   obj: Record<string, unknown>,
 ):
   | typeof OutrightScoreEvent
   | typeof OutrightFixtureEvent
   | typeof MarketEvent
-  | typeof OutrightLeagueFixtureEvent => {
+  | typeof OutrightLeagueFixtureEvent {
   const eventType = find(keys(eventTypeMap), (key) => has(obj, key) && !isNil(obj[key]));
   return eventTypeMap[eventType as keyof IEventTypeMap];
-};
+}
 
-export const deserializeToEventInstance = (
+export function deserializeToEventInstance(
   value: unknown,
-):
-  | OutrightScoreEvent
-  | OutrightFixtureEvent
-  | MarketEvent
-  | OutrightLeagueFixtureEvent
-  | unknown => {
+): OutrightScoreEvent | OutrightFixtureEvent | MarketEvent | OutrightLeagueFixtureEvent | unknown {
   if (!isArray(value) || (isArray(value) && isEmpty(value))) return value;
 
   const propertyEventClass = getEventClass(value[0]);
@@ -48,4 +43,4 @@ export const deserializeToEventInstance = (
   if (!isNil(propertyEventClass))
     return TransformerUtil.deserializeArray(value, propertyEventClass);
   return value;
-};
+}

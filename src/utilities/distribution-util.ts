@@ -26,13 +26,13 @@ export class DistributionUtil {
     );
   }
 
-  static checkStatus = async (): Promise<
+  static async checkStatus(): Promise<
     | {
         httpStatusCode: number;
         isDistributionOn: boolean;
       }
     | undefined
-  > => {
+  > {
     if (isNil(DistributionUtil.requestApi)) throw new Error('initialize distribution api first!');
 
     const distributionStatus: HttpResponsePayloadDto<IStatusResponseBody> | undefined =
@@ -46,9 +46,9 @@ export class DistributionUtil {
 
       return { httpStatusCode, isDistributionOn };
     }
-  };
+  }
 
-  static start = async (): Promise<void> => {
+  static async start(): Promise<void> {
     if (isNil(DistributionUtil.requestApi)) throw new Error('initialize distribution api first!');
 
     const startRequest: HttpResponsePayloadDto<IStartResponseBody> | undefined =
@@ -62,9 +62,9 @@ export class DistributionUtil {
         return resolve();
       }, DistributionUtil.delayMs);
     });
-  };
+  }
 
-  static stop = async (): Promise<void> => {
+  static async stop(): Promise<void> {
     if (isNil(DistributionUtil.requestApi)) throw new Error('initialize distribution api first!');
 
     const stopRequest: HttpResponsePayloadDto<IStopResponseBody> | undefined =
@@ -72,5 +72,5 @@ export class DistributionUtil {
 
     if (!isNil(stopRequest) && !isNil(stopRequest.Body))
       DistributionUtil.logger?.debug(stopRequest.Body.Message);
-  };
+  }
 }

@@ -23,7 +23,7 @@ export class BaseHttpClient {
    * @param route string that represent the route expected to be sent to
    * @returns  promise with the TResponse type response type
    */
-  public sendRequest = async <TResponse>(route: string): Promise<TResponse> => {
+  public async sendRequest<TResponse>(route: string): Promise<TResponse> {
     const { packageId, userName, password } = this.requestSettings;
 
     return this.axiosService?.post<TResponse>(route, {
@@ -31,5 +31,5 @@ export class BaseHttpClient {
       userName,
       password,
     });
-  };
+  }
 }

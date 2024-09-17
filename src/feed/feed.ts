@@ -25,15 +25,15 @@ export class Feed implements IFeed {
     this.consumerMq = new MessageConsumerMQ(this.mqSettings, this.logger);
   }
 
-  public start = async (preConnectionAtStart: boolean = false): Promise<void> => {
+  public async start(preConnectionAtStart: boolean = false): Promise<void> {
     this.preConnectionAtStart = preConnectionAtStart;
 
     if (this.preConnectionAtStart) await this.preConnectionInitialization();
 
     await this.consumerMq.start();
-  };
+  }
 
-  private preConnectionInitialization = async (): Promise<void> => {
+  private async preConnectionInitialization(): Promise<void> {
     const options = { maxAttempts: 5, delayMs: 2000, backoffFactor: 2 };
 
     new DistributionUtil(this.mqSettings, this.logger);
@@ -68,18 +68,18 @@ export class Feed implements IFeed {
         this.logger.info('Distribution flow is already on');
       }
     }
-  };
+  }
 
-  public stop = async (): Promise<void> => {
+  public async stop(): Promise<void> {
     await this.consumerMq.stop();
 
     if (this.preConnectionAtStart) await DistributionUtil.stop();
-  };
+  }
 
-  public addEntityHandler = async <TEntity extends BaseEntity>(
+  public async addEntityHandler<TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity,
-  ): Promise<void> => {
+  ): Promise<void> {
     await this.consumerMq.addEntityHandler(entityHandler, entityConstructor);
-  };
+  }
 }
