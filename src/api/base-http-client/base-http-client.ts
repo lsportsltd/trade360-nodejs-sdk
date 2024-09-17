@@ -2,6 +2,7 @@ import { HttpRequestDto } from '@api/common';
 
 import { AxiosService } from './services';
 import { RequestSettingsValidator } from './vaildators';
+import { ILogger } from '@logger';
 
 export class BaseHttpClient {
   protected axiosService: AxiosService<HttpRequestDto>;
@@ -9,7 +10,7 @@ export class BaseHttpClient {
   constructor(
     private baseUrl: string,
     protected requestSettings: HttpRequestDto,
-    protected logger: Console,
+    protected logger: ILogger,
   ) {
     RequestSettingsValidator.validate(this.requestSettings);
 

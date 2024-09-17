@@ -5,6 +5,7 @@ import { BaseEntity } from '@entities';
 import { IEntityHandler, IFeed, MQSettings } from '@feed';
 import { ConsumptionMessageError } from '@lsports/exceptions';
 import { AsyncLock, withRetry } from '@utilities';
+import { ILogger } from '@logger';
 
 import { MessageConsumer } from './message-consumer';
 
@@ -32,18 +33,18 @@ class RabbitMQFeed implements IFeed {
 
   constructor(
     private mqSettings: MQSettings,
-    private logger: Console,
+    private logger: ILogger,
   ) {
     this.requestQueue = `_${this.mqSettings.packageId}_`;
     this.stopTryReconnect = false;
     this.consumer = new MessageConsumer(this.logger);
   }
 
-  setLogger = (logger: Console): void => {
+  setLogger = (logger: ILogger): void => {
     this.logger = logger;
   };
 
-  getLogger = (): Console => {
+  getLogger = (): ILogger => {
     return this.logger;
   };
 
@@ -96,7 +97,7 @@ class RabbitMQFeed implements IFeed {
     const { host, port, userName, password, virtualHost } = this.mqSettings;
 
     try {
-      this.logger.log('connect - Connecting to RabbitMQ Server');
+      this.logger.info('connect - Connecting to RabbitMQ Server');
 
       // Establish connection to RabbitMQ server
       const connectionString = encodeURI(
@@ -110,7 +111,7 @@ class RabbitMQFeed implements IFeed {
         throw new Error('connect - Failed to connect to RabbitMQ!');
       }
 
-      this.logger.log(
+      this.logger.info(
         `connect - Rabbit MQ Connection is ready!\nconnectionString: ${connectionString}\nListen to ${this.requestQueue} queue`,
       );
 
@@ -118,7 +119,7 @@ class RabbitMQFeed implements IFeed {
       // create channel through the connection
       this.channel = await this.connection.createChannel();
 
-      this.logger.log('connect - Created RabbitMQ Channel successfully!');
+      this.logger.info('connect - Created RabbitMQ Channel successfully!');
     } catch (err) {
       this.logger.error(`connect - Not connected to MQ Server, error: ${err}`);
       throw err;
@@ -138,7 +139,7 @@ class RabbitMQFeed implements IFeed {
    * handle reconnection option
    */
   private connectionClosedHandler = async (): Promise<void> => {
-    this.logger.log('event handler - connection to RabbitMQ closed!');
+    this.logger.debug('event handler - connection to RabbitMQ closed!');
 
     this.isConnected = false;
 
@@ -207,7 +208,7 @@ class RabbitMQFeed implements IFeed {
       await this.connection?.close();
     }
 
-    this.logger.log('stop - closed channel and connection to rabbitMQ!');
+    this.logger.info('stop - closed channel and connection to rabbitMQ!');
   };
 
   public addEntityHandler = async <TEntity extends BaseEntity>(

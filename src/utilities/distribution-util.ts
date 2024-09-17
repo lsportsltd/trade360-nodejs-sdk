@@ -10,15 +10,16 @@ import {
 } from '@api';
 import { TransformerUtil } from '@lsports/entities';
 import { MQSettings } from '@feed';
+import { ILogger } from '@logger';
 
 export class DistributionUtil {
   private static requestApi?: DistributionRequest;
 
-  private static logger?: Console;
+  private static logger?: ILogger;
 
   private static delayMs = 2000;
 
-  constructor(settings: MQSettings, logger: Console) {
+  constructor(settings: MQSettings, logger: ILogger) {
     DistributionUtil.requestApi = new DistributionRequest(
       TransformerUtil.deserialize(settings, HttpRequestDto),
       (DistributionUtil.logger = logger),
@@ -54,7 +55,7 @@ export class DistributionUtil {
       await DistributionUtil.requestApi.startDistribution<IStartResponseBody>();
 
     if (!isNil(startRequest) && !isNil(startRequest.Body))
-      DistributionUtil.logger?.log(startRequest.Body.Message);
+      DistributionUtil.logger?.debug(startRequest.Body.Message);
 
     await new Promise<void>((resolve) => {
       setTimeout(() => {
@@ -70,6 +71,6 @@ export class DistributionUtil {
       await DistributionUtil.requestApi.stopDistribution<IStopResponseBody>();
 
     if (!isNil(stopRequest) && !isNil(stopRequest.Body))
-      DistributionUtil.logger?.log(stopRequest.Body.Message);
+      DistributionUtil.logger?.debug(stopRequest.Body.Message);
   };
 }

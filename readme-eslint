@@ -1,0 +1,5 @@
+For SDK development in TypeScript, using a linter that enforces Airbnb standards is an excellent choice.
+
+The most popular linter for TypeScript that can enforce Airbnb standards is ESLint with the appropriate plugins and configurations
+
+This setup provides a solid foundation for TypeScript linting in your SDK development, enforcing Airbnb standards while allowing for customization as needed.

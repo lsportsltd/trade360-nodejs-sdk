@@ -6,6 +6,7 @@ import { DistributionUtil, withRetry } from '@utilities';
 
 import { MessageConsumerMQ } from './mq-feed';
 import { MqConnectionSettingsValidator } from './vaildators';
+import { ILogger, ConsoleLogger } from '@logger';
 
 /**
  * Class that represesnts all Feed requests
@@ -17,7 +18,7 @@ export class Feed implements IFeed {
 
   constructor(
     private mqSettings: MQSettings,
-    private logger: Console,
+    private logger: ILogger = new ConsoleLogger(),
   ) {
     MqConnectionSettingsValidator.validate(this.mqSettings);
 
@@ -43,7 +44,7 @@ export class Feed implements IFeed {
       const { httpStatusCode, isDistributionOn } = distributionStatus;
 
       if (httpStatusCode >= 200 && httpStatusCode < 300 && !isDistributionOn) {
-        this.logger.log('Distribution flow is off, will trying to start the flow');
+        this.logger.info('Distribution flow is off, will trying to start the flow');
 
         return withRetry(
           async () => {
@@ -55,7 +56,7 @@ export class Feed implements IFeed {
               !isNil(distributionStatusAfterStartOperation) &&
               distributionStatusAfterStartOperation.isDistributionOn
             ) {
-              this.logger.log('Distribution is activated successfully');
+              this.logger.info('Distribution is activated successfully');
               return;
             }
           },
@@ -64,7 +65,7 @@ export class Feed implements IFeed {
           this.logger,
         );
       } else if (isDistributionOn) {
-        this.logger.log('Distribution flow is already on');
+        this.logger.info('Distribution flow is already on');
       }
     }
   };

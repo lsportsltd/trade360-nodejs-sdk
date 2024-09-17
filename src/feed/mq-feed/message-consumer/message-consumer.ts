@@ -4,8 +4,9 @@ import { isNil } from 'lodash';
 
 import { BaseEntity, ConversionError, WrappedMessage, knownEntityKeys } from '@entities';
 import { IEntityHandler } from '@feed';
-
 import { TransformerUtil } from '@lsports/entities';
+import { ILogger } from '@logger';
+
 import { BodyHandler } from './handler';
 import { IBodyHandler, IConsumptionLantency } from './interfaces';
 
@@ -28,7 +29,7 @@ const ConvertJsonToMessage = (rawJson: string): WrappedMessage => {
 export class MessageConsumer {
   private bodyHandlers: Map<number, IBodyHandler> = new Map<number, IBodyHandler>();
 
-  constructor(private logger: Console) {}
+  constructor(private logger: ILogger) {}
 
   public HandleBasicMessage = async (
     messageContent: Uint8Array,

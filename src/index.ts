@@ -5,3 +5,4 @@ export * from '@feed';
 export * from '@api';
 export * from '@entities';
 export * from '@utilities';
+export * from '@logger';

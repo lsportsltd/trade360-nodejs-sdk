@@ -25,7 +25,8 @@
       "@api": ["src/api"],
       "@api/*": ["src/api/*"],
       "@httpClient": ["src/api/base-http-client"],
-      "@utilities": ["src/utilities"]
+      "@utilities": ["src/utilities"],
+      "@logger": ["src/logger"]
     }
   },
   "include": ["src/**/**/**/**/**/**/**/**/*"],

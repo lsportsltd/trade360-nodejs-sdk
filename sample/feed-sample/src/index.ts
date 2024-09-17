@@ -41,6 +41,7 @@ let logger = console;
 
 const initSample = async () => {
   try {
+    
     const feedInPlay = new Feed(config.trade360.inPlayMQSettings!, logger);
     // const feedPreMatch = Feed(config.Trade360.PreMatchMQSettings, logger);
 

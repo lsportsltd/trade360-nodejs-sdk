@@ -51,6 +51,7 @@
     "@api": "dist/api",
     "@api/*": "dist/api/*",
     "@httpClient": "dist/api/base-http-client",
-    "@utilities": "src/utilities"
+    "@utilities": "src/utilities",
+    "@logger": "src/logger"
   }
 }

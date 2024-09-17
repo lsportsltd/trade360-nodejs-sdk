@@ -5,12 +5,13 @@ import { BaseEntity, MessageHeader } from '@entities';
 
 import { IBodyHandler } from '../interfaces';
 import { TransformerUtil } from '@lsports/entities';
+import { ILogger } from '@logger';
 
 export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
   constructor(
     private readonly entityHandler: IEntityHandler<TEntity>,
     private readonly entityConstructor: new () => TEntity,
-    private readonly logger?: Console,
+    private readonly logger?: ILogger,
   ) {}
 
   async processAsync(header: MessageHeader, body: string): Promise<void> {
