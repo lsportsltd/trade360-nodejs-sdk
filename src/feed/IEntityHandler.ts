@@ -1,8 +1,10 @@
-import { BaseEntity, MessageHeader } from '@entities';
+import { BaseEntity } from '@entities';
+
+import { IMessageStructure } from '@feed/mq-feed';
 
 /**
  * Interface that represent every entity handler required implementation
  */
 export interface IEntityHandler<TEntity extends BaseEntity> {
-  processAsync: (header: MessageHeader, entity?: TEntity) => Promise<void>;
+  processAsync: ({ header, entity }: IMessageStructure<TEntity>) => Promise<void>;
 }

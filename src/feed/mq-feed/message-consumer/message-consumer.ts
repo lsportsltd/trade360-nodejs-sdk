@@ -55,7 +55,7 @@ export class MessageConsumer {
       const bodyHandler = this.bodyHandlers.get(entityType);
 
       if (!isNil(bodyHandler)) {
-        await bodyHandler.processAsync(header, body);
+        await bodyHandler.processAsync({ header, body });
 
         this.checkConsumptionLatency({
           messageMqTimestamp,

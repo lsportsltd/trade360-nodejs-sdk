@@ -1,9 +1,10 @@
-import { MessageHeader } from '@entities';
+import { IMessageStructure } from './IMessageStructure';
 
 export interface IBodyHandler {
   /**
    * process the inner procedure for the body property of an entity
-   * @param body string that contains the body structure
+   * @param messageStructure object that contains the message structure
+   * with header and body
    */
-  processAsync(header: MessageHeader, body?: string): Promise<void>;
+  processAsync(messageStructure: IMessageStructure<unknown>): Promise<void>;
 }

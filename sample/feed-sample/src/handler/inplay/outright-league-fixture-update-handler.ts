@@ -1,17 +1,17 @@
 import {
   IEntityHandler,
-  MessageHeader,
+  IMessageStructure,
   OutrightLeagueFixtureUpdate,
-} from "trade360-nodejs-sdk";
+} from 'trade360-nodejs-sdk';
 
 export class OutrightLeagueFixtureUpdateHandler
   implements IEntityHandler<OutrightLeagueFixtureUpdate>
 {
-  public processAsync = async (
-    header: MessageHeader,
-    entity?: OutrightLeagueFixtureUpdate
-  ) => {
-    console.log("OutrightLeagueFixtureUpdate received!");
+  public processAsync = async ({
+    header,
+    entity,
+  }: IMessageStructure<OutrightLeagueFixtureUpdate>) => {
+    console.log('OutrightLeagueFixtureUpdate received!');
     console.log(entity);
     return;
   };
