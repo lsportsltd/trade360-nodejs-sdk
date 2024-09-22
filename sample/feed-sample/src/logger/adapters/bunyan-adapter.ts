@@ -2,8 +2,6 @@ import bunyan, { LoggerOptions, createLogger } from 'bunyan';
 
 import { ILogger, LogLevel } from 'trade360-nodejs-sdk';
 
-export interface BunyanAdapterOptions extends LoggerOptions {}
-
 // Bunyan adapter
 export class BunyanAdapter implements ILogger {
   private logger: bunyan;

@@ -2,8 +2,6 @@ import { Logger, LoggerOptions, createLogger, format, transports } from 'winston
 
 import { ILogger, LogLevel } from 'trade360-nodejs-sdk';
 
-export interface WinstonAdapterOptions extends LoggerOptions {}
-
 // Winston adapter
 export class WinstonAdapter implements ILogger {
   private logger: Logger;

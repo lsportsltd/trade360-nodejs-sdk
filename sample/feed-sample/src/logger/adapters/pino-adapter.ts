@@ -2,8 +2,6 @@ import pino, { Logger, LoggerOptions } from 'pino';
 
 import { ILogger, LogLevel } from 'trade360-nodejs-sdk';
 
-export interface PinoAdapterOptions extends LoggerOptions {}
-
 // Pino adapter
 export class PinoAdapter implements ILogger {
   private logger: Logger;

@@ -20,16 +20,6 @@ export interface PackageTypesMQSettings {
 }
 
 export class MQSettings {
-  // host!: string;
-
-  // port!: string;
-
-  // virtualHost!: string;
-
-  // userName!: string;
-
-  // password!: string;
-
   packageId!: number;
 
   prefetchCount: number = DEFUALT_PREFETCH_COUNT;

@@ -1,10 +1,5 @@
 import { ILogger, LogLevel } from 'trade360-nodejs-sdk';
 
-export interface ConsoleAdapterOptions {
-  // Console logger doesn't typically need options, but we can add some if needed
-  logToStderr?: boolean;
-}
-
 // Example implementation for console logger
 export class ConsoleAdapter implements ILogger {
   log(level: LogLevel, message: string, ...meta: unknown[]): void {

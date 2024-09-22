@@ -1,11 +1,6 @@
 import { LogLevel } from '../enums';
 import { ILogger } from '../interfaces';
 
-export interface ConsoleAdapterOptions {
-  // Console logger doesn't typically need options, but we can add some  if needed
-  logToStderr?: boolean;
-}
-
 // Example implementation for console logger
 export class ConsoleAdapter implements ILogger {
   log(level: LogLevel, message: string, ...meta: unknown[]): void {
