@@ -1,4 +1,4 @@
-import { LogLevel } from './enums';
+import { LogLevel } from '../enums';
 
 // Define the Logger interface
 export interface ILogger {

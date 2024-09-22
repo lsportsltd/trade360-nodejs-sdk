@@ -1,4 +1,6 @@
 import {
+  ConsumptionMessageError,
+  ConversionError,
   Feed,
   FixtureMetadataUpdate,
   HeartbeatUpdate,
@@ -11,14 +13,12 @@ import {
   OutrightLeagueMarketUpdate,
   OutrightScoreUpdate,
   OutrightSettlementsUpdate,
+  RetryError,
   SettlementUpdate,
   ValidationError,
-  ConversionError,
-  ConsumptionMessageError,
-  RetryError,
-} from "trade360-nodejs-sdk";
+} from 'trade360-nodejs-sdk';
 
-import { getConfig } from "./config";
+import { getConfig } from './config';
 import {
   FixtureMetadataUpdateHandler,
   HeartbeatUpdateHandler,
@@ -32,16 +32,26 @@ import {
   OutrightScoreUpdateHandler,
   OutrightSettlementsUpdateHandler,
   SettlementUpdateHandler,
-} from "./handler";
+} from './handler';
+import { BunyanAdapter, ConsoleAdapter, PinoAdapter, WinstonAdapter } from './logger';
 
 // Load configuration from appConfig file
 const config = getConfig();
 
-let logger = console;
+// Using Console
+let logger = new ConsoleAdapter();
+
+// Using Bunyan
+const bunyanLogger = new BunyanAdapter({ name: 'FeedSample' });
+
+// Using Pino
+const pinoLogger = new PinoAdapter();
+
+// Using Winston
+const winstonLogger = new WinstonAdapter();
 
 const initSample = async () => {
   try {
-    
     const feedInPlay = new Feed(config.trade360.inPlayMQSettings!, logger);
     // const feedPreMatch = Feed(config.Trade360.PreMatchMQSettings, logger);
 
@@ -49,39 +59,24 @@ const initSample = async () => {
     //   logger.log(`got new message:\n${JSON.stringify(msg)}\n`);
     // });
 
-    feedInPlay.addEntityHandler(
-      new FixtureMetadataUpdateHandler(),
-      FixtureMetadataUpdate
-    );
+    feedInPlay.addEntityHandler(new FixtureMetadataUpdateHandler(), FixtureMetadataUpdate);
 
     feedInPlay.addEntityHandler(new LivescoreUpdateHandler(), LivescoreUpdate);
 
     feedInPlay.addEntityHandler(new MarketUpdateHandler(), MarketUpdate);
 
-    feedInPlay.addEntityHandler(
-      new SettlementUpdateHandler(),
-      SettlementUpdate
-    );
+    feedInPlay.addEntityHandler(new SettlementUpdateHandler(), SettlementUpdate);
 
-    feedInPlay.addEntityHandler(
-      new OutrightFixtureUpdateHandler(),
-      OutrightFixtureUpdate
-    );
+    feedInPlay.addEntityHandler(new OutrightFixtureUpdateHandler(), OutrightFixtureUpdate);
 
-    feedInPlay.addEntityHandler(
-      new OutrightScoreUpdateHandler(),
-      OutrightScoreUpdate
-    );
+    feedInPlay.addEntityHandler(new OutrightScoreUpdateHandler(), OutrightScoreUpdate);
 
     feedInPlay.addEntityHandler(
       new OutrightFixtureMarketUpdateHandler(),
-      OutrightFixtureMarketUpdate
+      OutrightFixtureMarketUpdate,
     );
 
-    feedInPlay.addEntityHandler(
-      new OutrightSettlementsUpdateHandler(),
-      OutrightSettlementsUpdate
-    );
+    feedInPlay.addEntityHandler(new OutrightSettlementsUpdateHandler(), OutrightSettlementsUpdate);
 
     feedInPlay.addEntityHandler(new HeartbeatUpdateHandler(), HeartbeatUpdate);
 
@@ -89,16 +84,16 @@ const initSample = async () => {
 
     feedInPlay.addEntityHandler(
       new OutrightLeagueFixtureUpdateHandler(),
-      OutrightLeagueFixtureUpdate
+      OutrightLeagueFixtureUpdate,
     );
 
     feedInPlay.addEntityHandler(
       new OutrightLeagueMarketUpdateHandler(),
-      OutrightLeagueMarketUpdate
+      OutrightLeagueMarketUpdate,
     );
 
-    process.on("exit" || "SIGINT", async (err) => {
-      await feedInPlay.stop();
+    process.on('exit' || 'SIGINT', async (err) => {
+      // await feedInPlay.stop();
       process.exit(1);
     });
 
@@ -107,7 +102,7 @@ const initSample = async () => {
     await new Promise<void>((resolve) => {
       setTimeout(() => {
         return resolve();
-      }, 120 * 1000);
+      }, 5 * 1000);
     });
 
     await feedInPlay.stop();
@@ -119,9 +114,7 @@ const initSample = async () => {
       logger.error(`feed sample got err from ConversionError instance: ${err}`);
     }
     if (err instanceof ConsumptionMessageError) {
-      logger.error(
-        `feed sample got err from ConsumptionMessageError instance: ${err}`
-      );
+      logger.error(`feed sample got err from ConsumptionMessageError instance: ${err}`);
     }
     if (err instanceof RetryError) {
       logger.error(`feed sample got err from RetryError instance: ${err}`);

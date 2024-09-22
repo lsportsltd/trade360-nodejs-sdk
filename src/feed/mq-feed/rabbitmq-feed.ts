@@ -3,7 +3,7 @@ import { isNil } from 'lodash';
 
 import { BaseEntity } from '@entities';
 import { IEntityHandler, IFeed, MQSettingsOptions } from '@feed';
-import { ILogger } from '@logger';
+import { ConsoleAdapter, ILogger } from '@logger';
 import { ConsumptionMessageError } from '@lsports/errors';
 import { AsyncLock, withRetry } from '@utilities';
 
@@ -33,7 +33,7 @@ class RabbitMQFeed implements IFeed {
 
   constructor(
     private mqSettings: MQSettingsOptions,
-    private logger: ILogger,
+    private logger: ILogger = new ConsoleAdapter(),
   ) {
     this.requestQueue = `_${this.mqSettings.packageId}_`;
     this.stopTryReconnect = false;
@@ -51,7 +51,7 @@ class RabbitMQFeed implements IFeed {
   public async start(): Promise<void> {
     await this.connect();
 
-    this.attachListeners();
+    await this.attachListeners();
 
     const { prefetchCount, autoAck, consumptionLatencyThreshold } = this.mqSettings;
 
@@ -97,7 +97,7 @@ class RabbitMQFeed implements IFeed {
     const { hostname, port, username, password, vhost } = this.mqSettings;
 
     try {
-      this.logger.info('connect - Connecting to RabbitMQ Server');
+      this.logger.info('initialize connection to RabbitMQ');
 
       // Establish connection to RabbitMQ server
       const connectionString = encodeURI(
@@ -107,21 +107,19 @@ class RabbitMQFeed implements IFeed {
       this.connection = await connect(connectionString /*config.msgBrokerURL!*/);
 
       if (!this.connection) {
-        this.logger.error('connect - Failed to connect to RabbitMQ!');
-        throw new Error('connect - Failed to connect to RabbitMQ!');
+        throw new Error('failed initializing connection!');
       }
 
       this.logger.info(
-        `connect - Rabbit MQ Connection is ready!\nconnectionString: ${connectionString}\nListen to ${this.requestQueue} queue`,
+        `connection initialized successfully!\nconnectionString: ${connectionString}\nListen to ${this.requestQueue} queue`,
       );
 
-      this.isConnected = true;
       // create channel through the connection
       this.channel = await this.connection.createChannel();
 
-      this.logger.info('connect - Created RabbitMQ Channel successfully!');
+      this.isConnected = true;
     } catch (err) {
-      this.logger.error(`connect - Not connected to MQ Server, error: ${err}`);
+      this.logger.error(`failed initialize connection to RabbitMQ, Error: ${err}`);
       throw err;
     }
   }
@@ -129,9 +127,9 @@ class RabbitMQFeed implements IFeed {
   /**
    * attach listeners for desire invoked events
    */
-  private attachListeners(): void {
-    this.connection.on('error', this.connectionErrorHandler);
-    this.connection.on('close', this.connectionClosedHandler);
+  private async attachListeners(): Promise<void> {
+    this.connection.on('error', await this.connectionErrorHandler.bind(this));
+    this.connection.on('close', await this.connectionClosedHandler.bind(this));
   }
 
   /**
@@ -139,7 +137,7 @@ class RabbitMQFeed implements IFeed {
    * handle reconnection option
    */
   private async connectionClosedHandler(): Promise<void> {
-    this.logger.debug('event handler - connection to RabbitMQ closed!');
+    this.logger.debug('RabbitMQ connection was closed!');
 
     this.isConnected = false;
 
@@ -209,7 +207,7 @@ class RabbitMQFeed implements IFeed {
       await this.connection?.close();
     }
 
-    this.logger.info('stop - closed channel and connection to rabbitMQ!');
+    this.logger.info('closed gracefully channel and connection to rabbitMQ!');
   }
 
   public async addEntityHandler<TEntity extends BaseEntity>(

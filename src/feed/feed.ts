@@ -1,12 +1,12 @@
 import { isNil } from 'lodash';
 
-import { IFeed, MQSettings, IEntityHandler } from '@feed';
 import { BaseEntity } from '@entities';
+import { IEntityHandler, IFeed, MQSettings } from '@feed';
+import { ConsoleAdapter, ILogger } from '@logger';
 import { DistributionUtil, withRetry } from '@utilities';
 
 import { MessageConsumerMQ } from './mq-feed';
 import { MqConnectionSettingsValidator } from './vaildators';
-import { ILogger, ConsoleLogger } from '@logger';
 
 /**
  * Class that represesnts all Feed requests
@@ -18,11 +18,15 @@ export class Feed implements IFeed {
 
   constructor(
     private mqSettings: MQSettings,
-    private logger: ILogger = new ConsoleLogger(),
+    private logger: ILogger = new ConsoleAdapter(),
   ) {
     MqConnectionSettingsValidator.validate(this.mqSettings);
 
     this.consumerMq = new MessageConsumerMQ(this.mqSettings, this.logger);
+  }
+
+  setLogger(logger: ILogger): void {
+    this.logger = logger;
   }
 
   public async start(preConnectionAtStart: boolean = false): Promise<void> {
