@@ -1,75 +1,20 @@
-import { isNil, isNumber, isString } from 'lodash';
-
-import {
-  MIN_NETWORK_RECOVERY_INTERVAL_IN_MS,
-  MIN_PREFETCH_COUNT,
-  MIN_REQUESTED_HEARTBEAT_SECONDS,
-  MQSettingsOptions,
-} from '@feed';
+import { MQSettingsOptions, MQSettingsSchema } from '@feed';
 import { ValidationError } from '@lsports/errors';
 
 /**
- * Class for vaildate that the configure mq setting is vaild
+ * Class for vaildate that the configure mq setting is vaild.
+ * Use MQSettingsSchema to parse and validate data.
  */
 export class MqConnectionSettingsValidator {
-  public static validate(mqSettings: MQSettingsOptions): void {
-    const {
-      hostname,
-      port,
-      vhost,
-      packageId,
-      username,
-      password,
-      prefetchCount,
-      networkRecoveryIntervalInMs,
-      consumptionLatencyThreshold,
-      requestedHeartbeatSeconds,
-    } = mqSettings;
+  public static validate(mqSettings: unknown): MQSettingsOptions {
+    const { success, data, error } = MQSettingsSchema.safeParse(mqSettings);
 
-    if (isNil(hostname) || !isString(hostname))
-      throw new ValidationError('hostname is required and need to be string');
-
-    if (isNil(port) || !isNumber(port) || port <= 0)
-      throw new ValidationError('port must be a positive integer');
-
-    if (isNil(vhost) || !isString(vhost)) throw new ValidationError('vhost is required');
-
-    if (isNil(packageId) || !isNumber(packageId) || packageId <= 0)
-      throw new ValidationError('packageId must be a positive integer');
-
-    if (isNil(username) || !isString(username))
-      throw new ValidationError('username is required and need to be string');
-
-    if (isNil(password) || !isString(password))
-      throw new ValidationError('password is required and need to be string');
-
-    if (isNil(prefetchCount) || !isNumber(prefetchCount) || prefetchCount < +MIN_PREFETCH_COUNT)
-      throw new ValidationError(
-        `prefetchCount must be a positive integer - larger then ${MIN_PREFETCH_COUNT}`,
-      );
-
-    if (
-      isNil(requestedHeartbeatSeconds) ||
-      !isNumber(requestedHeartbeatSeconds) ||
-      requestedHeartbeatSeconds <= +MIN_REQUESTED_HEARTBEAT_SECONDS
-    )
-      throw new ValidationError(
-        `requestedHeartbeatSeconds must be a positive integer - larger then ${requestedHeartbeatSeconds}`,
-      );
-
-    if (
-      isNil(networkRecoveryIntervalInMs) ||
-      !isNumber(networkRecoveryIntervalInMs) ||
-      networkRecoveryIntervalInMs < +MIN_NETWORK_RECOVERY_INTERVAL_IN_MS
-    )
-      throw new ValidationError(
-        `networkRecoveryInterval must be a positive integer - larger then ${MIN_NETWORK_RECOVERY_INTERVAL_IN_MS}`,
-      );
-
-    if (
-      (!isNil(consumptionLatencyThreshold) && !isNumber(consumptionLatencyThreshold)) ||
-      consumptionLatencyThreshold <= 0
-    )
-      throw new ValidationError('consumptionLatencyThreshold must be a positive integer');
+    if (success) {
+      return data;
+    } else {
+      throw new ValidationError('Failed validate mq settings', {
+        context: JSON.parse(JSON.stringify(error.errors)),
+      });
+    }
   }
 }

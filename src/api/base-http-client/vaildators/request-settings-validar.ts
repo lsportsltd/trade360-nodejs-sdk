@@ -1,22 +1,20 @@
-import { isNil, isNumber, isString } from 'lodash';
-
-import { HttpRequestDto } from '@api/common';
+import { HttpRequest, HttpRequestSchema } from '@api/common';
 import { ValidationError } from '@lsports/errors';
 
 /**
  * Class for vaildate that the configure request setting is vaild
+ * Use HttpRequestSchema to parse and validate data.
  */
 export class RequestSettingsValidator {
-  public static validate(requestSettings: HttpRequestDto): void {
-    const { packageId, username, password } = requestSettings;
+  public static validate(requestSettings: unknown): HttpRequest {
+    const { success, data, error } = HttpRequestSchema.safeParse(requestSettings);
 
-    if (isNil(packageId) || !isNumber(packageId) || packageId <= 0)
-      throw new ValidationError('packageId must be a positive integer');
-
-    if (isNil(username) || !isString(username))
-      throw new ValidationError('Username is required and need to be string');
-
-    if (isNil(password) || !isString(password))
-      throw new ValidationError('Password is required and need to be string');
+    if (success) {
+      return data;
+    } else {
+      throw new ValidationError('Failed validate request settings', {
+        context: JSON.parse(JSON.stringify(error.errors)),
+      });
+    }
   }
 }

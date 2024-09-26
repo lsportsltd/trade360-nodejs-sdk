@@ -18,6 +18,8 @@ import {
   ValidationError,
 } from 'trade360-nodejs-sdk';
 
+import _ from 'lodash';
+
 import { getConfig } from './config';
 import {
   FixtureMetadataUpdateHandler,
@@ -106,9 +108,14 @@ const initSample = async () => {
     });
 
     await feedInPlay.stop();
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof ValidationError) {
       logger.error(`feed sample got err from ValidationError instance: ${err}`);
+      if (!_.isNil(err.context) && typeof err.context == 'object') {
+        _.each(err.context, (value, key) => {
+          logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
+        });
+      }
     }
     if (err instanceof ConversionError) {
       logger.error(`feed sample got err from ConversionError instance: ${err}`);

@@ -5,7 +5,7 @@ type Jsonable =
   | null
   | undefined
   | readonly Jsonable[]
-  | { readonly [key: string]: Jsonable }
+  | { readonly [key: string | symbol]: Jsonable }
   | { toJSON(): Jsonable };
 
 /**

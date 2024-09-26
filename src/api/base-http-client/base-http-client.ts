@@ -7,12 +7,14 @@ import { ILogger } from '@logger';
 export class BaseHttpClient {
   protected axiosService: AxiosService<HttpRequestDto>;
 
+  protected requestSettings: HttpRequestDto;
+
   constructor(
     private baseUrl: string,
-    protected requestSettings: HttpRequestDto,
+    requestSettings: unknown,
     protected logger: ILogger,
   ) {
-    RequestSettingsValidator.validate(this.requestSettings);
+    this.requestSettings = RequestSettingsValidator.validate(requestSettings);
 
     this.axiosService = new AxiosService<HttpRequestDto>(this.baseUrl);
   }

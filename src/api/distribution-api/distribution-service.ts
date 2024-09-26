@@ -6,9 +6,11 @@ import {
   STATUS_PREFIX_URL,
   STOP_PREFIX_URL,
   TRADE360_BASE_URL,
-} from '@api/distribution-api';
+  HttpRequestDto,
+  HttpResponsePayloadDto,
+  ResponseBodyType,
+} from '@api';
 
-import { HttpRequestDto, HttpResponsePayloadDto, ResponseBodyType } from '@api/common';
 import { ILogger } from '@logger';
 
 /**
