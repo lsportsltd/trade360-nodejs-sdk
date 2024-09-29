@@ -17,7 +17,7 @@ export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
   async processAsync({ header, body }: IMessageStructure<unknown>): Promise<void> {
     try {
       const entity = !isNil(body)
-        ? TransformerUtil.deserialize(JSON.parse(body), this.entityConstructor)
+        ? TransformerUtil.transform(JSON.parse(body), this.entityConstructor)
         : undefined;
 
       return await this.entityHandler.processAsync({ header, entity });

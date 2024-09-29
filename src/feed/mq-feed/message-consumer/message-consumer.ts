@@ -12,10 +12,7 @@ import { IBodyHandler, IConsumptionLantency } from './interfaces';
 
 function ConvertJsonToMessage(rawJson: string): WrappedMessage {
   try {
-    const message: WrappedMessage = TransformerUtil.deserialize(
-      JSON.parse(rawJson),
-      WrappedMessage,
-    );
+    const message: WrappedMessage = TransformerUtil.transform(JSON.parse(rawJson), WrappedMessage);
 
     return message;
   } catch (err) {

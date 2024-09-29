@@ -7,10 +7,10 @@ export class TransformerUtil {
    * Deserialize a plain object to an instance of the specified class.
    * @param plainObject The plain object to deserialize
    * @param targetClass The class to instantiate
-   * @returns
+   * @returns An instance of the specified class, TEntity, with the properties
+   *  set according to the plain object provided
    */
-  // TODO: keep better name for this method or class for better representation
-  public static deserialize<TEntity extends BaseEntity>(
+  public static transform<TEntity extends BaseEntity>(
     plainObject: Record<string, never> | BaseEntity,
     targetClass: new () => TEntity,
   ): TEntity {
@@ -24,8 +24,10 @@ export class TransformerUtil {
    * Deserialize an array of plain objects to an array of instances of the specified class.
    * @param plainArray The array of plain objects to deserialize
    * @param targetClass The class to instantiate
+   * @returns An array of instances of the specified class, TEntity, with the properties
+   * set according to the plain objects provided
    */
-  public static deserializeArray<TEntity extends BaseEntity>(
+  public static transformArray<TEntity extends BaseEntity>(
     plainArray: Record<string, unknown>[],
     targetClass: new () => TEntity,
   ): TEntity[] {
