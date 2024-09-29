@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import {
   ConsumptionMessageError,
   ConversionError,
@@ -17,8 +19,6 @@ import {
   SettlementUpdate,
   ValidationError,
 } from 'trade360-nodejs-sdk';
-
-import _ from 'lodash';
 
 import { getConfig } from './config';
 import {
