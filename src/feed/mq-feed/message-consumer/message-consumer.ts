@@ -10,6 +10,11 @@ import { ILogger } from '@logger';
 import { BodyHandler } from './handler';
 import { IBodyHandler, IConsumptionLantency } from './interfaces';
 
+/**
+ * Convert json string to WrappedMessage instance
+ * @param rawJson json string
+ * @returns WrappedMessage instance
+ */
 function ConvertJsonToMessage(rawJson: string): WrappedMessage {
   try {
     const message: WrappedMessage = TransformerUtil.transform(JSON.parse(rawJson), WrappedMessage);
@@ -28,6 +33,9 @@ export class MessageConsumer {
 
   constructor(private logger: ILogger) {}
 
+  /**
+   * Handle basic message consumption process
+   */
   public async handleBasicMessage(
     messageContent: Uint8Array,
     { messageMqTimestamp, consumptionLatencyThreshold }: IConsumptionLantency,
@@ -75,6 +83,10 @@ export class MessageConsumer {
     }
   }
 
+  /**
+   * Check message consumption latency and log warning if it exceeds the threshold value in seconds
+   * or log info if it's within the threshold value in seconds.
+   */
   public checkConsumptionLatency({
     messageMqTimestamp,
     consumptionLatencyThreshold: thresholdInSeconds,
@@ -107,6 +119,12 @@ export class MessageConsumer {
     }
   }
 
+  /**
+   * Register new entity handler for specific entity type
+   * @param entityHandler entity handler instance that implement IEntityHandler interface
+   * @param entityConstructor entity constructor for the entity type that the handler will process it
+   * @returns void
+   */
   public RegisterEntityHandler<TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
     entityConstructor: new () => TEntity,

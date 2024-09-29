@@ -1,7 +1,9 @@
 import { LogLevel } from '../enums';
 import { ILogger } from '../interfaces';
 
-// Example implementation for console logger
+/**
+ * ConsoleAdapter class to log messages with different levels to the console.
+ * */
 export class ConsoleAdapter implements ILogger {
   log(level: LogLevel, message: string, ...meta: unknown[]): void {
     console[level](message, ...meta);

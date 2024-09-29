@@ -13,6 +13,10 @@ import {
   MIN_REQUESTED_HEARTBEAT_SECONDS,
 } from '@feed/types';
 
+/**
+ * Schema for the MQ settings object. This schema is used to parse and validate the MQ settings object.
+ * The MQ settings object is used to configure the connection to the RabbitMQ server.
+ */
 export const MQSettingsSchema = z.object({
   hostname: z.string(),
   port: z.number().int().positive(),

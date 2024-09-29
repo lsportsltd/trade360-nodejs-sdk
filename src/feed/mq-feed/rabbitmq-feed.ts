@@ -175,13 +175,18 @@ class RabbitMQFeed implements IFeed {
   }
 
   /**
-   * handle error event invoke for rabbitmq instance
+   * handle error event invoke for rabbitmq instance connection
    * @param err error been thrown
    */
   private connectionErrorHandler(err: Error): void {
     this.logger.error(err.message);
   }
 
+  /**
+   * get the message timestamp from the message properties
+   * @param msgProperties the message properties
+   * @returns the message timestamp in milliseconds
+   */
   public getMessageMqTimestamp(msgProperties: MessageProperties): number | undefined {
     if (isNil(msgProperties)) return;
 

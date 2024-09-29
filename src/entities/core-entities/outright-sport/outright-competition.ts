@@ -1,7 +1,7 @@
 import { Expose, Transform } from 'class-transformer';
 
 import { BaseEntity } from '@entities';
-import { deserializeToEventInstance } from '@lsports/entities/utilities';
+import { transformToEventInstance } from '@lsports/entities';
 
 export class OutrightCompetition<TEvent extends BaseEntity> {
   @Expose({ name: 'Id' })
@@ -15,7 +15,7 @@ export class OutrightCompetition<TEvent extends BaseEntity> {
 
   @Expose({ name: 'Events' })
   @Transform(({ value }) => {
-    return deserializeToEventInstance(value);
+    return transformToEventInstance(value);
   })
   events?: TEvent[];
 }

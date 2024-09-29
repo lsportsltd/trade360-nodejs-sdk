@@ -12,6 +12,10 @@ import { MQSettingsOptions } from '@feed';
 import { ILogger } from '@logger';
 import { TransformerUtil } from '@lsports/entities';
 
+/**
+ * Utility class for distribution operations such as starting and stopping distribution
+ * and checking the status of the distribution service through the API request object.
+ */
 export class DistributionUtil {
   private static requestApi?: DistributionRequest;
 
@@ -21,11 +25,15 @@ export class DistributionUtil {
 
   constructor(settings: MQSettingsOptions, logger: ILogger) {
     DistributionUtil.requestApi = new DistributionRequest(
-      TransformerUtil.deserialize(settings, HttpRequestDto),
+      TransformerUtil.transform(settings, HttpRequestDto),
       (DistributionUtil.logger = logger),
     );
   }
 
+  /**
+   *  Check the status of the distribution service through the API request object.
+   * @returns the status of the distribution service
+   */
   static async checkStatus(): Promise<
     | {
         httpStatusCode: number;
@@ -48,6 +56,10 @@ export class DistributionUtil {
     }
   }
 
+  /**
+   * Start the distribution service through the API request object. This method will wait for a delay before resolving.
+   * @returns a promise that resolves when the distribution service is started after the delay has passed successfully
+   */
   static async start(): Promise<void> {
     if (isNil(DistributionUtil.requestApi)) throw new Error('initialize distribution api first!');
 
@@ -64,6 +76,10 @@ export class DistributionUtil {
     });
   }
 
+  /**
+   * Stop the distribution service through the API request object. This method will wait for a delay before resolving.
+   * @returns a promise that resolves when the distribution service is stopped after the delay has passed successfully
+   */
   static async stop(): Promise<void> {
     if (isNil(DistributionUtil.requestApi)) throw new Error('initialize distribution api first!');
 

@@ -8,6 +8,12 @@ import { MQSettingsSchema } from './mq-settings-schema';
  * Use MQSettingsSchema to parse and validate data.
  */
 export class MqConnectionSettingsValidator {
+  /**
+   * Validate the mqSettings object using the MQSettingsSchema.
+   * @param mqSettings the mqSettings object to validate
+   * @returns the validated mqSettings object
+   * @throws ValidationError if the mqSettings object is invalid
+   */
   public static validate(mqSettings: unknown): MQSettingsOptions {
     const { success, data, error } = MQSettingsSchema.safeParse(mqSettings);
 

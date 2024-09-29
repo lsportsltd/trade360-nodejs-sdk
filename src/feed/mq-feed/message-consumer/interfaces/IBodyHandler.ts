@@ -1,5 +1,8 @@
 import { IMessageStructure } from './IMessageStructure';
 
+/**
+ * Interface for the body handler of an entity message structure
+ */
 export interface IBodyHandler {
   /**
    * process the inner procedure for the body property of an entity
