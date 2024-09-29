@@ -1,7 +1,7 @@
 import { isNil } from 'lodash';
 
 import { BaseEntity } from '@entities';
-import { IEntityHandler, IFeed, MQSettings, MQSettingsOptions } from '@feed';
+import { IEntityHandler, IFeed, MQSettingsOptions } from '@feed';
 import { ConsoleAdapter, ILogger } from '@logger';
 import { DistributionUtil, withRetry } from '@utilities';
 
@@ -19,7 +19,7 @@ export class Feed implements IFeed {
   private mqSettings: MQSettingsOptions;
 
   constructor(
-    mqSettings: MQSettings,
+    mqSettings: unknown,
     private logger: ILogger = new ConsoleAdapter(),
   ) {
     this.mqSettings = MqConnectionSettingsValidator.validate(mqSettings);

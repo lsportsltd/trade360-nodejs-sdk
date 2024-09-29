@@ -1,5 +1,7 @@
-import { MQSettingsOptions, MQSettingsSchema } from '@feed';
+import { MQSettingsOptions } from '@feed';
 import { ValidationError } from '@lsports/errors';
+
+import { MQSettingsSchema } from './mq-settings-schema';
 
 /**
  * Class for vaildate that the configure mq setting is vaild.
@@ -12,7 +14,7 @@ export class MqConnectionSettingsValidator {
     if (success) {
       return data;
     } else {
-      throw new ValidationError('Failed validate mq settings', {
+      throw new ValidationError('Configuration settings validation failed', {
         context: JSON.parse(JSON.stringify(error.errors)),
       });
     }
