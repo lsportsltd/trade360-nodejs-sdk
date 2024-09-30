@@ -1,0 +1,19 @@
+{
+  "trade360": {
+    "inPlayMQSettings": {
+      "userName": "Pavel.T",
+      "password": "1q2w3e%T",
+      "packageId": 799
+    },
+    "MQInPlaySettings": {
+      "PackageId": 430,
+      "UserName": "biana_test@lsports.eu",
+      "Password": "P@ssw0rd!"
+    },
+    "MQPreMatchSettings": {
+      "PackageId": 431,
+      "UserName": "LSPORTS_USERNAME",
+      "Password": "LSPORTS_PASSWORD"
+    }
+  }
+}

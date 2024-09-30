@@ -1,0 +1,26 @@
+{
+  "name": "feed-sample",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "watch": "tsc -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bunyan": "^1.8.15",
+    "dotenv": "^16.4.5",
+    "fs": "^0.0.1-security",
+    "pino": "^9.4.0",
+    "trade360-nodejs-sdk": "file:../../",
+    "winston": "^3.14.2"
+  },
+  "devDependencies": {
+    "@types/bunyan": "^1.8.11",
+    "@types/node": "^20.14.9",
+    "ts-node": "^10.9.2"
+  }
+}

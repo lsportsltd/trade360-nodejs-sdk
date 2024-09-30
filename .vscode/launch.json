@@ -1,0 +1,34 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Library",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/dist/index.js",
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "sourceMaps": true
+    },
+    {
+      "name": "Debug Feed Sample Project",
+      "type": "node",
+      "request": "launch",
+      "outputCapture": "std",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${workspaceFolder}/sample/feed-sample/src/index.ts"],
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "sourceMaps": true
+    },
+    {
+      "name": "Debug Api Sample Project",
+      "type": "node",
+      "request": "launch",
+      "outputCapture": "std",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${workspaceFolder}/sample/api-sample/src/index.ts"],
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "sourceMaps": true
+    }
+  ]
+}

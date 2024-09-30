@@ -1,0 +1,29 @@
+// Define the base structure for entity classes
+type BaseEntityClass = new (...args: never[]) => {
+  [key: string]: never;
+};
+
+// Use InstanceType to create a type for instances of BaseEntityClass
+export type BaseEntity = InstanceType<BaseEntityClass>;
+
+export const knownEntityKeys: Map<number, string> = new Map<number, string>();
+
+export function setNewEntityKeyToMap(key: number, name: string): void {
+  knownEntityKeys.set(key, name);
+}
+
+export * from './fixture-metadata-update';
+export * from './livescore-update';
+export * from './market-update';
+export * from './settlement-update';
+
+export * from './outright-fixture-update';
+export * from './outright-score-update';
+export * from './outright-fixture-market-update';
+export * from './outright-settlements-update';
+
+export * from './heartbeat-update';
+export * from './keep-alive-update';
+
+export * from './outright-league-fixture-update';
+export * from './outright-league-market-update';
