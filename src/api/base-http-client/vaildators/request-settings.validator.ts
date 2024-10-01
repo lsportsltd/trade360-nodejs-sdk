@@ -1,6 +1,6 @@
 import { ValidationError } from '@lsports/errors';
 
-import { HttpRequest, HttpRequestSchema } from './request-settings-schema';
+import { HttpRequest, HttpRequestSchema } from './request-settings.schema';
 
 /**
  * Class for vaildate that the configure request setting is vaild

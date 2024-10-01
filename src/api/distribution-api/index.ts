@@ -1,4 +1,4 @@
-export * from './distribution-service';
+export * from './distribution.service';
 export * from './interfaces';
 
 export const TRADE360_BASE_URL = 'https://stm-api.qa.lsports.cloud/';

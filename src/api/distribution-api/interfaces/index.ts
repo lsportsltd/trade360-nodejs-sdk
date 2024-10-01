@@ -1,1 +1,1 @@
-export * from './IDistributionHttpClient';
+export * from './distribution-http-client.interface';

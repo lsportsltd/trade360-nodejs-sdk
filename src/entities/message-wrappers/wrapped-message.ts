@@ -1,7 +1,7 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import 'reflect-metadata';
 
-import { MessageHeader } from './messageHeader';
+import { MessageHeader } from './message-header';
 
 export class WrappedMessage {
   @Expose({ name: 'Header' })

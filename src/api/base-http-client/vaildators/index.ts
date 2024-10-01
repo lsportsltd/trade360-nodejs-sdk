@@ -1,1 +1,1 @@
-export * from './request-settings-validar';
+export * from './request-settings.validator';

@@ -1,2 +1,2 @@
-export * from './wrappedMessage';
-export * from './messageHeader';
+export * from './wrapped-message';
+export * from './message-header';

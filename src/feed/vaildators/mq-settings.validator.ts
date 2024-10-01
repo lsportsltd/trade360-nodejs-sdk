@@ -1,7 +1,7 @@
 import { MQSettingsOptions } from '@feed';
 import { ValidationError } from '@lsports/errors';
 
-import { MQSettingsSchema } from './mq-settings-schema';
+import { MQSettingsSchema } from './mq-settings.schema';
 
 /**
  * Class for vaildate that the configure mq setting is vaild.

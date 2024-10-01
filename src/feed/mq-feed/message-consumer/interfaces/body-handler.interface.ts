@@ -1,4 +1,4 @@
-import { IMessageStructure } from './IMessageStructure';
+import { IMessageStructure } from './message-structure.interface';
 
 /**
  * Interface for the body handler of an entity message structure

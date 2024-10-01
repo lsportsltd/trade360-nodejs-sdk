@@ -1,6 +1,6 @@
 import { BaseEntity } from '@entities';
 
-import { IEntityHandler } from './IEntityHandler';
+import { IEntityHandler } from './entity-handler.interface';
 
 /**
  * Interface that represent Feed implementation

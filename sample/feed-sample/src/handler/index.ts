@@ -1,1 +1,1 @@
-export * from "./inPlay";
+export * from './inplay';
