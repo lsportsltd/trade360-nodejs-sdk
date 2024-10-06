@@ -1,20 +1,25 @@
-import { HttpRequestDto } from '@api/common';
+import { HttpRequestDto, IHttpServiceConfig } from '@api/common';
 
-import { AxiosService } from './services';
-import { RequestSettingsValidator } from './vaildators';
+import { AxiosService } from '@httpClient/services';
+import { RequestSettingsValidator } from '@httpClient/vaildators';
+
 import { ILogger } from '@logger';
 
 export class BaseHttpClient {
   protected axiosService: AxiosService<HttpRequestDto>;
 
+  protected baseUrl: string;
+
   protected requestSettings: HttpRequestDto;
 
-  constructor(
-    private baseUrl: string,
-    requestSettings: unknown,
-    protected logger: ILogger,
-  ) {
-    this.requestSettings = RequestSettingsValidator.validate(requestSettings);
+  protected logger?: ILogger;
+
+  constructor({ baseUrl, packageCredentials, logger }: IHttpServiceConfig) {
+    this.requestSettings = RequestSettingsValidator.validate({ baseUrl, ...packageCredentials });
+
+    this.logger = logger;
+
+    this.baseUrl = encodeURI(baseUrl!);
 
     this.axiosService = new AxiosService<HttpRequestDto>(this.baseUrl);
   }

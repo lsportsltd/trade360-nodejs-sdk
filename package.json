@@ -55,7 +55,10 @@
     "@lsports/errors": "dist/entities/errors",
     "@api": "dist/api",
     "@api/*": "dist/api/*",
+    "@customers-api": "dist/api/customers-api",
+    "@customers-api/*": "dist/api/customers-api/*",
     "@httpClient": "dist/api/base-http-client",
+    "@httpClient/*": "dist/api/base-http-client/*",
     "@utilities": "dist/utilities",
     "@logger": "dist/logger"
   }
