@@ -1,16 +1,16 @@
 import path from 'path';
 import { readFileSync } from 'fs';
 
-import { AppConfig } from 'trade360-nodejs-sdk';
+import { MQAppConfig } from 'trade360-nodejs-sdk';
 
 const appConfigPath = path.resolve(__dirname, 'app-config.json');
 
-let cachedConfig: AppConfig;
+let cachedConfig: MQAppConfig;
 
-export function getConfig(): AppConfig {
+export function getConfig(): MQAppConfig {
   if (!cachedConfig) {
     const configContent = readFileSync(appConfigPath, 'utf-8');
-    cachedConfig = JSON.parse(configContent) as AppConfig;
+    cachedConfig = JSON.parse(configContent) as MQAppConfig;
   }
   return cachedConfig;
 }

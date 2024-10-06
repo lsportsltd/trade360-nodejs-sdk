@@ -1,7 +1,8 @@
 {
   "trade360": {
+    "customersApiBaseUrl": "https://stm-api.qa.lsports.cloud/",
     "inPlayMQSettings": {
-      "userName": "Pavel.T",
+      "username": "Pavel.T",
       "password": "1q2w3e%T",
       "packageId": 799
     },
