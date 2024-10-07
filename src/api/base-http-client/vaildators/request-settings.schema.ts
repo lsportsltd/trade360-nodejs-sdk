@@ -8,7 +8,7 @@ export const HttpRequestSettingsSchema = z.object({
   username: z.string(),
   password: z.string(),
   packageId: z.number().int().positive(),
-  baseUrl: z.string().url(),
+  customersApiBaseUrl: z.string().url(),
 });
 
 // Type inference

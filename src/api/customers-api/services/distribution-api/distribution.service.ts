@@ -2,7 +2,7 @@ import { isNil } from 'lodash';
 
 import { BaseHttpClient } from '@httpClient';
 
-import { IDistributionHttpClient } from '@api';
+import { IPackageDistributionHttpClient } from '@api/customers-api';
 import { HttpResponsePayloadDto, IHttpServiceConfig, ResponseBodyType } from '@api/common';
 
 import { ConsoleAdapter, ILogger } from '@logger';
@@ -13,12 +13,12 @@ import { DistributionRoutesPrefixUrl } from '.';
  */
 export class PackageDistributionHttpClient
   extends BaseHttpClient
-  implements IDistributionHttpClient
+  implements IPackageDistributionHttpClient
 {
   protected logger: ILogger;
 
-  constructor({ packageCredentials, baseUrl, logger }: IHttpServiceConfig) {
-    super({ baseUrl, packageCredentials, logger });
+  constructor({ packageCredentials, customersApiBaseUrl, logger }: IHttpServiceConfig) {
+    super({ customersApiBaseUrl, packageCredentials, logger });
 
     this.logger = !isNil(logger) ? logger : new ConsoleAdapter();
   }

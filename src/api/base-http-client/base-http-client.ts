@@ -5,6 +5,10 @@ import { RequestSettingsValidator } from '@httpClient/vaildators';
 
 import { ILogger } from '@logger';
 
+/**
+ * BaseHttpClient class is responsible for sending requests to the customers API.
+ * It is a base class for all HTTP clients. It contains the basic logic for sending requests.
+ */
 export class BaseHttpClient {
   protected axiosService: AxiosService<HttpRequestDto>;
 
@@ -14,12 +18,15 @@ export class BaseHttpClient {
 
   protected logger?: ILogger;
 
-  constructor({ baseUrl, packageCredentials, logger }: IHttpServiceConfig) {
-    this.requestSettings = RequestSettingsValidator.validate({ baseUrl, ...packageCredentials });
+  constructor({ customersApiBaseUrl, packageCredentials, logger }: IHttpServiceConfig) {
+    this.requestSettings = RequestSettingsValidator.validate({
+      customersApiBaseUrl,
+      ...packageCredentials,
+    });
 
     this.logger = logger;
 
-    this.baseUrl = encodeURI(baseUrl!);
+    this.baseUrl = encodeURI(customersApiBaseUrl!);
 
     this.axiosService = new AxiosService<HttpRequestDto>(this.baseUrl);
   }

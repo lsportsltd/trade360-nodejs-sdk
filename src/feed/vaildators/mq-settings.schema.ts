@@ -50,6 +50,7 @@ export const MQSettingsSchema = z.object({
     .default(DEFUALT_REQUESTED_HEARTBEAT_SECONDS),
   dispatchConsumersAsync: z.boolean().default(DEFUALT_DISPATCH_CONSUMERS),
   automaticRecoveryEnabled: z.boolean().default(DEFUALT_AUTOMATIC_RECOVERY_ENABLED),
+  customersApiBaseUrl: z.string().url().optional(),
 });
 
 // Type inference

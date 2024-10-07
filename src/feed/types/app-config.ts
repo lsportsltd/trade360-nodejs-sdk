@@ -6,7 +6,7 @@ import { MQSettings } from '@feed/vaildators';
  * Application configuration interface for the feed service settings for the package types MQ settings for the feed service
  * to connect to the RabbitMQ server and the feed service settings for the in-play and pre-match feed services.
  */
-export interface AppConfig {
+export interface MQAppConfig {
   trade360: PackageTypesMQSettings;
 }
 

@@ -20,6 +20,8 @@
       "autoAck": false,
       "consumptionLatencyThreshold": 5,
 
+      "customersApiBaseUrl": "https://stm-api.qa.lsports.cloud/",
+
       "PACKAGE_FORMAT_TYPE": "2",
       "requestedHeartbeatSeconds": 30,
       "dispatchConsumersAsync": true,
