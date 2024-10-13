@@ -2,10 +2,10 @@ import { isNil } from 'lodash';
 
 import { IEntityHandler } from '@feed';
 import { BaseEntity } from '@entities';
+import { TransformerUtil } from '@utilities';
+import { ILogger } from '@logger';
 
 import { IBodyHandler, IMessageStructure } from '../interfaces';
-import { TransformerUtil } from '@lsports/entities';
-import { ILogger } from '@logger';
 
 /**
  * Class that represent the body handler of an entity message structure

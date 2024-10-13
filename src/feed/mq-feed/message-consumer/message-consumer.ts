@@ -1,10 +1,8 @@
-import 'reflect-metadata';
-
 import { isNil } from 'lodash';
 
 import { BaseEntity, ConversionError, WrappedMessage, knownEntityKeys } from '@entities';
 import { IEntityHandler } from '@feed';
-import { TransformerUtil } from '@lsports/entities';
+import { TransformerUtil } from '@utilities';
 import { ILogger } from '@logger';
 
 import { BodyHandler } from './handler';

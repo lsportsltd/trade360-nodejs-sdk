@@ -1,5 +1,8 @@
 import { Expose } from 'class-transformer';
 
+/**
+ * HTTP request DTO.
+ */
 export class HttpRequestDto {
   @Expose()
   packageId!: number;

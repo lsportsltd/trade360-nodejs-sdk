@@ -3,9 +3,11 @@ import { isNil } from 'lodash';
 import { BaseHttpClient } from '@httpClient';
 
 import { IPackageDistributionHttpClient } from '@api/customers-api';
-import { HttpResponsePayloadDto, IHttpServiceConfig, ResponseBodyType } from '@api/common';
+import { HttpResponsePayloadDto, IHttpServiceConfig } from '@api/common';
 
 import { ConsoleAdapter, ILogger } from '@logger';
+import { BaseEntity } from '@entities';
+
 import { DistributionRoutesPrefixUrl } from '.';
 
 /**
@@ -23,33 +25,36 @@ export class PackageDistributionHttpClient
     this.logger = !isNil(logger) ? logger : new ConsoleAdapter();
   }
 
-  public async startDistribution<TResponse extends ResponseBodyType>(): Promise<
-    HttpResponsePayloadDto<TResponse> | undefined
-  > {
+  public async getDistributionStatus<TResponse extends BaseEntity>(
+    responseBodyType: new () => TResponse,
+  ): Promise<HttpResponsePayloadDto<TResponse>> {
+    this.logger.debug('run  status request...');
+
+    return this.sendRequest<TResponse>(
+      DistributionRoutesPrefixUrl.STATUS_PREFIX_URL,
+      responseBodyType,
+    );
+  }
+
+  public async startDistribution<TResponse extends BaseEntity>(
+    responseBodyType: new () => TResponse,
+  ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
     this.logger.debug('run start request...');
 
-    return this.sendRequest<HttpResponsePayloadDto<TResponse>>(
+    return this.sendRequest<TResponse>(
       DistributionRoutesPrefixUrl.START_PREFIX_URL,
+      responseBodyType,
     );
   }
 
-  public async stopDistribution<TResponse extends ResponseBodyType>(): Promise<
-    HttpResponsePayloadDto<TResponse> | undefined
-  > {
+  public async stopDistribution<TResponse extends BaseEntity>(
+    stopResponsePayloadDto: new () => TResponse,
+  ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
     this.logger.debug('run stop request...');
 
-    return this.sendRequest<HttpResponsePayloadDto<TResponse>>(
+    return this.sendRequest<TResponse>(
       DistributionRoutesPrefixUrl.STOP_PREFIX_URL,
-    );
-  }
-
-  public async getDistributionStatus<TResponse extends ResponseBodyType>(): Promise<
-    HttpResponsePayloadDto<TResponse> | undefined
-  > {
-    this.logger.debug('run status request...');
-
-    return this.sendRequest<HttpResponsePayloadDto<TResponse>>(
-      DistributionRoutesPrefixUrl.STATUS_PREFIX_URL,
+      stopResponsePayloadDto,
     );
   }
 }

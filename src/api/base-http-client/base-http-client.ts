@@ -1,4 +1,5 @@
-import { HttpRequestDto, IHttpServiceConfig } from '@api/common';
+import { HttpRequestDto, HttpResponsePayloadDto, IHttpServiceConfig } from '@api/common';
+import { BaseEntity } from '@entities';
 
 import { AxiosService } from '@httpClient/services';
 import { RequestSettingsValidator } from '@httpClient/vaildators';
@@ -37,13 +38,23 @@ export class BaseHttpClient {
    * @param route string that represent the route expected to be sent to
    * @returns  promise with the TResponse type response type
    */
-  public async sendRequest<TResponse>(route: string): Promise<TResponse> {
+  public async sendRequest<TResponse extends BaseEntity>(
+    route: string,
+    responseBodyType: new () => TResponse,
+  ): Promise<HttpResponsePayloadDto<TResponse>> {
+    // TODO: check if the request settings are looks good and can be sent without destructuring
     const { packageId, username, password } = this.requestSettings;
 
-    return this.axiosService?.post<TResponse>(route, {
-      packageId,
-      username,
-      password,
-    });
+    const statusResponsePayloadDto = HttpResponsePayloadDto.createDto(responseBodyType);
+
+    return this.axiosService?.post<TResponse>(
+      route,
+      {
+        packageId,
+        username,
+        password,
+      },
+      statusResponsePayloadDto,
+    );
   }
 }

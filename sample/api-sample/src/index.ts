@@ -1,9 +1,9 @@
 import {
   CustomersApiFactory,
   HttpResponsePayloadDto,
-  IStartResponseBody,
-  IStatusResponseBody,
-  IStopResponseBody,
+  StartResponseBody,
+  StatusResponseBody,
+  StopResponseBody,
   ValidationError,
 } from 'trade360-nodejs-sdk';
 
@@ -22,29 +22,29 @@ const initApiSample = async () => {
 
     const packageDistributionApi = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
-      baseUrl: config.trade360.customersApiBaseUrl,
+      customersApiBaseUrl: config.trade360.customersApiBaseUrl,
       logger,
     });
 
-    process.on('exit' || 'SIGINT', async (err) => {
+    process.on('exit' || 'SIGINT', async () => {
       process.exit(1);
     });
 
-    const distributionStatus: HttpResponsePayloadDto<IStatusResponseBody> | undefined =
-      await packageDistributionApi.getDistributionStatus<IStatusResponseBody>();
+    const distributionStatus: HttpResponsePayloadDto<StatusResponseBody> | undefined =
+      await packageDistributionApi.getDistributionStatus<StatusResponseBody>(StatusResponseBody);
 
-    if (!_.isNil(distributionStatus) && !_.isNil(distributionStatus.Body)) {
+    if (!_.isNil(distributionStatus) && !_.isNil(distributionStatus.body)) {
       const {
-        Header: { HttpStatusCode: httpStatusCode },
-        Body: { IsDistributionOn: isDistributionOn },
+        header: { httpStatusCode },
+        body: { isDistributionOn },
       } = distributionStatus;
 
       if (httpStatusCode >= 200 && httpStatusCode < 300 && !isDistributionOn) {
-        const startRequest: HttpResponsePayloadDto<IStartResponseBody> | undefined =
-          await packageDistributionApi.startDistribution<IStartResponseBody>();
+        const startRequest: HttpResponsePayloadDto<StartResponseBody> | undefined =
+          await packageDistributionApi.startDistribution<StartResponseBody>(StartResponseBody);
 
-        if (!_.isNil(startRequest) && !_.isNil(startRequest.Body))
-          logger.log(startRequest.Body.Message);
+        if (!_.isNil(startRequest) && !_.isNil(startRequest.body))
+          logger.log(startRequest.body.message);
       }
     }
 
@@ -54,11 +54,11 @@ const initApiSample = async () => {
       }, 5 * 1000);
     });
 
-    const stopRequest: HttpResponsePayloadDto<IStopResponseBody> | undefined =
-      await packageDistributionApi.stopDistribution<IStopResponseBody>();
+    const stopRequest: HttpResponsePayloadDto<StopResponseBody> | undefined =
+      await packageDistributionApi.stopDistribution<StopResponseBody>(StopResponseBody);
 
-    if (!_.isNil(stopRequest) && !_.isNil(stopRequest.Body)) logger.log(stopRequest.Body.Message);
-  } catch (err: any) {
+    if (!_.isNil(stopRequest) && !_.isNil(stopRequest.body)) logger.log(stopRequest.body.message);
+  } catch (err: unknown) {
     if (err instanceof ValidationError) {
       logger.error(`API sample got err from ValidationError instance: ${err}`);
 
@@ -68,6 +68,8 @@ const initApiSample = async () => {
         });
       }
     }
+    logger.error(`API sample got err: ${err}`);
+    throw err;
   }
 };
 
