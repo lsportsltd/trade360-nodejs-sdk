@@ -1,24 +1,33 @@
 import { IHttpServiceConfig } from '@api/common';
 
-import { ICustomersApiFactory, IPackageDistributionHttpClient } from '@customers-api/interfaces';
-import { PackageDistributionHttpClient } from '@customers-api/services';
+import {
+  ICustomersApiFactory,
+  IMetadataHttpClient,
+  IPackageDistributionHttpClient,
+} from '@customers-api/interfaces';
+import { MetadataHttpClient, PackageDistributionHttpClient } from '@customers-api/services';
 
 /**
  * Factory class for creating package distribution HTTP client.
+ * @implements ICustomersApiFactory interface for creating package
+ * distribution HTTP client.
+ * @see ICustomersApiFactory interface for creating package
  */
 export class CustomersApiFactory implements ICustomersApiFactory {
-  /**
-   * Create package distribution HTTP client.
-   * @param customersApiBaseUrl - Customers API base URL.
-   * @param packageCredentials - Package credentials.
-   * @param logger - Logger.
-   * @returns Package distribution HTTP client.
-   */
   public createPackageDistributionHttpClient({
     customersApiBaseUrl,
     packageCredentials,
     logger,
   }: IHttpServiceConfig): IPackageDistributionHttpClient {
     return new PackageDistributionHttpClient({ packageCredentials, customersApiBaseUrl, logger });
+  }
+
+  public CreateMetadataHttpClient({
+    customersApiBaseUrl,
+    packageCredentials,
+    logger,
+  }: IHttpServiceConfig): IMetadataHttpClient {
+    // var mapper = _serviceProvider.GetRequiredService<IMapper>();
+    return new MetadataHttpClient({ packageCredentials, customersApiBaseUrl, logger } /*, mapper*/);
   }
 }
