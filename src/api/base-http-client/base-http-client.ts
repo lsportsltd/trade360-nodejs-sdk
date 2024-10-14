@@ -12,6 +12,8 @@ import { RequestSettingsValidator } from '@httpClient/vaildators';
 import { ILogger } from '@logger';
 import { TransformerUtil } from '@utilities';
 
+import { IHttpService } from './interfaces';
+
 /**
  * BaseHttpClient class is responsible for sending requests
  * to the customers API. It is a base class for all HTTP clients.
@@ -21,7 +23,7 @@ import { TransformerUtil } from '@utilities';
  * @param logger The logger instance
  */
 export class BaseHttpClient {
-  protected axiosService: AxiosService<HttpRequestDto>;
+  protected httpService: IHttpService<HttpRequestDto>;
 
   protected baseUrl: string;
 
@@ -39,7 +41,7 @@ export class BaseHttpClient {
 
     this.baseUrl = encodeURI(customersApiBaseUrl!);
 
-    this.axiosService = new AxiosService<HttpRequestDto>(this.baseUrl);
+    this.httpService = new AxiosService<HttpRequestDto>(this.baseUrl, HttpRequestDto);
   }
 
   /**
@@ -56,12 +58,11 @@ export class BaseHttpClient {
     route: string,
     responseBodyType: new () => TResponse,
   ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
-    // TODO: check if the request settings are looks good and can be sent without destructuring
     this.requestSettings = TransformerUtil.transform(this.requestSettings, HttpRequestDto);
 
     const responsePayloadDto = HttpResponsePayloadDto.createPayloadDto(responseBodyType);
     try {
-      const response = await this.axiosService?.post<TResponse>(route, this.requestSettings);
+      const response = await this.httpService?.post<TResponse>(route, this.requestSettings);
 
       return await this.handleValidResponse(response, responsePayloadDto);
     } catch (error) {
