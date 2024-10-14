@@ -25,7 +25,7 @@ export class HttpResponsePayloadDto<TResponse extends BaseEntity> {
    * @param entityClass The class of the response body.
    * @returns The custom DTO for the response body.
    */
-  static createDto<TResponse extends BaseEntity>(
+  static createPayloadDto<TResponse extends BaseEntity>(
     entityClass: ClassConstructor<TResponse>,
   ): new () => HttpResponsePayloadDto<TResponse> {
     class CustomHttpResponsePayloadDto extends HttpResponsePayloadDto<TResponse> {

@@ -11,7 +11,20 @@ import { BaseEntity } from '@entities';
 import { DistributionRoutesPrefixUrl } from '.';
 
 /**
- * PackageDistributionHttpClient class is responsible for sending requests to the distribution API.
+ * PackageDistributionHttpClient class is responsible for sending
+ * requests to the distribution API.
+ * It extends the BaseHttpClient class and contains the logic for
+ * sending requests to the distribution API.
+ * @param packageCredentials The package credentials for the API
+ * @param customersApiBaseUrl The base URL of the customers API
+ * @param logger The logger instance
+ * @returns PackageDistributionHttpClient instance that is
+ * responsible for sending requests to the distribution API.
+ * @extends BaseHttpClient class for sending requests to the
+ * customers API.
+ * @implements IPackageDistributionHttpClient interface for sending
+ * requests to the distribution API.
+ * @see BaseHttpClient class for sending requests to the customers API.
  */
 export class PackageDistributionHttpClient
   extends BaseHttpClient
@@ -27,10 +40,10 @@ export class PackageDistributionHttpClient
 
   public async getDistributionStatus<TResponse extends BaseEntity>(
     responseBodyType: new () => TResponse,
-  ): Promise<HttpResponsePayloadDto<TResponse>> {
+  ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
     this.logger.debug('run  status request...');
 
-    return this.sendRequest<TResponse>(
+    return this.postRequest<TResponse>(
       DistributionRoutesPrefixUrl.STATUS_PREFIX_URL,
       responseBodyType,
     );
@@ -41,7 +54,7 @@ export class PackageDistributionHttpClient
   ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
     this.logger.debug('run start request...');
 
-    return this.sendRequest<TResponse>(
+    return this.postRequest<TResponse>(
       DistributionRoutesPrefixUrl.START_PREFIX_URL,
       responseBodyType,
     );
@@ -52,7 +65,7 @@ export class PackageDistributionHttpClient
   ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
     this.logger.debug('run stop request...');
 
-    return this.sendRequest<TResponse>(
+    return this.postRequest<TResponse>(
       DistributionRoutesPrefixUrl.STOP_PREFIX_URL,
       stopResponsePayloadDto,
     );
