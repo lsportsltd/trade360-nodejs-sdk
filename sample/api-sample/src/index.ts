@@ -20,7 +20,13 @@ const initApiSample = async () => {
   try {
     const customersApiFactory = new CustomersApiFactory();
 
-    const packageDistributionApi = customersApiFactory.createPackageDistributionHttpClient({
+    const metadataHttpClient = customersApiFactory.CreateMetadataHttpClient({
+      packageCredentials: config.trade360.inPlayMQSettings,
+      customersApiBaseUrl: config.trade360.customersApiBaseUrl,
+      logger,
+    });
+
+    const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
       customersApiBaseUrl: config.trade360.customersApiBaseUrl,
       logger,
@@ -31,7 +37,9 @@ const initApiSample = async () => {
     });
 
     const distributionStatus: HttpResponsePayloadDto<StatusResponseBody> | undefined =
-      await packageDistributionApi.getDistributionStatus<StatusResponseBody>(StatusResponseBody);
+      await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
+        StatusResponseBody,
+      );
 
     if (!_.isNil(distributionStatus) && !_.isNil(distributionStatus.body)) {
       const {
@@ -41,7 +49,9 @@ const initApiSample = async () => {
 
       if (httpStatusCode >= 200 && httpStatusCode < 300 && !isDistributionOn) {
         const startRequest: HttpResponsePayloadDto<StartResponseBody> | undefined =
-          await packageDistributionApi.startDistribution<StartResponseBody>(StartResponseBody);
+          await packageDistributionHttpClient.startDistribution<StartResponseBody>(
+            StartResponseBody,
+          );
 
         if (!_.isNil(startRequest) && !_.isNil(startRequest.body))
           logger.log(startRequest.body.message);
@@ -55,7 +65,7 @@ const initApiSample = async () => {
     });
 
     const stopRequest: HttpResponsePayloadDto<StopResponseBody> | undefined =
-      await packageDistributionApi.stopDistribution<StopResponseBody>(StopResponseBody);
+      await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
 
     if (!_.isNil(stopRequest) && !_.isNil(stopRequest.body)) logger.log(stopRequest.body.message);
   } catch (err: unknown) {

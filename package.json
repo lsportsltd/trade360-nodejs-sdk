@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf dist/ && tsc -p .",
+    "build:dev": "npm run lint && npm run build",
     "watch": "tsc -w",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix"

@@ -9,7 +9,7 @@ import { HttpResponseError } from '@lsports/errors';
 import { AxiosService } from '@httpClient/services';
 import { RequestSettingsValidator } from '@httpClient/vaildators';
 
-import { ILogger } from '@logger';
+import { ConsoleAdapter, ILogger } from '@logger';
 import { TransformerUtil } from '@utilities';
 
 import { IHttpService } from './interfaces';
@@ -29,7 +29,7 @@ export class BaseHttpClient {
 
   protected requestSettings: HttpRequestDto;
 
-  protected logger?: ILogger;
+  protected logger: ILogger;
 
   constructor({ customersApiBaseUrl, packageCredentials, logger }: IHttpServiceConfig) {
     this.requestSettings = RequestSettingsValidator.validate({
@@ -37,7 +37,7 @@ export class BaseHttpClient {
       ...packageCredentials,
     });
 
-    this.logger = logger;
+    this.logger = !isNil(logger) ? logger : new ConsoleAdapter();
 
     this.baseUrl = encodeURI(customersApiBaseUrl!);
 
