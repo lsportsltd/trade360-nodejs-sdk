@@ -12,4 +12,7 @@ export class HttpRequestDto {
 
   @Expose()
   password!: string;
+
+  @Expose()
+  languageId?: number;
 }

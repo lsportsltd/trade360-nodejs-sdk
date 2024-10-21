@@ -30,6 +30,10 @@ const initApiSample = async () => {
 
     logger.log(`Locations: ${JSON.stringify(locations)}`);
 
+    const sports = await metadataHttpClient.getSports();
+
+    logger.log(`Sports: ${JSON.stringify(sports)}`);
+
     const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
       customersApiBaseUrl: config.trade360.customersApiBaseUrl,

@@ -1,4 +1,4 @@
-import { Location } from '@entities';
+import { Location, Sport } from '@entities';
 
 /**
  * IPackageDistributionHttpClient interface is responsible
@@ -6,7 +6,7 @@ import { Location } from '@entities';
  */
 export interface IMetadataHttpClient {
   getLocations(): Promise<Location[]>;
-  //   getSports(): Promise<Sport[]>;
+  getSports(): Promise<Sport[]>;
   //   getLeaguesAsync(requestDto: GetLeaguesRequestDto): Promise<League[]>;
   //   getMarketsAsync(requestDto: GetMarketsRequestDto): Promise<Market[]>;
   //   getTranslationsAsync(requestDto: GetTranslationsRequestDto): Promise<TransactionResponse>;

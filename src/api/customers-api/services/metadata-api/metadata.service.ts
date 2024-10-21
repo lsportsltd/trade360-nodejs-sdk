@@ -2,9 +2,13 @@ import { BaseHttpClient } from '@httpClient';
 
 import { IMetadataHttpClient } from '@customers-api/interfaces';
 
-import { IHttpServiceConfig, LocationsCollectionResponse } from '@api/common';
+import {
+  IHttpServiceConfig,
+  LocationsCollectionResponse,
+  SportsCollectionResponse,
+} from '@api/common';
 
-import { Location } from '@entities';
+import { Location, Sport } from '@entities';
 
 import { MetadataRoutesPrefixUrl } from '.';
 
@@ -40,5 +44,13 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     );
 
     return locationsCollection?.body.locations || [];
+  }
+
+  public async getSports(): Promise<Sport[]> {
+    const sportsCollection = await this.postRequest<SportsCollectionResponse>(
+      MetadataRoutesPrefixUrl.GET_SPORTS_PREFIX_URL,
+      SportsCollectionResponse,
+    );
+    return sportsCollection?.body.sports || [];
   }
 }
