@@ -22,7 +22,7 @@ export class CustomersApiFactory implements ICustomersApiFactory {
     return new PackageDistributionHttpClient({ packageCredentials, customersApiBaseUrl, logger });
   }
 
-  public CreateMetadataHttpClient({
+  public createMetadataHttpClient({
     customersApiBaseUrl,
     packageCredentials,
     logger,

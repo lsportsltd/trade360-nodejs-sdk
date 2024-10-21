@@ -19,5 +19,5 @@ export interface ICustomersApiFactory {
     httpServiceConfig: IHttpServiceConfig,
   ) => IPackageDistributionHttpClient;
 
-  CreateMetadataHttpClient: (httpServiceConfig: IHttpServiceConfig) => IMetadataHttpClient;
+  createMetadataHttpClient: (httpServiceConfig: IHttpServiceConfig) => IMetadataHttpClient;
 }

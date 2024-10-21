@@ -20,11 +20,15 @@ const initApiSample = async () => {
   try {
     const customersApiFactory = new CustomersApiFactory();
 
-    const metadataHttpClient = customersApiFactory.CreateMetadataHttpClient({
+    const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
       customersApiBaseUrl: config.trade360.customersApiBaseUrl,
       logger,
     });
+
+    const locations = await metadataHttpClient.getLocations();
+
+    logger.log(`Locations: ${JSON.stringify(locations)}`);
 
     const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,

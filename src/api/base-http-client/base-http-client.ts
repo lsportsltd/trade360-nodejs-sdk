@@ -22,14 +22,14 @@ import { IHttpService } from './interfaces';
  * @param packageCredentials The package credentials for the API
  * @param logger The logger instance
  */
-export class BaseHttpClient {
-  protected httpService: IHttpService<HttpRequestDto>;
+export abstract class BaseHttpClient {
+  protected readonly httpService: IHttpService<HttpRequestDto>;
 
-  protected baseUrl: string;
+  protected readonly baseUrl: string;
 
   protected requestSettings: HttpRequestDto;
 
-  protected logger: ILogger;
+  protected readonly logger: ILogger;
 
   constructor({ customersApiBaseUrl, packageCredentials, logger }: IHttpServiceConfig) {
     this.requestSettings = RequestSettingsValidator.validate({
@@ -54,7 +54,7 @@ export class BaseHttpClient {
    * be sent to
    * @returns  promise with the TResponse type response type
    */
-  public async postRequest<TResponse extends BaseEntity>(
+  protected async postRequest<TResponse extends BaseEntity>(
     route: string,
     responseBodyType: new () => TResponse,
   ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
@@ -68,6 +68,28 @@ export class BaseHttpClient {
     } catch (error) {
       this.handleErrorResponse(error, responsePayloadDto);
     }
+  }
+
+  protected async getRequest<TResponse extends BaseEntity>(
+    route: string,
+    params?: Record<string, string>,
+    // responseBodyType?: new () => TResponse,
+  ): Promise<TResponse> {
+    // Implement your GET logic here
+    const queryString = params ? `?${new URLSearchParams(params)}` : '';
+    const response = await fetch(`${this.baseUrl}/${route}${queryString}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any authorization headers based on packageCredentials
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return (await response.json()) as TResponse;
   }
 
   /**
