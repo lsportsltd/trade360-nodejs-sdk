@@ -37,6 +37,19 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     //this.mapper = mapper;
   }
 
+  /**
+   * getLocations method is responsible for sending a request to the metadata API
+   * to get the locations. It sends a POST request to the metadata API with the
+   * GET_LOCATIONS_PREFIX_URL and LocationsCollectionResponse as the response type.
+   * If the request is without “languageId” - the response returns a list of “id”
+   * and “name” in English.
+   * If The request is with “languagesId” that invalid - ErrorCode 400 and error
+   * message - "Incorrect request, please enter a valid Language and resend your
+   * request."
+   * If the request is with “languageId” and there are some sports that don't
+   * have a translation in this language - it's not returned (without an error).
+   * @returns A promise that contains the locations.
+   */
   public async getLocations(): Promise<Location[]> {
     const locationsCollection = await this.postRequest<LocationsCollectionResponse>(
       MetadataRoutesPrefixUrl.GET_LOCATIONS_PREFIX_URL,
@@ -46,6 +59,19 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     return locationsCollection?.body.locations || [];
   }
 
+  /**
+   * getSports method is responsible for sending a request to the metadata API
+   * to get the sports. It sends a POST request to the metadata API with the
+   * GET_SPORTS_PREFIX_URL and SportsCollectionResponse as the response type.
+   * If the request is without “languageId” - the response returns a list of “id”
+   * and “name” in English.
+   * If The request is with “languagesId” that invalid - ErrorCode 400 and error
+   * message - "Incorrect request, please enter a valid Language and resend your
+   * request."
+   * If the request is with “languageId” and there are some sports that don't
+   * have a translation in this language - it's not returned (without an error).
+   * @returns A promise that contains the sports.
+   */
   public async getSports(): Promise<Sport[]> {
     const sportsCollection = await this.postRequest<SportsCollectionResponse>(
       MetadataRoutesPrefixUrl.GET_SPORTS_PREFIX_URL,

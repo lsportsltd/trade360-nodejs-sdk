@@ -1,13 +1,14 @@
 import {
   CustomersApiFactory,
   HttpResponsePayloadDto,
+  IMetadataHttpClient,
   StartResponseBody,
   StatusResponseBody,
   StopResponseBody,
   ValidationError,
 } from 'trade360-nodejs-sdk';
 
-import _ from 'lodash';
+import _, { each } from 'lodash';
 
 import { getConfig } from './config';
 
@@ -26,13 +27,9 @@ const initApiSample = async () => {
       logger,
     });
 
-    const locations = await metadataHttpClient.getLocations();
+    await getLocations(metadataHttpClient);
 
-    logger.log(`Locations: ${JSON.stringify(locations)}`);
-
-    const sports = await metadataHttpClient.getSports();
-
-    logger.log(`Sports: ${JSON.stringify(sports)}`);
+    await getSports(metadataHttpClient);
 
     const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
@@ -89,6 +86,26 @@ const initApiSample = async () => {
     logger.error(`API sample got err: ${err}`);
     throw err;
   }
+};
+
+const getLocations = async (metadataHttpClient: IMetadataHttpClient) => {
+  const response = await metadataHttpClient.getLocations();
+
+  logger.log('Locations entities received:');
+
+  each(response, (location) => {
+    logger.log(`LocationId: ${location.id}, LocationName: ${location.name}`);
+  });
+};
+
+const getSports = async (metadataHttpClient: IMetadataHttpClient) => {
+  const response = await metadataHttpClient.getSports();
+
+  logger.log('Sports entities received:');
+
+  each(response, (sport) => {
+    logger.log(`SportId: ${sport.id}, SportName: ${sport.name}`);
+  });
 };
 
 initApiSample();
