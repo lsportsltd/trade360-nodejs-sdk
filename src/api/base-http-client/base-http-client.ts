@@ -3,12 +3,9 @@ import { isNil, map } from 'lodash';
 
 import { HttpRequestDto, HttpResponsePayloadDto, IHttpServiceConfig } from '@api/common';
 import { BaseEntity } from '@entities';
-
 import { HttpResponseError } from '@lsports/errors';
-
 import { AxiosService } from '@httpClient/services';
-import { RequestSettingsValidator } from '@httpClient/vaildators';
-
+import { RequestSettingsValidator } from '@httpClient/validators';
 import { ConsoleAdapter, ILogger } from '@logger';
 import { TransformerUtil } from '@utilities';
 
@@ -62,7 +59,7 @@ export abstract class BaseHttpClient {
 
     const responsePayloadDto = HttpResponsePayloadDto.createPayloadDto(responseBodyType);
     try {
-      const response = await this.httpService?.post<TResponse>(route, this.requestSettings);
+      const response = await this.httpService.post<TResponse>(route, this.requestSettings);
 
       return await this.handleValidResponse(response, responsePayloadDto);
     } catch (error) {
@@ -94,13 +91,10 @@ export abstract class BaseHttpClient {
 
   /**
    * This method is responsible for handling the valid response.
-   * It checks the status code of the response and throws an error
-   *  if the status code is not valid.
    * @param httpResponse The response received from the API call
    * @param responsePayloadDto The response payload DTO to be used
    * for transforming the response
    * @returns The response payload DTO
-   * @throws HttpResponseError if the status code is not valid
    * @throws HttpResponseError if the response does not contain the
    *  required properties
    */
@@ -108,16 +102,27 @@ export abstract class BaseHttpClient {
     httpResponse: AxiosResponse<TResponse>,
     responsePayloadDto: new () => HttpResponsePayloadDto<TResponse>,
   ): Promise<HttpResponsePayloadDto<TResponse>> {
-    const { status, data } = httpResponse;
-
-    if (status < 200 || status >= 300)
-      throw new HttpResponseError(
-        `Invalid status code: ${status}. 
-        Please ensure that you use the correct URL.`,
-      );
+    const { data } = httpResponse;
 
     const responsePayload = TransformerUtil.transform(data, responsePayloadDto);
 
+    this.validateResponsePayloadStructure(responsePayload);
+
+    return responsePayload;
+  }
+
+  /**
+   * This method is responsible for validating the structure of the
+   * response payload. It checks if the response payload contains the
+   * required properties.
+   * @param responsePayload The response payload to be validated
+   * @returns void
+   * @throws HttpResponseError if the response payload does not contain
+   * the required properties
+   */
+  private validateResponsePayloadStructure<TResponse extends BaseEntity>(
+    responsePayload: HttpResponsePayloadDto<TResponse>,
+  ): void {
     const { header, body } = responsePayload;
 
     if (isNil(header)) {
@@ -130,8 +135,6 @@ export abstract class BaseHttpClient {
         "'Body' property is missing. Please ensure that you use the correct URL.",
       );
     }
-
-    return responsePayload;
   }
 
   /**

@@ -3,7 +3,7 @@ import { ValidationError } from '@lsports/errors';
 import { HttpRequestSettings, HttpRequestSettingsSchema } from './request-settings.schema';
 
 /**
- * Class for vaildate that the configure request setting is vaild
+ * Class for validate that the configure request setting is valid
  * Use HttpRequestSchema to parse and validate data.
  */
 export class RequestSettingsValidator {
@@ -19,8 +19,10 @@ export class RequestSettingsValidator {
     if (success) {
       return data;
     } else {
+      const errorsStringified = JSON.stringify(error.errors);
+
       throw new ValidationError('Failed validate request settings', {
-        context: JSON.parse(JSON.stringify(error.errors)),
+        context: JSON.parse(errorsStringified),
       });
     }
   }

@@ -1,4 +1,4 @@
-import { HttpRequestSettings } from '../vaildators';
+import { HttpRequestSettings } from '../validators';
 
 /**
  * Application configuration interface for the API

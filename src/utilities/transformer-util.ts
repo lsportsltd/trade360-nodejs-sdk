@@ -1,6 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 
-import { BaseEntity } from '@entities';
+import { BaseEntity, ConversionError } from '@entities';
 
 export class TransformerUtil {
   /**
@@ -14,10 +14,16 @@ export class TransformerUtil {
     plainObject: Record<string, never> | BaseEntity,
     targetClass: new () => TEntity,
   ): TEntity {
-    return plainToInstance(targetClass, plainObject, {
-      excludeExtraneousValues: true, // Change this to false if you want to keep all properties
-      exposeUnsetFields: false,
-    });
+    try {
+      return plainToInstance(targetClass, plainObject, {
+        excludeExtraneousValues: true, // Change this to false if you want to keep all properties
+        exposeUnsetFields: false,
+      });
+    } catch (err) {
+      throw new ConversionError(
+        `failed converting object to ${targetClass.name} instance!, err: ${err}`,
+      );
+    }
   }
 
   /**

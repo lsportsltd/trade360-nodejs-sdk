@@ -1,11 +1,8 @@
 import { BaseHttpClient } from '@httpClient';
-
-import { IPackageDistributionHttpClient } from '@api/customers-api';
+import { IPackageDistributionHttpClient } from '@customers-api/interfaces';
+import { DistributionRoutesPrefixUrl } from '@customers-api/enums';
 import { HttpResponsePayloadDto, IHttpServiceConfig } from '@api/common';
-
 import { BaseEntity } from '@entities';
-
-import { DistributionRoutesPrefixUrl } from '.';
 
 /**
  * PackageDistributionHttpClient class is responsible for sending

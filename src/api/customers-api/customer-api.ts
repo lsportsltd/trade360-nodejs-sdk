@@ -1,5 +1,4 @@
 import { IHttpServiceConfig } from '@api/common';
-
 import {
   ICustomersApiFactory,
   IMetadataHttpClient,
@@ -14,20 +13,14 @@ import { MetadataHttpClient, PackageDistributionHttpClient } from '@customers-ap
  * @see ICustomersApiFactory interface for creating package
  */
 export class CustomersApiFactory implements ICustomersApiFactory {
-  public createPackageDistributionHttpClient({
-    customersApiBaseUrl,
-    packageCredentials,
-    logger,
-  }: IHttpServiceConfig): IPackageDistributionHttpClient {
-    return new PackageDistributionHttpClient({ packageCredentials, customersApiBaseUrl, logger });
+  public createPackageDistributionHttpClient(
+    httpServiceConfig: IHttpServiceConfig,
+  ): IPackageDistributionHttpClient {
+    return new PackageDistributionHttpClient(httpServiceConfig);
   }
 
-  public createMetadataHttpClient({
-    customersApiBaseUrl,
-    packageCredentials,
-    logger,
-  }: IHttpServiceConfig): IMetadataHttpClient {
+  public createMetadataHttpClient(httpServiceConfig: IHttpServiceConfig): IMetadataHttpClient {
     // var mapper = _serviceProvider.GetRequiredService<IMapper>();
-    return new MetadataHttpClient({ packageCredentials, customersApiBaseUrl, logger } /*, mapper*/);
+    return new MetadataHttpClient(httpServiceConfig /*, mapper*/);
   }
 }

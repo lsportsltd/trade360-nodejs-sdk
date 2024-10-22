@@ -1,16 +1,12 @@
 import { BaseHttpClient } from '@httpClient';
-
 import { IMetadataHttpClient } from '@customers-api/interfaces';
-
+import { MetadataRoutesPrefixUrl } from '@customers-api/enums';
 import {
   IHttpServiceConfig,
   LocationsCollectionResponse,
   SportsCollectionResponse,
 } from '@api/common';
-
 import { Location, Sport } from '@entities';
-
-import { MetadataRoutesPrefixUrl } from '.';
 
 /**
  * MetadataHttpClient class is responsible for sending requests to the metadata API.
@@ -79,4 +75,15 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     );
     return sportsCollection?.body.sports || [];
   }
+
+  // async getLeagues(requestDto: GetLeaguesRequestDto): Promise<LeaguesBodyStructure[]> {
+  //   const request = this.mapper.map<GetLeaguesRequestDto, GetLeaguesRequest>(requestDto);
+
+  //   const leaguesCollection = await this.postRequest<LeaguesCollectionResponse>(
+  //     MetadataRoutesPrefixUrl.GET_LEAGUES_PREFIX_URL,
+  //     LeaguesCollectionResponse,
+  //     request,
+  //   );
+  //   return leaguesCollection?.body.leagues || [];
+  // }
 }
