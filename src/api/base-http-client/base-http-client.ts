@@ -38,7 +38,7 @@ export abstract class BaseHttpClient {
 
     this.baseUrl = encodeURI(customersApiBaseUrl!);
 
-    this.httpService = new AxiosService<HttpRequestDto>(this.baseUrl, HttpRequestDto);
+    this.httpService = new AxiosService<HttpRequestDto>(this.baseUrl);
   }
 
   /**
@@ -48,14 +48,22 @@ export abstract class BaseHttpClient {
    * The request expect getting generic type R which declare
    * the expected response structure.
    * @param route string that represent the route expected to
-   * be sent to
-   * @returns  promise with the TResponse type response type
+   * be sent to the API endpoint.
+   * @param responseBodyType new instance of the expected response
+   * structure.
+   * @param requestBody optional parameter that represent the body
+   * of the request.
+   * @returns  promise with the TResponse type response type of
+   * the API.
    */
   protected async postRequest<TResponse extends BaseEntity>(
     route: string,
     responseBodyType: new () => TResponse,
+    requestBody?: HttpRequestDto,
   ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
-    this.requestSettings = TransformerUtil.transform(this.requestSettings, HttpRequestDto);
+    this.requestSettings = !isNil(requestBody)
+      ? requestBody
+      : TransformerUtil.transform(this.requestSettings, HttpRequestDto);
 
     const responsePayloadDto = HttpResponsePayloadDto.createPayloadDto(responseBodyType);
     try {

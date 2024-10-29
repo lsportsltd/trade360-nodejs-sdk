@@ -1,4 +1,4 @@
-import { IHttpServiceConfig } from '@api/common';
+import { IHttpServiceConfig, Mapper } from '@api/common';
 import {
   ICustomersApiFactory,
   IMetadataHttpClient,
@@ -19,8 +19,22 @@ export class CustomersApiFactory implements ICustomersApiFactory {
     return new PackageDistributionHttpClient(httpServiceConfig);
   }
 
+  /**
+   * createMetadataHttpClient method is responsible for creating
+   * a new instance of the MetadataHttpClient class. It creates a
+   * new instance of the MetadataHttpClient class with the provided
+   * HTTP service configuration and mapper.
+   * @param httpServiceConfig The HTTP service configuration for the
+   * metadata HTTP client to use in sending requests to the metadata API.
+   * @returns A new instance of the MetadataHttpClient class with the
+   * provided HTTP service configuration and mapper.
+   * @see MetadataHttpClient class for sending requests to the metadata API.
+   * @see IHttpServiceConfig interface for the configuration of the HTTP service.
+   * @see IMapper interface for mapping between different types of objects.
+   * @see Mapper class for mapping between different types of objects in the application.
+   */
   public createMetadataHttpClient(httpServiceConfig: IHttpServiceConfig): IMetadataHttpClient {
-    // var mapper = _serviceProvider.GetRequiredService<IMapper>();
-    return new MetadataHttpClient(httpServiceConfig /*, mapper*/);
+    const mapper = new Mapper(httpServiceConfig.packageCredentials);
+    return new MetadataHttpClient(httpServiceConfig, mapper);
   }
 }

@@ -2,7 +2,12 @@ import { BaseHttpClient } from '@httpClient';
 import { IMetadataHttpClient } from '@customers-api/interfaces';
 import { MetadataRoutesPrefixUrl } from '@customers-api/enums';
 import {
+  GetLeaguesRequest,
+  GetLeaguesRequestDto,
   IHttpServiceConfig,
+  IMapper,
+  LeaguesBodyStructure,
+  LeaguesCollectionResponse,
   LocationsCollectionResponse,
   SportsCollectionResponse,
 } from '@api/common';
@@ -24,13 +29,14 @@ import { Location, Sport } from '@entities';
  * @see IHttpServiceConfig interface for the configuration of the HTTP service.
  */
 export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpClient {
-  // private readonly mapper: IMapper;
+  private readonly mapper: IMapper;
 
   constructor(
-    { packageCredentials, customersApiBaseUrl, logger }: IHttpServiceConfig /*, mapper: IMapper*/,
+    { packageCredentials, customersApiBaseUrl, logger }: IHttpServiceConfig,
+    mapper: IMapper,
   ) {
     super({ customersApiBaseUrl, packageCredentials, logger });
-    //this.mapper = mapper;
+    this.mapper = mapper;
   }
 
   /**
@@ -76,14 +82,33 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     return sportsCollection?.body.sports || [];
   }
 
-  // async getLeagues(requestDto: GetLeaguesRequestDto): Promise<LeaguesBodyStructure[]> {
-  //   const request = this.mapper.map<GetLeaguesRequestDto, GetLeaguesRequest>(requestDto);
+  /**
+   * getLeagues method is responsible for sending a request to the metadata API
+   * to get the leagues.
+   * It sends a POST request to the metadata API with the GET_LEAGUES_PREFIX_URL
+   * and LeaguesCollectionResponse as the response type.
+   * If the request is without “languageId” - the response returns a list of “id”
+   * and “name” in English.
+   * If The request is with “languagesId” that invalid - ErrorCode 400 and error
+   * message - "Incorrect request, please enter a valid Language and resend your
+   * request."
+   * If the request is with “LanguageId” and there are some sports that don't
+   * have a translation in this language - it's not returned (without an error).
+   * @param requestDto The request DTO
+   * @returns A promise that contains the leagues.
+   * @throws Error if mapping configuration is not found
+   */
+  public async getLeagues(requestDto: GetLeaguesRequestDto): Promise<LeaguesBodyStructure[]> {
+    const request = this.mapper.map<GetLeaguesRequestDto, GetLeaguesRequest>(
+      requestDto,
+      GetLeaguesRequest,
+    );
 
-  //   const leaguesCollection = await this.postRequest<LeaguesCollectionResponse>(
-  //     MetadataRoutesPrefixUrl.GET_LEAGUES_PREFIX_URL,
-  //     LeaguesCollectionResponse,
-  //     request,
-  //   );
-  //   return leaguesCollection?.body.leagues || [];
-  // }
+    const leaguesCollection = await this.postRequest<LeaguesCollectionResponse>(
+      MetadataRoutesPrefixUrl.GET_LEAGUES_PREFIX_URL,
+      LeaguesCollectionResponse,
+      request,
+    );
+    return leaguesCollection?.body.leagues || [];
+  }
 }

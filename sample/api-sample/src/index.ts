@@ -6,9 +6,11 @@ import {
   StatusResponseBody,
   StopResponseBody,
   ValidationError,
+  Sport,
+  GetLeaguesRequestDto,
 } from 'trade360-nodejs-sdk';
 
-import _, { each } from 'lodash';
+import _ from 'lodash';
 
 import { getConfig } from './config';
 
@@ -27,9 +29,11 @@ const initApiSample = async () => {
       logger,
     });
 
-    await getLocations(metadataHttpClient);
+    // await getLocations(metadataHttpClient);
 
-    await getSports(metadataHttpClient);
+    // await getSports(metadataHttpClient);
+
+    await getLeagues(metadataHttpClient);
 
     const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
@@ -93,7 +97,7 @@ const getLocations = async (metadataHttpClient: IMetadataHttpClient) => {
 
   logger.log('Locations entities received:');
 
-  each(response, (location) => {
+  _.each(response, (location) => {
     logger.log(`LocationId: ${location.id}, LocationName: ${location.name}`);
   });
 };
@@ -103,9 +107,36 @@ const getSports = async (metadataHttpClient: IMetadataHttpClient) => {
 
   logger.log('Sports entities received:');
 
-  each(response, (sport) => {
+  _.each(response, (sport) => {
     logger.log(`SportId: ${sport.id}, SportName: ${sport.name}`);
   });
+};
+
+const getLeagues = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  try {
+    const sportsResults = await metadataHttpClient.getSports();
+    const footballSportEntity = _.find(sportsResults, (x: Sport) => x.name === 'Football');
+
+    if (_.isNil(footballSportEntity)) {
+      logger.log('Football sport entity not found.');
+      return;
+    }
+
+    const request = new GetLeaguesRequestDto();
+
+    request.sportIds = footballSportEntity.id ? [footballSportEntity.id] : undefined;
+
+    const response = await metadataHttpClient.getLeagues(request);
+
+    logger.log(`Response returned ${response.length} leagues:`);
+
+    _.forEach(response, (league) => {
+      logger.log(`LeagueId: ${league.id}, LeagueName: ${league.name}`);
+    });
+  } catch (error) {
+    logger.error('Error fetching leagues:', error);
+    throw error;
+  }
 };
 
 initApiSample();

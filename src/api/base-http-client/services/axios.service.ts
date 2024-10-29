@@ -2,8 +2,6 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { BaseEntity } from '@entities';
 
-import { TransformerUtil } from '@utilities';
-
 import { IHttpService } from '../interfaces/';
 
 /**
@@ -20,16 +18,13 @@ import { IHttpService } from '../interfaces/';
 export class AxiosService<TRequest extends BaseEntity> implements IHttpService<TRequest> {
   private axiosInstance: AxiosInstance;
 
-  private requestClass: new () => TRequest;
-
-  constructor(baseURL: string, requestClass: new () => TRequest) {
+  constructor(baseURL: string) {
     this.axiosInstance = axios.create({
       baseURL,
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    this.requestClass = requestClass;
   }
 
   public async get<TResponse>(url: string): Promise<TResponse> {
@@ -41,7 +36,11 @@ export class AxiosService<TRequest extends BaseEntity> implements IHttpService<T
     url: string,
     body: TRequest,
   ): Promise<AxiosResponse<TResponse>> {
-    body = TransformerUtil.transform(body, this.requestClass);
-    return this.axiosInstance.post(url, body);
+    return this.axiosInstance.post(url, body, {
+      validateStatus: function (status) {
+        return status >= 200 && status < 300; // Resolve only if the status
+        // code is above then 200 and less then 300
+      },
+    });
   }
 }
