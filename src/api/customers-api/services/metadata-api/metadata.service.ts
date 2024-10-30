@@ -4,11 +4,15 @@ import { MetadataRoutesPrefixUrl } from '@customers-api/enums';
 import {
   GetLeaguesRequest,
   GetLeaguesRequestDto,
+  GetMarketsRequest,
+  GetMarketsRequestDto,
   IHttpServiceConfig,
   IMapper,
   LeaguesBodyStructure,
   LeaguesCollectionResponse,
   LocationsCollectionResponse,
+  MarketBodyStructure,
+  MarketsCollectionResponse,
   SportsCollectionResponse,
 } from '@api/common';
 import { Location, Sport } from '@entities';
@@ -110,5 +114,18 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
       request,
     );
     return leaguesCollection?.body.leagues || [];
+  }
+
+  async getMarkets(requestDto: GetLeaguesRequestDto): Promise<MarketBodyStructure[]> {
+    const request = this.mapper.map<GetMarketsRequestDto, GetMarketsRequest>(
+      requestDto,
+      GetMarketsRequest,
+    );
+    const marketsCollection = await this.postRequest<MarketsCollectionResponse>(
+      MetadataRoutesPrefixUrl.GET_MARKETS_PREFIX_URL,
+      MarketsCollectionResponse,
+      request,
+    );
+    return marketsCollection?.body.markets || [];
   }
 }

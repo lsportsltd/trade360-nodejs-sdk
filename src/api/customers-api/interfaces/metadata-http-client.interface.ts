@@ -1,4 +1,9 @@
-import { GetLeaguesRequestDto, LeaguesBodyStructure } from '@api/common';
+import {
+  GetLeaguesRequestDto,
+  GetMarketsRequestDto,
+  LeaguesBodyStructure,
+  MarketBodyStructure,
+} from '@api/common';
 import { Location, Sport } from '@entities';
 
 /**
@@ -10,8 +15,8 @@ export interface IMetadataHttpClient {
   getLocations(): Promise<Location[]>;
   getSports(): Promise<Sport[]>;
   getLeagues(requestDto: GetLeaguesRequestDto): Promise<LeaguesBodyStructure[]>;
+  getMarkets(requestDto: GetMarketsRequestDto): Promise<MarketBodyStructure[]>;
 
-  //   getMarketsAsync(requestDto: GetMarketsRequestDto): Promise<Market[]>;
   //   getTranslationsAsync(requestDto: GetTranslationsRequestDto): Promise<TransactionResponse>;
   //   getCompetitionsAsync(
   //     requestDto: GetCompetitionsRequestDto,

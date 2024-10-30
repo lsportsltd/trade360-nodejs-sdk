@@ -25,6 +25,10 @@ interface BaseEntity {
 export class GetLeaguesRequestDto implements BaseEntity {
   [key: string]: unknown;
 
+  constructor(data?: GetLeaguesRequestDto) {
+    Object.assign(this, data);
+  }
+
   @Expose({ name: 'SportIds' })
   @Type(() => Number)
   sportIds?: number[];

@@ -2,7 +2,12 @@ import { TransformerUtil } from '@utilities';
 import { PackageCredentials } from '@entities';
 
 import { IMapper } from '../interfaces';
-import { GetLeaguesRequest, GetLeaguesRequestDto } from './requests';
+import {
+  GetLeaguesRequest,
+  GetLeaguesRequestDto,
+  GetMarketsRequest,
+  GetMarketsRequestDto,
+} from './requests';
 
 /**
  * Base interface for all entities that can be mapped
@@ -14,7 +19,7 @@ interface BaseEntity {
 /**
  * Type for constructable classes that extend BaseEntity
  */
-type Constructor<T extends BaseEntity = BaseEntity> = new (...args: unknown[]) => T;
+type Constructor<T extends BaseEntity = BaseEntity> = new (...args: never[]) => T;
 
 /**
  * Implementation of the mapping service using class-transformer
@@ -82,11 +87,12 @@ export class Mapper implements IMapper {
         TransformerUtil.transform({ ...packageCredentials, ...source }, GetLeaguesRequest),
     );
 
-    // this.registerMapping<GetMarketsRequestDto, GetMarketsRequest>(
-    //   GetMarketsRequestDto,
-    //   GetMarketsRequest,
-    //   (source) => plainToClass(GetMarketsRequest, source),
-    // );
+    this.registerMapping<GetMarketsRequestDto, GetMarketsRequest>(
+      GetMarketsRequestDto,
+      GetMarketsRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetMarketsRequest),
+    );
 
     // this.registerMapping<GetTranslationsRequestDto, GetTranslationsRequest>(
     //   GetTranslationsRequestDto,

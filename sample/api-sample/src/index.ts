@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import {
   CustomersApiFactory,
   HttpResponsePayloadDto,
@@ -8,9 +10,8 @@ import {
   ValidationError,
   Sport,
   GetLeaguesRequestDto,
+  GetMarketsRequestDto,
 } from 'trade360-nodejs-sdk';
-
-import _ from 'lodash';
 
 import { getConfig } from './config';
 
@@ -34,6 +35,8 @@ const initApiSample = async () => {
     // await getSports(metadataHttpClient);
 
     await getLeagues(metadataHttpClient);
+
+    await getMarkets(metadataHttpClient);
 
     const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
@@ -122,9 +125,9 @@ const getLeagues = async (metadataHttpClient: IMetadataHttpClient): Promise<void
       return;
     }
 
-    const request = new GetLeaguesRequestDto();
-
-    request.sportIds = footballSportEntity.id ? [footballSportEntity.id] : undefined;
+    const request = new GetLeaguesRequestDto({
+      sportIds: footballSportEntity.id ? [footballSportEntity.id] : undefined,
+    });
 
     const response = await metadataHttpClient.getLeagues(request);
 
@@ -137,6 +140,22 @@ const getLeagues = async (metadataHttpClient: IMetadataHttpClient): Promise<void
     logger.error('Error fetching leagues:', error);
     throw error;
   }
+};
+
+const getMarkets = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  const request = new GetMarketsRequestDto({
+    marketIds: [1, 2],
+    isSettleable: true,
+    sportIds: [6046],
+  });
+
+  const response = await metadataHttpClient.getMarkets(request);
+
+  logger.log('Markets entities received:');
+
+  _.each(response, (market) => {
+    logger.log(`MarketId: ${market.id}, MarketName: ${market.name}`);
+  });
 };
 
 initApiSample();

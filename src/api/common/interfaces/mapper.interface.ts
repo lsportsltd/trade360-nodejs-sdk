@@ -14,7 +14,7 @@ interface BaseEntity {
 /**
  * Type for constructable classes that extend BaseEntity
  */
-type Constructor<T extends BaseEntity = BaseEntity> = new (...args: unknown[]) => T;
+type Constructor<T extends BaseEntity = BaseEntity> = new (...args: never[]) => T;
 
 /**
  * Interface for mapping between different types of objects
