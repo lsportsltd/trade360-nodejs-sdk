@@ -1,5 +1,9 @@
 import { Expose } from 'class-transformer';
 
+/**
+ * LeaguesBodyStructure class is responsible for deserializing the response
+ * from the metadata API to a league.
+ */
 export class LeaguesBodyStructure {
   @Expose({ name: 'Id' })
   id!: number;

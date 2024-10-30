@@ -22,18 +22,15 @@ interface BaseEntity {
 type Constructor<T extends BaseEntity = BaseEntity> = new (...args: never[]) => T;
 
 /**
- * Implementation of the mapping service using class-transformer
- * Provides functionality similar to AutoMapper with configuration profiles
- * @implements IMapper interface for mapping between different types of objects
- */
-
-/**
  * Mapper class for mapping between different types of objects in the
  * application using the mapping configurations provided in the application.
+ * The Mapper class provides functionality similar to AutoMapper with
  * @param packageCredentials The package credentials for the API to use in the
  * mapping configurations for the application. The package credentials are
  * used to authenticate the API requests in the mapping configurations for the
  * application.
+ * @implements IMapper interface for mapping between different types of objects
+ * in the application using the mapping configurations provided in the application.
  */
 export class Mapper implements IMapper {
   private mappingConfigs: Map<string, (source: BaseEntity) => BaseEntity> = new Map();
@@ -42,20 +39,6 @@ export class Mapper implements IMapper {
     this.initializeMappings(packageCredentials);
   }
 
-  /**
-   * Maps a source object to a new instance of the destination type
-   * using the mapping function provided in the configuration profile
-   * for the mapping between the two types of objects in the application.
-   * @param source The source object to map from
-   * @param destinationType The constructor of the destination type to map
-   * to the source object using the mapping function provided in the
-   * configuration profile for the mapping between the two types of objects
-   * in the application.
-   * @returns A new instance of the destination type with mapped properties
-   * using the mapping function provided in the configuration profile for
-   * the mapping between the two types of objects in the application.
-   * @throws Error if mapping configuration is not found in the application.
-   */
   public map<S extends BaseEntity, D extends BaseEntity>(
     source: S,
     destinationType: Constructor<D>,

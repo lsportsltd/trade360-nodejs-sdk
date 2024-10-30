@@ -19,5 +19,14 @@ export interface ICustomersApiFactory {
     httpServiceConfig: IHttpServiceConfig,
   ) => IPackageDistributionHttpClient;
 
+  /**
+   * Create metadata HTTP client.
+   * @param httpServiceConfig - HTTP service configuration.
+   * @param customersApiBaseUrl - Customers API base URL.
+   * @param packageCredentials - Package credentials.
+   * @param logger - Logger.
+   * @param mapper - Mapper.
+   * @returns Metadata HTTP client.
+   */
   createMetadataHttpClient: (httpServiceConfig: IHttpServiceConfig) => IMetadataHttpClient;
 }

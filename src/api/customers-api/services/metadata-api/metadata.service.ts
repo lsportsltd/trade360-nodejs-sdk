@@ -116,6 +116,21 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     return leaguesCollection?.body.leagues || [];
   }
 
+  /**
+   * getMarkets method is responsible for sending a request to the metadata API
+   * to get the markets. It sends a POST request to the metadata API with the
+   * GET_MARKETS_PREFIX_URL and MarketsCollectionResponse as the response type.
+   * If the request is without “languageId” - the response returns a list of “id”
+   * and “name” in English.
+   * If The request is with “languagesId” that invalid - ErrorCode 400 and error
+   * message - "Incorrect request, please enter a valid Language and resend your
+   * request."
+   * If the request is with “LanguageId” and there are some sports that don't
+   * have a translation in this language - it's not returned (without an error).
+   * @param requestDto The request DTO for getting markets from the metadata API.
+   * @returns A promise that contains the markets.
+   * @throws Error if mapping configuration is not found
+   */
   async getMarkets(requestDto: GetLeaguesRequestDto): Promise<MarketBodyStructure[]> {
     const request = this.mapper.map<GetMarketsRequestDto, GetMarketsRequest>(
       requestDto,
