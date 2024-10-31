@@ -1,11 +1,14 @@
 import { BaseHttpClient } from '@httpClient';
 import { IMetadataHttpClient } from '@customers-api/interfaces';
 import { MetadataRoutesPrefixUrl } from '@customers-api/enums';
+import { GetTranslationsRequestValidator } from '@customers-api/validators';
 import {
   GetLeaguesRequest,
   GetLeaguesRequestDto,
   GetMarketsRequest,
   GetMarketsRequestDto,
+  GetTranslationsRequest,
+  GetTranslationsRequestDto,
   IHttpServiceConfig,
   IMapper,
   LeaguesBodyStructure,
@@ -14,6 +17,7 @@ import {
   MarketBodyStructure,
   MarketsCollectionResponse,
   SportsCollectionResponse,
+  TranslationsCollectionResponse,
 } from '@api/common';
 import { Location, Sport } from '@entities';
 
@@ -55,6 +59,8 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * If the request is with “languageId” and there are some sports that don't
    * have a translation in this language - it's not returned (without an error).
    * @returns A promise that contains the locations.
+   * @throws Error if mapping configuration is not found or if the request is invalid
+   * or incorrect.
    */
   public async getLocations(): Promise<Location[]> {
     const locationsCollection = await this.postRequest<LocationsCollectionResponse>(
@@ -77,6 +83,8 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * If the request is with “languageId” and there are some sports that don't
    * have a translation in this language - it's not returned (without an error).
    * @returns A promise that contains the sports.
+   * @throws Error if mapping configuration is not found or if the request is invalid
+   * or incorrect.
    */
   public async getSports(): Promise<Sport[]> {
     const sportsCollection = await this.postRequest<SportsCollectionResponse>(
@@ -100,7 +108,8 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * have a translation in this language - it's not returned (without an error).
    * @param requestDto The request DTO
    * @returns A promise that contains the leagues.
-   * @throws Error if mapping configuration is not found
+   * @throws Error if mapping configuration is not found or if the request is invalid
+   * or incorrect.
    */
   public async getLeagues(requestDto: GetLeaguesRequestDto): Promise<LeaguesBodyStructure[]> {
     const request = this.mapper.map<GetLeaguesRequestDto, GetLeaguesRequest>(
@@ -113,6 +122,7 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
       LeaguesCollectionResponse,
       request,
     );
+
     return leaguesCollection?.body.leagues || [];
   }
 
@@ -129,18 +139,49 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * have a translation in this language - it's not returned (without an error).
    * @param requestDto The request DTO for getting markets from the metadata API.
    * @returns A promise that contains the markets.
-   * @throws Error if mapping configuration is not found
+   * @throws Error if mapping configuration is not found or if the request is invalid
+   * or incorrect.
    */
-  async getMarkets(requestDto: GetLeaguesRequestDto): Promise<MarketBodyStructure[]> {
+  public async getMarkets(requestDto: GetLeaguesRequestDto): Promise<MarketBodyStructure[]> {
     const request = this.mapper.map<GetMarketsRequestDto, GetMarketsRequest>(
       requestDto,
       GetMarketsRequest,
     );
+
     const marketsCollection = await this.postRequest<MarketsCollectionResponse>(
       MetadataRoutesPrefixUrl.GET_MARKETS_PREFIX_URL,
       MarketsCollectionResponse,
       request,
     );
+
     return marketsCollection?.body.markets || [];
+  }
+
+  /**
+   * getTranslations method is responsible for sending a request to the metadata API
+   * to get the translations. It sends a POST request to the metadata API with the
+   * GET_TRANSACTIONS_PREFIX_URL and TransactionsCollectionResponse as the response type.
+   * If the request does not have any optional field to translate- the response will
+   * return an ErrorCode 400 and the message will include the error.
+   * If the request is without Languages field- the response will return an error with
+   * an informative message.
+   */
+  public async getTranslations(
+    requestDto: GetTranslationsRequestDto,
+  ): Promise<TranslationsCollectionResponse> {
+    const request = this.mapper.map<GetTranslationsRequestDto, GetTranslationsRequest>(
+      requestDto,
+      GetTranslationsRequest,
+    );
+
+    await GetTranslationsRequestValidator.validate(request);
+
+    const translationsConllection = await this.postRequest<TranslationsCollectionResponse>(
+      MetadataRoutesPrefixUrl.GET_TRANSLATION_PREFIX_URL,
+      TranslationsCollectionResponse,
+      request,
+    );
+
+    return translationsConllection?.body || {};
   }
 }

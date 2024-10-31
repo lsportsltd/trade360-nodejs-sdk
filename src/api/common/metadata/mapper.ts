@@ -7,6 +7,8 @@ import {
   GetLeaguesRequestDto,
   GetMarketsRequest,
   GetMarketsRequestDto,
+  GetTranslationsRequest,
+  GetTranslationsRequestDto,
 } from './requests';
 
 /**
@@ -77,11 +79,12 @@ export class Mapper implements IMapper {
         TransformerUtil.transform({ ...packageCredentials, ...source }, GetMarketsRequest),
     );
 
-    // this.registerMapping<GetTranslationsRequestDto, GetTranslationsRequest>(
-    //   GetTranslationsRequestDto,
-    //   GetTranslationsRequest,
-    //   (source) => plainToClass(GetTranslationsRequest, source),
-    // );
+    this.registerMapping<GetTranslationsRequestDto, GetTranslationsRequest>(
+      GetTranslationsRequestDto,
+      GetTranslationsRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetTranslationsRequest),
+    );
 
     // this.registerMapping<GetCompetitionsRequestDto, GetCompetitionsRequest>(
     //   GetCompetitionsRequestDto,

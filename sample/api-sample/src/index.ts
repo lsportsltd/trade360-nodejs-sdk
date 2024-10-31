@@ -8,9 +8,12 @@ import {
   StatusResponseBody,
   StopResponseBody,
   ValidationError,
+  TranslationsValidationError,
+  HttpResponseError,
   Sport,
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
+  GetTranslationsRequestDto,
 } from 'trade360-nodejs-sdk';
 
 import { getConfig } from './config';
@@ -34,9 +37,11 @@ const initApiSample = async () => {
 
     // await getSports(metadataHttpClient);
 
-    await getLeagues(metadataHttpClient);
+    // await getLeagues(metadataHttpClient);
 
-    await getMarkets(metadataHttpClient);
+    // await getMarkets(metadataHttpClient);
+
+    await getTranslations(metadataHttpClient);
 
     const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
@@ -90,8 +95,18 @@ const initApiSample = async () => {
         });
       }
     }
-    logger.error(`API sample got err: ${err}`);
-    throw err;
+
+    if (err instanceof TranslationsValidationError) {
+      logger.error(`API sample got err from TranslationsValidationError instance: ${err}`);
+    }
+
+    if (err instanceof HttpResponseError) {
+      logger.error(`API sample got err from HttpResponseError instance: ${err}`);
+
+      if (!_.isNil(err.context) && typeof err.context == 'string') {
+        logger.error(`Error [${err.name}]: ${JSON.stringify(err.context)}`);
+      }
+    }
   }
 };
 
@@ -156,6 +171,27 @@ const getMarkets = async (metadataHttpClient: IMetadataHttpClient): Promise<void
   _.each(response, (market) => {
     logger.log(`MarketId: ${market.id}, MarketName: ${market.name}`);
   });
+};
+
+const getTranslations = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  const request = new GetTranslationsRequestDto({
+    sportIds: [6046],
+    languages: [4, 5],
+  });
+
+  const { sports, leagues, locations } = await metadataHttpClient.getTranslations(request);
+
+  logger.log(
+    `Count of translations received Sports: ${_.keys(sports).length} Translations retrieved.`,
+  );
+
+  logger.log(
+    `Count of translations received Leagues: ${_.keys(leagues).length} Translations retrieved.`,
+  );
+
+  logger.log(
+    `Count of translations received Locations: ${_.keys(locations).length} Translations retrieved.`,
+  );
 };
 
 initApiSample();

@@ -1,3 +1,5 @@
+import { isNil } from 'lodash';
+
 import { BaseError } from './base.error';
 
 export class HttpResponseError extends BaseError {
@@ -19,14 +21,14 @@ export class HttpResponseError extends BaseError {
    * or a generic error message if the httpStatusCode is not handled.
    */
   public static getHttpResponseErrorByStatusCode(
-    httpStatusCode: number,
-    rawErrorResponse: string,
+    httpStatusCode: number = -1,
+    rawErrorResponse?: string,
     statusText?: string,
     message?: string,
   ): HttpResponseError {
     const errorMessage = this.HttpErrorStatusMapping[httpStatusCode];
 
-    if (!errorMessage) {
+    if (isNil(errorMessage)) {
       return new HttpResponseError(`${statusText}, ${message}`, { context: rawErrorResponse });
     }
 

@@ -108,7 +108,7 @@ const initSample = async () => {
     });
 
     await feedInPlay.stop();
-  } catch (err: any) {
+  } catch (err: unknown) {
     if (err instanceof ValidationError) {
       logger.error(`feed sample got err from ValidationError instance: ${err}`);
       if (!_.isNil(err.context) && typeof err.context == 'object') {

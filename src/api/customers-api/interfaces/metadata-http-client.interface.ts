@@ -1,8 +1,10 @@
 import {
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
+  GetTranslationsRequestDto,
   LeaguesBodyStructure,
   MarketBodyStructure,
+  TranslationsCollectionResponse,
 } from '@api/common';
 import { Location, Sport } from '@entities';
 
@@ -16,8 +18,8 @@ export interface IMetadataHttpClient {
   getSports(): Promise<Sport[]>;
   getLeagues(requestDto: GetLeaguesRequestDto): Promise<LeaguesBodyStructure[]>;
   getMarkets(requestDto: GetMarketsRequestDto): Promise<MarketBodyStructure[]>;
+  getTranslations(requestDto: GetTranslationsRequestDto): Promise<TranslationsCollectionResponse>;
 
-  //   getTranslationsAsync(requestDto: GetTranslationsRequestDto): Promise<TransactionResponse>;
   //   getCompetitionsAsync(
   //     requestDto: GetCompetitionsRequestDto,
   //   ): Promise<CompetitionCollectionResponse>;
