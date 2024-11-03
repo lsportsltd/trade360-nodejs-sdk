@@ -1,4 +1,6 @@
 export enum CompetitionType {
-  Unknown = 0,
-  Regular = 1,
+  NotSet = 0,
+  Track = 1,
+  League = 3,
+  Season = 4,
 }

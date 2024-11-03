@@ -182,7 +182,7 @@ export abstract class BaseHttpClient {
 
     const { data, statusText } = response;
 
-    if (!isNil(data)) {
+    if (isNil(data)) {
       throw HttpResponseError.getHttpResponseErrorByStatusCode(
         undefined,
         rawErrorResponse,
@@ -190,6 +190,7 @@ export abstract class BaseHttpClient {
         message,
       );
     }
+
     const {
       header: { httpStatusCode, errors },
     } = TransformerUtil.transform(data, responsePayloadDto);

@@ -4,3 +4,5 @@ export * from './markets-request.dto';
 export * from './markets-request';
 export * from './translations-request.dto';
 export * from './translations-request';
+export * from './competition-request.dto';
+export * from './competition-request';

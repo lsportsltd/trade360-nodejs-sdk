@@ -2,18 +2,20 @@ import _ from 'lodash';
 
 import {
   CustomersApiFactory,
-  HttpResponsePayloadDto,
-  IMetadataHttpClient,
-  StartResponseBody,
-  StatusResponseBody,
-  StopResponseBody,
-  ValidationError,
-  TranslationsValidationError,
-  HttpResponseError,
-  Sport,
+  GetCompetitionsRequestDto,
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
+  HttpResponseError,
+  HttpResponsePayloadDto,
+  IMetadataHttpClient,
+  Sport,
+  StartResponseBody,
+  StatusResponseBody,
+  StopResponseBody,
+  SubscriptionState,
+  TranslationsValidationError,
+  ValidationError,
 } from 'trade360-nodejs-sdk';
 
 import { getConfig } from './config';
@@ -41,7 +43,9 @@ const initApiSample = async () => {
 
     // await getMarkets(metadataHttpClient);
 
-    await getTranslations(metadataHttpClient);
+    // await getTranslations(metadataHttpClient);
+
+    await getCompetitions(metadataHttpClient);
 
     const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
@@ -103,8 +107,18 @@ const initApiSample = async () => {
     if (err instanceof HttpResponseError) {
       logger.error(`API sample got err from HttpResponseError instance: ${err}`);
 
+      let errors = [];
+
       if (!_.isNil(err.context) && typeof err.context == 'string') {
-        logger.error(`Error [${err.name}]: ${JSON.stringify(err.context)}`);
+        errors = [logger.error(`Error [${err.name}]: ${JSON.stringify(err.context)}`)];
+      } else if (_.isArray(err.context)) {
+        errors = err.context;
+      }
+
+      if (typeof err.context == 'object') {
+        _.each(err.context, (value, key) => {
+          logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
+        });
       }
     }
   }
@@ -192,6 +206,17 @@ const getTranslations = async (metadataHttpClient: IMetadataHttpClient): Promise
   logger.log(
     `Count of translations received Locations: ${_.keys(locations).length} Translations retrieved.`,
   );
+};
+
+const getCompetitions = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  const request = new GetCompetitionsRequestDto({
+    locationIds: [1],
+    subscriptionStatus: SubscriptionState.All,
+  });
+
+  const response = await metadataHttpClient.getCompetitions(request);
+
+  logger.log(`${response.competitions?.length} Competitions retrieved.`);
 };
 
 initApiSample();

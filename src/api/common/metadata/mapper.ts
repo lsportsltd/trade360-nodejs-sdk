@@ -3,6 +3,8 @@ import { PackageCredentials } from '@entities';
 
 import { IMapper } from '../interfaces';
 import {
+  GetCompetitionsRequest,
+  GetCompetitionsRequestDto,
   GetLeaguesRequest,
   GetLeaguesRequestDto,
   GetMarketsRequest,
@@ -86,11 +88,12 @@ export class Mapper implements IMapper {
         TransformerUtil.transform({ ...packageCredentials, ...source }, GetTranslationsRequest),
     );
 
-    // this.registerMapping<GetCompetitionsRequestDto, GetCompetitionsRequest>(
-    //   GetCompetitionsRequestDto,
-    //   GetCompetitionsRequest,
-    //   (source) => plainToClass(GetCompetitionsRequest, source),
-    // );
+    this.registerMapping<GetCompetitionsRequestDto, GetCompetitionsRequest>(
+      GetCompetitionsRequestDto,
+      GetCompetitionsRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetCompetitionsRequest),
+    );
 
     // this.registerMapping<GetFixtureMetadataRequestDto, GetFixtureMetadataRequest>(
     //   GetFixtureMetadataRequestDto,

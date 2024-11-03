@@ -1,8 +1,7 @@
-import { BaseHttpClient } from '@httpClient';
-import { IMetadataHttpClient } from '@customers-api/interfaces';
-import { MetadataRoutesPrefixUrl } from '@customers-api/enums';
-import { GetTranslationsRequestValidator } from '@customers-api/validators';
 import {
+  CompetitionCollectionResponse,
+  GetCompetitionsRequest,
+  GetCompetitionsRequestDto,
   GetLeaguesRequest,
   GetLeaguesRequestDto,
   GetMarketsRequest,
@@ -19,7 +18,11 @@ import {
   SportsCollectionResponse,
   TranslationsCollectionResponse,
 } from '@api/common';
+import { MetadataRoutesPrefixUrl } from '@customers-api/enums';
+import { IMetadataHttpClient } from '@customers-api/interfaces';
+import { GetTranslationsRequestValidator } from '@customers-api/validators';
 import { Location, Sport } from '@entities';
+import { BaseHttpClient } from '@httpClient';
 
 /**
  * MetadataHttpClient class is responsible for sending requests to the metadata API.
@@ -176,12 +179,29 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
 
     await GetTranslationsRequestValidator.validate(request);
 
-    const translationsConllection = await this.postRequest<TranslationsCollectionResponse>(
+    const translationsCollection = await this.postRequest<TranslationsCollectionResponse>(
       MetadataRoutesPrefixUrl.GET_TRANSLATION_PREFIX_URL,
       TranslationsCollectionResponse,
       request,
     );
 
-    return translationsConllection?.body || {};
+    return translationsCollection?.body || {};
+  }
+
+  public async getCompetitions(
+    requestDto: GetCompetitionsRequestDto,
+  ): Promise<CompetitionCollectionResponse> {
+    const request = this.mapper.map<GetCompetitionsRequestDto, GetCompetitionsRequest>(
+      requestDto,
+      GetCompetitionsRequest,
+    );
+
+    const competitionsCollection = await this.postRequest<CompetitionCollectionResponse>(
+      MetadataRoutesPrefixUrl.GET_COMPETITIONS_PREFIX_URL,
+      CompetitionCollectionResponse,
+      request,
+    );
+
+    return competitionsCollection?.body || {};
   }
 }

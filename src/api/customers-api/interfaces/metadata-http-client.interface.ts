@@ -1,4 +1,6 @@
 import {
+  CompetitionCollectionResponse,
+  GetCompetitionsRequestDto,
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
@@ -6,7 +8,7 @@ import {
   MarketBodyStructure,
   TranslationsCollectionResponse,
 } from '@api/common';
-import { Location, Sport } from '@entities';
+import { Location, Sport } from '@lsports/entities';
 
 /**
  * IPackageDistributionHttpClient interface is responsible
@@ -19,10 +21,8 @@ export interface IMetadataHttpClient {
   getLeagues(requestDto: GetLeaguesRequestDto): Promise<LeaguesBodyStructure[]>;
   getMarkets(requestDto: GetMarketsRequestDto): Promise<MarketBodyStructure[]>;
   getTranslations(requestDto: GetTranslationsRequestDto): Promise<TranslationsCollectionResponse>;
+  getCompetitions(requestDto: GetCompetitionsRequestDto): Promise<CompetitionCollectionResponse>;
 
-  //   getCompetitionsAsync(
-  //     requestDto: GetCompetitionsRequestDto,
-  //   ): Promise<CompetitionCollectionResponse>;
   //   getFixtureMetadataAsync(
   //     requestDto: GetFixtureMetadataRequestDto,
   //   ): Promise<GetFixtureMetadataCollectionResponse>;
