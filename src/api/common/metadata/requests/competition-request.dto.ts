@@ -33,5 +33,5 @@ export class GetCompetitionsRequestDto implements BaseEntity {
   locationIds?: number[];
 
   @Expose({ name: 'SubscriptionStatus' })
-  subscriptionStatus?: SubscriptionState = 0;
+  subscriptionStatus?: SubscriptionState = SubscriptionState.All;
 }

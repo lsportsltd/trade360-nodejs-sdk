@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { SubscriptionStatus } from '@lsports/entities';
+import { SubscriptionState } from '@lsports/entities';
 
 /**
  * Base interface for all entities that can be mapped
@@ -18,7 +18,8 @@ interface BaseEntity {
  * @param locationIds The location IDs to filter the leagues by in
  * the request to get leagues from the API.
  * @param subscriptionStatus The subscription status to filter the
- * leagues by in the request to get leagues from the API.
+ * leagues by in the request to get leagues from the API. Empty field
+ * returns all leagues regardless of the subscription status.
  * @returns GetLeaguesRequestDto instance that contains the properties
  * for the request to get leagues from the API.
  */
@@ -38,5 +39,5 @@ export class GetLeaguesRequestDto implements BaseEntity {
   locationIds?: number[];
 
   @Expose({ name: 'SubscriptionStatus' })
-  subscriptionStatus?: SubscriptionStatus;
+  subscriptionStatus?: SubscriptionState = SubscriptionState.All;
 }

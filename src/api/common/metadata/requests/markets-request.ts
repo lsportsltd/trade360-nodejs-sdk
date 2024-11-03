@@ -16,9 +16,12 @@ import { MarketType } from '@lsports/entities';
  * @param marketIds The market IDs to filter the markets by in the
  * request to get markets from the API.
  * @param isSettleable The flag to filter the markets by in the
- * request to get markets from the API.
+ * request to get markets from the API. The filter meaning is
+ * whether settlements is supported for this market and will be
+ * provided for this market by LSports.
  * @param marketType The market type to filter the markets by in
- * the request to get markets from the API.
+ * the request to get markets from the API. Empty field returns
+ * all leagues regardless of the market type.
  * @param languageId The language ID to filter the markets by in
  * the request to get markets from the API.
  * @returns GetMarketsRequest instance that contains the properties
