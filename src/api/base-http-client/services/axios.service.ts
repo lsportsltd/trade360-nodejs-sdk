@@ -1,8 +1,8 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { BaseEntity } from '@entities';
 
-import { IHttpService } from '../interfaces/';
+import { IHttpService } from '../interfaces';
 
 /**
  * Axios service instance for different API endpoints with
@@ -18,6 +18,13 @@ import { IHttpService } from '../interfaces/';
 export class AxiosService<TRequest extends BaseEntity> implements IHttpService<TRequest> {
   private axiosInstance: AxiosInstance;
 
+  private configRequest: AxiosRequestConfig = {
+    validateStatus: function (status) {
+      return status >= 200 && status < 300; // Resolve only if the status
+      // code is above then 200 and less then 300
+    },
+  };
+
   constructor(baseURL: string) {
     this.axiosInstance = axios.create({
       baseURL,
@@ -27,20 +34,14 @@ export class AxiosService<TRequest extends BaseEntity> implements IHttpService<T
     });
   }
 
-  public async get<TResponse>(url: string): Promise<TResponse> {
-    const response: AxiosResponse<TResponse> = await this.axiosInstance.get(url);
-    return response.data as TResponse;
+  public async get<TResponse extends BaseEntity>(url: string): Promise<AxiosResponse<TResponse>> {
+    return this.axiosInstance.get(url, this.configRequest);
   }
 
   public async post<TResponse extends BaseEntity>(
     url: string,
     body: TRequest,
   ): Promise<AxiosResponse<TResponse>> {
-    return this.axiosInstance.post(url, body, {
-      validateStatus: function (status) {
-        return status >= 200 && status < 300; // Resolve only if the status
-        // code is above then 200 and less then 300
-      },
-    });
+    return this.axiosInstance.post(url, body, this.configRequest);
   }
 }

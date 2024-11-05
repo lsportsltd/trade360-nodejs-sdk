@@ -1,1 +1,2 @@
-export * from './validator';
+export * from './translations-request-validator';
+export * from './fixtures-metadata-request-validator';

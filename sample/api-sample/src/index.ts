@@ -1,14 +1,18 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 import {
   CustomersApiFactory,
+  FixturesMedataValidationError,
   GetCompetitionsRequestDto,
+  GetFixturesMetadataRequestDto,
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
   HttpResponseError,
   HttpResponsePayloadDto,
   IMetadataHttpClient,
+  InvalidDateInRequestError,
   Sport,
   StartResponseBody,
   StatusResponseBody,
@@ -45,7 +49,9 @@ const initApiSample = async () => {
 
     // await getTranslations(metadataHttpClient);
 
-    await getCompetitions(metadataHttpClient);
+    // await getCompetitions(metadataHttpClient);
+
+    await getFixturesMetadata(metadataHttpClient);
 
     const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
@@ -98,13 +104,9 @@ const initApiSample = async () => {
           logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
         });
       }
-    }
-
-    if (err instanceof TranslationsValidationError) {
+    } else if (err instanceof TranslationsValidationError) {
       logger.error(`API sample got err from TranslationsValidationError instance: ${err}`);
-    }
-
-    if (err instanceof HttpResponseError) {
+    } else if (err instanceof HttpResponseError) {
       logger.error(`API sample got err from HttpResponseError instance: ${err}`);
 
       let errors = [];
@@ -120,6 +122,12 @@ const initApiSample = async () => {
           logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
         });
       }
+    } else if (err instanceof InvalidDateInRequestError) {
+      logger.error(`API sample got err from InvalidDateInRequestError instance: ${err}`);
+    } else if (err instanceof FixturesMedataValidationError) {
+      logger.error(`API sample got err from FixturesMedataValidationError instance: ${err}`);
+    } else {
+      logger.error(`API sample got err: ${err}`);
     }
   }
 };
@@ -217,6 +225,17 @@ const getCompetitions = async (metadataHttpClient: IMetadataHttpClient): Promise
   const response = await metadataHttpClient.getCompetitions(request);
 
   logger.log(`${response.competitions?.length} Competitions retrieved.`);
+};
+
+const getFixturesMetadata = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  const request = new GetFixturesMetadataRequestDto({
+    fromDate: moment(),
+    toDate: moment().add(10, 'days'),
+  });
+
+  const response = await metadataHttpClient.getFixturesMetadata(request);
+
+  logger.log(`${response.subscribedFixtures?.length} Fixture metadata retrieved.`);
 };
 
 initApiSample();

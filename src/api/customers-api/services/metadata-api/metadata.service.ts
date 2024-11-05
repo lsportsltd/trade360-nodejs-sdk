@@ -1,7 +1,10 @@
 import {
   CompetitionCollectionResponse,
+  FixturesMetadataCollectionResponse,
   GetCompetitionsRequest,
   GetCompetitionsRequestDto,
+  GetFixturesMetadataRequest,
+  GetFixturesMetadataRequestDto,
   GetLeaguesRequest,
   GetLeaguesRequestDto,
   GetMarketsRequest,
@@ -20,7 +23,10 @@ import {
 } from '@api/common';
 import { MetadataRoutesPrefixUrl } from '@customers-api/enums';
 import { IMetadataHttpClient } from '@customers-api/interfaces';
-import { GetTranslationsRequestValidator } from '@customers-api/validators';
+import {
+  GetFixturesMetadataRequestValidator,
+  GetTranslationsRequestValidator,
+} from '@customers-api/validators';
 import { Location, Sport } from '@entities';
 import { BaseHttpClient } from '@httpClient';
 
@@ -41,6 +47,8 @@ import { BaseHttpClient } from '@httpClient';
  */
 export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpClient {
   private readonly mapper: IMapper;
+
+  private readonly possibleDataCoverage = 7;
 
   constructor(
     { packageCredentials, customersApiBaseUrl, logger }: IHttpServiceConfig,
@@ -188,6 +196,11 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     return translationsCollection?.body || {};
   }
 
+  /**
+   * getCompetitions method is responsible for sending a request to the metadata API
+   * to get the competitions. It sends a POST request to the metadata API with the
+   * GET_COMPETITIONS_PREFIX_URL and CompetitionCollectionResponse as the response type.
+   */
   public async getCompetitions(
     requestDto: GetCompetitionsRequestDto,
   ): Promise<CompetitionCollectionResponse> {
@@ -203,5 +216,40 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     );
 
     return competitionsCollection?.body || {};
+  }
+
+  /**
+   * getFixturesMetadata method is responsible for sending a request to the metadata API
+   * to get the fixtures metadata. It sends a GET request to the metadata API with the
+   * GET_SUBSCRIBED_FIXTURES_METADATA_PREFIX_URL and FixturesMetadataCollectionResponse
+   * as the response type. The request contains the properties for the request to get
+   * fixture metadata from the API. The response will automatically trim and provide
+   * data only for the upcoming week if the date range is more than 7 days.
+   */
+  public async getFixturesMetadata(
+    requestDto: GetFixturesMetadataRequestDto,
+  ): Promise<FixturesMetadataCollectionResponse> {
+    await GetFixturesMetadataRequestValidator.validate(requestDto);
+
+    if (requestDto.toDate.diff(requestDto.fromDate, 'days') > this.possibleDataCoverage) {
+      this.logger.warn(`The date range is more than ${this.possibleDataCoverage} days!`);
+
+      this.logger.debug(
+        'the response will automatically trim and provide data only for the upcoming week',
+      );
+    }
+
+    const request = this.mapper.map<GetFixturesMetadataRequestDto, GetFixturesMetadataRequest>(
+      requestDto,
+      GetFixturesMetadataRequest,
+    );
+
+    const fixturesMetadataCollection = await this.getRequest<FixturesMetadataCollectionResponse>(
+      MetadataRoutesPrefixUrl.GET_SUBSCRIBED_FIXTURES_METADATA_PREFIX_URL,
+      FixturesMetadataCollectionResponse,
+      request,
+    );
+
+    return fixturesMetadataCollection?.body || {};
   }
 }

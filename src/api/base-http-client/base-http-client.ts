@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { isNil, map } from 'lodash';
+import { forEach, isArray, isNil, map } from 'lodash';
 
 import { HttpRequestDto, HttpResponsePayloadDto, IHttpServiceConfig } from '@api/common';
 import { BaseEntity } from '@entities';
@@ -66,6 +66,7 @@ export abstract class BaseHttpClient {
       : TransformerUtil.transform(this.requestSettings, HttpRequestDto);
 
     const responsePayloadDto = HttpResponsePayloadDto.createPayloadDto(responseBodyType);
+
     try {
       const response = await this.httpService.post<TResponse>(route, this.requestSettings);
 
@@ -75,26 +76,41 @@ export abstract class BaseHttpClient {
     }
   }
 
+  /**
+   * This method is responsible for sending GET requests to the
+   * customers API. The request expect getting generic type R which
+   * declare the expected response structure.
+   * @param route string that represent the route expected to be
+   * sent to the API endpoint.
+   * @param responseBodyType new instance of the expected response
+   * structure.
+   * @param params optional parameter that represent the query
+   * parameters of the request.
+   * @returns promise with the TResponse type response type of the
+   * API.
+   */
   protected async getRequest<TResponse extends BaseEntity>(
     route: string,
-    params?: Record<string, string>,
-    // responseBodyType?: new () => TResponse,
-  ): Promise<TResponse> {
-    // Implement your GET logic here
-    const queryString = params ? `?${new URLSearchParams(params)}` : '';
-    const response = await fetch(`${this.baseUrl}/${route}${queryString}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        // Add any authorization headers based on packageCredentials
-      },
-    });
+    responseBodyType: new () => TResponse,
+    params?: HttpRequestDto,
+  ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
+    this.requestSettings = !isNil(params)
+      ? params
+      : TransformerUtil.transform(this.requestSettings, HttpRequestDto);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    const responsePayloadDto = HttpResponsePayloadDto.createPayloadDto(responseBodyType);
+
+    try {
+      // Build the query string from the request object properties
+      const queryString = this.buildQueryString(params);
+      const fullUri = `${route}?${queryString}`;
+
+      const httpResponse = await this.httpService.get<TResponse>(fullUri);
+
+      return await this.handleValidResponse(httpResponse, responsePayloadDto);
+    } catch (error) {
+      this.handleErrorResponse(error, responsePayloadDto);
     }
-
-    return (await response.json()) as TResponse;
   }
 
   /**
@@ -210,5 +226,30 @@ export abstract class BaseHttpClient {
       statusText,
       message,
     );
+  }
+
+  /**
+   * This method is responsible for building the query string from the
+   * request parameters.
+   * @param requestParams The request parameters to be used for building
+   * the query string
+   * @returns The query
+   */
+  private buildQueryString(requestParams?: HttpRequestDto): string {
+    if (isNil(requestParams)) return '';
+
+    const queryParams: string[] = [];
+
+    forEach(requestParams, (value, key) => {
+      if (isArray(value)) {
+        forEach(value, (element) => {
+          queryParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(element))}`);
+        });
+      } else if (!isNil(value)) {
+        queryParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+      }
+    });
+
+    return queryParams.join('&');
   }
 }

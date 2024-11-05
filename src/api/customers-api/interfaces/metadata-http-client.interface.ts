@@ -1,6 +1,8 @@
 import {
   CompetitionCollectionResponse,
+  FixturesMetadataCollectionResponse,
   GetCompetitionsRequestDto,
+  GetFixturesMetadataRequestDto,
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
@@ -22,8 +24,7 @@ export interface IMetadataHttpClient {
   getMarkets(requestDto: GetMarketsRequestDto): Promise<MarketBodyStructure[]>;
   getTranslations(requestDto: GetTranslationsRequestDto): Promise<TranslationsCollectionResponse>;
   getCompetitions(requestDto: GetCompetitionsRequestDto): Promise<CompetitionCollectionResponse>;
-
-  //   getFixtureMetadataAsync(
-  //     requestDto: GetFixtureMetadataRequestDto,
-  //   ): Promise<GetFixtureMetadataCollectionResponse>;
+  getFixturesMetadata(
+    requestDto: GetFixturesMetadataRequestDto,
+  ): Promise<FixturesMetadataCollectionResponse>;
 }

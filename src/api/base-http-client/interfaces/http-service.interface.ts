@@ -8,7 +8,10 @@ export interface IHttpService<TRequest extends BaseEntity> {
    * @param url String that represent the url expect to sent to
    * @returns Promise with object of R structure
    */
-  get: <TResponse extends BaseEntity>(url: string) => Promise<TResponse>;
+  get: <TResponse extends BaseEntity>(
+    url: string,
+    // body: TRequest,
+  ) => Promise<AxiosResponse<TResponse>>;
 
   /**
    * POST request

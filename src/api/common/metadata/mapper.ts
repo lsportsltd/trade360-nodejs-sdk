@@ -1,10 +1,14 @@
+import { InvalidDateInRequestError, PackageCredentials } from '@entities';
 import { TransformerUtil } from '@utilities';
-import { PackageCredentials } from '@entities';
 
+import { isNil } from 'lodash';
+import { Moment } from 'moment';
 import { IMapper } from '../interfaces';
 import {
   GetCompetitionsRequest,
   GetCompetitionsRequestDto,
+  GetFixturesMetadataRequest,
+  GetFixturesMetadataRequestDto,
   GetLeaguesRequest,
   GetLeaguesRequestDto,
   GetMarketsRequest,
@@ -38,6 +42,8 @@ type Constructor<T extends BaseEntity = BaseEntity> = new (...args: never[]) => 
  */
 export class Mapper implements IMapper {
   private mappingConfigs: Map<string, (source: BaseEntity) => BaseEntity> = new Map();
+
+  private readonly desiredDateFormat = 'MM/DD/YYYY';
 
   constructor(packageCredentials?: PackageCredentials) {
     this.initializeMappings(packageCredentials);
@@ -95,16 +101,23 @@ export class Mapper implements IMapper {
         TransformerUtil.transform({ ...packageCredentials, ...source }, GetCompetitionsRequest),
     );
 
-    // this.registerMapping<GetFixtureMetadataRequestDto, GetFixtureMetadataRequest>(
-    //   GetFixtureMetadataRequestDto,
-    //   GetFixtureMetadataRequest,
-    //   (source) => {
-    //     const destination = plainToClass(GetFixtureMetadataRequest, source);
-    //     destination.fromDate = this.formatDate(source.fromDate);
-    //     destination.toDate = this.formatDate(source.toDate);
-    //     return destination;
-    //   },
-    // );
+    this.registerMapping<GetFixturesMetadataRequestDto, GetFixturesMetadataRequest>(
+      GetFixturesMetadataRequestDto,
+      GetFixturesMetadataRequest,
+      (source: Partial<GetFixturesMetadataRequestDto>) => {
+        let destination = {
+          fromDate: this.formatDate('fromDate', source.fromDate),
+          toDate: this.formatDate('toDate', source.toDate),
+        };
+
+        destination = TransformerUtil.transform(
+          { ...packageCredentials, ...destination },
+          GetFixturesMetadataRequest,
+        );
+
+        return destination;
+      },
+    );
   }
 
   /**
@@ -134,15 +147,19 @@ export class Mapper implements IMapper {
 
   /**
    * Formats a date to MM/DD/YYYY string format
-   * @param date The date to format
-   * @returns Formatted date string
-   * @private
+   * @param fieldName The name of the date field
+   * to format.
+   * @param date The date to format to MM/DD/YYYY string
+   * format.
+   * @returns Formatted date string in MM/DD/YYYY format
    */
-  //   private formatDate(date: Date): string {
-  //     return date.toLocaleDateString('en-US', {
-  //       month: '2-digit',
-  //       day: '2-digit',
-  //       year: 'numeric',
-  //     });
-  //   }
+  private formatDate(fieldName: string, date?: Moment): string {
+    if (isNil(date)) {
+      throw new InvalidDateInRequestError(
+        `Date ${fieldName} is required and was not provided for as fields of the request`,
+      );
+    }
+
+    return date.format(this.desiredDateFormat);
+  }
 }
