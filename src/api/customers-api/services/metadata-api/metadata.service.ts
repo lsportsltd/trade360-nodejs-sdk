@@ -23,10 +23,7 @@ import {
 } from '@api/common';
 import { MetadataRoutesPrefixUrl } from '@customers-api/enums';
 import { IMetadataHttpClient } from '@customers-api/interfaces';
-import {
-  GetFixturesMetadataRequestValidator,
-  GetTranslationsRequestValidator,
-} from '@customers-api/validators';
+import { GetTranslationsRequestValidator } from '@customers-api/validators';
 import { Location, Sport } from '@entities';
 import { BaseHttpClient } from '@httpClient';
 
@@ -229,16 +226,6 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
   public async getFixturesMetadata(
     requestDto: GetFixturesMetadataRequestDto,
   ): Promise<FixturesMetadataCollectionResponse> {
-    await GetFixturesMetadataRequestValidator.validate(requestDto);
-
-    if (requestDto.toDate.diff(requestDto.fromDate, 'days') > this.possibleDataCoverage) {
-      this.logger.warn(`The date range is more than ${this.possibleDataCoverage} days!`);
-
-      this.logger.debug(
-        'the response will automatically trim and provide data only for the upcoming week',
-      );
-    }
-
     const request = this.mapper.map<GetFixturesMetadataRequestDto, GetFixturesMetadataRequest>(
       requestDto,
       GetFixturesMetadataRequest,
