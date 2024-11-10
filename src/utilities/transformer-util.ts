@@ -1,4 +1,4 @@
-import { plainToInstance } from 'class-transformer';
+import { ClassConstructor, plainToInstance } from 'class-transformer';
 
 import { BaseEntity, ConversionError } from '@entities';
 
@@ -11,8 +11,8 @@ export class TransformerUtil {
    *  set according to the plain object provided
    */
   public static transform<TEntity extends BaseEntity>(
-    plainObject: Record<string, never> | BaseEntity,
-    targetClass: new () => TEntity,
+    plainObject: BaseEntity,
+    targetClass: ClassConstructor<TEntity>,
   ): TEntity {
     try {
       return plainToInstance(targetClass, plainObject, {
