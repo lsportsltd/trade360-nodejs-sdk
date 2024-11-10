@@ -20,7 +20,7 @@ interface BaseEntity {
 export class GetFixturesMetadataRequestDto implements BaseEntity {
   [key: string]: unknown;
 
-  constructor(data?: GetFixturesMetadataRequestDto) {
+  constructor(data?: unknown) {
     Object.assign(this, data);
   }
 

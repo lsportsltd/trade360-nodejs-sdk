@@ -1,8 +1,9 @@
-import { InvalidDateInRequestError, PackageCredentials } from '@entities';
-import { TransformerUtil } from '@utilities';
-
 import { isNil } from 'lodash';
 import { Moment } from 'moment';
+
+import { BaseEntity, Constructor, InvalidDateInRequestError, PackageCredentials } from '@entities';
+import { TransformerUtil } from '@utilities';
+
 import { IMapper } from '../interfaces';
 import {
   GetCompetitionsRequest,
@@ -16,18 +17,6 @@ import {
   GetTranslationsRequest,
   GetTranslationsRequestDto,
 } from './requests';
-
-/**
- * Base interface for all entities that can be mapped
- */
-interface BaseEntity {
-  [key: string]: unknown;
-}
-
-/**
- * Type for constructable classes that extend BaseEntity
- */
-type Constructor<T extends BaseEntity = BaseEntity> = new (...args: never[]) => T;
 
 /**
  * Mapper class for mapping between different types of objects in the

@@ -39,7 +39,7 @@ import { MarketType } from '@lsports/entities';
 export class GetMarketsRequestDto implements BaseEntity {
   [key: string]: unknown;
 
-  constructor(data?: GetMarketsRequestDto) {
+  constructor(data?: unknown) {
     Object.assign(this, data);
   }
 

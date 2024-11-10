@@ -12,7 +12,9 @@ import { HeaderContent } from './http-response-header';
  * The body contains the response data.
  * @typeparam TResponse The type of the response data.
  */
-export class HttpResponsePayloadDto<TResponse extends BaseEntity> {
+export class HttpResponsePayloadDto<TResponse extends BaseEntity> implements BaseEntity {
+  [key: string]: unknown;
+
   @Expose({ name: 'Header' })
   @Type(() => HeaderContent)
   header!: HeaderContent;

@@ -26,7 +26,7 @@ interface BaseEntity {
 export class GetCompetitionsRequestDto implements BaseEntity {
   [key: string]: unknown;
 
-  constructor(data?: GetCompetitionsRequestDto) {
+  constructor(data?: unknown) {
     Object.assign(this, data);
   }
 

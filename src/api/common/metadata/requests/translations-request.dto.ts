@@ -31,7 +31,7 @@ interface BaseEntity {
 export class GetTranslationsRequestDto implements BaseEntity {
   [key: string]: unknown;
 
-  constructor(data?: GetTranslationsRequestDto) {
+  constructor(data?: unknown) {
     Object.assign(this, data);
   }
 

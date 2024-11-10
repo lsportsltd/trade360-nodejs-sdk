@@ -1,5 +1,7 @@
 import { Expose } from 'class-transformer';
 
+import { BaseEntity } from '@entities';
+
 import { TranslationsBodyStructure } from '../body-entities';
 
 /**
@@ -7,7 +9,9 @@ import { TranslationsBodyStructure } from '../body-entities';
  * (used for serialization) - represents the response
  * body of the translations collection endpoint.
  */
-export class TranslationsCollectionResponse {
+export class TranslationsCollectionResponse implements BaseEntity {
+  [key: string]: unknown;
+
   @Expose({ name: 'Sports' })
   sports?: TranslationsBodyStructure;
 

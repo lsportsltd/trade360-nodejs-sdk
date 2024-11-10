@@ -1,13 +1,14 @@
 import { Expose, Type } from 'class-transformer';
 
 import { SubscriptionState } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 
 /**
  * Base interface for all entities that can be mapped
  */
-interface BaseEntity {
-  [key: string]: unknown;
-}
+// interface BaseEntity {
+//   [key: string]: unknown;
+// }
 
 /**
  * GetLeaguesRequestDto class for sending request to get leagues
@@ -26,7 +27,7 @@ interface BaseEntity {
 export class GetLeaguesRequestDto implements BaseEntity {
   [key: string]: unknown;
 
-  constructor(data?: GetLeaguesRequestDto) {
+  constructor(data?: unknown) {
     Object.assign(this, data);
   }
 

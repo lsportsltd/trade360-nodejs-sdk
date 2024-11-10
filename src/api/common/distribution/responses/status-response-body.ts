@@ -1,6 +1,10 @@
 import { Expose } from 'class-transformer';
 
-export class StatusResponseBody {
+import { BaseEntity } from '@entities';
+
+export class StatusResponseBody implements BaseEntity {
+  [key: string]: unknown;
+
   @Expose({ name: 'IsDistributionOn' })
   isDistributionOn!: boolean;
 
