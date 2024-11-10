@@ -1,10 +1,15 @@
 import { Options } from 'amqplib';
 
 import { MQSettings } from '@feed/vaildators';
+import { BaseEntity } from '@entities';
 
 /**
- * Application configuration interface for the feed service settings for the package types MQ settings for the feed service
- * to connect to the RabbitMQ server and the feed service settings for the in-play and pre-match feed services.
+ * Application configuration interface for
+ * the feed service settings for the package
+ * types MQ settings for the feed service
+ * to connect to the RabbitMQ server and the
+ * feed service settings for the in-play and
+ * pre-match feed services.
  */
 export interface MQAppConfig {
   trade360: PackageTypesMQSettings;
@@ -19,6 +24,8 @@ interface PackageTypesMQSettings {
 }
 
 /**
- * MQ settings options for the connection settings and the MQ settings for the feed service
+ * MQ settings options for the connection
+ * settings and the MQ settings for the
+ * feed service
  */
-export type MQSettingsOptions = MQSettings & Options.Connect;
+export type MQSettingsOptions = MQSettings & Options.Connect & BaseEntity;

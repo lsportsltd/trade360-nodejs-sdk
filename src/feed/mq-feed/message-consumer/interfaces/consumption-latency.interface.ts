@@ -1,7 +1,7 @@
 /**
  * Interface for consumption latency
  */
-export interface IConsumptionLantency {
+export interface IConsumptionLatency {
   messageMqTimestamp?: number;
   consumptionLatencyThreshold?: number;
   msgGuid?: string;

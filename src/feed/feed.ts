@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 
-import { BaseEntity } from '@entities';
+import { BaseEntity, Constructor } from '@entities';
 import { IEntityHandler, IFeed, MQSettingsOptions } from '@feed';
 import { ConsoleAdapter, ILogger } from '@logger';
 import { DistributionUtil, withRetry } from '@utilities';
@@ -89,7 +89,7 @@ export class Feed implements IFeed {
 
   public async addEntityHandler<TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
-    entityConstructor: new () => TEntity,
+    entityConstructor: Constructor<TEntity>,
   ): Promise<void> {
     await this.consumerMq.addEntityHandler(entityHandler, entityConstructor);
   }

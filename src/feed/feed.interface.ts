@@ -1,4 +1,4 @@
-import { BaseEntity } from '@entities';
+import { BaseEntity, Constructor } from '@entities';
 
 import { IEntityHandler } from './entity-handler.interface';
 
@@ -33,6 +33,6 @@ export interface IFeed {
    */
   addEntityHandler: <TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
-    entityConstructor: new () => TEntity,
+    entityConstructor: Constructor<TEntity>,
   ) => void;
 }

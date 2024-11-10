@@ -1,12 +1,18 @@
 import { isNil } from 'lodash';
 
-import { BaseEntity, ConversionError, WrappedMessage, knownEntityKeys } from '@entities';
+import {
+  BaseEntity,
+  Constructor,
+  ConversionError,
+  WrappedMessage,
+  knownEntityKeys,
+} from '@entities';
 import { IEntityHandler } from '@feed';
 import { TransformerUtil } from '@utilities';
 import { ILogger } from '@logger';
 
 import { BodyHandler } from './handler';
-import { IBodyHandler, IConsumptionLantency } from './interfaces';
+import { IBodyHandler, IConsumptionLatency } from './interfaces';
 
 /**
  * Convert json string to WrappedMessage instance
@@ -36,7 +42,7 @@ export class MessageConsumer {
    */
   public async handleBasicMessage(
     messageContent: Uint8Array,
-    { messageMqTimestamp, consumptionLatencyThreshold }: IConsumptionLantency,
+    { messageMqTimestamp, consumptionLatencyThreshold }: IConsumptionLatency,
   ): Promise<void> {
     try {
       if (this.bodyHandlers.size == 0) {
@@ -89,7 +95,7 @@ export class MessageConsumer {
     messageMqTimestamp,
     consumptionLatencyThreshold: thresholdInSeconds,
     msgGuid,
-  }: IConsumptionLantency): void {
+  }: IConsumptionLatency): void {
     if (isNil(messageMqTimestamp) || isNil(thresholdInSeconds)) {
       this.logger.warn(
         'Unable to check message consumption delay: missing message timestamp or threshold',
@@ -119,13 +125,18 @@ export class MessageConsumer {
 
   /**
    * Register new entity handler for specific entity type
-   * @param entityHandler entity handler instance that implement IEntityHandler interface
-   * @param entityConstructor entity constructor for the entity type that the handler will process it
+   * @param entityHandler entity handler instance that implement
+   * IEntityHandler interface
+   * @param entityConstructor entity constructor that extends
+   * BaseEntity class and has entityKey property in its prototype
+   * @throws Error if entityConstructor is not a trade360 entity
+   * or if there is an error setting registration for new entity
+   * handler
    * @returns void
    */
   public RegisterEntityHandler<TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
-    entityConstructor: new () => TEntity,
+    entityConstructor: Constructor<TEntity>,
   ): void {
     try {
       const {
