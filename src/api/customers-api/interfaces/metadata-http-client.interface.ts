@@ -7,10 +7,11 @@ import {
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
   LeaguesBodyStructure,
+  LocationsBodyStructure,
   MarketBodyStructure,
+  SportsBodyStructure,
   TranslationsCollectionResponse,
 } from '@api/common';
-import { Location, Sport } from '@lsports/entities';
 
 /**
  * IPackageDistributionHttpClient interface is responsible
@@ -18,8 +19,8 @@ import { Location, Sport } from '@lsports/entities';
  * the methods for sending requests to the distribution API.
  */
 export interface IMetadataHttpClient {
-  getLocations(): Promise<Location[]>;
-  getSports(): Promise<Sport[]>;
+  getLocations(): Promise<LocationsBodyStructure[]>;
+  getSports(): Promise<SportsBodyStructure[]>;
   getLeagues(requestDto: GetLeaguesRequestDto): Promise<LeaguesBodyStructure[]>;
   getMarkets(requestDto: GetMarketsRequestDto): Promise<MarketBodyStructure[]>;
   getTranslations(requestDto: GetTranslationsRequestDto): Promise<TranslationsCollectionResponse>;
