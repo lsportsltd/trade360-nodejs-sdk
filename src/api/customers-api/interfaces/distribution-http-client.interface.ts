@@ -1,5 +1,5 @@
 import { HttpResponsePayloadDto } from '@api/common';
-import { BaseEntity } from '@entities';
+import { BaseEntity, Constructor } from '@entities';
 
 /**
  * IPackageDistributionHttpClient interface is responsible
@@ -14,7 +14,7 @@ export interface IPackageDistributionHttpClient {
    * @returns Promise<HttpResponsePayloadDto<TResponse>>
    */
   startDistribution: <TResponse extends BaseEntity>(
-    responseBodyType: new () => TResponse,
+    responseBodyType: Constructor<TResponse>,
   ) => Promise<HttpResponsePayloadDto<TResponse> | undefined>;
 
   /**
@@ -25,7 +25,7 @@ export interface IPackageDistributionHttpClient {
    * @returns Promise<HttpResponsePayloadDto<TResponse>>
    */
   stopDistribution: <TResponse extends BaseEntity>(
-    responseBodyType: new () => TResponse,
+    responseBodyType: Constructor<TResponse>,
   ) => Promise<HttpResponsePayloadDto<TResponse> | undefined>;
 
   /**
@@ -36,6 +36,6 @@ export interface IPackageDistributionHttpClient {
    * @returns Promise<HttpResponsePayloadDto<TResponse>>
    */
   getDistributionStatus: <TResponse extends BaseEntity>(
-    responseBodyType: new () => TResponse,
+    responseBodyType: Constructor<TResponse>,
   ) => Promise<HttpResponsePayloadDto<TResponse> | undefined>;
 }

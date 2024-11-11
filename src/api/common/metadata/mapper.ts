@@ -6,16 +6,18 @@ import { TransformerUtil } from '@utilities';
 
 import { IMapper } from '../interfaces';
 import {
-  GetCompetitionsRequest,
   GetCompetitionsRequestDto,
-  GetFixturesMetadataRequest,
   GetFixturesMetadataRequestDto,
-  GetLeaguesRequest,
   GetLeaguesRequestDto,
-  GetMarketsRequest,
   GetMarketsRequestDto,
-  GetTranslationsRequest,
   GetTranslationsRequestDto,
+} from './dtos';
+import {
+  GetCompetitionsRequest,
+  GetFixturesMetadataRequest,
+  GetLeaguesRequest,
+  GetMarketsRequest,
+  GetTranslationsRequest,
 } from './requests';
 
 /**

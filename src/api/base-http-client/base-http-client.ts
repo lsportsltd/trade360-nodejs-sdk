@@ -2,7 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { forEach, isArray, isNil, map } from 'lodash';
 
 import { HttpRequestDto, HttpResponsePayloadDto, IHttpServiceConfig } from '@api/common';
-import { BaseEntity } from '@entities';
+import { BaseEntity, Constructor } from '@entities';
 import { HttpResponseError } from '@lsports/errors';
 import { AxiosService } from '@httpClient/services';
 import { RequestSettingsValidator } from '@httpClient/validators';
@@ -58,7 +58,7 @@ export abstract class BaseHttpClient {
    */
   protected async postRequest<TResponse extends BaseEntity>(
     route: string,
-    responseBodyType: new () => TResponse,
+    responseBodyType: Constructor<TResponse>,
     requestBody?: HttpRequestDto,
   ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
     this.requestSettings = !isNil(requestBody)
@@ -91,7 +91,7 @@ export abstract class BaseHttpClient {
    */
   protected async getRequest<TResponse extends BaseEntity>(
     route: string,
-    responseBodyType: new () => TResponse,
+    responseBodyType: Constructor<TResponse>,
     params?: HttpRequestDto,
   ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
     this.requestSettings = !isNil(params)
@@ -124,7 +124,7 @@ export abstract class BaseHttpClient {
    */
   private async handleValidResponse<TResponse extends BaseEntity>(
     httpResponse: AxiosResponse<TResponse>,
-    responsePayloadDto: new () => HttpResponsePayloadDto<TResponse>,
+    responsePayloadDto: Constructor<HttpResponsePayloadDto<TResponse>>,
   ): Promise<HttpResponsePayloadDto<TResponse>> {
     const { data } = httpResponse;
 
@@ -179,7 +179,7 @@ export abstract class BaseHttpClient {
    */
   private handleErrorResponse<TResponse extends BaseEntity>(
     errorResponse: unknown,
-    responsePayloadDto: new () => HttpResponsePayloadDto<TResponse>,
+    responsePayloadDto: Constructor<HttpResponsePayloadDto<TResponse>>,
   ): void {
     if (isNil(errorResponse)) {
       throw new HttpResponseError('API call failed', { context: 'No response received' });

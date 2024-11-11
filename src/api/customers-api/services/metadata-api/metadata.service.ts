@@ -1,31 +1,37 @@
-import {
-  CompetitionCollectionResponse,
-  FixturesMetadataCollectionResponse,
-  GetCompetitionsRequest,
-  GetCompetitionsRequestDto,
-  GetFixturesMetadataRequest,
-  GetFixturesMetadataRequestDto,
-  GetLeaguesRequest,
-  GetLeaguesRequestDto,
-  GetMarketsRequest,
-  GetMarketsRequestDto,
-  GetTranslationsRequest,
-  GetTranslationsRequestDto,
-  IHttpServiceConfig,
-  IMapper,
-  LeaguesBodyStructure,
-  LeaguesCollectionResponse,
-  LocationsCollectionResponse,
-  MarketBodyStructure,
-  MarketsCollectionResponse,
-  SportsCollectionResponse,
-  TranslationsCollectionResponse,
-} from '@api/common';
+import { IHttpServiceConfig, IMapper } from '@api/common';
 import { MetadataRoutesPrefixUrl } from '@customers-api/enums';
 import { IMetadataHttpClient } from '@customers-api/interfaces';
 import { GetTranslationsRequestValidator } from '@customers-api/validators';
-import { Location, Sport } from '@entities';
 import { BaseHttpClient } from '@httpClient';
+import {
+  LeaguesBodyStructure,
+  LocationsBodyStructure,
+  MarketBodyStructure,
+  SportsBodyStructure,
+} from '@metadata-api/body-entities';
+import {
+  GetCompetitionsRequestDto,
+  GetFixturesMetadataRequestDto,
+  GetLeaguesRequestDto,
+  GetMarketsRequestDto,
+  GetTranslationsRequestDto,
+} from '@metadata-api/dtos';
+import {
+  GetCompetitionsRequest,
+  GetFixturesMetadataRequest,
+  GetLeaguesRequest,
+  GetMarketsRequest,
+  GetTranslationsRequest,
+} from '@metadata-api/requests';
+import {
+  CompetitionCollectionResponse,
+  FixturesMetadataCollectionResponse,
+  LeaguesCollectionResponse,
+  LocationsCollectionResponse,
+  MarketsCollectionResponse,
+  SportsCollectionResponse,
+  TranslationsCollectionResponse,
+} from '@metadata-api/responses';
 
 /**
  * MetadataHttpClient class is responsible for sending requests to the metadata API.
@@ -34,6 +40,7 @@ import { BaseHttpClient } from '@httpClient';
  * @param packageCredentials The package credentials for the API
  * @param customersApiBaseUrl The base URL of the customers API
  * @param logger The logger instance
+ * @param mapper The mapper instance
  * @returns MetadataHttpClient instance that is responsible for sending requests
  * to the metadata API.
  * @extends BaseHttpClient class for sending requests to the customers API.
@@ -44,8 +51,6 @@ import { BaseHttpClient } from '@httpClient';
  */
 export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpClient {
   private readonly mapper: IMapper;
-
-  private readonly possibleDataCoverage = 7;
 
   constructor(
     { packageCredentials, customersApiBaseUrl, logger }: IHttpServiceConfig,
@@ -70,7 +75,7 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * @throws Error if mapping configuration is not found or if the request is invalid
    * or incorrect.
    */
-  public async getLocations(): Promise<Location[]> {
+  public async getLocations(): Promise<LocationsBodyStructure[]> {
     const locationsCollection = await this.postRequest<LocationsCollectionResponse>(
       MetadataRoutesPrefixUrl.GET_LOCATIONS_PREFIX_URL,
       LocationsCollectionResponse,
@@ -94,7 +99,7 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * @throws Error if mapping configuration is not found or if the request is invalid
    * or incorrect.
    */
-  public async getSports(): Promise<Sport[]> {
+  public async getSports(): Promise<SportsBodyStructure[]> {
     const sportsCollection = await this.postRequest<SportsCollectionResponse>(
       MetadataRoutesPrefixUrl.GET_SPORTS_PREFIX_URL,
       SportsCollectionResponse,

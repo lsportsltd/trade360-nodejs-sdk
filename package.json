@@ -57,6 +57,8 @@
     "@lsports/errors": "dist/entities/errors",
     "@api": "dist/api",
     "@api/*": "dist/api/*",
+    "@metadata-api": "dist/api/common/metadata",
+    "@metadata-api/*": "dist/api/common/metadata/*",
     "@customers-api": "dist/api/customers-api",
     "@customers-api/*": "dist/api/customers-api/*",
     "@httpClient": "dist/api/base-http-client",
