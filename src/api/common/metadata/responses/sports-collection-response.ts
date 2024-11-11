@@ -1,6 +1,8 @@
 import { Expose, Type } from 'class-transformer';
 
-import { BaseEntity, Sport } from '@entities';
+import { BaseEntity } from '@entities';
+
+import { SportsBodyStructure } from '../body-entities';
 
 /**
  * SportsCollectionResponse class is responsible for deserializing the response
@@ -10,6 +12,6 @@ export class SportsCollectionResponse implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'Sports' })
-  @Type(() => Sport)
-  sports?: Sport[];
+  @Type(() => SportsBodyStructure)
+  sports?: SportsBodyStructure[];
 }

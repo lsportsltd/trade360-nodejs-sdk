@@ -39,9 +39,9 @@ const initApiSample = async () => {
       logger,
     });
 
-    // await getLocations(metadataHttpClient);
+    await getLocations(metadataHttpClient);
 
-    // await getSports(metadataHttpClient);
+    await getSports(metadataHttpClient);
 
     // await getLeagues(metadataHttpClient);
 
@@ -51,7 +51,7 @@ const initApiSample = async () => {
 
     // await getCompetitions(metadataHttpClient);
 
-    await getFixturesMetadata(metadataHttpClient);
+    // await getFixturesMetadata(metadataHttpClient);
 
     const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,

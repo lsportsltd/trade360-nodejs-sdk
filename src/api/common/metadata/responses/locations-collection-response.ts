@@ -1,6 +1,8 @@
 import { Expose, Type } from 'class-transformer';
 
-import { BaseEntity, Location } from '@entities';
+import { BaseEntity } from '@entities';
+
+import { LocationsBodyStructure } from '../body-entities';
 
 /**
  * LocationsCollectionResponse class is responsible for deserializing the response
@@ -10,6 +12,6 @@ export class LocationsCollectionResponse implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'Locations' })
-  @Type(() => Location)
-  locations?: Location[];
+  @Type(() => LocationsBodyStructure)
+  locations?: LocationsBodyStructure[];
 }
