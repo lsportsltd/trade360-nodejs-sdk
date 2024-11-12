@@ -33,15 +33,21 @@ const initApiSample = async () => {
   try {
     const customersApiFactory = new CustomersApiFactory();
 
-    const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
+    const subscriptionHttpClient = customersApiFactory.createSubscriptionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
       customersApiBaseUrl: config.trade360.customersApiBaseUrl,
       logger,
     });
 
-    await getLocations(metadataHttpClient);
+    // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
+    //   packageCredentials: config.trade360.inPlayMQSettings,
+    //   customersApiBaseUrl: config.trade360.customersApiBaseUrl,
+    //   logger,
+    // });
 
-    await getSports(metadataHttpClient);
+    // await getLocations(metadataHttpClient);
+
+    // await getSports(metadataHttpClient);
 
     // await getLeagues(metadataHttpClient);
 

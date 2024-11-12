@@ -26,7 +26,12 @@ export class HttpResponseError extends BaseError {
     statusText?: string,
     message?: string,
   ): HttpResponseError {
-    const errorMessage = this.HttpErrorStatusMapping[httpStatusCode];
+    const errorMessage = Object.prototype.hasOwnProperty.call(
+      this.HttpErrorStatusMapping,
+      httpStatusCode,
+    )
+      ? this.HttpErrorStatusMapping[httpStatusCode]
+      : undefined;
 
     if (isNil(errorMessage)) {
       return new HttpResponseError(`${statusText}, ${message}`, { context: rawErrorResponse });
