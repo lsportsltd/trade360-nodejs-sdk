@@ -1,6 +1,8 @@
 import { BaseHttpClient } from '@httpClient';
 import { IHttpServiceConfig, IMapper } from '@api/common';
 import { ISubscriptionHttpClient } from '@customers-api/interfaces';
+import { SubscriptionRoutesPrefixUrl } from '@customers-api/enums';
+import { PackageQuotaResponse } from '@subscription-api/responses';
 
 /**
  * SubscriptionHttpClient class is responsible for sending requests
@@ -28,5 +30,14 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   ) {
     super({ customersApiBaseUrl, packageCredentials, logger });
     this.mapper = mapper;
+  }
+
+  public async getPackageQuota(): Promise<PackageQuotaResponse> {
+    const packageQuota = await this.postRequest<PackageQuotaResponse>(
+      SubscriptionRoutesPrefixUrl.GET_PACKAGE_QUOTA_PREFIX_URL,
+      PackageQuotaResponse,
+    );
+
+    return packageQuota?.body || {};
   }
 }

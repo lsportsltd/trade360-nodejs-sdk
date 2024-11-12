@@ -12,6 +12,7 @@ import {
   HttpResponseError,
   HttpResponsePayloadDto,
   IMetadataHttpClient,
+  ISubscriptionHttpClient,
   InvalidDateInRequestError,
   Sport,
   StartResponseBody,
@@ -38,6 +39,8 @@ const initApiSample = async () => {
       customersApiBaseUrl: config.trade360.customersApiBaseUrl,
       logger,
     });
+
+    await getPackageQuota(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -242,6 +245,12 @@ const getFixturesMetadata = async (metadataHttpClient: IMetadataHttpClient): Pro
   const response = await metadataHttpClient.getFixturesMetadata(request);
 
   logger.log(`${response.subscribedFixtures?.length} Fixture metadata retrieved.`);
+};
+
+const getPackageQuota = async (subscriptionHttpClient: ISubscriptionHttpClient): Promise<void> => {
+  const packageQuota = await subscriptionHttpClient.getPackageQuota();
+
+  logger.log(JSON.stringify(packageQuota));
 };
 
 initApiSample();
