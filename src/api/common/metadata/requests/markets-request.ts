@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 
-import { HttpRequestDto } from '@api/common';
 import { MarketType } from '@lsports/entities';
+import { HttpRequestDto } from '@api/common/dtos';
 
 /**
  * GetMarketsRequest class for sending request to get markets

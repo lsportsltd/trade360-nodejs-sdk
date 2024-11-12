@@ -6,6 +6,10 @@ import { BaseEntity } from '@entities';
  * Package Quota Response class
  * (used for serialization) - represents the response
  * body of the package quota endpoint.
+ * This class is used to deserialize the response from the
+ * package quota endpoint.
+ * It contains the credit remaining, credit limit, used credit,
+ * current period start date, and current period end date.
  */
 export class PackageQuotaResponse implements BaseEntity {
   [key: string]: unknown;

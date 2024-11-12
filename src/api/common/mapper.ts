@@ -3,22 +3,24 @@ import { Moment } from 'moment';
 
 import { BaseEntity, Constructor, InvalidDateInRequestError, PackageCredentials } from '@entities';
 import { TransformerUtil } from '@utilities';
-
-import { IMapper } from '../interfaces';
 import {
   GetCompetitionsRequestDto,
   GetFixturesMetadataRequestDto,
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
-} from './dtos';
+} from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
   GetFixturesMetadataRequest,
   GetLeaguesRequest,
   GetMarketsRequest,
   GetTranslationsRequest,
-} from './requests';
+} from '@metadata-api/requests';
+import { GetFixtureScheduleRequestDto } from '@subscription-api/dtos';
+import { GetFixtureScheduleRequest } from '@subscription-api/requests';
+
+import { IMapper } from './interfaces';
 
 /**
  * Mapper class for mapping between different types of objects in the
@@ -108,6 +110,13 @@ export class Mapper implements IMapper {
 
         return destination;
       },
+    );
+
+    this.registerMapping<GetFixtureScheduleRequestDto, GetFixtureScheduleRequest>(
+      GetFixtureScheduleRequestDto,
+      GetFixtureScheduleRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetFixtureScheduleRequest),
     );
   }
 

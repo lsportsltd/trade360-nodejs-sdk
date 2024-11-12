@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { HttpRequestDto } from '@api/common';
+import { HttpRequestDto } from '@api/common/dtos';
 
 /**
  * GetTranslationsRequest class for sending request to get translations

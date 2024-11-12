@@ -2,7 +2,7 @@ import { Expose } from 'class-transformer';
 
 import { BaseEntity } from '@entities';
 
-import { TranslationsBodyStructure } from '../body-entities';
+import { TranslationsBodyStructure } from '@api/common/body-entities';
 
 /**
  * Translations Collection Response class

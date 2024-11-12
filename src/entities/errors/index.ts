@@ -5,4 +5,4 @@ export * from './retry.error';
 export * from './http-response.error';
 export * from './translations-validation.error';
 export * from './invalid-date-In-request.error';
-export * from './fixtures-medata-validation.error';
+export * from './fixtures-metadata-validation.error';

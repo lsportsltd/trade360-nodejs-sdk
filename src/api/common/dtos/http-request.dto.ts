@@ -1,11 +1,6 @@
 import { Expose } from 'class-transformer';
 
-/**
- * Base interface for all entities that can be mapped
- */
-interface BaseEntity {
-  [key: string]: unknown;
-}
+import { BaseEntity } from '@entities';
 
 /**
  * HTTP request DTO.

@@ -2,7 +2,7 @@ import { Expose, Type } from 'class-transformer';
 
 import { BaseEntity } from '@entities';
 
-import { LeaguesBodyStructure } from '../body-entities';
+import { LeaguesBodyStructure } from '@api/common/body-entities';
 
 /**
  * LeaguesCollectionResponse class is responsible for deserializing the response

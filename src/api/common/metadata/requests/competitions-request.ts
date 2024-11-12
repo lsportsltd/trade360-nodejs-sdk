@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { HttpRequestDto } from '@api/common';
+import { HttpRequestDto } from '@api/common/dtos';
 import { SubscriptionState } from '@lsports/entities';
 
 /**

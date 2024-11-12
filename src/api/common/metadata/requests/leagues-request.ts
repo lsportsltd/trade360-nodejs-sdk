@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 
-import { HttpRequestDto } from '@api/common';
 import { SubscriptionState } from '@lsports/entities';
+import { HttpRequestDto } from '@api/common/dtos';
 
 /**
  * GetLeaguesRequestDto class for sending request to get leagues

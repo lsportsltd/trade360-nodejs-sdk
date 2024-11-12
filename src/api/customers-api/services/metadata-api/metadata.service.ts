@@ -8,7 +8,7 @@ import {
   LocationsBodyStructure,
   MarketBodyStructure,
   SportsBodyStructure,
-} from '@metadata-api/body-entities';
+} from '@api/common/body-entities';
 import {
   GetCompetitionsRequestDto,
   GetFixturesMetadataRequestDto,

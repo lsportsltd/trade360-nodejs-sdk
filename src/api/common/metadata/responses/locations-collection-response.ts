@@ -2,7 +2,7 @@ import { Expose, Type } from 'class-transformer';
 
 import { BaseEntity } from '@entities';
 
-import { LocationsBodyStructure } from '../body-entities';
+import { LocationsBodyStructure } from '@api/common/body-entities';
 
 /**
  * LocationsCollectionResponse class is responsible for deserializing the response

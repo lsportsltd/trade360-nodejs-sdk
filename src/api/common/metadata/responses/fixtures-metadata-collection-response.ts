@@ -2,7 +2,7 @@ import { Expose, Type } from 'class-transformer';
 
 import { BaseEntity } from '@entities';
 
-import { SubscribedFixtureBodyStructure } from '../body-entities';
+import { SubscribedFixtureBodyStructure } from '@api/common/body-entities';
 
 /**
  * FixtureMetadataCollectionResponse class for receiving response to get fixture metadata

@@ -1,6 +1,11 @@
 import { Expose, Type } from 'class-transformer';
 import { Participant } from './participant';
 
+/**
+ * SubscribedFixtureBodyStructure class is responsible for
+ * deserializing the response from the subscription API to a
+ * subscribed fixture body structure.
+ */
 export class SubscribedFixtureBodyStructure {
   @Expose({ name: 'FixtureId' })
   fixtureId!: number;

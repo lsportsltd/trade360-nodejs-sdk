@@ -3,8 +3,10 @@ import moment from 'moment';
 
 import {
   CustomersApiFactory,
-  FixturesMedataValidationError,
+  FixtureScheduleCollectionResponse,
+  FixturesMetadataValidationError,
   GetCompetitionsRequestDto,
+  GetFixtureScheduleRequestDto,
   GetFixturesMetadataRequestDto,
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
@@ -40,7 +42,9 @@ const initApiSample = async () => {
       logger,
     });
 
-    await getPackageQuota(subscriptionHttpClient);
+    // await getPackageQuota(subscriptionHttpClient);
+
+    await getFixtureSchedule(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -133,8 +137,8 @@ const initApiSample = async () => {
       }
     } else if (err instanceof InvalidDateInRequestError) {
       logger.error(`API sample got err from InvalidDateInRequestError instance: ${err}`);
-    } else if (err instanceof FixturesMedataValidationError) {
-      logger.error(`API sample got err from FixturesMedataValidationError instance: ${err}`);
+    } else if (err instanceof FixturesMetadataValidationError) {
+      logger.error(`API sample got err from FixturesMetadataValidationError instance: ${err}`);
     } else {
       logger.error(`API sample got err: ${err}`);
     }
@@ -251,6 +255,19 @@ const getPackageQuota = async (subscriptionHttpClient: ISubscriptionHttpClient):
   const packageQuota = await subscriptionHttpClient.getPackageQuota();
 
   logger.log(JSON.stringify(packageQuota));
+};
+
+const getFixtureSchedule = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new GetFixtureScheduleRequestDto({
+    sportIds: [6046],
+  });
+
+  const response: FixtureScheduleCollectionResponse =
+    await subscriptionHttpClient.getFixtureSchedule(request);
+
+  logger.log(`${response.fixtures?.length} Fixture schedule retrieved.`);
 };
 
 initApiSample();

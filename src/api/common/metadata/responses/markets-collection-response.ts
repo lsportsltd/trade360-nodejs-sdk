@@ -2,7 +2,7 @@ import { Expose, Type } from 'class-transformer';
 
 import { BaseEntity } from '@entities';
 
-import { MarketBodyStructure } from '../body-entities';
+import { MarketBodyStructure } from '@api/common/body-entities';
 
 /**
  * MarketsCollectionResponse class is responsible for deserializing the response

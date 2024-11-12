@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { HttpRequestDto } from '@api/common';
+import { HttpRequestDto } from '@api/common/dtos';
 
 /**
  * GetFixtureMetadataRequest class for sending request to get fixture metadata
