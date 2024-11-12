@@ -1,7 +1,7 @@
 import { Channel, Connection, MessageProperties, connect } from 'amqplib';
 import { isNil } from 'lodash';
 
-import { BaseEntity } from '@entities';
+import { BaseEntity, Constructor } from '@entities';
 import { IEntityHandler, IFeed, MQSettingsOptions } from '@feed';
 import { ConsoleAdapter, ILogger } from '@logger';
 import { ConsumptionMessageError } from '@lsports/errors';
@@ -89,7 +89,7 @@ class RabbitMQFeed implements IFeed {
   }
 
   /**
-   * establish connectation to rabbitmq
+   * establish connection to rabbitmq
    */
   private async connect(): Promise<void> {
     if (this.isConnected && this.channel) return;
@@ -217,7 +217,7 @@ class RabbitMQFeed implements IFeed {
 
   public async addEntityHandler<TEntity extends BaseEntity>(
     entityHandler: IEntityHandler<TEntity>,
-    entityConstructor: new () => TEntity,
+    entityConstructor: Constructor<TEntity>,
   ): Promise<void> {
     this.consumer.RegisterEntityHandler(entityHandler, entityConstructor);
   }

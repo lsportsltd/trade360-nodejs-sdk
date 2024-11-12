@@ -1,3 +1,3 @@
-export * from './IBodyHandler';
-export * from './IConsumptionLatency';
-export * from './IMessageStructure';
+export * from './body-handler.interface';
+export * from './consumption-latency.interface';
+export * from './message-structure.interface';

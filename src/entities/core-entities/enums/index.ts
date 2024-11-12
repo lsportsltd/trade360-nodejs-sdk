@@ -8,3 +8,5 @@ export * from './settlement-type';
 export * from './active-participant';
 export * from './outright-score-status';
 export * from './competition-type';
+export * from './market-type';
+export * from './subscription-state';

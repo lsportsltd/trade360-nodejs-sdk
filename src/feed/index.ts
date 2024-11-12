@@ -1,5 +1,5 @@
 export * from './feed';
-export * from './IFeed';
+export * from './feed.interface';
 export * from './mq-feed';
-export * from './IEntityHandler';
+export * from './entity-handler.interface';
 export * from './types';

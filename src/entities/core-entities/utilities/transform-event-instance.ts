@@ -5,8 +5,8 @@ import {
   OutrightFixtureEvent,
   OutrightLeagueFixtureEvent,
   OutrightScoreEvent,
-  TransformerUtil,
 } from '@lsports/entities';
+import { TransformerUtil } from '@utilities';
 
 /**
  * interface for event type map

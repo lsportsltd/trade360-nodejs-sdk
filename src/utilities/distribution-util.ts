@@ -1,37 +1,42 @@
 import { isNil } from 'lodash';
 
-import {
-  DistributionRequest,
-  HttpRequestDto,
-  HttpResponsePayloadDto,
-  IStartResponseBody,
-  IStatusResponseBody,
-  IStopResponseBody,
-} from '@api';
 import { MQSettingsOptions } from '@feed';
 import { ILogger } from '@logger';
-import { TransformerUtil } from '@lsports/entities';
+import {
+  HttpRequestDto,
+  HttpResponsePayloadDto,
+  StartResponseBody,
+  StatusResponseBody,
+  StopResponseBody,
+} from '@api/common';
+import { CustomersApiFactory, IPackageDistributionHttpClient } from '@api/customers-api';
+
+import { TransformerUtil } from './transformer-util';
 
 /**
  * Utility class for distribution operations such as starting and stopping distribution
  * and checking the status of the distribution service through the API request object.
  */
 export class DistributionUtil {
-  private static requestApi?: DistributionRequest;
+  private static packageDistributionApi?: IPackageDistributionHttpClient;
 
   private static logger?: ILogger;
 
   private static delayMs = 2000;
 
   constructor(settings: MQSettingsOptions, logger: ILogger) {
-    DistributionUtil.requestApi = new DistributionRequest(
-      TransformerUtil.transform(settings, HttpRequestDto),
-      (DistributionUtil.logger = logger),
-    );
+    const customersApiFactory = new CustomersApiFactory();
+
+    DistributionUtil.packageDistributionApi =
+      customersApiFactory.createPackageDistributionHttpClient({
+        packageCredentials: TransformerUtil.transform(settings, HttpRequestDto),
+        customersApiBaseUrl: settings.customersApiBaseUrl,
+        logger: (DistributionUtil.logger = logger),
+      });
   }
 
   /**
-   *  Check the status of the distribution service through the API request object.
+   * Check the status of the distribution service through the API request object.
    * @returns the status of the distribution service
    */
   static async checkStatus(): Promise<
@@ -41,15 +46,18 @@ export class DistributionUtil {
       }
     | undefined
   > {
-    if (isNil(DistributionUtil.requestApi)) throw new Error('initialize distribution api first!');
+    if (isNil(DistributionUtil.packageDistributionApi))
+      throw new Error('initialize distribution api first!');
 
-    const distributionStatus: HttpResponsePayloadDto<IStatusResponseBody> | undefined =
-      await DistributionUtil.requestApi.getDistributionStatus<IStatusResponseBody>();
+    const distributionStatus: HttpResponsePayloadDto<StatusResponseBody> | undefined =
+      await DistributionUtil.packageDistributionApi.getDistributionStatus<StatusResponseBody>(
+        StatusResponseBody,
+      );
 
-    if (!isNil(distributionStatus) && !isNil(distributionStatus.Body)) {
+    if (!isNil(distributionStatus) && !isNil(distributionStatus.body)) {
       const {
-        Header: { HttpStatusCode: httpStatusCode },
-        Body: { IsDistributionOn: isDistributionOn },
+        header: { httpStatusCode },
+        body: { isDistributionOn },
       } = distributionStatus;
 
       return { httpStatusCode, isDistributionOn };
@@ -61,13 +69,16 @@ export class DistributionUtil {
    * @returns a promise that resolves when the distribution service is started after the delay has passed successfully
    */
   static async start(): Promise<void> {
-    if (isNil(DistributionUtil.requestApi)) throw new Error('initialize distribution api first!');
+    if (isNil(DistributionUtil.packageDistributionApi))
+      throw new Error('initialize distribution api first!');
 
-    const startRequest: HttpResponsePayloadDto<IStartResponseBody> | undefined =
-      await DistributionUtil.requestApi.startDistribution<IStartResponseBody>();
+    const startRequest: HttpResponsePayloadDto<StartResponseBody> | undefined =
+      await DistributionUtil.packageDistributionApi.startDistribution<StartResponseBody>(
+        StartResponseBody,
+      );
 
-    if (!isNil(startRequest) && !isNil(startRequest.Body))
-      DistributionUtil.logger?.debug(startRequest.Body.Message);
+    if (!isNil(startRequest) && !isNil(startRequest.body))
+      DistributionUtil.logger?.debug(startRequest.body.message);
 
     await new Promise<void>((resolve) => {
       setTimeout(() => {
@@ -81,12 +92,15 @@ export class DistributionUtil {
    * @returns a promise that resolves when the distribution service is stopped after the delay has passed successfully
    */
   static async stop(): Promise<void> {
-    if (isNil(DistributionUtil.requestApi)) throw new Error('initialize distribution api first!');
+    if (isNil(DistributionUtil.packageDistributionApi))
+      throw new Error('initialize distribution api first!');
 
-    const stopRequest: HttpResponsePayloadDto<IStopResponseBody> | undefined =
-      await DistributionUtil.requestApi.stopDistribution<IStopResponseBody>();
+    const stopRequest: HttpResponsePayloadDto<StopResponseBody> | undefined =
+      await DistributionUtil.packageDistributionApi.stopDistribution<StopResponseBody>(
+        StopResponseBody,
+      );
 
-    if (!isNil(stopRequest) && !isNil(stopRequest.Body))
-      DistributionUtil.logger?.debug(stopRequest.Body.Message);
+    if (!isNil(stopRequest) && !isNil(stopRequest.body))
+      DistributionUtil.logger?.debug(stopRequest.body.message);
   }
 }

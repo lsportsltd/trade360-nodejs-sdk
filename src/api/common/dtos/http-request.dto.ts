@@ -1,6 +1,18 @@
 import { Expose } from 'class-transformer';
 
-export class HttpRequestDto {
+/**
+ * Base interface for all entities that can be mapped
+ */
+interface BaseEntity {
+  [key: string]: unknown;
+}
+
+/**
+ * HTTP request DTO.
+ */
+export class HttpRequestDto implements BaseEntity {
+  [key: string]: unknown;
+
   @Expose()
   packageId!: number;
 
@@ -9,4 +21,7 @@ export class HttpRequestDto {
 
   @Expose()
   password!: string;
+
+  @Expose()
+  languageId?: number;
 }

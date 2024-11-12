@@ -1,10 +1,19 @@
-// Define the base structure for entity classes
-type BaseEntityClass = new (...args: never[]) => {
-  [key: string]: never;
-};
+/**
+ * Base interface for all entities that can be mapped
+ */
+export interface BaseEntity {
+  [key: string]: unknown;
+}
 
-// Use InstanceType to create a type for instances of BaseEntityClass
-export type BaseEntity = InstanceType<BaseEntityClass>;
+/**
+ * Type for constructable classes that extend BaseEntity interface
+ * type definition for the BaseEntity class to be constructed in
+ * the application.
+ * @param T The type of the BaseEntity class to be constructed
+ * @returns A new instance of the BaseEntity class
+ */
+export type Constructor<T extends BaseEntity = BaseEntity> = new (...args: unknown[]) => T;
+// export type BaseEntity2<T extends BaseEntity> = InstanceType<T>;
 
 export const knownEntityKeys: Map<number, string> = new Map<number, string>();
 
