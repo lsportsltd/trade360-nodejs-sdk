@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf dist/ && tsc -p .",
+    "build:dev": "npm run lint && npm run build",
     "watch": "tsc -w",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix"
@@ -22,6 +23,7 @@
     "express": "^4.19.2",
     "lodash": "^4.17.21",
     "module-alias": "^2.2.3",
+    "moment": "^2.30.1",
     "pino": "^9.4.0",
     "reflect-metadata": "^0.2.2",
     "winston": "^3.14.2",
@@ -55,7 +57,12 @@
     "@lsports/errors": "dist/entities/errors",
     "@api": "dist/api",
     "@api/*": "dist/api/*",
+    "@metadata-api": "dist/api/common/metadata",
+    "@metadata-api/*": "dist/api/common/metadata/*",
+    "@customers-api": "dist/api/customers-api",
+    "@customers-api/*": "dist/api/customers-api/*",
     "@httpClient": "dist/api/base-http-client",
+    "@httpClient/*": "dist/api/base-http-client/*",
     "@utilities": "dist/utilities",
     "@logger": "dist/logger"
   }

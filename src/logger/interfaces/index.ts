@@ -1,1 +1,1 @@
-export * from './ILogger';
+export * from './logger.interface';

@@ -1,1 +1,1 @@
-export * from './console-adapter';
+export * from './console.adapter';

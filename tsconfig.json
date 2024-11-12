@@ -24,11 +24,16 @@
       "@lsports/errors": ["src/entities/errors"],
       "@api": ["src/api"],
       "@api/*": ["src/api/*"],
+      "@metadata-api": ["src/api/common/metadata"],
+      "@metadata-api/*": ["src/api/common/metadata/*"],
+      "@customers-api": ["src/api/customers-api"],
+      "@customers-api/*": ["src/api/customers-api/*"],
       "@httpClient": ["src/api/base-http-client"],
+      "@httpClient/*": ["src/api/base-http-client/*"],
       "@utilities": ["src/utilities"],
       "@logger": ["src/logger"]
     }
   },
-  "include": ["src/**/**/**/**/**/**/**/**/**/**/**/*"],
+  "include": ["src/**/**/**/**/**/**/**/**/**/**/**/**/**/*"],
   "exclude": ["node_modules", "dist", "sample"]
 }
