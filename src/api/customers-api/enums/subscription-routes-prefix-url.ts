@@ -4,4 +4,5 @@ export enum SubscriptionRoutesPrefixUrl {
   SUBSCRIBE_BY_FIXTURES_PREFIX_URL = '/Fixtures/Subscribe',
   UNSUBSCRIBE_BY_FIXTURE_PREFIX_URL = '/Fixtures/UnSubscribe',
   SUBSCRIBE_BY_LEAGUES_PREFIX_URL = '/Leagues/Subscribe',
+  UNSUBSCRIBE_BY_LEAGUES_PREFIX_URL = '/Leagues/UnSubscribe',
 }

@@ -30,4 +30,7 @@ export interface ISubscriptionHttpClient {
   subscribeByLeagues(
     requestDto: LeaguesSubscriptionRequestDto,
   ): Promise<LeaguesSubscriptionCollectionResponse>;
+  unSubscribeByLeagues(
+    requestDto: LeaguesSubscriptionRequestDto,
+  ): Promise<LeaguesSubscriptionCollectionResponse>;
 }

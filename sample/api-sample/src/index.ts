@@ -55,7 +55,9 @@ const initApiSample = async () => {
 
     // await unSubscribeFromFixture(subscriptionHttpClient);
 
-    await subscribeByLeagues(subscriptionHttpClient);
+    // await subscribeByLeagues(subscriptionHttpClient);
+
+    await unSubscribeFromLeagues(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -324,6 +326,25 @@ const subscribeByLeagues = async (
     await subscriptionHttpClient.subscribeByLeagues(request);
 
   logger.info(`Successfully subscribed to ${response.subscription?.length} leagues`);
+};
+
+const unSubscribeFromLeagues = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new LeaguesSubscriptionRequestDto({
+    subscriptions: [
+      {
+        sportId: 6046,
+        locationId: 142,
+        leagueId: 5,
+      },
+    ],
+  });
+
+  const response: LeaguesSubscriptionCollectionResponse =
+    await subscriptionHttpClient.unSubscribeByLeagues(request);
+
+  logger.info(`Successfully unsubscribed from ${response.subscription?.length} leagues`);
 };
 
 initApiSample();

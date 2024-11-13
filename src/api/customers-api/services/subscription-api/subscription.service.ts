@@ -151,4 +151,22 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
 
     return leaguesSubscriptionCollection?.body || {};
   }
+
+  public async unSubscribeByLeagues(
+    requestDto: LeaguesSubscriptionRequestDto,
+  ): Promise<LeaguesSubscriptionCollectionResponse> {
+    const request = this.mapper.map<LeaguesSubscriptionRequestDto, LeaguesSubscriptionRequest>(
+      requestDto,
+      LeaguesSubscriptionRequest,
+    );
+
+    const leaguesUnSubscriptionCollection =
+      await this.postRequest<LeaguesSubscriptionCollectionResponse>(
+        SubscriptionRoutesPrefixUrl.UNSUBSCRIBE_BY_LEAGUES_PREFIX_URL,
+        LeaguesSubscriptionCollectionResponse,
+        request,
+      );
+
+    return leaguesUnSubscriptionCollection?.body || {};
+  }
 }
