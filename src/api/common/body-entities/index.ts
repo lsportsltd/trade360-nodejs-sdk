@@ -8,3 +8,5 @@ export * from './competitions-body-structure';
 export * from './subscribed-fixture-body-structure';
 export * from './fixtures-schedule-body-structure';
 export * from './fixtures-subscription-body-structure';
+export * from './leagues-subscription-body-structure';
+export * from './leagues-subscription-request-body-structure';

@@ -1,2 +1,3 @@
 export * from './fixtures-schedule.request.dto';
 export * from './fixtures-subscription.request.dto';
+export * from './leagues-subscription.request.dto';

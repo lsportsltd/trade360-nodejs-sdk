@@ -5,11 +5,13 @@ import { SubscriptionRoutesPrefixUrl } from '@customers-api/enums';
 import {
   FixturesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
+  LeaguesSubscriptionRequestDto,
 } from '@subscription-api/dtos';
-import { GetFixtureScheduleRequest } from '@subscription-api/requests';
+import { GetFixtureScheduleRequest, LeaguesSubscriptionRequest } from '@subscription-api/requests';
 import {
   FixtureScheduleCollectionResponse,
   FixturesSubscriptionCollectionResponse,
+  LeaguesSubscriptionCollectionResponse,
   PackageQuotaResponse,
 } from '@subscription-api/responses';
 
@@ -124,5 +126,29 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
       );
 
     return fixturesUnSubscriptionCollection?.body || {};
+  }
+
+  /**
+   * Sends a request to the subscription API to subscribe to leagues.
+   * @param requestDto The request DTO for subscribing to leagues.
+   * @returns A promise that resolves to a LeaguesSubscriptionCollectionResponse object
+   * containing the leagues subscription information.
+   */
+  public async subscribeByLeagues(
+    requestDto: LeaguesSubscriptionRequestDto,
+  ): Promise<LeaguesSubscriptionCollectionResponse> {
+    const request = this.mapper.map<LeaguesSubscriptionRequestDto, LeaguesSubscriptionRequest>(
+      requestDto,
+      LeaguesSubscriptionRequest,
+    );
+
+    const leaguesSubscriptionCollection =
+      await this.postRequest<LeaguesSubscriptionCollectionResponse>(
+        SubscriptionRoutesPrefixUrl.SUBSCRIBE_BY_LEAGUES_PREFIX_URL,
+        LeaguesSubscriptionCollectionResponse,
+        request,
+      );
+
+    return leaguesSubscriptionCollection?.body || {};
   }
 }

@@ -13,6 +13,6 @@ import { HttpRequestDto } from '@api/common/dtos';
  * @returns FixturesSubscriptionRequest instance that
  */
 export class FixturesSubscriptionRequest extends HttpRequestDto {
-  @Expose({ name: 'Fixtures' })
+  @Expose()
   fixtures?: number[];
 }

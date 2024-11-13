@@ -18,6 +18,9 @@ import {
   IMetadataHttpClient,
   ISubscriptionHttpClient,
   InvalidDateInRequestError,
+  LeagueSubscriptionRequestBodyStructure,
+  LeaguesSubscriptionCollectionResponse,
+  LeaguesSubscriptionRequestDto,
   Sport,
   StartResponseBody,
   StatusResponseBody,
@@ -50,7 +53,9 @@ const initApiSample = async () => {
 
     // await subscribeByFixtures(subscriptionHttpClient);
 
-    await unSubscribeFromFixture(subscriptionHttpClient);
+    // await unSubscribeFromFixture(subscriptionHttpClient);
+
+    await subscribeByLeagues(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -300,6 +305,25 @@ const unSubscribeFromFixture = async (
     await subscriptionHttpClient.unSubscribeByFixtures(request);
 
   logger.info(`Successfully unsubscribed from ${response.fixtures?.length} fixtures`);
+};
+
+const subscribeByLeagues = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new LeaguesSubscriptionRequestDto({
+    subscriptions: [
+      {
+        sportId: 6046,
+        locationId: 142,
+        leagueId: 5,
+      },
+    ],
+  });
+
+  const response: LeaguesSubscriptionCollectionResponse =
+    await subscriptionHttpClient.subscribeByLeagues(request);
+
+  logger.info(`Successfully subscribed to ${response.subscription?.length} leagues`);
 };
 
 initApiSample();

@@ -20,8 +20,13 @@ import {
 import {
   FixturesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
+  LeaguesSubscriptionRequestDto,
 } from '@subscription-api/dtos';
-import { FixturesSubscriptionRequest, GetFixtureScheduleRequest } from '@subscription-api/requests';
+import {
+  FixturesSubscriptionRequest,
+  GetFixtureScheduleRequest,
+  LeaguesSubscriptionRequest,
+} from '@subscription-api/requests';
 
 import { IMapper } from './interfaces';
 
@@ -130,6 +135,13 @@ export class Mapper implements IMapper {
           { ...packageCredentials, ...source },
           FixturesSubscriptionRequest,
         ),
+    );
+
+    this.registerMapping<LeaguesSubscriptionRequestDto, LeaguesSubscriptionRequest>(
+      LeaguesSubscriptionRequestDto,
+      LeaguesSubscriptionRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, LeaguesSubscriptionRequest),
     );
   }
 

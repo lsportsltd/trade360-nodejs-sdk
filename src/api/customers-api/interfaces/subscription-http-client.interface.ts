@@ -1,10 +1,12 @@
 import {
   FixturesSubscriptionRequestDto,
+  LeaguesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
 } from '@subscription-api/dtos';
 import {
   FixtureScheduleCollectionResponse,
   FixturesSubscriptionCollectionResponse,
+  LeaguesSubscriptionCollectionResponse,
   PackageQuotaResponse,
 } from '@subscription-api/responses';
 
@@ -25,4 +27,7 @@ export interface ISubscriptionHttpClient {
   unSubscribeByFixtures(
     requestDto: FixturesSubscriptionRequestDto,
   ): Promise<FixturesSubscriptionCollectionResponse>;
+  subscribeByLeagues(
+    requestDto: LeaguesSubscriptionRequestDto,
+  ): Promise<LeaguesSubscriptionCollectionResponse>;
 }
