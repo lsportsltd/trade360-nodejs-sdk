@@ -16,4 +16,7 @@ export class FixturesSubscriptionBodyStructure implements BaseEntity {
 
   @Expose({ name: 'Success' })
   success?: boolean;
+
+  @Expose({ name: 'ErrorMessage' })
+  errorMessage?: string;
 }

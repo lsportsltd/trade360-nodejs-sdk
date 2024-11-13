@@ -48,7 +48,9 @@ const initApiSample = async () => {
 
     // await getFixtureSchedule(subscriptionHttpClient);
 
-    await subscribeByFixtures(subscriptionHttpClient);
+    // await subscribeByFixtures(subscriptionHttpClient);
+
+    await unSubscribeFromFixture(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -285,6 +287,19 @@ const subscribeByFixtures = async (
     await subscriptionHttpClient.subscribeByFixtures(request);
 
   logger.info(`Successfully subscribed to ${response.fixtures?.length} fixtures`);
+};
+
+const unSubscribeFromFixture = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new FixturesSubscriptionRequestDto({
+    fixtures: [23498963],
+  });
+
+  const response: FixturesSubscriptionCollectionResponse =
+    await subscriptionHttpClient.unSubscribeByFixtures(request);
+
+  logger.info(`Successfully unsubscribed from ${response.fixtures?.length} fixtures`);
 };
 
 initApiSample();

@@ -22,4 +22,7 @@ export interface ISubscriptionHttpClient {
   subscribeByFixtures(
     requestDto: FixturesSubscriptionRequestDto,
   ): Promise<FixturesSubscriptionCollectionResponse>;
+  unSubscribeByFixtures(
+    requestDto: FixturesSubscriptionRequestDto,
+  ): Promise<FixturesSubscriptionCollectionResponse>;
 }

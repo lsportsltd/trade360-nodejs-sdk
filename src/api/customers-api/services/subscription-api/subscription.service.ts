@@ -101,4 +101,28 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
 
     return fixturesSubscriptionCollection?.body || {};
   }
+
+  /**
+   * Sends a request to the subscription API to unsubscribe from fixtures.
+   * @param requestDto The request DTO for unsubscribing from fixtures.
+   * @returns A promise that resolves to a FixturesSubscriptionCollectionResponse object
+   * containing the fixtures unsubscription information.
+   */
+  public async unSubscribeByFixtures(
+    requestDto: FixturesSubscriptionRequestDto,
+  ): Promise<FixturesSubscriptionCollectionResponse> {
+    const request = this.mapper.map<GetFixtureScheduleRequestDto, GetFixtureScheduleRequest>(
+      requestDto,
+      GetFixtureScheduleRequest,
+    );
+
+    const fixturesUnSubscriptionCollection =
+      await this.postRequest<FixturesSubscriptionCollectionResponse>(
+        SubscriptionRoutesPrefixUrl.UNSUBSCRIBE_BY_FIXTURE_PREFIX_URL,
+        FixturesSubscriptionCollectionResponse,
+        request,
+      );
+
+    return fixturesUnSubscriptionCollection?.body || {};
+  }
 }
