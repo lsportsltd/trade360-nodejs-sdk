@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { FixtureScheduleBodyStructure } from '@api/common/body-entities';
+import { FixturesScheduleBodyStructure } from '@api/common/body-entities';
 import { BaseEntity } from '@entities';
 
 /**
@@ -15,6 +15,6 @@ export class FixtureScheduleCollectionResponse implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'Fixtures' })
-  @Type(() => FixtureScheduleBodyStructure)
-  fixtures?: FixtureScheduleBodyStructure[];
+  @Type(() => FixturesScheduleBodyStructure)
+  fixtures?: FixturesScheduleBodyStructure[];
 }

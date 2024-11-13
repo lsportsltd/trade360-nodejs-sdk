@@ -10,7 +10,7 @@ import { ParticipantSchedule } from './participant-schedule';
  * deserializing the response from the subscription API to a
  * fixture schedule body structure.
  */
-export class FixtureScheduleBodyStructure {
+export class FixturesScheduleBodyStructure {
   @Expose({ name: 'FixtureId' })
   fixtureId!: number;
 

@@ -1,6 +1,10 @@
-import { GetFixtureScheduleRequestDto } from '@subscription-api/dtos';
+import {
+  FixturesSubscriptionRequestDto,
+  GetFixtureScheduleRequestDto,
+} from '@subscription-api/dtos';
 import {
   FixtureScheduleCollectionResponse,
+  FixturesSubscriptionCollectionResponse,
   PackageQuotaResponse,
 } from '@subscription-api/responses';
 
@@ -12,7 +16,10 @@ import {
  */
 export interface ISubscriptionHttpClient {
   getPackageQuota(): Promise<PackageQuotaResponse>;
-  getFixtureSchedule(
+  getFixturesSchedule(
     requestDto: GetFixtureScheduleRequestDto,
   ): Promise<FixtureScheduleCollectionResponse>;
+  subscribeByFixtures(
+    requestDto: FixturesSubscriptionRequestDto,
+  ): Promise<FixturesSubscriptionCollectionResponse>;
 }

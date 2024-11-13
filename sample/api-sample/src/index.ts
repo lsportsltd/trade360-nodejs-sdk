@@ -5,6 +5,8 @@ import {
   CustomersApiFactory,
   FixtureScheduleCollectionResponse,
   FixturesMetadataValidationError,
+  FixturesSubscriptionCollectionResponse,
+  FixturesSubscriptionRequestDto,
   GetCompetitionsRequestDto,
   GetFixtureScheduleRequestDto,
   GetFixturesMetadataRequestDto,
@@ -44,7 +46,9 @@ const initApiSample = async () => {
 
     // await getPackageQuota(subscriptionHttpClient);
 
-    await getFixtureSchedule(subscriptionHttpClient);
+    // await getFixtureSchedule(subscriptionHttpClient);
+
+    await subscribeByFixtures(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -66,48 +70,48 @@ const initApiSample = async () => {
 
     // await getFixturesMetadata(metadataHttpClient);
 
-    const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
-      packageCredentials: config.trade360.inPlayMQSettings,
-      customersApiBaseUrl: config.trade360.customersApiBaseUrl,
-      logger,
-    });
+    // const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
+    //   packageCredentials: config.trade360.inPlayMQSettings,
+    //   customersApiBaseUrl: config.trade360.customersApiBaseUrl,
+    //   logger,
+    // });
 
     process.on('exit' || 'SIGINT', async () => {
       process.exit(1);
     });
 
-    const distributionStatus: HttpResponsePayloadDto<StatusResponseBody> | undefined =
-      await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
-        StatusResponseBody,
-      );
+    // const distributionStatus: HttpResponsePayloadDto<StatusResponseBody> | undefined =
+    //   await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
+    //     StatusResponseBody,
+    //   );
 
-    if (!_.isNil(distributionStatus) && !_.isNil(distributionStatus.body)) {
-      const {
-        header: { httpStatusCode },
-        body: { isDistributionOn },
-      } = distributionStatus;
+    // if (!_.isNil(distributionStatus) && !_.isNil(distributionStatus.body)) {
+    //   const {
+    //     header: { httpStatusCode },
+    //     body: { isDistributionOn },
+    //   } = distributionStatus;
 
-      if (httpStatusCode >= 200 && httpStatusCode < 300 && !isDistributionOn) {
-        const startRequest: HttpResponsePayloadDto<StartResponseBody> | undefined =
-          await packageDistributionHttpClient.startDistribution<StartResponseBody>(
-            StartResponseBody,
-          );
+    //   if (httpStatusCode >= 200 && httpStatusCode < 300 && !isDistributionOn) {
+    //     const startRequest: HttpResponsePayloadDto<StartResponseBody> | undefined =
+    //       await packageDistributionHttpClient.startDistribution<StartResponseBody>(
+    //         StartResponseBody,
+    //       );
 
-        if (!_.isNil(startRequest) && !_.isNil(startRequest.body))
-          logger.log(startRequest.body.message);
-      }
-    }
+    //     if (!_.isNil(startRequest) && !_.isNil(startRequest.body))
+    //       logger.log(startRequest.body.message);
+    //   }
+    // }
 
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        return resolve();
-      }, 5 * 1000);
-    });
+    // await new Promise<void>((resolve) => {
+    //   setTimeout(() => {
+    //     return resolve();
+    //   }, 5 * 1000);
+    // });
 
-    const stopRequest: HttpResponsePayloadDto<StopResponseBody> | undefined =
-      await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
+    // const stopRequest: HttpResponsePayloadDto<StopResponseBody> | undefined =
+    //   await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
 
-    if (!_.isNil(stopRequest) && !_.isNil(stopRequest.body)) logger.log(stopRequest.body.message);
+    // if (!_.isNil(stopRequest) && !_.isNil(stopRequest.body)) logger.log(stopRequest.body.message);
   } catch (err: unknown) {
     if (err instanceof ValidationError) {
       logger.error(`API sample got err from ValidationError instance: ${err}`);
@@ -265,9 +269,22 @@ const getFixtureSchedule = async (
   });
 
   const response: FixtureScheduleCollectionResponse =
-    await subscriptionHttpClient.getFixtureSchedule(request);
+    await subscriptionHttpClient.getFixturesSchedule(request);
 
   logger.log(`${response.fixtures?.length} Fixture schedule retrieved.`);
+};
+
+const subscribeByFixtures = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new FixturesSubscriptionRequestDto({
+    fixtures: [23498963],
+  });
+
+  const response: FixturesSubscriptionCollectionResponse =
+    await subscriptionHttpClient.subscribeByFixtures(request);
+
+  logger.info(`Successfully subscribed to ${response.fixtures?.length} fixtures`);
 };
 
 initApiSample();

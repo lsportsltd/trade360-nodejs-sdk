@@ -1,10 +1,15 @@
 import { BaseHttpClient } from '@httpClient';
-import { GetFixtureScheduleRequest, IHttpServiceConfig, IMapper } from '@api/common';
+import { IHttpServiceConfig, IMapper } from '@api/common';
 import { ISubscriptionHttpClient } from '@customers-api/interfaces';
 import { SubscriptionRoutesPrefixUrl } from '@customers-api/enums';
-import { GetFixtureScheduleRequestDto } from '@subscription-api/dtos';
+import {
+  FixturesSubscriptionRequestDto,
+  GetFixtureScheduleRequestDto,
+} from '@subscription-api/dtos';
+import { GetFixtureScheduleRequest } from '@subscription-api/requests';
 import {
   FixtureScheduleCollectionResponse,
+  FixturesSubscriptionCollectionResponse,
   PackageQuotaResponse,
 } from '@subscription-api/responses';
 
@@ -51,12 +56,12 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   }
 
   /**
-   * Sends a request to the subscription API to get the fixture schedule.
-   * @param requestDto The request DTO for getting the fixture schedule.
+   * Sends a request to the subscription API to get the fixtures schedule.
+   * @param requestDto The request DTO for getting the fixtures schedule.
    * @returns A promise that resolves to a FixtureScheduleCollectionResponse object
    * containing the fixture schedule information.
    */
-  public async getFixtureSchedule(
+  public async getFixturesSchedule(
     requestDto: GetFixtureScheduleRequestDto,
   ): Promise<FixtureScheduleCollectionResponse> {
     const request = this.mapper.map<GetFixtureScheduleRequestDto, GetFixtureScheduleRequest>(
@@ -71,5 +76,29 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     );
 
     return fixturesScheduleCollection?.body || {};
+  }
+
+  /**
+   * Sends a request to the subscription API to subscribe to fixtures.
+   * @param requestDto The request DTO for subscribing to fixtures.
+   * @returns A promise that resolves to a FixturesSubscriptionCollectionResponse object
+   * containing the fixtures subscription information.
+   */
+  public async subscribeByFixtures(
+    requestDto: FixturesSubscriptionRequestDto,
+  ): Promise<FixturesSubscriptionCollectionResponse> {
+    const request = this.mapper.map<GetFixtureScheduleRequestDto, GetFixtureScheduleRequest>(
+      requestDto,
+      GetFixtureScheduleRequest,
+    );
+
+    const fixturesSubscriptionCollection =
+      await this.postRequest<FixturesSubscriptionCollectionResponse>(
+        SubscriptionRoutesPrefixUrl.SUBSCRIBE_BY_FIXTURES_PREFIX_URL,
+        FixturesSubscriptionCollectionResponse,
+        request,
+      );
+
+    return fixturesSubscriptionCollection?.body || {};
   }
 }

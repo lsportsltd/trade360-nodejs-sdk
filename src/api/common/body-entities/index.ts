@@ -6,4 +6,5 @@ export * from './translations-value-body-structure';
 export * from './localized-value';
 export * from './competitions-body-structure';
 export * from './subscribed-fixture-body-structure';
-export * from './fixture-schedule-body-structure';
+export * from './fixtures-schedule-body-structure';
+export * from './fixtures-subscription-body-structure';

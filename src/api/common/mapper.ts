@@ -17,8 +17,11 @@ import {
   GetMarketsRequest,
   GetTranslationsRequest,
 } from '@metadata-api/requests';
-import { GetFixtureScheduleRequestDto } from '@subscription-api/dtos';
-import { GetFixtureScheduleRequest } from '@subscription-api/requests';
+import {
+  FixturesSubscriptionRequestDto,
+  GetFixtureScheduleRequestDto,
+} from '@subscription-api/dtos';
+import { FixturesSubscriptionRequest, GetFixtureScheduleRequest } from '@subscription-api/requests';
 
 import { IMapper } from './interfaces';
 
@@ -117,6 +120,16 @@ export class Mapper implements IMapper {
       GetFixtureScheduleRequest,
       (source) =>
         TransformerUtil.transform({ ...packageCredentials, ...source }, GetFixtureScheduleRequest),
+    );
+
+    this.registerMapping<FixturesSubscriptionRequestDto, FixturesSubscriptionRequest>(
+      FixturesSubscriptionRequestDto,
+      FixturesSubscriptionRequest,
+      (source) =>
+        TransformerUtil.transform(
+          { ...packageCredentials, ...source },
+          FixturesSubscriptionRequest,
+        ),
     );
   }
 
