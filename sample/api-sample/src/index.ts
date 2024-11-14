@@ -11,6 +11,7 @@ import {
   GetFixtureScheduleRequestDto,
   GetFixturesMetadataRequestDto,
   GetLeaguesRequestDto,
+  GetManualSuspensionsResponse,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
   HttpResponseError,
@@ -57,7 +58,9 @@ const initApiSample = async () => {
 
     // await subscribeByLeagues(subscriptionHttpClient);
 
-    await unSubscribeFromLeagues(subscriptionHttpClient);
+    // await unSubscribeFromLeagues(subscriptionHttpClient);
+
+    await getManualSuspensions(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -345,6 +348,26 @@ const unSubscribeFromLeagues = async (
     await subscriptionHttpClient.unSubscribeByLeagues(request);
 
   logger.info(`Successfully unsubscribed from ${response.subscription?.length} leagues`);
+};
+
+const getManualSuspensions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const response: GetManualSuspensionsResponse =
+    await subscriptionHttpClient.getAllManualSuspensions();
+
+  if (_.isNil(response) || !response.succeeded || _.isEmpty(response.suspensions)) {
+    logger.log(
+      `No manual suspensions entities received. succeeded: ${response.succeeded}, reason: ${response.reason}`,
+    );
+    return;
+  }
+
+  logger.log('Manual suspensions entities received:');
+
+  _.each(response.suspensions, (suspension, index) => {
+    logger.log(`Suspension[${index}]: ${JSON.stringify(suspension)}`);
+  });
 };
 
 initApiSample();

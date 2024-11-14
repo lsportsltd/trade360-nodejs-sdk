@@ -11,6 +11,7 @@ import { GetFixtureScheduleRequest, LeaguesSubscriptionRequest } from '@subscrip
 import {
   FixtureScheduleCollectionResponse,
   FixturesSubscriptionCollectionResponse,
+  GetManualSuspensionsResponse,
   LeaguesSubscriptionCollectionResponse,
   PackageQuotaResponse,
 } from '@subscription-api/responses';
@@ -152,6 +153,12 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     return leaguesSubscriptionCollection?.body || {};
   }
 
+  /**
+   * Sends a request to the subscription API to unsubscribe from leagues.
+   * @param requestDto The request DTO for unsubscribing from leagues.
+   * @returns A promise that resolves to a LeaguesSubscriptionCollectionResponse object
+   * containing the leagues unsubscription information.
+   */
   public async unSubscribeByLeagues(
     requestDto: LeaguesSubscriptionRequestDto,
   ): Promise<LeaguesSubscriptionCollectionResponse> {
@@ -168,5 +175,19 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
       );
 
     return leaguesUnSubscriptionCollection?.body || {};
+  }
+
+  /**
+   * Sends a request to the subscription API to get all manual suspensions.
+   * @returns A promise that resolves to a GetManualSuspensionsResponse object
+   * containing the manual suspensions information.
+   */
+  public async getAllManualSuspensions(): Promise<GetManualSuspensionsResponse> {
+    const allManualSuspensions = await this.postRequest<GetManualSuspensionsResponse>(
+      SubscriptionRoutesPrefixUrl.GET_ALL_MANUAL_SUSPENSIONS,
+      GetManualSuspensionsResponse,
+    );
+
+    return allManualSuspensions?.body || {};
   }
 }
