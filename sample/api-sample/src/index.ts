@@ -2,6 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 
 import {
+  ChangeManualSuspensionsRequestDto,
   CustomersApiFactory,
   FixtureScheduleCollectionResponse,
   FixturesMetadataValidationError,
@@ -22,6 +23,8 @@ import {
   LeagueSubscriptionRequestBodyStructure,
   LeaguesSubscriptionCollectionResponse,
   LeaguesSubscriptionRequestDto,
+  ManualSuspensionsRequestBodyStructure,
+  RequestSuspendedMarket,
   Sport,
   StartResponseBody,
   StatusResponseBody,
@@ -61,6 +64,8 @@ const initApiSample = async () => {
     // await unSubscribeFromLeagues(subscriptionHttpClient);
 
     await getManualSuspensions(subscriptionHttpClient);
+
+    await addManualSuspensions(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -317,11 +322,11 @@ const subscribeByLeagues = async (
 ): Promise<void> => {
   const request = new LeaguesSubscriptionRequestDto({
     subscriptions: [
-      {
+      new LeagueSubscriptionRequestBodyStructure({
         sportId: 6046,
         locationId: 142,
         leagueId: 5,
-      },
+      }),
     ],
   });
 
@@ -368,6 +373,29 @@ const getManualSuspensions = async (
   _.each(response.suspensions, (suspension, index) => {
     logger.log(`Suspension[${index}]: ${JSON.stringify(suspension)}`);
   });
+};
+
+const addManualSuspensions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new ChangeManualSuspensionsRequestDto({
+    suspensions: [
+      new ManualSuspensionsRequestBodyStructure({
+        fixtureId: 23460389,
+        sportId: 6046,
+        markets: [
+          new RequestSuspendedMarket({
+            marketId: 2755,
+            line: '-0.25',
+          }),
+        ],
+      }),
+    ],
+  });
+
+  const response = await subscriptionHttpClient.addManualSuspensions(request);
+
+  logger.log(`Manual suspensions added: ${response.succeeded}`);
 };
 
 initApiSample();

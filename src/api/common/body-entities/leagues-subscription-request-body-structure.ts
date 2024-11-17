@@ -11,12 +11,12 @@ export class LeagueSubscriptionRequestBodyStructure {
     Object.assign(this, data);
   }
 
-  @Expose({ name: 'SportId' })
+  @Expose()
   sportId!: number;
 
-  @Expose({ name: 'LocationId' })
+  @Expose()
   locationId!: number;
 
-  @Expose({ name: 'LeagueId' })
+  @Expose()
   leagueId!: number;
 }

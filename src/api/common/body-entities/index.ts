@@ -12,3 +12,6 @@ export * from './leagues-subscription-body-structure';
 export * from './leagues-subscription-request-body-structure';
 export * from './suspensions-body-structure';
 export * from './suspended-markets';
+export * from './suspensions-change-body-structure';
+export * from './manual-suspensions-request-body-structure';
+export * from './request-suspended-markets';

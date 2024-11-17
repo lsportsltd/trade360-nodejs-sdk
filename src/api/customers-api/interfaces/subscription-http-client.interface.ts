@@ -1,9 +1,11 @@
 import {
+  ChangeManualSuspensionsRequestDto,
   FixturesSubscriptionRequestDto,
-  LeaguesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
+  LeaguesSubscriptionRequestDto,
 } from '@subscription-api/dtos';
 import {
+  ChangeManualSuspensionsResponse,
   FixtureScheduleCollectionResponse,
   FixturesSubscriptionCollectionResponse,
   GetManualSuspensionsResponse,
@@ -35,4 +37,7 @@ export interface ISubscriptionHttpClient {
     requestDto: LeaguesSubscriptionRequestDto,
   ): Promise<LeaguesSubscriptionCollectionResponse>;
   getAllManualSuspensions(): Promise<GetManualSuspensionsResponse>;
+  addManualSuspensions(
+    requestDto: ChangeManualSuspensionsRequestDto,
+  ): Promise<ChangeManualSuspensionsResponse>;
 }

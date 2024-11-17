@@ -2,7 +2,6 @@ import { isNil } from 'lodash';
 import { Moment } from 'moment';
 
 import { BaseEntity, Constructor, InvalidDateInRequestError, PackageCredentials } from '@entities';
-import { TransformerUtil } from '@utilities';
 import {
   GetCompetitionsRequestDto,
   GetFixturesMetadataRequestDto,
@@ -18,15 +17,18 @@ import {
   GetTranslationsRequest,
 } from '@metadata-api/requests';
 import {
+  ChangeManualSuspensionsRequestDto,
   FixturesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
   LeaguesSubscriptionRequestDto,
 } from '@subscription-api/dtos';
 import {
+  ChangeManualSuspensionsRequest,
   FixturesSubscriptionRequest,
   GetFixtureScheduleRequest,
   LeaguesSubscriptionRequest,
 } from '@subscription-api/requests';
+import { TransformerUtil } from '@utilities';
 
 import { IMapper } from './interfaces';
 
@@ -142,6 +144,16 @@ export class Mapper implements IMapper {
       LeaguesSubscriptionRequest,
       (source) =>
         TransformerUtil.transform({ ...packageCredentials, ...source }, LeaguesSubscriptionRequest),
+    );
+
+    this.registerMapping<ChangeManualSuspensionsRequestDto, ChangeManualSuspensionsRequest>(
+      ChangeManualSuspensionsRequestDto,
+      ChangeManualSuspensionsRequest,
+      (source) =>
+        TransformerUtil.transform(
+          { ...packageCredentials, ...source },
+          ChangeManualSuspensionsRequest,
+        ),
     );
   }
 

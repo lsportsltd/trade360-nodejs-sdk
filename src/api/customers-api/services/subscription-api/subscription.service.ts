@@ -3,12 +3,18 @@ import { IHttpServiceConfig, IMapper } from '@api/common';
 import { ISubscriptionHttpClient } from '@customers-api/interfaces';
 import { SubscriptionRoutesPrefixUrl } from '@customers-api/enums';
 import {
+  ChangeManualSuspensionsRequestDto,
   FixturesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
   LeaguesSubscriptionRequestDto,
 } from '@subscription-api/dtos';
-import { GetFixtureScheduleRequest, LeaguesSubscriptionRequest } from '@subscription-api/requests';
 import {
+  ChangeManualSuspensionsRequest,
+  GetFixtureScheduleRequest,
+  LeaguesSubscriptionRequest,
+} from '@subscription-api/requests';
+import {
+  ChangeManualSuspensionsResponse,
   FixtureScheduleCollectionResponse,
   FixturesSubscriptionCollectionResponse,
   GetManualSuspensionsResponse,
@@ -189,5 +195,29 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     );
 
     return allManualSuspensions?.body || {};
+  }
+
+  /**
+   * Sends a request to the subscription API to add manual suspensions.
+   * @param requestDto The request DTO for adding manual suspensions.
+   * @returns A promise that resolves to a ChangeManualSuspensionsResponse object
+   * containing the manual suspensions information.
+   */
+  public async addManualSuspensions(
+    requestDto: ChangeManualSuspensionsRequestDto,
+  ): Promise<ChangeManualSuspensionsResponse> {
+    const request = this.mapper.map<
+      ChangeManualSuspensionsRequestDto,
+      ChangeManualSuspensionsRequest
+    >(requestDto, ChangeManualSuspensionsRequest);
+
+    const ChangeManualSuspensionsCollection =
+      await this.postRequest<ChangeManualSuspensionsResponse>(
+        SubscriptionRoutesPrefixUrl.ADD_MANUAL_SUSPENSIONS,
+        ChangeManualSuspensionsResponse,
+        request,
+      );
+
+    return ChangeManualSuspensionsCollection?.body || {};
   }
 }
