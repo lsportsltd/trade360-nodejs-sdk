@@ -10,6 +10,8 @@ export * from './fixtures-schedule-body-structure';
 export * from './fixtures-subscription-body-structure';
 export * from './leagues-subscription-body-structure';
 export * from './leagues-subscription-request-body-structure';
+export * from './competitions-subscription-body-structure';
+export * from './competition-subscription-request-body-structure';
 export * from './suspensions-body-structure';
 export * from './suspended-markets';
 export * from './suspensions-change-body-structure';

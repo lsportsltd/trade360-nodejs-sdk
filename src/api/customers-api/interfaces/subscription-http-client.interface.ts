@@ -1,5 +1,6 @@
 import {
   ChangeManualSuspensionsRequestDto,
+  CompetitionsSubscriptionRequestDto,
   FixturesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
   GetSubscriptionsRequestDto,
@@ -7,6 +8,7 @@ import {
 } from '@subscription-api/dtos';
 import {
   ChangeManualSuspensionsResponse,
+  CompetitionsSubscriptionCollectionResponse,
   FixtureScheduleCollectionResponse,
   FixturesSubscriptionCollectionResponse,
   GetManualSuspensionsResponse,
@@ -48,4 +50,7 @@ export interface ISubscriptionHttpClient {
   removeManualSuspensions(
     requestDto: ChangeManualSuspensionsRequestDto,
   ): Promise<ChangeManualSuspensionsResponse>;
+  subscribeByCompetitions(
+    requestDto: CompetitionsSubscriptionRequestDto,
+  ): Promise<CompetitionsSubscriptionCollectionResponse>;
 }

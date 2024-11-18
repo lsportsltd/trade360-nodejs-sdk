@@ -18,14 +18,18 @@ import {
 } from '@metadata-api/requests';
 import {
   ChangeManualSuspensionsRequestDto,
+  CompetitionsSubscriptionRequestDto,
   FixturesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
+  GetSubscriptionsRequestDto,
   LeaguesSubscriptionRequestDto,
 } from '@subscription-api/dtos';
 import {
   ChangeManualSuspensionsRequest,
+  CompetitionsSubscriptionRequest,
   FixturesSubscriptionRequest,
   GetFixtureScheduleRequest,
+  GetSubscriptionsRequest,
   LeaguesSubscriptionRequest,
 } from '@subscription-api/requests';
 import { TransformerUtil } from '@utilities';
@@ -144,6 +148,23 @@ export class Mapper implements IMapper {
       LeaguesSubscriptionRequest,
       (source) =>
         TransformerUtil.transform({ ...packageCredentials, ...source }, LeaguesSubscriptionRequest),
+    );
+
+    this.registerMapping<GetSubscriptionsRequestDto, GetSubscriptionsRequest>(
+      GetSubscriptionsRequestDto,
+      GetSubscriptionsRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetSubscriptionsRequest),
+    );
+
+    this.registerMapping<CompetitionsSubscriptionRequestDto, CompetitionsSubscriptionRequest>(
+      CompetitionsSubscriptionRequestDto,
+      CompetitionsSubscriptionRequest,
+      (source) =>
+        TransformerUtil.transform(
+          { ...packageCredentials, ...source },
+          CompetitionsSubscriptionRequest,
+        ),
     );
 
     this.registerMapping<ChangeManualSuspensionsRequestDto, ChangeManualSuspensionsRequest>(

@@ -6,6 +6,7 @@ export enum SubscriptionRoutesPrefixUrl {
   SUBSCRIBE_BY_LEAGUES_PREFIX_URL = '/Leagues/Subscribe',
   UNSUBSCRIBE_BY_LEAGUES_PREFIX_URL = '/Leagues/UnSubscribe',
   GET_FIXTURES_SUBSCRIPTION_PREFIX_URL = 'Fixtures/Get',
+  SUBSCRIBE_BY_COMPETITIONS_PREFIX_URL = 'Outright/Subscribe',
   GET_ALL_MANUAL_SUSPENSIONS_PREFIX_URL = 'Markets/ManualSuspension/GetAll',
   ADD_MANUAL_SUSPENSIONS_PREFIX_URL = 'Markets/ManualSuspension/Activate',
   REMOVE_MANUAL_SUSPENSIONS_PREFIX_URL = 'Markets/ManualSuspension/Deactivate',

@@ -3,6 +3,8 @@ import moment from 'moment';
 
 import {
   ChangeManualSuspensionsRequestDto,
+  CompetitionsSubscriptionRequestBodyStructure,
+  CompetitionsSubscriptionRequestDto,
   CustomersApiFactory,
   FixtureScheduleCollectionResponse,
   FixturesMetadataValidationError,
@@ -71,7 +73,9 @@ const initApiSample = async () => {
 
     // await removeManualSuspensions(subscriptionHttpClient);
 
-    await getSubscriptions(subscriptionHttpClient);
+    // await getSubscriptions(subscriptionHttpClient);
+
+    await subscribeByCompetitions(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -434,6 +438,24 @@ const getSubscriptions = async (subscriptionHttpClient: ISubscriptionHttpClient)
     await subscriptionHttpClient.getSubscriptions(request);
 
   logger.log(`Subscriptions received: ${response.fixtures?.length}`);
+};
+
+const subscribeByCompetitions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new CompetitionsSubscriptionRequestDto({
+    subscriptions: [
+      new CompetitionsSubscriptionRequestBodyStructure({
+        sportId: 6046,
+        locationId: 142,
+        leagueId: 5,
+      }),
+    ],
+  });
+
+  const response = await subscriptionHttpClient.subscribeByCompetitions(request);
+
+  logger.log(`Subscribed to ${response.subscription?.length} competitions`);
 };
 
 initApiSample();

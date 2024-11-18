@@ -4,6 +4,7 @@ import { ISubscriptionHttpClient } from '@customers-api/interfaces';
 import { SubscriptionRoutesPrefixUrl } from '@customers-api/enums';
 import {
   ChangeManualSuspensionsRequestDto,
+  CompetitionsSubscriptionRequestDto,
   FixturesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
   GetSubscriptionsRequestDto,
@@ -11,12 +12,14 @@ import {
 } from '@subscription-api/dtos';
 import {
   ChangeManualSuspensionsRequest,
+  CompetitionsSubscriptionRequest,
   GetFixtureScheduleRequest,
   GetSubscriptionsRequest,
   LeaguesSubscriptionRequest,
 } from '@subscription-api/requests';
 import {
   ChangeManualSuspensionsResponse,
+  CompetitionsSubscriptionCollectionResponse,
   FixtureScheduleCollectionResponse,
   FixturesSubscriptionCollectionResponse,
   GetManualSuspensionsResponse,
@@ -208,6 +211,30 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
       );
 
     return fixturesSubscriptionsCollection?.body || {};
+  }
+
+  /**
+   * Sends a request to the subscription API to subscribe to competitions.
+   * @param requestDto The request DTO for subscribing to competitions.
+   * @returns A promise that resolves to a CompetitionsSubscriptionCollectionResponse object
+   * containing the competitions subscription information.
+   */
+  public async subscribeByCompetitions(
+    requestDto: CompetitionsSubscriptionRequestDto,
+  ): Promise<CompetitionsSubscriptionCollectionResponse> {
+    const request = this.mapper.map<
+      CompetitionsSubscriptionRequestDto,
+      CompetitionsSubscriptionRequest
+    >(requestDto, CompetitionsSubscriptionRequest);
+
+    const competitionsSubscriptionResponse =
+      await this.postRequest<CompetitionsSubscriptionCollectionResponse>(
+        SubscriptionRoutesPrefixUrl.SUBSCRIBE_BY_COMPETITIONS_PREFIX_URL,
+        CompetitionsSubscriptionCollectionResponse,
+        request,
+      );
+
+    return competitionsSubscriptionResponse?.body || {};
   }
 
   /**

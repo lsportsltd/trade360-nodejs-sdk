@@ -3,10 +3,11 @@ import { Expose } from 'class-transformer';
 import { CompetitionType } from '@lsports/entities';
 
 /**
- * CompetitionBodyStructure class is responsible for deserializing the response
- * from the metadata API to a competition body structure.
+ * CompetitionsBodyStructure class is responsible for
+ * deserializing the response from the metadata API
+ * to a competition body structure.
  */
-export class CompetitionBodyStructure {
+export class CompetitionsBodyStructure {
   @Expose({ name: 'Id' })
   id!: number;
 
