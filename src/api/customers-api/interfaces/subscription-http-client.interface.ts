@@ -53,4 +53,7 @@ export interface ISubscriptionHttpClient {
   subscribeByCompetitions(
     requestDto: CompetitionsSubscriptionRequestDto,
   ): Promise<CompetitionsSubscriptionCollectionResponse>;
+  unSubscribeByCompetitions(
+    requestDto: CompetitionsSubscriptionRequestDto,
+  ): Promise<CompetitionsSubscriptionCollectionResponse>;
 }

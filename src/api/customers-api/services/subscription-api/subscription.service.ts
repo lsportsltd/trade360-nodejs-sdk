@@ -57,9 +57,10 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   }
 
   /**
-   * Sends a request to the subscription API to get the package quota information.
-   * @returns A promise that resolves to a PackageQuotaResponse object
-   * containing the package quota information.
+   * Sends a request to the subscription API to get the package
+   * quota information.
+   * @returns A promise that resolves to a PackageQuotaResponse
+   * object containing the package quota information.
    */
   public async getPackageQuota(): Promise<PackageQuotaResponse> {
     const packageQuota = await this.postRequest<PackageQuotaResponse>(
@@ -73,8 +74,9 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   /**
    * Sends a request to the subscription API to get the fixtures schedule.
    * @param requestDto The request DTO for getting the fixtures schedule.
-   * @returns A promise that resolves to a FixtureScheduleCollectionResponse object
-   * containing the fixture schedule information.
+   * @returns A promise that resolves to a
+   * FixtureScheduleCollectionResponse object containing the fixture
+   * schedule information.
    */
   public async getFixturesSchedule(
     requestDto: GetFixtureScheduleRequestDto,
@@ -96,8 +98,9 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   /**
    * Sends a request to the subscription API to subscribe to fixtures.
    * @param requestDto The request DTO for subscribing to fixtures.
-   * @returns A promise that resolves to a FixturesSubscriptionCollectionResponse object
-   * containing the fixtures subscription information.
+   * @returns A promise that resolves to a
+   * FixturesSubscriptionCollectionResponse object containing the
+   * fixtures subscription information.
    */
   public async subscribeByFixtures(
     requestDto: FixturesSubscriptionRequestDto,
@@ -120,8 +123,9 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   /**
    * Sends a request to the subscription API to unsubscribe from fixtures.
    * @param requestDto The request DTO for unsubscribing from fixtures.
-   * @returns A promise that resolves to a FixturesSubscriptionCollectionResponse object
-   * containing the fixtures unsubscription information.
+   * @returns A promise that resolves to a
+   * FixturesSubscriptionCollectionResponse object containing the
+   * fixtures unsubscription information.
    */
   public async unSubscribeByFixtures(
     requestDto: FixturesSubscriptionRequestDto,
@@ -144,8 +148,9 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   /**
    * Sends a request to the subscription API to subscribe to leagues.
    * @param requestDto The request DTO for subscribing to leagues.
-   * @returns A promise that resolves to a LeaguesSubscriptionCollectionResponse object
-   * containing the leagues subscription information.
+   * @returns A promise that resolves to a
+   * LeaguesSubscriptionCollectionResponse object containing the
+   * leagues subscription information.
    */
   public async subscribeByLeagues(
     requestDto: LeaguesSubscriptionRequestDto,
@@ -168,8 +173,9 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   /**
    * Sends a request to the subscription API to unsubscribe from leagues.
    * @param requestDto The request DTO for unsubscribing from leagues.
-   * @returns A promise that resolves to a LeaguesSubscriptionCollectionResponse object
-   * containing the leagues unsubscription information.
+   * @returns A promise that resolves to a
+   * LeaguesSubscriptionCollectionResponse object containing the leagues
+   * unsubscription information.
    */
   public async unSubscribeByLeagues(
     requestDto: LeaguesSubscriptionRequestDto,
@@ -192,8 +198,9 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   /**
    * Sends a request to the subscription API to get fixtures subscriptions.
    * @param requestDto The request DTO for getting fixtures subscriptions.
-   * @returns A promise that resolves to a GetSubscriptionsCollectionResponse object
-   * containing the fixtures subscriptions information.
+   * @returns A promise that resolves to a
+   * GetSubscriptionsCollectionResponse object containing the fixtures
+   * subscriptions information.
    */
   public async getSubscriptions(
     requestDto: GetSubscriptionsRequestDto,
@@ -216,8 +223,9 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   /**
    * Sends a request to the subscription API to subscribe to competitions.
    * @param requestDto The request DTO for subscribing to competitions.
-   * @returns A promise that resolves to a CompetitionsSubscriptionCollectionResponse object
-   * containing the competitions subscription information.
+   * @returns A promise that resolves to a
+   * CompetitionsSubscriptionCollectionResponse object containing the
+   * competitions subscription information.
    */
   public async subscribeByCompetitions(
     requestDto: CompetitionsSubscriptionRequestDto,
@@ -235,6 +243,32 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
       );
 
     return competitionsSubscriptionResponse?.body || {};
+  }
+
+  /**
+   * Sends a request to the subscription API to unsubscribe from
+   * competitions.
+   * @param requestDto The request DTO for unsubscribing from competitions.
+   * @returns A promise that resolves to a
+   * CompetitionsSubscriptionCollectionResponse object containing the
+   * competitions unsubscription information from the subscription API.
+   */
+  public async unSubscribeByCompetitions(
+    requestDto: CompetitionsSubscriptionRequestDto,
+  ): Promise<CompetitionsSubscriptionCollectionResponse> {
+    const request = this.mapper.map<
+      CompetitionsSubscriptionRequestDto,
+      CompetitionsSubscriptionRequest
+    >(requestDto, CompetitionsSubscriptionRequest);
+
+    const competitionsUnSubscriptionResponse =
+      await this.postRequest<CompetitionsSubscriptionCollectionResponse>(
+        SubscriptionRoutesPrefixUrl.UNSUBSCRIBE_BY_COMPETITIONS_PREFIX_URL,
+        CompetitionsSubscriptionCollectionResponse,
+        request,
+      );
+
+    return competitionsUnSubscriptionResponse?.body || {};
   }
 
   /**
