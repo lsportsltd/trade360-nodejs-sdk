@@ -9,8 +9,6 @@ import { LeagueSubscriptionRequestBodyStructure } from '@api/common/body-entitie
  * leagues. It contains the structure of the request body for
  * subscribing to leagues.
  * @param subscriptions The subscriptions to be made to the leagues
- * @implements BaseEntity interface for the base properties of the
- * leagues subscription request DTO.
  */
 export class LeaguesSubscriptionRequestDto implements BaseEntity {
   [key: string]: unknown;

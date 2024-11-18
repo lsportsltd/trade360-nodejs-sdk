@@ -14,6 +14,8 @@ import {
   GetLeaguesRequestDto,
   GetManualSuspensionsResponse,
   GetMarketsRequestDto,
+  GetSubscriptionsCollectionResponse,
+  GetSubscriptionsRequestDto,
   GetTranslationsRequestDto,
   HttpResponseError,
   HttpResponsePayloadDto,
@@ -63,11 +65,13 @@ const initApiSample = async () => {
 
     // await unSubscribeFromLeagues(subscriptionHttpClient);
 
-    await getManualSuspensions(subscriptionHttpClient);
+    // await getManualSuspensions(subscriptionHttpClient);
 
     // await addManualSuspensions(subscriptionHttpClient);
 
-    await removeManualSuspensions(subscriptionHttpClient);
+    // await removeManualSuspensions(subscriptionHttpClient);
+
+    await getSubscriptions(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -419,6 +423,17 @@ const removeManualSuspensions = async (
   const response = await subscriptionHttpClient.removeManualSuspensions(request);
 
   logger.log(`Manual suspensions removed: ${response.succeeded}`);
+};
+
+const getSubscriptions = async (subscriptionHttpClient: ISubscriptionHttpClient): Promise<void> => {
+  const request = new GetSubscriptionsRequestDto({
+    sportIds: [6046],
+  });
+
+  const response: GetSubscriptionsCollectionResponse =
+    await subscriptionHttpClient.getSubscriptions(request);
+
+  logger.log(`Subscriptions received: ${response.fixtures?.length}`);
 };
 
 initApiSample();

@@ -6,11 +6,13 @@ import {
   ChangeManualSuspensionsRequestDto,
   FixturesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
+  GetSubscriptionsRequestDto,
   LeaguesSubscriptionRequestDto,
 } from '@subscription-api/dtos';
 import {
   ChangeManualSuspensionsRequest,
   GetFixtureScheduleRequest,
+  GetSubscriptionsRequest,
   LeaguesSubscriptionRequest,
 } from '@subscription-api/requests';
 import {
@@ -18,6 +20,7 @@ import {
   FixtureScheduleCollectionResponse,
   FixturesSubscriptionCollectionResponse,
   GetManualSuspensionsResponse,
+  GetSubscriptionsCollectionResponse,
   LeaguesSubscriptionCollectionResponse,
   PackageQuotaResponse,
 } from '@subscription-api/responses';
@@ -184,13 +187,37 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   }
 
   /**
+   * Sends a request to the subscription API to get fixtures subscriptions.
+   * @param requestDto The request DTO for getting fixtures subscriptions.
+   * @returns A promise that resolves to a GetSubscriptionsCollectionResponse object
+   * containing the fixtures subscriptions information.
+   */
+  public async getSubscriptions(
+    requestDto: GetSubscriptionsRequestDto,
+  ): Promise<GetSubscriptionsCollectionResponse> {
+    const request = this.mapper.map<GetSubscriptionsRequestDto, GetSubscriptionsRequest>(
+      requestDto,
+      GetSubscriptionsRequest,
+    );
+
+    const fixturesSubscriptionsCollection =
+      await this.postRequest<GetSubscriptionsCollectionResponse>(
+        SubscriptionRoutesPrefixUrl.GET_FIXTURES_SUBSCRIPTION_PREFIX_URL,
+        GetSubscriptionsCollectionResponse,
+        request,
+      );
+
+    return fixturesSubscriptionsCollection?.body || {};
+  }
+
+  /**
    * Sends a request to the subscription API to get all manual suspensions.
    * @returns A promise that resolves to a GetManualSuspensionsResponse object
    * containing the manual suspensions information.
    */
   public async getAllManualSuspensions(): Promise<GetManualSuspensionsResponse> {
     const allManualSuspensionsCollection = await this.postRequest<GetManualSuspensionsResponse>(
-      SubscriptionRoutesPrefixUrl.GET_ALL_MANUAL_SUSPENSIONS,
+      SubscriptionRoutesPrefixUrl.GET_ALL_MANUAL_SUSPENSIONS_PREFIX_URL,
       GetManualSuspensionsResponse,
     );
 
@@ -213,7 +240,7 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
 
     const activatedManualSuspensionsResponse =
       await this.postRequest<ChangeManualSuspensionsResponse>(
-        SubscriptionRoutesPrefixUrl.ADD_MANUAL_SUSPENSIONS,
+        SubscriptionRoutesPrefixUrl.ADD_MANUAL_SUSPENSIONS_PREFIX_URL,
         ChangeManualSuspensionsResponse,
         request,
       );
@@ -237,7 +264,7 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
 
     const deactivateManualSuspensionsResponse =
       await this.postRequest<ChangeManualSuspensionsResponse>(
-        SubscriptionRoutesPrefixUrl.REMOVE_MANUAL_SUSPENSIONS,
+        SubscriptionRoutesPrefixUrl.REMOVE_MANUAL_SUSPENSIONS_PREFIX_URL,
         ChangeManualSuspensionsResponse,
         request,
       );

@@ -10,6 +10,7 @@ import { BaseEntity } from '@entities';
  * @param fixtures The fixture IDs to subscribe by
  * in the request to subscribe by fixtures to the API.
  * @returns FixturesSubscriptionRequestDto instance that
+ * contains the provided fixture IDs.
  */
 export class FixturesSubscriptionRequestDto implements BaseEntity {
   [key: string]: unknown;
