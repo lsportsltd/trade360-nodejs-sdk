@@ -40,4 +40,7 @@ export interface ISubscriptionHttpClient {
   addManualSuspensions(
     requestDto: ChangeManualSuspensionsRequestDto,
   ): Promise<ChangeManualSuspensionsResponse>;
+  removeManualSuspensions(
+    requestDto: ChangeManualSuspensionsRequestDto,
+  ): Promise<ChangeManualSuspensionsResponse>;
 }

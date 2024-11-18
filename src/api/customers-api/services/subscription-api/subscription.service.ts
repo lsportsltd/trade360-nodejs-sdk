@@ -101,14 +101,14 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
       GetFixtureScheduleRequest,
     );
 
-    const fixturesSubscriptionCollection =
+    const fixturesSubscriptionResponse =
       await this.postRequest<FixturesSubscriptionCollectionResponse>(
         SubscriptionRoutesPrefixUrl.SUBSCRIBE_BY_FIXTURES_PREFIX_URL,
         FixturesSubscriptionCollectionResponse,
         request,
       );
 
-    return fixturesSubscriptionCollection?.body || {};
+    return fixturesSubscriptionResponse?.body || {};
   }
 
   /**
@@ -125,14 +125,14 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
       GetFixtureScheduleRequest,
     );
 
-    const fixturesUnSubscriptionCollection =
+    const fixturesUnSubscriptionsResponse =
       await this.postRequest<FixturesSubscriptionCollectionResponse>(
         SubscriptionRoutesPrefixUrl.UNSUBSCRIBE_BY_FIXTURE_PREFIX_URL,
         FixturesSubscriptionCollectionResponse,
         request,
       );
 
-    return fixturesUnSubscriptionCollection?.body || {};
+    return fixturesUnSubscriptionsResponse?.body || {};
   }
 
   /**
@@ -149,14 +149,14 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
       LeaguesSubscriptionRequest,
     );
 
-    const leaguesSubscriptionCollection =
+    const leaguesSubscriptionResponse =
       await this.postRequest<LeaguesSubscriptionCollectionResponse>(
         SubscriptionRoutesPrefixUrl.SUBSCRIBE_BY_LEAGUES_PREFIX_URL,
         LeaguesSubscriptionCollectionResponse,
         request,
       );
 
-    return leaguesSubscriptionCollection?.body || {};
+    return leaguesSubscriptionResponse?.body || {};
   }
 
   /**
@@ -173,14 +173,14 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
       LeaguesSubscriptionRequest,
     );
 
-    const leaguesUnSubscriptionCollection =
+    const leaguesUnSubscriptionResponse =
       await this.postRequest<LeaguesSubscriptionCollectionResponse>(
         SubscriptionRoutesPrefixUrl.UNSUBSCRIBE_BY_LEAGUES_PREFIX_URL,
         LeaguesSubscriptionCollectionResponse,
         request,
       );
 
-    return leaguesUnSubscriptionCollection?.body || {};
+    return leaguesUnSubscriptionResponse?.body || {};
   }
 
   /**
@@ -189,12 +189,12 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
    * containing the manual suspensions information.
    */
   public async getAllManualSuspensions(): Promise<GetManualSuspensionsResponse> {
-    const allManualSuspensions = await this.postRequest<GetManualSuspensionsResponse>(
+    const allManualSuspensionsCollection = await this.postRequest<GetManualSuspensionsResponse>(
       SubscriptionRoutesPrefixUrl.GET_ALL_MANUAL_SUSPENSIONS,
       GetManualSuspensionsResponse,
     );
 
-    return allManualSuspensions?.body || {};
+    return allManualSuspensionsCollection?.body || {};
   }
 
   /**
@@ -211,13 +211,37 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
       ChangeManualSuspensionsRequest
     >(requestDto, ChangeManualSuspensionsRequest);
 
-    const ChangeManualSuspensionsCollection =
+    const activatedManualSuspensionsResponse =
       await this.postRequest<ChangeManualSuspensionsResponse>(
         SubscriptionRoutesPrefixUrl.ADD_MANUAL_SUSPENSIONS,
         ChangeManualSuspensionsResponse,
         request,
       );
 
-    return ChangeManualSuspensionsCollection?.body || {};
+    return activatedManualSuspensionsResponse?.body || {};
+  }
+
+  /**
+   * Sends a request to the subscription API to remove manual suspensions.
+   * @param requestDto The request DTO for removing manual suspensions.
+   * @returns A promise that resolves to a ChangeManualSuspensionsResponse object
+   * containing the manual suspensions information.
+   */
+  public async removeManualSuspensions(
+    requestDto: ChangeManualSuspensionsRequestDto,
+  ): Promise<ChangeManualSuspensionsResponse> {
+    const request = this.mapper.map<
+      ChangeManualSuspensionsRequestDto,
+      ChangeManualSuspensionsRequest
+    >(requestDto, ChangeManualSuspensionsRequest);
+
+    const deactivateManualSuspensionsResponse =
+      await this.postRequest<ChangeManualSuspensionsResponse>(
+        SubscriptionRoutesPrefixUrl.REMOVE_MANUAL_SUSPENSIONS,
+        ChangeManualSuspensionsResponse,
+        request,
+      );
+
+    return deactivateManualSuspensionsResponse?.body || {};
   }
 }

@@ -7,4 +7,5 @@ export enum SubscriptionRoutesPrefixUrl {
   UNSUBSCRIBE_BY_LEAGUES_PREFIX_URL = '/Leagues/UnSubscribe',
   GET_ALL_MANUAL_SUSPENSIONS = 'Markets/ManualSuspension/GetAll',
   ADD_MANUAL_SUSPENSIONS = 'Markets/ManualSuspension/Activate',
+  REMOVE_MANUAL_SUSPENSIONS = 'Markets/ManualSuspension/Deactivate',
 }

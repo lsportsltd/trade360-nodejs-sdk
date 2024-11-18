@@ -65,7 +65,9 @@ const initApiSample = async () => {
 
     await getManualSuspensions(subscriptionHttpClient);
 
-    await addManualSuspensions(subscriptionHttpClient);
+    // await addManualSuspensions(subscriptionHttpClient);
+
+    await removeManualSuspensions(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -381,11 +383,10 @@ const addManualSuspensions = async (
   const request = new ChangeManualSuspensionsRequestDto({
     suspensions: [
       new ManualSuspensionsRequestBodyStructure({
-        fixtureId: 23460389,
-        sportId: 6046,
+        fixtureId: 13176576,
         markets: [
           new RequestSuspendedMarket({
-            marketId: 2755,
+            marketId: 1439,
             line: '-0.25',
           }),
         ],
@@ -396,6 +397,28 @@ const addManualSuspensions = async (
   const response = await subscriptionHttpClient.addManualSuspensions(request);
 
   logger.log(`Manual suspensions added: ${response.succeeded}`);
+};
+
+const removeManualSuspensions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new ChangeManualSuspensionsRequestDto({
+    suspensions: [
+      new ManualSuspensionsRequestBodyStructure({
+        fixtureId: 13176576,
+        markets: [
+          new RequestSuspendedMarket({
+            marketId: 1439,
+            line: '-0.25',
+          }),
+        ],
+      }),
+    ],
+  });
+
+  const response = await subscriptionHttpClient.removeManualSuspensions(request);
+
+  logger.log(`Manual suspensions removed: ${response.succeeded}`);
 };
 
 initApiSample();
