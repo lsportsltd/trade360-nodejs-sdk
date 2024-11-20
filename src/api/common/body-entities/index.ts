@@ -17,3 +17,4 @@ export * from './suspended-markets';
 export * from './suspensions-change-body-structure';
 export * from './manual-suspensions-request-body-structure';
 export * from './request-suspended-markets';
+export * from './fixtures-metadata-subscriptions-body-structure';

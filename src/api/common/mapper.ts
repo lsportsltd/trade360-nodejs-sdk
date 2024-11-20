@@ -19,6 +19,7 @@ import {
 import {
   ChangeManualSuspensionsRequestDto,
   CompetitionsSubscriptionRequestDto,
+  FixturesMetadataSubscriptionsRequestDto,
   FixturesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
   GetSubscriptionsRequestDto,
@@ -27,6 +28,7 @@ import {
 import {
   ChangeManualSuspensionsRequest,
   CompetitionsSubscriptionRequest,
+  FixturesMetadataSubscriptionsRequest,
   FixturesSubscriptionRequest,
   GetFixtureScheduleRequest,
   GetSubscriptionsRequest,
@@ -175,6 +177,27 @@ export class Mapper implements IMapper {
           { ...packageCredentials, ...source },
           ChangeManualSuspensionsRequest,
         ),
+    );
+
+    this.registerMapping<
+      FixturesMetadataSubscriptionsRequestDto,
+      FixturesMetadataSubscriptionsRequest
+    >(
+      FixturesMetadataSubscriptionsRequestDto,
+      FixturesMetadataSubscriptionsRequest,
+      (source: Partial<FixturesMetadataSubscriptionsRequestDto>) => {
+        let destination = {
+          fromDate: this.formatDate('fromDate', source.fromDate),
+          toDate: this.formatDate('toDate', source.toDate),
+        };
+
+        destination = TransformerUtil.transform(
+          { ...packageCredentials, ...destination },
+          FixturesMetadataSubscriptionsRequest,
+        );
+
+        return destination;
+      },
     );
   }
 

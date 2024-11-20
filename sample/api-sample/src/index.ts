@@ -7,6 +7,8 @@ import {
   CompetitionsSubscriptionRequestDto,
   CustomersApiFactory,
   FixtureScheduleCollectionResponse,
+  FixturesMetadataSubscriptionsCollectionResponse,
+  FixturesMetadataSubscriptionsRequestDto,
   FixturesMetadataValidationError,
   FixturesSubscriptionCollectionResponse,
   FixturesSubscriptionRequestDto,
@@ -16,7 +18,7 @@ import {
   GetLeaguesRequestDto,
   GetManualSuspensionsResponse,
   GetMarketsRequestDto,
-  GetSubscriptionsCollectionResponse,
+  SubscriptionsCollectionResponse,
   GetSubscriptionsRequestDto,
   GetTranslationsRequestDto,
   HttpResponseError,
@@ -24,8 +26,8 @@ import {
   IMetadataHttpClient,
   ISubscriptionHttpClient,
   InvalidDateInRequestError,
-  LeagueSubscriptionRequestBodyStructure,
   LeaguesSubscriptionCollectionResponse,
+  LeaguesSubscriptionRequestBodyStructure,
   LeaguesSubscriptionRequestDto,
   ManualSuspensionsRequestBodyStructure,
   RequestSuspendedMarket,
@@ -77,7 +79,9 @@ const initApiSample = async () => {
 
     // await subscribeByCompetitions(subscriptionHttpClient);
 
-    await unSubscribeFromCompetitions(subscriptionHttpClient);
+    // await unSubscribeFromCompetitions(subscriptionHttpClient);
+
+    await getFixturesMetadataSubscriptions(subscriptionHttpClient);
 
     // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -334,7 +338,7 @@ const subscribeByLeagues = async (
 ): Promise<void> => {
   const request = new LeaguesSubscriptionRequestDto({
     subscriptions: [
-      new LeagueSubscriptionRequestBodyStructure({
+      new LeaguesSubscriptionRequestBodyStructure({
         sportId: 6046,
         locationId: 142,
         leagueId: 5,
@@ -436,7 +440,7 @@ const getSubscriptions = async (subscriptionHttpClient: ISubscriptionHttpClient)
     sportIds: [6046],
   });
 
-  const response: GetSubscriptionsCollectionResponse =
+  const response: SubscriptionsCollectionResponse =
     await subscriptionHttpClient.getSubscriptions(request);
 
   logger.log(`Subscriptions received: ${response.fixtures?.length}`);
@@ -474,6 +478,20 @@ const unSubscribeFromCompetitions = async (subscriptionHttpClient: ISubscription
   const response = await subscriptionHttpClient.unSubscribeByCompetitions(request);
 
   logger.log(`Unsubscribed from ${response.subscription?.length} competitions`);
+};
+
+const getFixturesMetadataSubscriptions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new FixturesMetadataSubscriptionsRequestDto({
+    fromDate: moment(),
+    toDate: moment().add(10, 'days'),
+  });
+
+  const response: FixturesMetadataSubscriptionsCollectionResponse =
+    await subscriptionHttpClient.getFixturesMetadataSubscriptions(request);
+
+  logger.log(`Fixtures metadata subscriptions received: ${response.subscribedFixtures?.length}`);
 };
 
 initApiSample();

@@ -1,6 +1,7 @@
 import {
   ChangeManualSuspensionsRequestDto,
   CompetitionsSubscriptionRequestDto,
+  FixturesMetadataSubscriptionsRequestDto,
   FixturesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
   GetSubscriptionsRequestDto,
@@ -10,9 +11,10 @@ import {
   ChangeManualSuspensionsResponse,
   CompetitionsSubscriptionCollectionResponse,
   FixtureScheduleCollectionResponse,
+  FixturesMetadataSubscriptionsCollectionResponse,
   FixturesSubscriptionCollectionResponse,
   GetManualSuspensionsResponse,
-  GetSubscriptionsCollectionResponse,
+  SubscriptionsCollectionResponse,
   LeaguesSubscriptionCollectionResponse,
   PackageQuotaResponse,
 } from '@subscription-api/responses';
@@ -42,7 +44,7 @@ export interface ISubscriptionHttpClient {
   ): Promise<LeaguesSubscriptionCollectionResponse>;
   getSubscriptions(
     requestDto: GetSubscriptionsRequestDto,
-  ): Promise<GetSubscriptionsCollectionResponse>;
+  ): Promise<SubscriptionsCollectionResponse>;
   getAllManualSuspensions(): Promise<GetManualSuspensionsResponse>;
   addManualSuspensions(
     requestDto: ChangeManualSuspensionsRequestDto,
@@ -56,4 +58,7 @@ export interface ISubscriptionHttpClient {
   unSubscribeByCompetitions(
     requestDto: CompetitionsSubscriptionRequestDto,
   ): Promise<CompetitionsSubscriptionCollectionResponse>;
+  getFixturesMetadataSubscriptions(
+    requestDto: FixturesMetadataSubscriptionsRequestDto,
+  ): Promise<FixturesMetadataSubscriptionsCollectionResponse>;
 }

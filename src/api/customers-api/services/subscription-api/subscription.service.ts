@@ -5,6 +5,7 @@ import { SubscriptionRoutesPrefixUrl } from '@customers-api/enums';
 import {
   ChangeManualSuspensionsRequestDto,
   CompetitionsSubscriptionRequestDto,
+  FixturesMetadataSubscriptionsRequestDto,
   FixturesSubscriptionRequestDto,
   GetFixtureScheduleRequestDto,
   GetSubscriptionsRequestDto,
@@ -13,6 +14,7 @@ import {
 import {
   ChangeManualSuspensionsRequest,
   CompetitionsSubscriptionRequest,
+  FixturesMetadataSubscriptionsRequest,
   GetFixtureScheduleRequest,
   GetSubscriptionsRequest,
   LeaguesSubscriptionRequest,
@@ -21,9 +23,10 @@ import {
   ChangeManualSuspensionsResponse,
   CompetitionsSubscriptionCollectionResponse,
   FixtureScheduleCollectionResponse,
+  FixturesMetadataSubscriptionsCollectionResponse,
   FixturesSubscriptionCollectionResponse,
   GetManualSuspensionsResponse,
-  GetSubscriptionsCollectionResponse,
+  SubscriptionsCollectionResponse,
   LeaguesSubscriptionCollectionResponse,
   PackageQuotaResponse,
 } from '@subscription-api/responses';
@@ -204,18 +207,17 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
    */
   public async getSubscriptions(
     requestDto: GetSubscriptionsRequestDto,
-  ): Promise<GetSubscriptionsCollectionResponse> {
+  ): Promise<SubscriptionsCollectionResponse> {
     const request = this.mapper.map<GetSubscriptionsRequestDto, GetSubscriptionsRequest>(
       requestDto,
       GetSubscriptionsRequest,
     );
 
-    const fixturesSubscriptionsCollection =
-      await this.postRequest<GetSubscriptionsCollectionResponse>(
-        SubscriptionRoutesPrefixUrl.GET_FIXTURES_SUBSCRIPTION_PREFIX_URL,
-        GetSubscriptionsCollectionResponse,
-        request,
-      );
+    const fixturesSubscriptionsCollection = await this.postRequest<SubscriptionsCollectionResponse>(
+      SubscriptionRoutesPrefixUrl.GET_FIXTURES_SUBSCRIPTION_PREFIX_URL,
+      SubscriptionsCollectionResponse,
+      request,
+    );
 
     return fixturesSubscriptionsCollection?.body || {};
   }
@@ -331,5 +333,30 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
       );
 
     return deactivateManualSuspensionsResponse?.body || {};
+  }
+
+  /**
+   * Sends a request to the subscription API to get fixtures metadata
+   * subscriptions.
+   * @returns A promise that resolves to a
+   * FixturesMetadataSubscriptionsCollectionResponse object containing
+   * the fixtures metadata subscriptions information.
+   */
+  public async getFixturesMetadataSubscriptions(
+    requestDto: FixturesMetadataSubscriptionsRequestDto,
+  ): Promise<FixturesMetadataSubscriptionsCollectionResponse> {
+    const request = this.mapper.map<
+      FixturesMetadataSubscriptionsRequestDto,
+      FixturesMetadataSubscriptionsRequest
+    >(requestDto, FixturesMetadataSubscriptionsRequest);
+
+    const fixturesMetadataSubscriptionsCollection =
+      await this.getRequest<FixturesMetadataSubscriptionsCollectionResponse>(
+        SubscriptionRoutesPrefixUrl.GET_FIXTURES_METADATA_SUBSCRIPTION_PREFIX_URL,
+        FixturesMetadataSubscriptionsCollectionResponse,
+        request,
+      );
+
+    return fixturesMetadataSubscriptionsCollection?.body || {};
   }
 }

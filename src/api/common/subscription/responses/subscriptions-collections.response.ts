@@ -10,7 +10,7 @@ import { BaseEntity } from '@entities';
  * from the get fixtures subscriptions endpoint.
  * It contains the fixtures.
  */
-export class GetSubscriptionsCollectionResponse implements BaseEntity {
+export class SubscriptionsCollectionResponse implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'Fixtures' })
