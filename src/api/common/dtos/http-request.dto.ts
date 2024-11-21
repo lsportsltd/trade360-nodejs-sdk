@@ -3,7 +3,8 @@ import { Expose } from 'class-transformer';
 import { BaseEntity } from '@entities';
 
 /**
- * HTTP request DTO.
+ * HTTP request DTO. basic structure for sending
+ * requests to the API.
  */
 export class HttpRequestDto implements BaseEntity {
   [key: string]: unknown;

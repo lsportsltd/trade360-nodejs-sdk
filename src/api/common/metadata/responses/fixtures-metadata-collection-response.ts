@@ -5,9 +5,11 @@ import { BaseEntity } from '@entities';
 import { SubscribedFixtureBodyStructure } from '@api/common/body-entities';
 
 /**
- * FixtureMetadataCollectionResponse class for receiving response to get fixture metadata
- * from the API. It contains the properties for the response to get fixture metadata
- * from the API.
+ * FixtureMetadataCollectionResponse class for
+ * receiving response to get fixture metadata
+ * from the API. It contains the properties for
+ * the response to get fixture metadata from
+ * the API.
  */
 export class FixturesMetadataCollectionResponse implements BaseEntity {
   [key: string]: unknown;

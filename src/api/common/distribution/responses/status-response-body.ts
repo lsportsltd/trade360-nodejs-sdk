@@ -2,6 +2,11 @@ import { Expose } from 'class-transformer';
 
 import { BaseEntity } from '@entities';
 
+/**
+ * StatusResponseBody class is responsible for
+ * deserializing the response from the distribution
+ * API to a status response body.
+ */
 export class StatusResponseBody implements BaseEntity {
   [key: string]: unknown;
 

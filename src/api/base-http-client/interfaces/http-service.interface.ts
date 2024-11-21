@@ -2,6 +2,10 @@ import { AxiosResponse } from 'axios';
 
 import { BaseEntity } from '@entities';
 
+/**
+ * Interface for HttpService
+ * @param TRequest Request body type
+ */
 export interface IHttpService<TRequest extends BaseEntity> {
   /**
    *  GET request

@@ -16,17 +16,21 @@ import { BaseEntity } from '@entities';
  * responsible for sending requests to the distribution API.
  * @extends BaseHttpClient class for sending requests to the
  * customers API.
- * @implements IPackageDistributionHttpClient interface for sending
+ * @implements IPackageDistributionHttpClient interface for
+ * sending requests to the distribution API.
+ * @see BaseHttpClient class for sending requests to the customers
+ * API.
+ * @see IPackageDistributionHttpClient interface for sending
  * requests to the distribution API.
- * @see BaseHttpClient class for sending requests to the customers API.
- * @see IPackageDistributionHttpClient interface for sending requests
- * to the distribution API.
- * @see IHttpServiceConfig interface for the configuration of the HTTP service.
+ * @see IHttpServiceConfig interface for the configuration of the
+ * HTTP service.
  * @see BaseEntity class for the base entity of the application.
- * @see DistributionRoutesPrefixUrl for the prefix URLs of the distribution API.
- * @see HttpResponsePayloadDto class for the response payload of the HTTP request.
- * @see IPackageDistributionHttpClient interface for sending requests to the
+ * @see DistributionRoutesPrefixUrl for the prefix URLs of the
  * distribution API.
+ * @see HttpResponsePayloadDto class for the response payload of
+ * the HTTP request.
+ * @see IPackageDistributionHttpClient interface for sending
+ * requests to the distribution API.
  */
 export class PackageDistributionHttpClient
   extends BaseHttpClient

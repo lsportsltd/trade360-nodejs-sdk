@@ -5,8 +5,9 @@ import { BaseEntity } from '@entities';
 import { SuspendedMarket } from './suspended-markets';
 
 /**
- * SuspensionsBodyStructure class is responsible for deserializing
- * the response from the subscription API to a suspension body structure.
+ * SuspensionsBodyStructure class is responsible for
+ * deserializing the response from the subscription API
+ * to a suspension body structure.
  */
 export class SuspensionsBodyStructure implements BaseEntity {
   [key: string]: unknown;

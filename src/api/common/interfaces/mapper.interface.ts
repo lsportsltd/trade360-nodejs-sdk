@@ -1,20 +1,4 @@
-// import { BaseEntity } from '@entities';
-
-// type BaseEntityClass = new (...args: never[]) => {
-//   [key: string]: never;
-// };
-
-/**
- * Base interface for all entities that can be mapped
- */
-interface BaseEntity {
-  [key: string]: unknown;
-}
-
-/**
- * Type for constructable classes that extend BaseEntity
- */
-type Constructor<T extends BaseEntity = BaseEntity> = new (...args: never[]) => T;
+import { BaseEntity, Constructor } from '@entities';
 
 /**
  * Interface for mapping between different types of objects

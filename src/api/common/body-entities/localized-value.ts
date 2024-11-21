@@ -1,8 +1,9 @@
 import { Expose } from 'class-transformer';
 
 /**
- * LocalizedValue class is responsible for deserializing the response
- * from the metadata API to a localized value.
+ * LocalizedValue class is responsible for
+ * deserializing the response from the metadata
+ * API to a localized value.
  */
 export class LocalizedValue {
   @Expose({ name: 'LanguageId' })

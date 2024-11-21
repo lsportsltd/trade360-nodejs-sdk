@@ -17,7 +17,7 @@ import { IHttpService } from './interfaces';
  * It contains the basic logic for sending requests.
  * @param customersApiBaseUrl The base URL of the customers API
  * @param packageCredentials The package credentials for the API
- * @param logger The logger instance
+ * @param logger The logger instance to be used for logging
  */
 export abstract class BaseHttpClient {
   protected readonly httpService: IHttpService<HttpRequestDto>;
@@ -118,9 +118,9 @@ export abstract class BaseHttpClient {
    * @param httpResponse The response received from the API call
    * @param responsePayloadDto The response payload DTO to be used
    * for transforming the response
-   * @returns The response payload DTO
+   * @returns The response payload DTO with the required properties
    * @throws HttpResponseError if the response does not contain the
-   *  required properties
+   * required properties
    */
   private async handleValidResponse<TResponse extends BaseEntity>(
     httpResponse: AxiosResponse<TResponse>,
@@ -140,7 +140,8 @@ export abstract class BaseHttpClient {
    * response payload. It checks if the response payload contains the
    * required properties.
    * @param responsePayload The response payload to be validated
-   * @returns void
+   * @returns void if the response payload contains the required
+   * properties
    * @throws HttpResponseError if the response payload does not contain
    * the required properties
    */
@@ -169,7 +170,7 @@ export abstract class BaseHttpClient {
    * @param errorResponse The error response received from the API call
    * @param responsePayloadDto The response payload DTO to be used for
    * transforming the error response
-   * @returns void
+   * @returns void if the error response is handled successfully
    * @throws HttpResponseError if the error response contains errors in
    * the response body, it throws an error with the error messages as
    * the context of the error response
@@ -233,7 +234,8 @@ export abstract class BaseHttpClient {
    * request parameters.
    * @param requestParams The request parameters to be used for building
    * the query string
-   * @returns The query
+   * @returns The query string built from the request parameters or an
+   *
    */
   private buildQueryString(requestParams?: HttpRequestDto): string {
     if (isNil(requestParams)) return '';

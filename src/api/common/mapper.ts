@@ -39,15 +39,23 @@ import { TransformerUtil } from '@utilities';
 import { IMapper } from './interfaces';
 
 /**
- * Mapper class for mapping between different types of objects in the
- * application using the mapping configurations provided in the application.
- * The Mapper class provides functionality similar to AutoMapper with
- * @param packageCredentials The package credentials for the API to use in the
- * mapping configurations for the application. The package credentials are
- * used to authenticate the API requests in the mapping configurations for the
+ * Mapper class for mapping between different types
+ * of objects in the application using the mapping
+ * configurations provided in the application.
+ * The Mapper class provides functionality similar
+ * to AutoMapper with the ability to map between
+ * different types of objects in the application
+ * using the mapping configurations provided in the
  * application.
- * @implements IMapper interface for mapping between different types of objects
- * in the application using the mapping configurations provided in the application.
+ * @param packageCredentials The package credentials
+ * for the API to use in the mapping configurations
+ * for the application. The package credentials are
+ * used to authenticate the API requests in the
+ * mapping configurations for the application.
+ * @implements IMapper interface for mapping between
+ * different types of objects in the application
+ * using the mapping configurations provided in the
+ * application.
  */
 export class Mapper implements IMapper {
   private mappingConfigs: Map<string, (source: BaseEntity) => BaseEntity> = new Map();
@@ -73,13 +81,18 @@ export class Mapper implements IMapper {
   }
 
   /**
-   * Initializes all mapping configurations for the application using the
-   * package credentials provided in the constructor of the mapping service
-   * @param packageCredentials The package credentials for the API to use
-   * in the mapping configurations for the application.
-   * @returns void to indicate that the mapping configurations have been
-   * initialized successfully in the application using the package
-   * credentials provided in the constructor of the mapping service.
+   * Initializes all mapping configurations for the
+   * application using the package credentials provided in
+   * the constructor of the mapping service to authenticate
+   * the API requests in the mapping configurations for the
+   * application.
+   * @param packageCredentials The package credentials for
+   * the API to use in the mapping configurations for the
+   * application.
+   * @returns void to indicate that the mapping
+   * configurations have been initialized successfully in
+   * the application using the package credentials provided
+   * in the constructor of the mapping service.
    */
   private initializeMappings(packageCredentials?: PackageCredentials): void {
     this.registerMapping<GetLeaguesRequestDto, GetLeaguesRequest>(
@@ -202,20 +215,23 @@ export class Mapper implements IMapper {
   }
 
   /**
-   * Registers a new mapping configuration between two types of objects
-   *  in the application using a mapping function to transform the
-   * source object to the destination object type specified in the mapping
+   * Registers a new mapping configuration between two types
+   * of objects in the application using a mapping function
+   * to transform the source object to the destination object
+   * type specified in the mapping configuration.
    * @param sourceType The constructor of the source type
-   * @param destinationType The constructor of the destination type to map
-   * to the source type using the mapping function provided in the
-   * configuration profile for the mapping between the two types of objects
-   * @param mappingFn The function that performs the mapping from source
-   * to destination type objects in the application using the mapping
-   * function provided in the configuration profile for the mapping between
-   * the two types of objects in the application using the mapping function
-   * provided in the configuration profile for the mapping.
-   * @returns void to indicate that the mapping configuration has been
-   *  registered successfully in the application.
+   * @param destinationType The constructor of the destination
+   *  type to map to the source type using the mapping function
+   *  provided in the configuration profile for the mapping
+   * between the two types of objects
+   * @param mappingFn The function that performs the mapping
+   * from source to destination type objects in the application
+   * using the mapping function provided in the configuration
+   * profile for the mapping between the two types of objects
+   * in the application using the mapping function provided in
+   * the configuration profile for the mapping.
+   * @returns void to indicate that the mapping configuration
+   * has been registered successfully in the application.
    */
   private registerMapping<S extends BaseEntity, D extends BaseEntity>(
     sourceType: Constructor<S>,

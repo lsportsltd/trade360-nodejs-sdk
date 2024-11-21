@@ -1,3 +1,6 @@
+/**
+ * Enum for metadata routes prefix url.
+ */
 export enum MetadataRoutesPrefixUrl {
   GET_LOCATIONS_PREFIX_URL = '/Locations/Get',
   GET_SPORTS_PREFIX_URL = '/Sports/Get',

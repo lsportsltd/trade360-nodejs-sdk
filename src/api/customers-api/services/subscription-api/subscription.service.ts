@@ -33,16 +33,18 @@ import {
 
 /**
  * SubscriptionHttpClient class is responsible for sending requests
- * to the subscription API. It is a HTTP client for the subscription API.
- * It contains the logic for sending requests to the subscription API.
+ * to the subscription API. It is a HTTP client for the subscription
+ * API. It contains the logic for sending requests to the subscription
+ * API.
  * @param customersApiBaseUrl The base URL of the customers API
  * @param packageCredentials The package credentials for the API
  * @param logger The logger instance
  * @param mapper The mapper instance
- * @returns A new instance of the SubscriptionHttpClient class with the
- * provided HTTP service configuration and mapper.
- * @implements ISubscriptionHttpClient interface for sending requests to
- * the subscription API and getting responses from the subscription API.
+ * @returns A new instance of the SubscriptionHttpClient class with
+ * the provided HTTP service configuration and mapper.
+ * @implements ISubscriptionHttpClient interface for sending requests
+ * to the subscription API and getting responses from the subscription
+ * API.
  * @see ISubscriptionHttpClient interface for sending requests to the
  * subscription API and getting responses from the subscription API.
  * @see BaseHttpClient class for sending requests to the customers API.
@@ -77,9 +79,8 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   /**
    * Sends a request to the subscription API to get the fixtures schedule.
    * @param requestDto The request DTO for getting the fixtures schedule.
-   * @returns A promise that resolves to a
-   * FixtureScheduleCollectionResponse object containing the fixture
-   * schedule information.
+   * @returns A promise that resolves to a FixtureScheduleCollectionResponse
+   *  object containing the fixture schedule information.
    */
   public async getFixturesSchedule(
     requestDto: GetFixtureScheduleRequestDto,
@@ -290,8 +291,8 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   /**
    * Sends a request to the subscription API to add manual suspensions.
    * @param requestDto The request DTO for adding manual suspensions.
-   * @returns A promise that resolves to a ChangeManualSuspensionsResponse object
-   * containing the manual suspensions information.
+   * @returns A promise that resolves to a ChangeManualSuspensionsResponse
+   * object containing the manual suspensions information.
    */
   public async addManualSuspensions(
     requestDto: ChangeManualSuspensionsRequestDto,
@@ -314,8 +315,8 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   /**
    * Sends a request to the subscription API to remove manual suspensions.
    * @param requestDto The request DTO for removing manual suspensions.
-   * @returns A promise that resolves to a ChangeManualSuspensionsResponse object
-   * containing the manual suspensions information.
+   * @returns A promise that resolves to a ChangeManualSuspensionsResponse
+   * object containing the manual suspensions information.
    */
   public async removeManualSuspensions(
     requestDto: ChangeManualSuspensionsRequestDto,

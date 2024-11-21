@@ -5,7 +5,8 @@ import { IMetadataHttpClient } from './metadata-http-client.interface';
 import { ISubscriptionHttpClient } from './subscription-http-client.interface';
 
 /**
- * Factory interface for creating package distribution HTTP client.
+ * Factory interface for creating package distribution
+ * HTTP client.
  */
 export interface ICustomersApiFactory {
   /**

@@ -30,13 +30,18 @@ export class CustomersApiFactory implements ICustomersApiFactory {
    * new instance of the MetadataHttpClient class with the provided
    * HTTP service configuration and mapper.
    * @param httpServiceConfig The HTTP service configuration for the
-   * metadata HTTP client to use in sending requests to the metadata API.
+   * metadata HTTP client to use in sending requests to the metadata
+   * API.
    * @returns A new instance of the MetadataHttpClient class with the
    * provided HTTP service configuration and mapper.
-   * @see MetadataHttpClient class for sending requests to the metadata API.
-   * @see IHttpServiceConfig interface for the configuration of the HTTP service.
-   * @see IMapper interface for mapping between different types of objects.
-   * @see Mapper class for mapping between different types of objects in the application.
+   * @see MetadataHttpClient class for sending requests to the
+   * metadata API.
+   * @see IHttpServiceConfig interface for the configuration of the
+   * HTTP service.
+   * @see IMapper interface for mapping between different types of
+   * objects.
+   * @see Mapper class for mapping between different types of objects
+   * in the application.
    */
   public createMetadataHttpClient(httpServiceConfig: IHttpServiceConfig): IMetadataHttpClient {
     const mapper = new Mapper(httpServiceConfig.packageCredentials);
@@ -49,13 +54,18 @@ export class CustomersApiFactory implements ICustomersApiFactory {
    * new instance of the SubscriptionHttpClient class with the provided
    * HTTP service configuration and mapper.
    * @param httpServiceConfig The HTTP service configuration for the
-   * subscription HTTP client to use in sending requests to the subscription API.
-   * @returns A new instance of the SubscriptionHttpClient class with the
-   * provided HTTP service configuration and mapper.
-   * @see SubscriptionHttpClient class for sending requests to the subscription API.
-   * @see IHttpServiceConfig interface for the configuration of the HTTP service.
-   * @see IMapper interface for mapping between different types of objects.
-   * @see Mapper class for mapping between different types of objects in the application.
+   * subscription HTTP client to use in sending requests to the
+   * subscription API.
+   * @returns A new instance of the SubscriptionHttpClient class with
+   * the provided HTTP service configuration and mapper.
+   * @see SubscriptionHttpClient class for sending requests to the
+   * subscription API.
+   * @see IHttpServiceConfig interface for the configuration of the
+   * HTTP service.
+   * @see IMapper interface for mapping between different types of
+   * objects.
+   * @see Mapper class for mapping between different types of objects
+   * in the application.
    */
   public createSubscriptionHttpClient(
     httpServiceConfig: IHttpServiceConfig,
