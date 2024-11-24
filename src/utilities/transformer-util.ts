@@ -23,9 +23,7 @@ export class TransformerUtil {
         exposeUnsetFields: false,
       });
     } catch (err) {
-      throw new ConversionError(
-        `failed converting object to ${targetClass.name} instance!, err: ${err}`,
-      );
+      throw new ConversionError(targetClass.name, err);
     }
   }
 

@@ -9,7 +9,6 @@ import {
   FixtureScheduleCollectionResponse,
   FixturesMetadataSubscriptionsCollectionResponse,
   FixturesMetadataSubscriptionsRequestDto,
-  FixturesMetadataValidationError,
   FixturesSubscriptionCollectionResponse,
   FixturesSubscriptionRequestDto,
   GetCompetitionsRequestDto,
@@ -174,8 +173,6 @@ const initApiSample = async () => {
       }
     } else if (err instanceof InvalidDateInRequestError) {
       logger.error(`API sample got err from InvalidDateInRequestError instance: ${err}`);
-    } else if (err instanceof FixturesMetadataValidationError) {
-      logger.error(`API sample got err from FixturesMetadataValidationError instance: ${err}`);
     } else {
       logger.error(`API sample got err: ${err}`);
     }

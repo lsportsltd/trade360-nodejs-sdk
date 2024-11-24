@@ -27,7 +27,7 @@ export class MqConnectionSettingsValidator {
     if (success) {
       return data;
     } else {
-      throw new ValidationError('Configuration settings validation failed', {
+      throw new ValidationError('Configuration settings', {
         context: JSON.parse(JSON.stringify(error.errors)),
       });
     }

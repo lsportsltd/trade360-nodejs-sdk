@@ -183,7 +183,7 @@ export abstract class BaseHttpClient {
     responsePayloadDto: Constructor<HttpResponsePayloadDto<TResponse>>,
   ): void {
     if (isNil(errorResponse)) {
-      throw new HttpResponseError('API call failed', { context: 'No response received' });
+      throw new HttpResponseError('', { context: 'No response received' });
     } else if (!(errorResponse instanceof AxiosError)) throw errorResponse;
 
     const { response, message, cause } = errorResponse;
@@ -191,7 +191,7 @@ export abstract class BaseHttpClient {
     const rawErrorResponse = errorResponse.toString();
 
     if (isNil(response)) {
-      throw new HttpResponseError(`API call failed with message: ${message}`, {
+      throw new HttpResponseError(`with message: ${message}`, {
         context: rawErrorResponse,
         cause,
       });
@@ -215,7 +215,7 @@ export abstract class BaseHttpClient {
     if (!isNil(errors)) {
       const errorsArray = map(errors, (error) => error.message);
 
-      throw new HttpResponseError('API call failed', {
+      throw new HttpResponseError('', {
         context: errorsArray,
         cause: errorResponse,
       });

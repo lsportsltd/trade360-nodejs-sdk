@@ -28,7 +28,7 @@ export class RequestSettingsValidator {
     } else {
       const errorsStringified = JSON.stringify(error.errors);
 
-      throw new ValidationError('Failed validate request settings', {
+      throw new ValidationError('Request Settings', {
         context: JSON.parse(errorsStringified),
       });
     }

@@ -27,7 +27,7 @@ function ConvertJsonToMessage(rawJson: string): WrappedMessage {
 
     return message;
   } catch (err) {
-    throw new ConversionError(`failed converting json to wrapped message instance!, err: ${err}`);
+    throw new ConversionError(WrappedMessage.name, err);
   }
 }
 

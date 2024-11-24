@@ -3,6 +3,17 @@ import { isNil } from 'lodash';
 import { BaseError } from './base.error';
 
 export class HttpResponseError extends BaseError {
+  constructor(extraMessage: string, args: Record<string, unknown> = {}) {
+    const message = `API call failed, ${extraMessage}`;
+    // "'Header' property is missing. Please ensure that you use the correct URL."
+    // "'Body' property is missing. Please ensure that you use the correct URL.",
+    // 'API call failed', { context: 'No response received' }
+    // `API call failed with message: ${message}`, {context: rawErrorResponse,cause}
+    // `${statusText}, ${message}`, { context: rawErrorResponse }
+
+    super(message, args);
+  }
+
   private static HttpErrorStatusMapping: Record<number, string> = {
     400: 'Bad Request',
     401: 'Unauthorized',

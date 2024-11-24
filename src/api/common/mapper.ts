@@ -252,9 +252,7 @@ export class Mapper implements IMapper {
    */
   private formatDate(fieldName: string, date?: Moment): string {
     if (isNil(date)) {
-      throw new InvalidDateInRequestError(
-        `Date ${fieldName} is required and was not provided for as fields of the request`,
-      );
+      throw new InvalidDateInRequestError(fieldName);
     }
 
     return date.format(this.desiredDateFormat);

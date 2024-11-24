@@ -51,7 +51,7 @@ export async function withRetry<T>(
         logger.warn(`Attempt ${attempts} failed: ${error}`);
 
         if (attempts >= maxAttempts) {
-          reject(new RetryError(`${operationName} failed after ${maxAttempts} attempts`, attempts));
+          reject(new RetryError(operationName, maxAttempts));
         } else {
           const nextDelay = delayMs * Math.pow(backoffFactor, attempts - 1);
           logger.debug(`Retrying in ${nextDelay}ms...`);
