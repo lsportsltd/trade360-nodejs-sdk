@@ -19,5 +19,5 @@ import { LeaguesSubscriptionRequestBodyStructure } from '@api/common/body-entiti
 export class LeaguesSubscriptionRequest extends HttpRequestDto {
   @Expose()
   @Type(() => LeaguesSubscriptionRequestBodyStructure)
-  subscriptions?: LeaguesSubscriptionRequestBodyStructure[];
+  subscriptions!: LeaguesSubscriptionRequestBodyStructure[];
 }

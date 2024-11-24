@@ -14,5 +14,5 @@ export class SubscriptionsCollectionResponse implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'Fixtures' })
-  fixtures?: number[];
+  fixtures: number[] = [];
 }

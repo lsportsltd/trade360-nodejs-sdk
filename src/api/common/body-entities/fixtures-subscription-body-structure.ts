@@ -12,10 +12,10 @@ export class FixturesSubscriptionBodyStructure implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'FixtureId' })
-  fixtureId?: number;
+  fixtureId!: number;
 
   @Expose({ name: 'Success' })
-  success?: boolean;
+  success!: boolean;
 
   @Expose({ name: 'ErrorMessage' })
   errorMessage?: string;

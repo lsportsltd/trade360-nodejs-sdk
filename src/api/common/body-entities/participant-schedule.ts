@@ -10,7 +10,7 @@ export class ParticipantSchedule {
   id!: number;
 
   @Expose({ name: 'Position' })
-  position?: number;
+  position!: number;
 
   @Expose({ name: 'Name' })
   name?: string;

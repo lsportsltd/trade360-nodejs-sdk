@@ -16,5 +16,5 @@ export class CompetitionsSubscriptionCollectionResponse implements BaseEntity {
 
   @Expose({ name: 'Subscription' })
   @Type(() => CompetitionsSubscriptionBodyStructure)
-  subscription?: CompetitionsSubscriptionBodyStructure[];
+  subscription: CompetitionsSubscriptionBodyStructure[] = [];
 }

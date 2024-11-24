@@ -13,7 +13,7 @@ export class SuspensionsBodyStructure implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'Succeeded' })
-  succeeded?: boolean;
+  succeeded!: boolean;
 
   @Expose({ name: 'Reason' })
   reason?: string;
@@ -28,12 +28,12 @@ export class SuspensionsBodyStructure implements BaseEntity {
   competitionId?: number;
 
   @Expose({ name: 'FixtureId' })
-  fixtureId?: number;
+  fixtureId!: number;
 
   @Expose({ name: 'CreationDate' })
-  creationDate?: Date;
+  creationDate!: Date;
 
   @Expose({ name: 'Markets' })
   @Type(() => SuspendedMarket)
-  markets?: SuspendedMarket[];
+  markets: SuspendedMarket[] = [];
 }

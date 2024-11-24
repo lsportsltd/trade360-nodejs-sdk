@@ -23,5 +23,5 @@ export class ChangeManualSuspensionsRequestDto implements BaseEntity {
 
   @Expose({ name: 'Suspensions' })
   @Type(() => ManualSuspensionsRequestBodyStructure)
-  suspensions?: ManualSuspensionsRequestBodyStructure[];
+  suspensions!: ManualSuspensionsRequestBodyStructure[];
 }

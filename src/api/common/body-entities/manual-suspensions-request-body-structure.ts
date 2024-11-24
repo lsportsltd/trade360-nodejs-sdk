@@ -21,9 +21,9 @@ export class ManualSuspensionsRequestBodyStructure {
   competitionId?: number;
 
   @Expose()
-  fixtureId?: number;
+  fixtureId!: number;
 
   @Expose()
   @Type(() => RequestSuspendedMarket)
-  markets?: RequestSuspendedMarket[];
+  markets: RequestSuspendedMarket[] = [];
 }

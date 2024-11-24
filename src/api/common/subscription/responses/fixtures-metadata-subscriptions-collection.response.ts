@@ -17,5 +17,5 @@ export class FixturesMetadataSubscriptionsCollectionResponse implements BaseEnti
 
   @Expose({ name: 'SubscribedFixtures' })
   @Type(() => FixturesMetadataSubscriptionsBodyStructure)
-  subscribedFixtures?: FixturesMetadataSubscriptionsBodyStructure[];
+  subscribedFixtures: FixturesMetadataSubscriptionsBodyStructure[] = [];
 }

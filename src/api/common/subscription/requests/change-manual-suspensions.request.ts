@@ -17,5 +17,5 @@ import { ManualSuspensionsRequestBodyStructure } from '@api/common/body-entities
 export class ChangeManualSuspensionsRequest extends HttpRequestDto {
   @Expose()
   @Type(() => ManualSuspensionsRequestBodyStructure)
-  suspensions?: ManualSuspensionsRequestBodyStructure[];
+  suspensions!: ManualSuspensionsRequestBodyStructure[];
 }

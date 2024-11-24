@@ -16,5 +16,5 @@ export class FixtureScheduleCollectionResponse implements BaseEntity {
 
   @Expose({ name: 'Fixtures' })
   @Type(() => FixturesScheduleBodyStructure)
-  fixtures?: FixturesScheduleBodyStructure[];
+  fixtures: FixturesScheduleBodyStructure[] = [];
 }

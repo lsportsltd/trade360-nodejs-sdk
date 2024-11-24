@@ -20,5 +20,5 @@ export class FixturesSubscriptionRequestDto implements BaseEntity {
   }
 
   @Expose({ name: 'Fixtures' })
-  fixtures?: number[];
+  fixtures!: number[];
 }

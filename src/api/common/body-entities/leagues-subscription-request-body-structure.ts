@@ -15,8 +15,8 @@ export class LeaguesSubscriptionRequestBodyStructure {
   sportId!: number;
 
   @Expose()
-  locationId!: number;
+  locationId?: number;
 
   @Expose()
-  leagueId!: number;
+  leagueId?: number;
 }

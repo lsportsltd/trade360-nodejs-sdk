@@ -16,26 +16,26 @@ export class FixturesScheduleBodyStructure {
 
   @Expose({ name: 'Sport' })
   @Type(() => SportsBodyStructure)
-  sport?: SportsBodyStructure;
+  sport!: SportsBodyStructure;
 
   @Expose({ name: 'Location' })
   @Type(() => LocationsBodyStructure)
-  location?: LocationsBodyStructure;
+  location!: LocationsBodyStructure;
 
   @Expose({ name: 'League' })
   @Type(() => LeaguesBodyStructure)
-  league?: LeaguesBodyStructure;
+  league!: LeaguesBodyStructure;
 
   @Expose({ name: 'StartDate' })
-  startDate?: Date;
+  startDate!: Date;
 
   @Expose({ name: 'LastUpdate' })
-  lastUpdate?: Date;
+  lastUpdate!: Date;
 
   @Expose({ name: 'Status' })
-  status?: number;
+  status!: number;
 
   @Expose({ name: 'Participants' })
   @Type(() => ParticipantSchedule)
-  participants?: ParticipantSchedule[];
+  participants: ParticipantSchedule[] = [];
 }

@@ -12,18 +12,27 @@ export class SuspensionsChangeBodyStructure implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'Succeeded' })
-  succeeded?: boolean;
+  succeeded!: boolean;
 
   @Expose({ name: 'Reason' })
   reason?: string;
 
   @Expose({ name: 'CreationDate' })
-  creationDate?: Date;
+  creationDate!: Date;
 
   @Expose({ name: 'FixtureId' })
   fixtureId?: number;
 
+  @Expose({ name: 'SportId' })
+  sportId?: number;
+
+  @Expose({ name: 'LocationId' })
+  locationId?: number;
+
+  @Expose({ name: 'CompetitionId' })
+  competitionId?: number;
+
   @Expose({ name: 'Markets' })
   @Type(() => SuspendedMarket)
-  markets?: SuspendedMarket[];
+  markets: SuspendedMarket[] = [];
 }

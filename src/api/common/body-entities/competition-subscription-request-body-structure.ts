@@ -12,7 +12,7 @@ export class CompetitionsSubscriptionRequestBodyStructure {
   }
 
   @Expose({ name: 'SportId' })
-  sportId?: number;
+  sportId!: number;
 
   @Expose({ name: 'LocationId' })
   locationId?: number;

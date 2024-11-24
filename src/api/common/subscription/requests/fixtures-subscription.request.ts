@@ -14,5 +14,5 @@ import { HttpRequestDto } from '@api/common/dtos';
  */
 export class FixturesSubscriptionRequest extends HttpRequestDto {
   @Expose()
-  fixtures?: number[];
+  fixtures!: number[];
 }

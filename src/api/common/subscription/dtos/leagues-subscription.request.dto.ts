@@ -20,5 +20,5 @@ export class LeaguesSubscriptionRequestDto implements BaseEntity {
 
   @Expose({ name: 'Subscriptions' })
   @Type(() => LeaguesSubscriptionRequestBodyStructure)
-  subscriptions?: LeaguesSubscriptionRequestBodyStructure[];
+  subscriptions!: LeaguesSubscriptionRequestBodyStructure[];
 }

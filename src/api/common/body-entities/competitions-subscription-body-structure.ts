@@ -10,6 +10,7 @@ import { BaseEntity } from '@entities';
 export class CompetitionsSubscriptionBodyStructure implements BaseEntity {
   [key: string]: unknown;
 
+  // TODO: maybe need to be leagueId
   @Expose({ name: 'CompetitionId' })
   competitionId?: number;
 
@@ -20,5 +21,8 @@ export class CompetitionsSubscriptionBodyStructure implements BaseEntity {
   locationId?: number;
 
   @Expose({ name: 'Success' })
-  success?: boolean;
+  success!: boolean;
+
+  @Expose({ name: 'Message' })
+  message?: string;
 }

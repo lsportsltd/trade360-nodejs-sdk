@@ -17,5 +17,5 @@ import { CompetitionsSubscriptionRequestBodyStructure } from '@api/common/body-e
 export class CompetitionsSubscriptionRequest extends HttpRequestDto {
   @Expose()
   @Type(() => CompetitionsSubscriptionRequestBodyStructure)
-  subscriptions?: CompetitionsSubscriptionRequestBodyStructure[];
+  subscriptions!: CompetitionsSubscriptionRequestBodyStructure[];
 }

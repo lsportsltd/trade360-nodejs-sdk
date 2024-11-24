@@ -13,29 +13,28 @@ export class FixturesMetadataSubscriptionsBodyStructure implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'FixtureId' })
-  fixtureId?: number;
+  fixtureId!: number;
 
   @Expose({ name: 'FixtureName' })
   fixtureName?: string;
 
   @Expose({ name: 'StartDate' })
-  startDate?: Date;
+  startDate!: Date;
 
   @Expose({ name: 'LastUpdate' })
-  lastUpdate?: Date;
+  lastUpdate!: Date;
 
   @Expose({ name: 'SportId' })
-  sportId?: number;
+  sportId!: number;
 
   @Expose({ name: 'LocationId' })
-  locationId?: number;
+  locationId!: number;
 
   @Expose({ name: 'LeagueId' })
-  leagueId?: number;
+  leagueId!: number;
 
-  // TODO: Check if this is the correct type or there is a enum for this
   @Expose({ name: 'FixtureStatus' })
-  fixtureStatus?: FixtureStatus;
+  fixtureStatus!: FixtureStatus;
 
   @Expose({ name: 'Participants' })
   @Type(() => Participant)

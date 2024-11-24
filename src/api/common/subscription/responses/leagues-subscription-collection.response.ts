@@ -16,5 +16,5 @@ export class LeaguesSubscriptionCollectionResponse implements BaseEntity {
 
   @Expose({ name: 'Subscription' })
   @Type(() => LeaguesSubscriptionBodyStructure)
-  subscription?: LeaguesSubscriptionBodyStructure[];
+  subscription: LeaguesSubscriptionBodyStructure[] = [];
 }

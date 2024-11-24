@@ -16,12 +16,12 @@ export class ChangeManualSuspensionsResponse implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'Succeeded' })
-  succeeded?: boolean;
+  succeeded!: boolean;
 
   @Expose({ name: 'Reason' })
   reason?: string;
 
   @Expose({ name: 'Suspensions' })
   @Type(() => SuspensionsChangeBodyStructure)
-  suspensions?: SuspensionsChangeBodyStructure[];
+  suspensions: SuspensionsChangeBodyStructure[] = [];
 }

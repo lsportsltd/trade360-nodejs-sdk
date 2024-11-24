@@ -23,5 +23,5 @@ export class CompetitionsSubscriptionRequestDto implements BaseEntity {
 
   @Expose({ name: 'Subscriptions' })
   @Type(() => CompetitionsSubscriptionRequestBodyStructure)
-  subscriptions?: CompetitionsSubscriptionRequestBodyStructure[];
+  subscriptions!: CompetitionsSubscriptionRequestBodyStructure[];
 }

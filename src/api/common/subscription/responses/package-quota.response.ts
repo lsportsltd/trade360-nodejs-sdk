@@ -15,17 +15,17 @@ export class PackageQuotaResponse implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'CreditRemaining' })
-  creditRemaining?: number;
+  creditRemaining!: number;
 
   @Expose({ name: 'CreditLimit' })
-  creditLimit?: number;
+  creditLimit!: number;
 
   @Expose({ name: 'UsedCredit' })
-  usedCredit?: number;
+  usedCredit!: number;
 
   @Expose({ name: 'CurrentPeriodStartDate' })
-  currentPeriodStartDate?: Date;
+  currentPeriodStartDate!: Date;
 
   @Expose({ name: 'CurrentPeriodEndDate' })
-  currentPeriodEndDate?: Date;
+  currentPeriodEndDate!: Date;
 }
