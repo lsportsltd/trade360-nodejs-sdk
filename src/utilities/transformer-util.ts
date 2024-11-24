@@ -4,11 +4,14 @@ import { BaseEntity, ConversionError } from '@entities';
 
 export class TransformerUtil {
   /**
-   * Deserialize a plain object to an instance of the specified class.
+   * Deserialize a plain object to an instance of the
+   * specified class.
    * @param plainObject The plain object to deserialize
-   * @param targetClass The class to instantiate
-   * @returns An instance of the specified class, TEntity, with the properties
-   *  set according to the plain object provided
+   * @param targetClass The class to instantiate with the
+   * properties set according to the plain object provided
+   * @returns An instance of the specified class, TEntity,
+   * with the properties set according to the plain object
+   * provided
    */
   public static transform<TEntity extends BaseEntity>(
     plainObject: BaseEntity,
@@ -27,11 +30,15 @@ export class TransformerUtil {
   }
 
   /**
-   * Deserialize an array of plain objects to an array of instances of the specified class.
-   * @param plainArray The array of plain objects to deserialize
-   * @param targetClass The class to instantiate
-   * @returns An array of instances of the specified class, TEntity, with the properties
-   * set according to the plain objects provided
+   * Deserialize an array of plain objects to an array of
+   * instances of the specified class.
+   * @param plainArray The array of plain objects to
+   * deserialize
+   * @param targetClass The class to instantiate with the
+   * properties set according to the plain objects provided
+   * @returns An array of instances of the specified class,
+   * TEntity, with the properties set according to the plain
+   * objects provided
    */
   public static transformArray<TEntity extends BaseEntity>(
     plainArray: Record<string, unknown>[],

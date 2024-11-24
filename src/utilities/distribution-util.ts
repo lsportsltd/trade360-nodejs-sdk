@@ -14,8 +14,10 @@ import { CustomersApiFactory, IPackageDistributionHttpClient } from '@api/custom
 import { TransformerUtil } from './transformer-util';
 
 /**
- * Utility class for distribution operations such as starting and stopping distribution
- * and checking the status of the distribution service through the API request object.
+ * Utility class for distribution operations such
+ * as starting and stopping distribution
+ * and checking the status of the distribution
+ * service through the API request object.
  */
 export class DistributionUtil {
   private static packageDistributionApi?: IPackageDistributionHttpClient;
@@ -36,7 +38,8 @@ export class DistributionUtil {
   }
 
   /**
-   * Check the status of the distribution service through the API request object.
+   * Check the status of the distribution service
+   * through the API request object.
    * @returns the status of the distribution service
    */
   static async checkStatus(): Promise<
@@ -65,8 +68,12 @@ export class DistributionUtil {
   }
 
   /**
-   * Start the distribution service through the API request object. This method will wait for a delay before resolving.
-   * @returns a promise that resolves when the distribution service is started after the delay has passed successfully
+   * Start the distribution service through the API
+   * request object. This method will wait for a delay
+   * before resolving.
+   * @returns a promise that resolves when the
+   * distribution service is started after the delay
+   * has passed successfully
    */
   static async start(): Promise<void> {
     if (isNil(DistributionUtil.packageDistributionApi))
@@ -88,8 +95,12 @@ export class DistributionUtil {
   }
 
   /**
-   * Stop the distribution service through the API request object. This method will wait for a delay before resolving.
-   * @returns a promise that resolves when the distribution service is stopped after the delay has passed successfully
+   * Stop the distribution service through the API
+   * request object. This method will wait for a
+   * delay before resolving.
+   * @returns a promise that resolves when the
+   * distribution service is stopped after the
+   * delay has passed successfully
    */
   static async stop(): Promise<void> {
     if (isNil(DistributionUtil.packageDistributionApi))

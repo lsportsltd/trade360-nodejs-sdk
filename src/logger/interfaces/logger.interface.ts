@@ -1,7 +1,8 @@
 import { LogLevel } from '../enums';
 
 /**
- * Define the Logger interface to log messages with different levels.
+ * Define the Logger interface to log messages
+ * with different levels.
  */
 export interface ILogger {
   log(level: LogLevel, message: string, ...meta: unknown[]): void;

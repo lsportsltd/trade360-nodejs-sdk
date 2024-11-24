@@ -8,7 +8,34 @@ import { ILogger } from '@logger';
 import { IBodyHandler, IMessageStructure } from '../interfaces';
 
 /**
- * Class that represent the body handler of an entity message structure
+ * Class that represent the body handler of an
+ * entity message structure to process the body
+ * property of an entity and handle the entity
+ * type with the entityHandler call-back function
+ * for the entityConstructor class type entity type
+ * and process them with the entityHandler call-back
+ * function for the entityConstructor class type
+ * entity type and check message consumption latency
+ * and log warning if it exceeds the threshold value
+ * in seconds or log info if it's within the threshold
+ * value in  seconds
+ * @implements IBodyHandler interface that represent
+ * the body handler of an entity message structure to
+ * process the body property of an entity
+ * @param TEntity entity type for the entityConstructor
+ * class type entity type to be used in the body handler
+ * class
+ * @param entityHandler entity handler to be used in the
+ * body handler class to handle the entity type with the
+ * entityHandler call-back function for the entityConstructor
+ * class type entity type
+ * @param entityConstructor entity constructor class type
+ * to be used in the body handler class to handle the entity
+ * type with the entityHandler call-back function for the
+ * entityConstructor class type entity type
+ * @param logger logger instance to be used in the body
+ * handler class to log the warning and info messages
+ * for the message consumption latency
  */
 export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
   constructor(
@@ -18,9 +45,15 @@ export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
   ) {}
 
   /**
-   * process the inner procedure for the body property of an entity
-   * @param messageStructure object that contains the message structure
-   * with header and body
+   * process the inner procedure for the body property of an
+   * entity message structure to handle the entity type with
+   * the entityHandler call-back function for the entityConstructor
+   * class type entity type and process them with the entityHandler
+   * call-back function for the entityConstructor class type entity
+   * type
+   * @param messageStructure object that contains the message
+   * structure with header and body to be processed by the body
+   * handler class to handle
    */
   async processAsync({ header, body }: IMessageStructure<BaseEntity>): Promise<void> {
     try {

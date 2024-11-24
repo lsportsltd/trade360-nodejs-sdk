@@ -40,8 +40,9 @@ export class Feed implements IFeed {
   }
 
   /**
-   *  Pre connection initialization for the feed service to check the distribution status
-   *  and start the distribution flow if it is off.
+   * Pre connection initialization for the feed service
+   * to check the distribution status and start the
+   * distribution flow if it is off.
    * @returns void
    */
   private async preConnectionInitialization(): Promise<void> {
