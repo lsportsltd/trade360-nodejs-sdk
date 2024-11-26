@@ -4,14 +4,12 @@ import { Moment } from 'moment';
 import { BaseEntity, Constructor, InvalidDateInRequestError, PackageCredentials } from '@entities';
 import {
   GetCompetitionsRequestDto,
-  GetFixturesMetadataRequestDto,
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
 } from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
-  GetFixturesMetadataRequest,
   GetLeaguesRequest,
   GetMarketsRequest,
   GetTranslationsRequest,
@@ -121,24 +119,6 @@ export class Mapper implements IMapper {
       GetCompetitionsRequest,
       (source) =>
         TransformerUtil.transform({ ...packageCredentials, ...source }, GetCompetitionsRequest),
-    );
-
-    this.registerMapping<GetFixturesMetadataRequestDto, GetFixturesMetadataRequest>(
-      GetFixturesMetadataRequestDto,
-      GetFixturesMetadataRequest,
-      (source: Partial<GetFixturesMetadataRequestDto>) => {
-        let destination = {
-          fromDate: this.formatDate('fromDate', source.fromDate),
-          toDate: this.formatDate('toDate', source.toDate),
-        };
-
-        destination = TransformerUtil.transform(
-          { ...packageCredentials, ...destination },
-          GetFixturesMetadataRequest,
-        );
-
-        return destination;
-      },
     );
 
     this.registerMapping<GetFixtureScheduleRequestDto, GetFixtureScheduleRequest>(

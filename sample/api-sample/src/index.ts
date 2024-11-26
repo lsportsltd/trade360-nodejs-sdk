@@ -13,7 +13,6 @@ import {
   FixturesSubscriptionRequestDto,
   GetCompetitionsRequestDto,
   GetFixtureScheduleRequestDto,
-  GetFixturesMetadataRequestDto,
   GetLeaguesRequestDto,
   GetManualSuspensionsResponse,
   GetMarketsRequestDto,
@@ -99,8 +98,6 @@ const initApiSample = async () => {
     // await getTranslations(metadataHttpClient);
 
     // await getCompetitions(metadataHttpClient);
-
-    // await getFixturesMetadata(metadataHttpClient);
 
     // const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
     //   packageCredentials: config.trade360.inPlayMQSettings,
@@ -268,17 +265,6 @@ const getCompetitions = async (metadataHttpClient: IMetadataHttpClient): Promise
   const response = await metadataHttpClient.getCompetitions(request);
 
   logger.log(`${response?.competitions?.length} Competitions retrieved.`);
-};
-
-const getFixturesMetadata = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
-  const request = new GetFixturesMetadataRequestDto({
-    fromDate: moment(),
-    toDate: moment().add(10, 'days'),
-  });
-
-  const response = await metadataHttpClient.getFixturesMetadata(request);
-
-  logger.log(`${response?.subscribedFixtures?.length} Fixture metadata retrieved.`);
 };
 
 const getPackageQuota = async (subscriptionHttpClient: ISubscriptionHttpClient): Promise<void> => {

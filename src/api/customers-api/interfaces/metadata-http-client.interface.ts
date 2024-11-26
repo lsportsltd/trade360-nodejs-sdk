@@ -1,8 +1,6 @@
 import {
   CompetitionCollectionResponse,
-  FixturesMetadataCollectionResponse,
   GetCompetitionsRequestDto,
-  GetFixturesMetadataRequestDto,
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
@@ -29,7 +27,4 @@ export interface IMetadataHttpClient {
   getCompetitions(
     requestDto: GetCompetitionsRequestDto,
   ): Promise<CompetitionCollectionResponse | undefined>;
-  getFixturesMetadata(
-    requestDto: GetFixturesMetadataRequestDto,
-  ): Promise<FixturesMetadataCollectionResponse | undefined>;
 }

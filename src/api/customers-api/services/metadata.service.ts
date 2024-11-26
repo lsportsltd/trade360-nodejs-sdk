@@ -1,31 +1,28 @@
 import { IHttpServiceConfig, IMapper } from '@api/common';
-import { MetadataRoutesPrefixUrl } from '@customers-api/enums';
-import { IMetadataHttpClient } from '@customers-api/interfaces';
-import { GetTranslationsRequestValidator } from '@customers-api/validators';
-import { BaseHttpClient } from '@httpClient';
 import {
   LeaguesBodyStructure,
   LocationsBodyStructure,
   MarketBodyStructure,
   SportsBodyStructure,
 } from '@api/common/body-entities/responses';
+import { MetadataRoutesPrefixUrl } from '@customers-api/enums';
+import { IMetadataHttpClient } from '@customers-api/interfaces';
+import { GetTranslationsRequestValidator } from '@customers-api/validators';
+import { BaseHttpClient } from '@httpClient';
 import {
   GetCompetitionsRequestDto,
-  GetFixturesMetadataRequestDto,
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
 } from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
-  GetFixturesMetadataRequest,
   GetLeaguesRequest,
   GetMarketsRequest,
   GetTranslationsRequest,
 } from '@metadata-api/requests';
 import {
   CompetitionCollectionResponse,
-  FixturesMetadataCollectionResponse,
   LeaguesCollectionResponse,
   LocationsCollectionResponse,
   MarketsCollectionResponse,
@@ -40,7 +37,6 @@ const {
   GET_MARKETS_PREFIX_URL,
   GET_SPORTS_PREFIX_URL,
   GET_TRANSLATION_PREFIX_URL,
-  GET_SUBSCRIBED_FIXTURES_METADATA_PREFIX_URL,
 } = MetadataRoutesPrefixUrl;
 
 /**
@@ -248,33 +244,5 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     );
 
     return competitionsCollection;
-  }
-
-  /**
-   * getFixturesMetadata method is responsible for sending a request
-   * to the metadata API to get the fixtures metadata. It sends a
-   * GET request to the metadata API with the
-   * GET_SUBSCRIBED_FIXTURES_METADATA_PREFIX_URL and
-   * FixturesMetadataCollectionResponse as the response type. The
-   * request contains the properties for the request to get fixture
-   * metadata from the API. The response will automatically trim and
-   * provide data only for the upcoming week if the date range is
-   * more than 7 days.
-   */
-  public async getFixturesMetadata(
-    requestDto: GetFixturesMetadataRequestDto,
-  ): Promise<FixturesMetadataCollectionResponse | undefined> {
-    const request = this.mapper.map<GetFixturesMetadataRequestDto, GetFixturesMetadataRequest>(
-      requestDto,
-      GetFixturesMetadataRequest,
-    );
-
-    const fixturesMetadataCollection = await this.getRequest<FixturesMetadataCollectionResponse>(
-      GET_SUBSCRIBED_FIXTURES_METADATA_PREFIX_URL,
-      FixturesMetadataCollectionResponse,
-      request,
-    );
-
-    return fixturesMetadataCollection;
   }
 }

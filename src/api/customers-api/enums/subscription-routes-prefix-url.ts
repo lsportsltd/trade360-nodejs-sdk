@@ -14,5 +14,5 @@ export enum SubscriptionRoutesPrefixUrl {
   GET_ALL_MANUAL_SUSPENSIONS_PREFIX_URL = '/Markets/ManualSuspension/GetAll',
   ADD_MANUAL_SUSPENSIONS_PREFIX_URL = '/Markets/ManualSuspension/Activate',
   REMOVE_MANUAL_SUSPENSIONS_PREFIX_URL = '/Markets/ManualSuspension/Deactivate',
-  GET_FIXTURES_METADATA_SUBSCRIPTION_PREFIX_URL = '/Fixtures/GetSubscribedMetadata',
+  GET_FIXTURES_METADATA_SUBSCRIPTIONS_PREFIX_URL = '/Fixtures/GetSubscribedMetadata',
 }

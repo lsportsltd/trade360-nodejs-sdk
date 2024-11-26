@@ -44,7 +44,7 @@ const {
   GET_ALL_MANUAL_SUSPENSIONS_PREFIX_URL,
   ADD_MANUAL_SUSPENSIONS_PREFIX_URL,
   REMOVE_MANUAL_SUSPENSIONS_PREFIX_URL,
-  GET_FIXTURES_METADATA_SUBSCRIPTION_PREFIX_URL,
+  GET_FIXTURES_METADATA_SUBSCRIPTIONS_PREFIX_URL,
 } = SubscriptionRoutesPrefixUrl;
 
 /**
@@ -354,7 +354,13 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
 
   /**
    * Sends a request to the subscription API to get fixtures metadata
-   * subscriptions.
+   * subscriptions. It sends a
+   * GET request to API and FixturesMetadataCollectionResponse as the
+   * response type. The request contains the properties for the
+   * request to get fixture metadata from the API. The response will
+   * automatically trim and provide data only for the configured
+   * upcoming duration if the date range is more than configured max
+   * duration.
    * @returns A promise that resolves to a
    * FixturesMetadataSubscriptionsCollectionResponse object containing
    * the fixtures metadata subscriptions information.
@@ -369,7 +375,7 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
 
     const fixturesMetadataSubscriptionsCollection =
       await this.getRequest<FixturesMetadataSubscriptionsCollectionResponse>(
-        GET_FIXTURES_METADATA_SUBSCRIPTION_PREFIX_URL,
+        GET_FIXTURES_METADATA_SUBSCRIPTIONS_PREFIX_URL,
         FixturesMetadataSubscriptionsCollectionResponse,
         request,
       );
