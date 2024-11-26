@@ -84,10 +84,10 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
    * object containing the package quota information.
    */
   public async getPackageQuota(): Promise<PackageQuotaResponse | undefined> {
-    const packageQuota = await this.postRequest<PackageQuotaResponse>(
-      GET_PACKAGE_QUOTA_PREFIX_URL,
-      PackageQuotaResponse,
-    );
+    const packageQuota = await this.postRequest<PackageQuotaResponse>({
+      route: GET_PACKAGE_QUOTA_PREFIX_URL,
+      responseBodyType: PackageQuotaResponse,
+    });
 
     return packageQuota;
   }
@@ -106,11 +106,11 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
       GetFixtureScheduleRequest,
     );
 
-    const fixturesScheduleCollection = await this.postRequest<FixtureScheduleCollectionResponse>(
-      GET_FIXTURES_SCHEDULE_PREFIX_URL,
-      FixtureScheduleCollectionResponse,
-      request,
-    );
+    const fixturesScheduleCollection = await this.postRequest<FixtureScheduleCollectionResponse>({
+      route: GET_FIXTURES_SCHEDULE_PREFIX_URL,
+      responseBodyType: FixtureScheduleCollectionResponse,
+      requestBody: request,
+    });
 
     return fixturesScheduleCollection;
   }
@@ -131,11 +131,11 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     );
 
     const fixturesSubscriptionResponse =
-      await this.postRequest<FixturesSubscriptionCollectionResponse>(
-        SUBSCRIBE_BY_FIXTURES_PREFIX_URL,
-        FixturesSubscriptionCollectionResponse,
-        request,
-      );
+      await this.postRequest<FixturesSubscriptionCollectionResponse>({
+        route: SUBSCRIBE_BY_FIXTURES_PREFIX_URL,
+        responseBodyType: FixturesSubscriptionCollectionResponse,
+        requestBody: request,
+      });
 
     return fixturesSubscriptionResponse;
   }
@@ -156,11 +156,11 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     );
 
     const fixturesUnSubscriptionsResponse =
-      await this.postRequest<FixturesSubscriptionCollectionResponse>(
-        UNSUBSCRIBE_BY_FIXTURE_PREFIX_URL,
-        FixturesSubscriptionCollectionResponse,
-        request,
-      );
+      await this.postRequest<FixturesSubscriptionCollectionResponse>({
+        route: UNSUBSCRIBE_BY_FIXTURE_PREFIX_URL,
+        responseBodyType: FixturesSubscriptionCollectionResponse,
+        requestBody: request,
+      });
 
     return fixturesUnSubscriptionsResponse;
   }
@@ -181,11 +181,11 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     );
 
     const leaguesSubscriptionResponse =
-      await this.postRequest<LeaguesSubscriptionCollectionResponse>(
-        SUBSCRIBE_BY_LEAGUES_PREFIX_URL,
-        LeaguesSubscriptionCollectionResponse,
-        request,
-      );
+      await this.postRequest<LeaguesSubscriptionCollectionResponse>({
+        route: SUBSCRIBE_BY_LEAGUES_PREFIX_URL,
+        responseBodyType: LeaguesSubscriptionCollectionResponse,
+        requestBody: request,
+      });
 
     return leaguesSubscriptionResponse;
   }
@@ -206,11 +206,11 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     );
 
     const leaguesUnSubscriptionResponse =
-      await this.postRequest<LeaguesSubscriptionCollectionResponse>(
-        UNSUBSCRIBE_BY_LEAGUES_PREFIX_URL,
-        LeaguesSubscriptionCollectionResponse,
-        request,
-      );
+      await this.postRequest<LeaguesSubscriptionCollectionResponse>({
+        route: UNSUBSCRIBE_BY_LEAGUES_PREFIX_URL,
+        responseBodyType: LeaguesSubscriptionCollectionResponse,
+        requestBody: request,
+      });
 
     return leaguesUnSubscriptionResponse;
   }
@@ -231,9 +231,11 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     );
 
     const fixturesSubscriptionsCollection = await this.postRequest<SubscriptionsCollectionResponse>(
-      GET_FIXTURES_SUBSCRIPTION_PREFIX_URL,
-      SubscriptionsCollectionResponse,
-      request,
+      {
+        route: GET_FIXTURES_SUBSCRIPTION_PREFIX_URL,
+        responseBodyType: SubscriptionsCollectionResponse,
+        requestBody: request,
+      },
     );
 
     return fixturesSubscriptionsCollection;
@@ -255,11 +257,11 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     >(requestDto, CompetitionsSubscriptionRequest);
 
     const competitionsSubscriptionResponse =
-      await this.postRequest<CompetitionsSubscriptionCollectionResponse>(
-        SUBSCRIBE_BY_COMPETITIONS_PREFIX_URL,
-        CompetitionsSubscriptionCollectionResponse,
-        request,
-      );
+      await this.postRequest<CompetitionsSubscriptionCollectionResponse>({
+        route: SUBSCRIBE_BY_COMPETITIONS_PREFIX_URL,
+        responseBodyType: CompetitionsSubscriptionCollectionResponse,
+        requestBody: request,
+      });
 
     return competitionsSubscriptionResponse;
   }
@@ -281,11 +283,11 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     >(requestDto, CompetitionsSubscriptionRequest);
 
     const competitionsUnSubscriptionResponse =
-      await this.postRequest<CompetitionsSubscriptionCollectionResponse>(
-        UNSUBSCRIBE_BY_COMPETITIONS_PREFIX_URL,
-        CompetitionsSubscriptionCollectionResponse,
-        request,
-      );
+      await this.postRequest<CompetitionsSubscriptionCollectionResponse>({
+        route: UNSUBSCRIBE_BY_COMPETITIONS_PREFIX_URL,
+        responseBodyType: CompetitionsSubscriptionCollectionResponse,
+        requestBody: request,
+      });
 
     return competitionsUnSubscriptionResponse;
   }
@@ -296,10 +298,10 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
    * containing the manual suspensions information.
    */
   public async getAllManualSuspensions(): Promise<GetManualSuspensionsResponse | undefined> {
-    const allManualSuspensionsCollection = await this.postRequest<GetManualSuspensionsResponse>(
-      GET_ALL_MANUAL_SUSPENSIONS_PREFIX_URL,
-      GetManualSuspensionsResponse,
-    );
+    const allManualSuspensionsCollection = await this.postRequest<GetManualSuspensionsResponse>({
+      route: GET_ALL_MANUAL_SUSPENSIONS_PREFIX_URL,
+      responseBodyType: GetManualSuspensionsResponse,
+    });
 
     return allManualSuspensionsCollection;
   }
@@ -319,11 +321,11 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     >(requestDto, ChangeManualSuspensionsRequest);
 
     const activatedManualSuspensionsResponse =
-      await this.postRequest<ChangeManualSuspensionsResponse>(
-        ADD_MANUAL_SUSPENSIONS_PREFIX_URL,
-        ChangeManualSuspensionsResponse,
-        request,
-      );
+      await this.postRequest<ChangeManualSuspensionsResponse>({
+        route: ADD_MANUAL_SUSPENSIONS_PREFIX_URL,
+        responseBodyType: ChangeManualSuspensionsResponse,
+        requestBody: request,
+      });
 
     return activatedManualSuspensionsResponse;
   }
@@ -343,11 +345,11 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     >(requestDto, ChangeManualSuspensionsRequest);
 
     const deactivateManualSuspensionsResponse =
-      await this.postRequest<ChangeManualSuspensionsResponse>(
-        REMOVE_MANUAL_SUSPENSIONS_PREFIX_URL,
-        ChangeManualSuspensionsResponse,
-        request,
-      );
+      await this.postRequest<ChangeManualSuspensionsResponse>({
+        route: REMOVE_MANUAL_SUSPENSIONS_PREFIX_URL,
+        responseBodyType: ChangeManualSuspensionsResponse,
+        requestBody: request,
+      });
 
     return deactivateManualSuspensionsResponse;
   }
@@ -374,11 +376,11 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
     >(requestDto, FixturesMetadataSubscriptionsRequest);
 
     const fixturesMetadataSubscriptionsCollection =
-      await this.getRequest<FixturesMetadataSubscriptionsCollectionResponse>(
-        GET_FIXTURES_METADATA_SUBSCRIPTIONS_PREFIX_URL,
-        FixturesMetadataSubscriptionsCollectionResponse,
-        request,
-      );
+      await this.getRequest<FixturesMetadataSubscriptionsCollectionResponse>({
+        route: GET_FIXTURES_METADATA_SUBSCRIPTIONS_PREFIX_URL,
+        responseBodyType: FixturesMetadataSubscriptionsCollectionResponse,
+        requestBody: request,
+      });
 
     return fixturesMetadataSubscriptionsCollection;
   }

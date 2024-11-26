@@ -9,7 +9,7 @@ import { RequestSettingsValidator } from '@httpClient/validators';
 import { ConsoleAdapter, ILogger } from '@logger';
 import { TransformerUtil } from '@utilities';
 
-import { IHttpService } from './interfaces';
+import { IHttpService, IRequestArgs } from './interfaces';
 
 /**
  * BaseHttpClient class is responsible for sending requests
@@ -56,11 +56,11 @@ export abstract class BaseHttpClient {
    * @returns  promise with the TResponse type response type of
    * the API.
    */
-  protected async postRequest<TResponse extends BaseEntity>(
-    route: string,
-    responseBodyType: Constructor<TResponse>,
-    requestBody?: HttpRequestDto,
-  ): Promise<TResponse | undefined> {
+  protected async postRequest<TResponse extends BaseEntity>({
+    route,
+    responseBodyType,
+    requestBody,
+  }: IRequestArgs<TResponse>): Promise<TResponse | undefined> {
     this.requestSettings = !isNil(requestBody)
       ? requestBody
       : TransformerUtil.transform(this.requestSettings, HttpRequestDto);
@@ -89,11 +89,11 @@ export abstract class BaseHttpClient {
    * @returns promise with the TResponse type response type of the
    * API.
    */
-  protected async getRequest<TResponse extends BaseEntity>(
-    route: string,
-    responseBodyType: Constructor<TResponse>,
-    params?: HttpRequestDto,
-  ): Promise<TResponse | undefined> {
+  protected async getRequest<TResponse extends BaseEntity>({
+    route,
+    responseBodyType,
+    requestBody: params,
+  }: IRequestArgs<TResponse>): Promise<TResponse | undefined> {
     this.requestSettings = !isNil(params)
       ? params
       : TransformerUtil.transform(this.requestSettings, HttpRequestDto);

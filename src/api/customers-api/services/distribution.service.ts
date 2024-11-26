@@ -47,7 +47,10 @@ export class PackageDistributionHttpClient
   ): Promise<TResponse | undefined> {
     this.logger.debug('run  status request...');
 
-    return this.postRequest<TResponse>(STATUS_PREFIX_URL, responseBodyType);
+    return this.postRequest<TResponse>({
+      route: STATUS_PREFIX_URL,
+      responseBodyType: responseBodyType,
+    });
   }
 
   public async startDistribution<TResponse extends BaseEntity>(
@@ -55,7 +58,10 @@ export class PackageDistributionHttpClient
   ): Promise<TResponse | undefined> {
     this.logger.debug('run start request...');
 
-    return this.postRequest<TResponse>(START_PREFIX_URL, responseBodyType);
+    return this.postRequest<TResponse>({
+      route: START_PREFIX_URL,
+      responseBodyType: responseBodyType,
+    });
   }
 
   public async stopDistribution<TResponse extends BaseEntity>(
@@ -63,6 +69,9 @@ export class PackageDistributionHttpClient
   ): Promise<TResponse | undefined> {
     this.logger.debug('run stop request...');
 
-    return this.postRequest<TResponse>(STOP_PREFIX_URL, stopResponsePayloadDto);
+    return this.postRequest<TResponse>({
+      route: STOP_PREFIX_URL,
+      responseBodyType: stopResponsePayloadDto,
+    });
   }
 }

@@ -89,10 +89,10 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * request is invalid or incorrect.
    */
   public async getLocations(): Promise<LocationsBodyStructure[] | undefined> {
-    const locationsCollection = await this.postRequest<LocationsCollectionResponse>(
-      GET_LOCATIONS_PREFIX_URL,
-      LocationsCollectionResponse,
-    );
+    const locationsCollection = await this.postRequest<LocationsCollectionResponse>({
+      route: GET_LOCATIONS_PREFIX_URL,
+      responseBodyType: LocationsCollectionResponse,
+    });
 
     return locationsCollection?.locations;
   }
@@ -115,10 +115,10 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * if the request is invalid or incorrect.
    */
   public async getSports(): Promise<SportsBodyStructure[] | undefined> {
-    const sportsCollection = await this.postRequest<SportsCollectionResponse>(
-      GET_SPORTS_PREFIX_URL,
-      SportsCollectionResponse,
-    );
+    const sportsCollection = await this.postRequest<SportsCollectionResponse>({
+      route: GET_SPORTS_PREFIX_URL,
+      responseBodyType: SportsCollectionResponse,
+    });
     return sportsCollection?.sports;
   }
 
@@ -149,11 +149,11 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
       GetLeaguesRequest,
     );
 
-    const leaguesCollection = await this.postRequest<LeaguesCollectionResponse>(
-      GET_LEAGUES_PREFIX_URL,
-      LeaguesCollectionResponse,
-      request,
-    );
+    const leaguesCollection = await this.postRequest<LeaguesCollectionResponse>({
+      route: GET_LEAGUES_PREFIX_URL,
+      responseBodyType: LeaguesCollectionResponse,
+      requestBody: request,
+    });
 
     return leaguesCollection?.leagues;
   }
@@ -185,11 +185,11 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
       GetMarketsRequest,
     );
 
-    const marketsCollection = await this.postRequest<MarketsCollectionResponse>(
-      GET_MARKETS_PREFIX_URL,
-      MarketsCollectionResponse,
-      request,
-    );
+    const marketsCollection = await this.postRequest<MarketsCollectionResponse>({
+      route: GET_MARKETS_PREFIX_URL,
+      responseBodyType: MarketsCollectionResponse,
+      requestBody: request,
+    });
 
     return marketsCollection?.markets;
   }
@@ -214,11 +214,11 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
 
     await GetTranslationsRequestValidator.validate(request);
 
-    const translationsCollection = await this.postRequest<TranslationsCollectionResponse>(
-      GET_TRANSLATION_PREFIX_URL,
-      TranslationsCollectionResponse,
-      request,
-    );
+    const translationsCollection = await this.postRequest<TranslationsCollectionResponse>({
+      route: GET_TRANSLATION_PREFIX_URL,
+      responseBodyType: TranslationsCollectionResponse,
+      requestBody: request,
+    });
 
     return translationsCollection;
   }
@@ -237,11 +237,11 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
       GetCompetitionsRequest,
     );
 
-    const competitionsCollection = await this.postRequest<CompetitionCollectionResponse>(
-      GET_COMPETITIONS_PREFIX_URL,
-      CompetitionCollectionResponse,
-      request,
-    );
+    const competitionsCollection = await this.postRequest<CompetitionCollectionResponse>({
+      route: GET_COMPETITIONS_PREFIX_URL,
+      responseBodyType: CompetitionCollectionResponse,
+      requestBody: request,
+    });
 
     return competitionsCollection;
   }
