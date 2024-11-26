@@ -4,7 +4,6 @@ import { MQSettingsOptions } from '@feed';
 import { ILogger } from '@logger';
 import {
   HttpRequestDto,
-  HttpResponsePayloadDto,
   StartResponseBody,
   StatusResponseBody,
   StopResponseBody,
@@ -42,29 +41,16 @@ export class DistributionUtil {
    * through the API request object.
    * @returns the status of the distribution service
    */
-  static async checkStatus(): Promise<
-    | {
-        httpStatusCode: number;
-        isDistributionOn: boolean;
-      }
-    | undefined
-  > {
+  static async checkStatus(): Promise<StatusResponseBody | undefined> {
     if (isNil(DistributionUtil.packageDistributionApi))
       throw new Error('initialize distribution api first!');
 
-    const distributionStatus: HttpResponsePayloadDto<StatusResponseBody> | undefined =
+    const distributionStatus: StatusResponseBody | undefined =
       await DistributionUtil.packageDistributionApi.getDistributionStatus<StatusResponseBody>(
         StatusResponseBody,
       );
 
-    if (!isNil(distributionStatus) && !isNil(distributionStatus.body)) {
-      const {
-        header: { httpStatusCode },
-        body: { isDistributionOn },
-      } = distributionStatus;
-
-      return { httpStatusCode, isDistributionOn };
-    }
+    return distributionStatus;
   }
 
   /**
@@ -79,13 +65,12 @@ export class DistributionUtil {
     if (isNil(DistributionUtil.packageDistributionApi))
       throw new Error('initialize distribution api first!');
 
-    const startRequest: HttpResponsePayloadDto<StartResponseBody> | undefined =
+    const startRequest: StartResponseBody | undefined =
       await DistributionUtil.packageDistributionApi.startDistribution<StartResponseBody>(
         StartResponseBody,
       );
 
-    if (!isNil(startRequest) && !isNil(startRequest.body))
-      DistributionUtil.logger?.debug(startRequest.body.message);
+    if (!isNil(startRequest)) DistributionUtil.logger?.debug(startRequest.message);
 
     await new Promise<void>((resolve) => {
       setTimeout(() => {
@@ -106,12 +91,12 @@ export class DistributionUtil {
     if (isNil(DistributionUtil.packageDistributionApi))
       throw new Error('initialize distribution api first!');
 
-    const stopRequest: HttpResponsePayloadDto<StopResponseBody> | undefined =
+    const stopRequest: StopResponseBody | undefined =
       await DistributionUtil.packageDistributionApi.stopDistribution<StopResponseBody>(
         StopResponseBody,
       );
 
-    if (!isNil(stopRequest) && !isNil(stopRequest.body))
-      DistributionUtil.logger?.debug(stopRequest.body.message);
+    if (!isNil(stopRequest) && !isNil(stopRequest))
+      DistributionUtil.logger?.debug(stopRequest.message);
   }
 }

@@ -1,8 +1,10 @@
 import { BaseHttpClient } from '@httpClient';
 import { IPackageDistributionHttpClient } from '@customers-api/interfaces';
 import { DistributionRoutesPrefixUrl } from '@customers-api/enums';
-import { HttpResponsePayloadDto, IHttpServiceConfig } from '@api/common';
+import { IHttpServiceConfig } from '@api/common';
 import { BaseEntity } from '@entities';
+
+const { STATUS_PREFIX_URL, START_PREFIX_URL, STOP_PREFIX_URL } = DistributionRoutesPrefixUrl;
 
 /**
  * PackageDistributionHttpClient class is responsible for sending
@@ -42,34 +44,25 @@ export class PackageDistributionHttpClient
 
   public async getDistributionStatus<TResponse extends BaseEntity>(
     responseBodyType: new () => TResponse,
-  ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
+  ): Promise<TResponse | undefined> {
     this.logger.debug('run  status request...');
 
-    return this.postRequest<TResponse>(
-      DistributionRoutesPrefixUrl.STATUS_PREFIX_URL,
-      responseBodyType,
-    );
+    return this.postRequest<TResponse>(STATUS_PREFIX_URL, responseBodyType);
   }
 
   public async startDistribution<TResponse extends BaseEntity>(
     responseBodyType: new () => TResponse,
-  ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
+  ): Promise<TResponse | undefined> {
     this.logger.debug('run start request...');
 
-    return this.postRequest<TResponse>(
-      DistributionRoutesPrefixUrl.START_PREFIX_URL,
-      responseBodyType,
-    );
+    return this.postRequest<TResponse>(START_PREFIX_URL, responseBodyType);
   }
 
   public async stopDistribution<TResponse extends BaseEntity>(
     stopResponsePayloadDto: new () => TResponse,
-  ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
+  ): Promise<TResponse | undefined> {
     this.logger.debug('run stop request...');
 
-    return this.postRequest<TResponse>(
-      DistributionRoutesPrefixUrl.STOP_PREFIX_URL,
-      stopResponsePayloadDto,
-    );
+    return this.postRequest<TResponse>(STOP_PREFIX_URL, stopResponsePayloadDto);
   }
 }

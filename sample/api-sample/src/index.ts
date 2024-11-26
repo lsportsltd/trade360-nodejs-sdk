@@ -112,25 +112,21 @@ const initApiSample = async () => {
       process.exit(1);
     });
 
-    // const distributionStatus: HttpResponsePayloadDto<StatusResponseBody> | undefined =
+    // const distributionStatus: StatusResponseBody | undefined =
     //   await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
     //     StatusResponseBody,
     //   );
 
-    // if (!_.isNil(distributionStatus) && !_.isNil(distributionStatus.body)) {
-    //   const {
-    //     header: { httpStatusCode },
-    //     body: { isDistributionOn },
-    //   } = distributionStatus;
+    // if (!_.isNil(distributionStatus)) {
+    //   const { isDistributionOn } = distributionStatus;
 
-    //   if (httpStatusCode >= 200 && httpStatusCode < 300 && !isDistributionOn) {
-    //     const startRequest: HttpResponsePayloadDto<StartResponseBody> | undefined =
+    //   if (!isDistributionOn) {
+    //     const startRequest: StartResponseBody | undefined =
     //       await packageDistributionHttpClient.startDistribution<StartResponseBody>(
     //         StartResponseBody,
     //       );
 
-    //     if (!_.isNil(startRequest) && !_.isNil(startRequest.body))
-    //       logger.log(startRequest.body.message);
+    //     if (!_.isNil(startRequest)) logger.log(startRequest.message);
     //   }
     // }
 
@@ -140,10 +136,10 @@ const initApiSample = async () => {
     //   }, 5 * 1000);
     // });
 
-    // const stopRequest: HttpResponsePayloadDto<StopResponseBody> | undefined =
+    // const stopRequest: StopResponseBody | undefined =
     //   await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
 
-    // if (!_.isNil(stopRequest) && !_.isNil(stopRequest.body)) logger.log(stopRequest.body.message);
+    // if (!_.isNil(stopRequest)) logger.log(stopRequest.message);
   } catch (err: unknown) {
     if (err instanceof ValidationError) {
       logger.error(`API sample got err from ValidationError instance: ${err}`);
@@ -215,7 +211,7 @@ const getLeagues = async (metadataHttpClient: IMetadataHttpClient): Promise<void
 
     const response = await metadataHttpClient.getLeagues(request);
 
-    logger.log(`Response returned ${response.length} leagues:`);
+    logger.log(`Response returned ${response?.length} leagues:`);
 
     _.forEach(response, (league) => {
       logger.log(`LeagueId: ${league.id}, LeagueName: ${league.name}`);
@@ -248,18 +244,18 @@ const getTranslations = async (metadataHttpClient: IMetadataHttpClient): Promise
     languages: [4, 5],
   });
 
-  const { sports, leagues, locations } = await metadataHttpClient.getTranslations(request);
+  const response = await metadataHttpClient.getTranslations(request);
 
   logger.log(
-    `Count of translations received Sports: ${_.keys(sports).length} Translations retrieved.`,
+    `Count of translations received Sports: ${_.keys(response?.sports).length} Translations retrieved.`,
   );
 
   logger.log(
-    `Count of translations received Leagues: ${_.keys(leagues).length} Translations retrieved.`,
+    `Count of translations received Leagues: ${_.keys(response?.leagues).length} Translations retrieved.`,
   );
 
   logger.log(
-    `Count of translations received Locations: ${_.keys(locations).length} Translations retrieved.`,
+    `Count of translations received Locations: ${_.keys(response?.locations).length} Translations retrieved.`,
   );
 };
 
@@ -271,7 +267,7 @@ const getCompetitions = async (metadataHttpClient: IMetadataHttpClient): Promise
 
   const response = await metadataHttpClient.getCompetitions(request);
 
-  logger.log(`${response.competitions?.length} Competitions retrieved.`);
+  logger.log(`${response?.competitions?.length} Competitions retrieved.`);
 };
 
 const getFixturesMetadata = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
@@ -282,7 +278,7 @@ const getFixturesMetadata = async (metadataHttpClient: IMetadataHttpClient): Pro
 
   const response = await metadataHttpClient.getFixturesMetadata(request);
 
-  logger.log(`${response.subscribedFixtures?.length} Fixture metadata retrieved.`);
+  logger.log(`${response?.subscribedFixtures?.length} Fixture metadata retrieved.`);
 };
 
 const getPackageQuota = async (subscriptionHttpClient: ISubscriptionHttpClient): Promise<void> => {
@@ -298,10 +294,10 @@ const getFixtureSchedule = async (
     sportIds: [6046],
   });
 
-  const response: FixtureScheduleCollectionResponse =
+  const response: FixtureScheduleCollectionResponse | undefined =
     await subscriptionHttpClient.getFixturesSchedule(request);
 
-  logger.log(`${response.fixtures?.length} Fixture schedule retrieved.`);
+  logger.log(`${response?.fixtures?.length} Fixture schedule retrieved.`);
 };
 
 const subscribeByFixtures = async (
@@ -311,10 +307,10 @@ const subscribeByFixtures = async (
     fixtures: [23498963],
   });
 
-  const response: FixturesSubscriptionCollectionResponse =
+  const response: FixturesSubscriptionCollectionResponse | undefined =
     await subscriptionHttpClient.subscribeByFixtures(request);
 
-  logger.info(`Successfully subscribed to ${response.fixtures?.length} fixtures`);
+  logger.info(`Successfully subscribed to ${response?.fixtures?.length} fixtures`);
 };
 
 const unSubscribeFromFixture = async (
@@ -324,10 +320,10 @@ const unSubscribeFromFixture = async (
     fixtures: [23498963],
   });
 
-  const response: FixturesSubscriptionCollectionResponse =
+  const response: FixturesSubscriptionCollectionResponse | undefined =
     await subscriptionHttpClient.unSubscribeByFixtures(request);
 
-  logger.info(`Successfully unsubscribed from ${response.fixtures?.length} fixtures`);
+  logger.info(`Successfully unsubscribed from ${response?.fixtures?.length} fixtures`);
 };
 
 const subscribeByLeagues = async (
@@ -343,10 +339,10 @@ const subscribeByLeagues = async (
     ],
   });
 
-  const response: LeaguesSubscriptionCollectionResponse =
+  const response: LeaguesSubscriptionCollectionResponse | undefined =
     await subscriptionHttpClient.subscribeByLeagues(request);
 
-  logger.info(`Successfully subscribed to ${response.subscription?.length} leagues`);
+  logger.info(`Successfully subscribed to ${response?.subscription?.length} leagues`);
 };
 
 const unSubscribeFromLeagues = async (
@@ -362,22 +358,20 @@ const unSubscribeFromLeagues = async (
     ],
   });
 
-  const response: LeaguesSubscriptionCollectionResponse =
+  const response: LeaguesSubscriptionCollectionResponse | undefined =
     await subscriptionHttpClient.unSubscribeByLeagues(request);
 
-  logger.info(`Successfully unsubscribed from ${response.subscription?.length} leagues`);
+  logger.info(`Successfully unsubscribed from ${response?.subscription?.length} leagues`);
 };
 
 const getManualSuspensions = async (
   subscriptionHttpClient: ISubscriptionHttpClient,
 ): Promise<void> => {
-  const response: GetManualSuspensionsResponse =
+  const response: GetManualSuspensionsResponse | undefined =
     await subscriptionHttpClient.getAllManualSuspensions();
 
   if (_.isNil(response) || !response.succeeded || _.isEmpty(response.suspensions)) {
-    logger.log(
-      `No manual suspensions entities received. succeeded: ${response.succeeded}, reason: ${response.reason}`,
-    );
+    logger.log(`No manual suspensions entities received.`);
     return;
   }
 
@@ -407,7 +401,7 @@ const addManualSuspensions = async (
 
   const response = await subscriptionHttpClient.addManualSuspensions(request);
 
-  logger.log(`Manual suspensions added: ${response.succeeded}`);
+  logger.log(`Manual suspensions added: ${response?.succeeded}`);
 };
 
 const removeManualSuspensions = async (
@@ -429,7 +423,7 @@ const removeManualSuspensions = async (
 
   const response = await subscriptionHttpClient.removeManualSuspensions(request);
 
-  logger.log(`Manual suspensions removed: ${response.succeeded}`);
+  logger.log(`Manual suspensions removed: ${response?.succeeded}`);
 };
 
 const getSubscriptions = async (subscriptionHttpClient: ISubscriptionHttpClient): Promise<void> => {
@@ -437,10 +431,10 @@ const getSubscriptions = async (subscriptionHttpClient: ISubscriptionHttpClient)
     sportIds: [6046],
   });
 
-  const response: SubscriptionsCollectionResponse =
+  const response: SubscriptionsCollectionResponse | undefined =
     await subscriptionHttpClient.getSubscriptions(request);
 
-  logger.log(`Subscriptions received: ${response.fixtures?.length}`);
+  logger.log(`Subscriptions received: ${response?.fixtures?.length}`);
 };
 
 const subscribeByCompetitions = async (
@@ -458,7 +452,7 @@ const subscribeByCompetitions = async (
 
   const response = await subscriptionHttpClient.subscribeByCompetitions(request);
 
-  logger.log(`Subscribed to ${response.subscription?.length} competitions`);
+  logger.log(`Subscribed to ${response?.subscription?.length} competitions`);
 };
 
 const unSubscribeFromCompetitions = async (subscriptionHttpClient: ISubscriptionHttpClient) => {
@@ -474,7 +468,7 @@ const unSubscribeFromCompetitions = async (subscriptionHttpClient: ISubscription
 
   const response = await subscriptionHttpClient.unSubscribeByCompetitions(request);
 
-  logger.log(`Unsubscribed from ${response.subscription?.length} competitions`);
+  logger.log(`Unsubscribed from ${response?.subscription?.length} competitions`);
 };
 
 const getFixturesMetadataSubscriptions = async (
@@ -485,10 +479,10 @@ const getFixturesMetadataSubscriptions = async (
     toDate: moment().add(10, 'days'),
   });
 
-  const response: FixturesMetadataSubscriptionsCollectionResponse =
+  const response: FixturesMetadataSubscriptionsCollectionResponse | undefined =
     await subscriptionHttpClient.getFixturesMetadataSubscriptions(request);
 
-  logger.log(`Fixtures metadata subscriptions received: ${response.subscribedFixtures?.length}`);
+  logger.log(`Fixtures metadata subscriptions received: ${response?.subscribedFixtures?.length}`);
 };
 
 initApiSample();

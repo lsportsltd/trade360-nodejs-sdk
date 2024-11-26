@@ -1,15 +1,11 @@
 import { Expose } from 'class-transformer';
 
-import { BaseEntity } from '@entities';
-
 /**
  * RequestSuspendedMarket class is responsible for
  * deserializing the response from the subscription
  * API to a suspended market.
  */
-export class RequestSuspendedMarket implements BaseEntity {
-  [key: string]: unknown;
-
+export class RequestSuspendedMarket {
   constructor(data?: unknown) {
     Object.assign(this, data);
   }

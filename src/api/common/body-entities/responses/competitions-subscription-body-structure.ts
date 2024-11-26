@@ -10,9 +10,8 @@ import { BaseEntity } from '@entities';
 export class CompetitionsSubscriptionBodyStructure implements BaseEntity {
   [key: string]: unknown;
 
-  // TODO: maybe need to be leagueId
-  @Expose({ name: 'CompetitionId' })
-  competitionId?: number;
+  @Expose({ name: 'leagueId' })
+  leagueId?: number;
 
   @Expose({ name: 'SportId' })
   sportId?: number;

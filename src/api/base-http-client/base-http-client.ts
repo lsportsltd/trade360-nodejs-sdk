@@ -60,7 +60,7 @@ export abstract class BaseHttpClient {
     route: string,
     responseBodyType: Constructor<TResponse>,
     requestBody?: HttpRequestDto,
-  ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
+  ): Promise<TResponse | undefined> {
     this.requestSettings = !isNil(requestBody)
       ? requestBody
       : TransformerUtil.transform(this.requestSettings, HttpRequestDto);
@@ -93,7 +93,7 @@ export abstract class BaseHttpClient {
     route: string,
     responseBodyType: Constructor<TResponse>,
     params?: HttpRequestDto,
-  ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
+  ): Promise<TResponse | undefined> {
     this.requestSettings = !isNil(params)
       ? params
       : TransformerUtil.transform(this.requestSettings, HttpRequestDto);
@@ -125,14 +125,14 @@ export abstract class BaseHttpClient {
   private async handleValidResponse<TResponse extends BaseEntity>(
     httpResponse: AxiosResponse<TResponse>,
     responsePayloadDto: Constructor<HttpResponsePayloadDto<TResponse>>,
-  ): Promise<HttpResponsePayloadDto<TResponse>> {
+  ): Promise<TResponse> {
     const { data } = httpResponse;
 
     const responsePayload = TransformerUtil.transform(data, responsePayloadDto);
 
     this.validateResponsePayloadStructure(responsePayload);
 
-    return responsePayload;
+    return responsePayload.body;
   }
 
   /**

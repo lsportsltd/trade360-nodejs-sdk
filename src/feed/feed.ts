@@ -6,10 +6,10 @@ import { ConsoleAdapter, ILogger } from '@logger';
 import { DistributionUtil, withRetry } from '@utilities';
 
 import { MessageConsumerMQ } from './mq-feed';
-import { MqConnectionSettingsValidator } from './vaildators';
+import { MqConnectionSettingsValidator } from './validators';
 
 /**
- * Class that represesnts all Feed requests
+ * Class that represents all Feed requests
  */
 export class Feed implements IFeed {
   private consumerMq: IFeed;
@@ -53,9 +53,9 @@ export class Feed implements IFeed {
     const distributionStatus = await DistributionUtil.checkStatus();
 
     if (!isNil(distributionStatus)) {
-      const { httpStatusCode, isDistributionOn } = distributionStatus;
+      const { isDistributionOn } = distributionStatus;
 
-      if (httpStatusCode >= 200 && httpStatusCode < 300 && !isDistributionOn) {
+      if (!isDistributionOn) {
         this.logger.info('Distribution flow is off, will trying to start the flow');
 
         return withRetry(

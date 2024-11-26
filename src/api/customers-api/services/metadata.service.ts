@@ -8,7 +8,7 @@ import {
   LocationsBodyStructure,
   MarketBodyStructure,
   SportsBodyStructure,
-} from '@api/common/body-entities';
+} from '@api/common/body-entities/responses';
 import {
   GetCompetitionsRequestDto,
   GetFixturesMetadataRequestDto,
@@ -32,6 +32,16 @@ import {
   SportsCollectionResponse,
   TranslationsCollectionResponse,
 } from '@metadata-api/responses';
+
+const {
+  GET_COMPETITIONS_PREFIX_URL,
+  GET_LEAGUES_PREFIX_URL,
+  GET_LOCATIONS_PREFIX_URL,
+  GET_MARKETS_PREFIX_URL,
+  GET_SPORTS_PREFIX_URL,
+  GET_TRANSLATION_PREFIX_URL,
+  GET_SUBSCRIBED_FIXTURES_METADATA_PREFIX_URL,
+} = MetadataRoutesPrefixUrl;
 
 /**
  * MetadataHttpClient class is responsible for sending requests
@@ -82,13 +92,13 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * @throws Error if mapping configuration is not found or if the
    * request is invalid or incorrect.
    */
-  public async getLocations(): Promise<LocationsBodyStructure[]> {
+  public async getLocations(): Promise<LocationsBodyStructure[] | undefined> {
     const locationsCollection = await this.postRequest<LocationsCollectionResponse>(
-      MetadataRoutesPrefixUrl.GET_LOCATIONS_PREFIX_URL,
+      GET_LOCATIONS_PREFIX_URL,
       LocationsCollectionResponse,
     );
 
-    return locationsCollection?.body.locations || [];
+    return locationsCollection?.locations;
   }
 
   /**
@@ -108,12 +118,12 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * @throws Error if mapping configuration is not found or
    * if the request is invalid or incorrect.
    */
-  public async getSports(): Promise<SportsBodyStructure[]> {
+  public async getSports(): Promise<SportsBodyStructure[] | undefined> {
     const sportsCollection = await this.postRequest<SportsCollectionResponse>(
-      MetadataRoutesPrefixUrl.GET_SPORTS_PREFIX_URL,
+      GET_SPORTS_PREFIX_URL,
       SportsCollectionResponse,
     );
-    return sportsCollection?.body.sports || [];
+    return sportsCollection?.sports;
   }
 
   /**
@@ -135,19 +145,21 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * @throws Error if mapping configuration is not found or
    * if the request is invalid or incorrect.
    */
-  public async getLeagues(requestDto: GetLeaguesRequestDto): Promise<LeaguesBodyStructure[]> {
+  public async getLeagues(
+    requestDto: GetLeaguesRequestDto,
+  ): Promise<LeaguesBodyStructure[] | undefined> {
     const request = this.mapper.map<GetLeaguesRequestDto, GetLeaguesRequest>(
       requestDto,
       GetLeaguesRequest,
     );
 
     const leaguesCollection = await this.postRequest<LeaguesCollectionResponse>(
-      MetadataRoutesPrefixUrl.GET_LEAGUES_PREFIX_URL,
+      GET_LEAGUES_PREFIX_URL,
       LeaguesCollectionResponse,
       request,
     );
 
-    return leaguesCollection?.body.leagues || [];
+    return leaguesCollection?.leagues;
   }
 
   /**
@@ -169,19 +181,21 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    * @throws Error if mapping configuration is not found or
    * if the request is invalid or incorrect.
    */
-  public async getMarkets(requestDto: GetLeaguesRequestDto): Promise<MarketBodyStructure[]> {
+  public async getMarkets(
+    requestDto: GetLeaguesRequestDto,
+  ): Promise<MarketBodyStructure[] | undefined> {
     const request = this.mapper.map<GetMarketsRequestDto, GetMarketsRequest>(
       requestDto,
       GetMarketsRequest,
     );
 
     const marketsCollection = await this.postRequest<MarketsCollectionResponse>(
-      MetadataRoutesPrefixUrl.GET_MARKETS_PREFIX_URL,
+      GET_MARKETS_PREFIX_URL,
       MarketsCollectionResponse,
       request,
     );
 
-    return marketsCollection?.body.markets || [];
+    return marketsCollection?.markets;
   }
 
   /**
@@ -196,7 +210,7 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    */
   public async getTranslations(
     requestDto: GetTranslationsRequestDto,
-  ): Promise<TranslationsCollectionResponse> {
+  ): Promise<TranslationsCollectionResponse | undefined> {
     const request = this.mapper.map<GetTranslationsRequestDto, GetTranslationsRequest>(
       requestDto,
       GetTranslationsRequest,
@@ -205,12 +219,12 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     await GetTranslationsRequestValidator.validate(request);
 
     const translationsCollection = await this.postRequest<TranslationsCollectionResponse>(
-      MetadataRoutesPrefixUrl.GET_TRANSLATION_PREFIX_URL,
+      GET_TRANSLATION_PREFIX_URL,
       TranslationsCollectionResponse,
       request,
     );
 
-    return translationsCollection?.body || {};
+    return translationsCollection;
   }
 
   /**
@@ -221,19 +235,19 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    */
   public async getCompetitions(
     requestDto: GetCompetitionsRequestDto,
-  ): Promise<CompetitionCollectionResponse> {
+  ): Promise<CompetitionCollectionResponse | undefined> {
     const request = this.mapper.map<GetCompetitionsRequestDto, GetCompetitionsRequest>(
       requestDto,
       GetCompetitionsRequest,
     );
 
     const competitionsCollection = await this.postRequest<CompetitionCollectionResponse>(
-      MetadataRoutesPrefixUrl.GET_COMPETITIONS_PREFIX_URL,
+      GET_COMPETITIONS_PREFIX_URL,
       CompetitionCollectionResponse,
       request,
     );
 
-    return competitionsCollection?.body || {};
+    return competitionsCollection;
   }
 
   /**
@@ -249,18 +263,18 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
    */
   public async getFixturesMetadata(
     requestDto: GetFixturesMetadataRequestDto,
-  ): Promise<FixturesMetadataCollectionResponse> {
+  ): Promise<FixturesMetadataCollectionResponse | undefined> {
     const request = this.mapper.map<GetFixturesMetadataRequestDto, GetFixturesMetadataRequest>(
       requestDto,
       GetFixturesMetadataRequest,
     );
 
     const fixturesMetadataCollection = await this.getRequest<FixturesMetadataCollectionResponse>(
-      MetadataRoutesPrefixUrl.GET_SUBSCRIBED_FIXTURES_METADATA_PREFIX_URL,
+      GET_SUBSCRIBED_FIXTURES_METADATA_PREFIX_URL,
       FixturesMetadataCollectionResponse,
       request,
     );
 
-    return fixturesMetadataCollection?.body || {};
+    return fixturesMetadataCollection;
   }
 }

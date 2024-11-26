@@ -26,39 +26,39 @@ import {
  * the subscription API.
  */
 export interface ISubscriptionHttpClient {
-  getPackageQuota(): Promise<PackageQuotaResponse>;
+  getPackageQuota(): Promise<PackageQuotaResponse | undefined>;
   getFixturesSchedule(
     requestDto: GetFixtureScheduleRequestDto,
-  ): Promise<FixtureScheduleCollectionResponse>;
+  ): Promise<FixtureScheduleCollectionResponse | undefined>;
   subscribeByFixtures(
     requestDto: FixturesSubscriptionRequestDto,
-  ): Promise<FixturesSubscriptionCollectionResponse>;
+  ): Promise<FixturesSubscriptionCollectionResponse | undefined>;
   unSubscribeByFixtures(
     requestDto: FixturesSubscriptionRequestDto,
-  ): Promise<FixturesSubscriptionCollectionResponse>;
+  ): Promise<FixturesSubscriptionCollectionResponse | undefined>;
   subscribeByLeagues(
     requestDto: LeaguesSubscriptionRequestDto,
-  ): Promise<LeaguesSubscriptionCollectionResponse>;
+  ): Promise<LeaguesSubscriptionCollectionResponse | undefined>;
   unSubscribeByLeagues(
     requestDto: LeaguesSubscriptionRequestDto,
-  ): Promise<LeaguesSubscriptionCollectionResponse>;
-  getSubscriptions(
-    requestDto: GetSubscriptionsRequestDto,
-  ): Promise<SubscriptionsCollectionResponse>;
-  getAllManualSuspensions(): Promise<GetManualSuspensionsResponse>;
-  addManualSuspensions(
-    requestDto: ChangeManualSuspensionsRequestDto,
-  ): Promise<ChangeManualSuspensionsResponse>;
-  removeManualSuspensions(
-    requestDto: ChangeManualSuspensionsRequestDto,
-  ): Promise<ChangeManualSuspensionsResponse>;
+  ): Promise<LeaguesSubscriptionCollectionResponse | undefined>;
   subscribeByCompetitions(
     requestDto: CompetitionsSubscriptionRequestDto,
-  ): Promise<CompetitionsSubscriptionCollectionResponse>;
+  ): Promise<CompetitionsSubscriptionCollectionResponse | undefined>;
   unSubscribeByCompetitions(
     requestDto: CompetitionsSubscriptionRequestDto,
-  ): Promise<CompetitionsSubscriptionCollectionResponse>;
+  ): Promise<CompetitionsSubscriptionCollectionResponse | undefined>;
+  getSubscriptions(
+    requestDto: GetSubscriptionsRequestDto,
+  ): Promise<SubscriptionsCollectionResponse | undefined>;
   getFixturesMetadataSubscriptions(
     requestDto: FixturesMetadataSubscriptionsRequestDto,
-  ): Promise<FixturesMetadataSubscriptionsCollectionResponse>;
+  ): Promise<FixturesMetadataSubscriptionsCollectionResponse | undefined>;
+  getAllManualSuspensions(): Promise<GetManualSuspensionsResponse | undefined>;
+  addManualSuspensions(
+    requestDto: ChangeManualSuspensionsRequestDto,
+  ): Promise<ChangeManualSuspensionsResponse | undefined>;
+  removeManualSuspensions(
+    requestDto: ChangeManualSuspensionsRequestDto,
+  ): Promise<ChangeManualSuspensionsResponse | undefined>;
 }
