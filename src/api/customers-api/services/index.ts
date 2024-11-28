@@ -1,2 +1,3 @@
-export * from './distribution-api';
-export * from './metadata-api';
+export * from './distribution.service';
+export * from './metadata.service';
+export * from './subscription.service';

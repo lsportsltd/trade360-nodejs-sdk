@@ -1,4 +1,3 @@
-import { HttpResponsePayloadDto } from '@api/common';
 import { BaseEntity, Constructor } from '@entities';
 
 /**
@@ -15,7 +14,7 @@ export interface IPackageDistributionHttpClient {
    */
   startDistribution: <TResponse extends BaseEntity>(
     responseBodyType: Constructor<TResponse>,
-  ) => Promise<HttpResponsePayloadDto<TResponse> | undefined>;
+  ) => Promise<TResponse | undefined>;
 
   /**
    * close distribution for provider queue and return the
@@ -26,7 +25,7 @@ export interface IPackageDistributionHttpClient {
    */
   stopDistribution: <TResponse extends BaseEntity>(
     responseBodyType: Constructor<TResponse>,
-  ) => Promise<HttpResponsePayloadDto<TResponse> | undefined>;
+  ) => Promise<TResponse | undefined>;
 
   /**
    * get the status of the distribution service and return the
@@ -37,5 +36,5 @@ export interface IPackageDistributionHttpClient {
    */
   getDistributionStatus: <TResponse extends BaseEntity>(
     responseBodyType: Constructor<TResponse>,
-  ) => Promise<HttpResponsePayloadDto<TResponse> | undefined>;
+  ) => Promise<TResponse | undefined>;
 }

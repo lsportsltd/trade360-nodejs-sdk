@@ -11,6 +11,16 @@ import { MessageConsumer } from './message-consumer';
 
 /**
  * Class that represent all the abilities of rabbitmq instance
+ * to consume messages and handle them with all the configured
+ * desired handlers for entities types and process them with
+ * the entityHandler call-back function for the entityConstructor
+ * class type entity type and process them with the entityHandler
+ * call-back function for the entityConstructor class type entity type
+ * @implements IFeed interface that represent Feed implementation for
+ * the feed service to consume messages, process connect creation,
+ * attach listeners for reconnection and consumption process and
+ * handle them with all the configured desired handlers for entities
+ * types
  */
 class RabbitMQFeed implements IFeed {
   private requestQueue = 'ReqQueue';
@@ -104,7 +114,7 @@ class RabbitMQFeed implements IFeed {
         `amqp://${username}:${password}@${hostname}:${port}/${vhost}`,
       );
 
-      this.connection = await connect(connectionString /*config.msgBrokerURL!*/);
+      this.connection = await connect(connectionString);
 
       if (!this.connection) {
         throw new Error('failed initializing connection!');
@@ -175,8 +185,12 @@ class RabbitMQFeed implements IFeed {
   }
 
   /**
-   * handle error event invoke for rabbitmq instance connection
-   * @param err error been thrown
+   * handle error event invoke for rabbitmq instance
+   * connection error
+   * @param err error been thrown from the connection
+   * instance of rabbitmq instance connection error
+   * event invoke handler method call back function
+   * @returns void
    */
   private connectionErrorHandler(err: Error): void {
     this.logger.error(err.message);

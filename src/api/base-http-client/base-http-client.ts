@@ -9,7 +9,7 @@ import { RequestSettingsValidator } from '@httpClient/validators';
 import { ConsoleAdapter, ILogger } from '@logger';
 import { TransformerUtil } from '@utilities';
 
-import { IHttpService } from './interfaces';
+import { IHttpService, IRequestArgs } from './interfaces';
 
 /**
  * BaseHttpClient class is responsible for sending requests
@@ -17,7 +17,7 @@ import { IHttpService } from './interfaces';
  * It contains the basic logic for sending requests.
  * @param customersApiBaseUrl The base URL of the customers API
  * @param packageCredentials The package credentials for the API
- * @param logger The logger instance
+ * @param logger The logger instance to be used for logging
  */
 export abstract class BaseHttpClient {
   protected readonly httpService: IHttpService<HttpRequestDto>;
@@ -56,11 +56,11 @@ export abstract class BaseHttpClient {
    * @returns  promise with the TResponse type response type of
    * the API.
    */
-  protected async postRequest<TResponse extends BaseEntity>(
-    route: string,
-    responseBodyType: Constructor<TResponse>,
-    requestBody?: HttpRequestDto,
-  ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
+  protected async postRequest<TResponse extends BaseEntity>({
+    route,
+    responseBodyType,
+    requestBody,
+  }: IRequestArgs<TResponse>): Promise<TResponse | undefined> {
     this.requestSettings = !isNil(requestBody)
       ? requestBody
       : TransformerUtil.transform(this.requestSettings, HttpRequestDto);
@@ -89,11 +89,11 @@ export abstract class BaseHttpClient {
    * @returns promise with the TResponse type response type of the
    * API.
    */
-  protected async getRequest<TResponse extends BaseEntity>(
-    route: string,
-    responseBodyType: Constructor<TResponse>,
-    params?: HttpRequestDto,
-  ): Promise<HttpResponsePayloadDto<TResponse> | undefined> {
+  protected async getRequest<TResponse extends BaseEntity>({
+    route,
+    responseBodyType,
+    requestBody: params,
+  }: IRequestArgs<TResponse>): Promise<TResponse | undefined> {
     this.requestSettings = !isNil(params)
       ? params
       : TransformerUtil.transform(this.requestSettings, HttpRequestDto);
@@ -118,21 +118,21 @@ export abstract class BaseHttpClient {
    * @param httpResponse The response received from the API call
    * @param responsePayloadDto The response payload DTO to be used
    * for transforming the response
-   * @returns The response payload DTO
+   * @returns The response payload DTO with the required properties
    * @throws HttpResponseError if the response does not contain the
-   *  required properties
+   * required properties
    */
   private async handleValidResponse<TResponse extends BaseEntity>(
     httpResponse: AxiosResponse<TResponse>,
     responsePayloadDto: Constructor<HttpResponsePayloadDto<TResponse>>,
-  ): Promise<HttpResponsePayloadDto<TResponse>> {
+  ): Promise<TResponse> {
     const { data } = httpResponse;
 
     const responsePayload = TransformerUtil.transform(data, responsePayloadDto);
 
     this.validateResponsePayloadStructure(responsePayload);
 
-    return responsePayload;
+    return responsePayload.body;
   }
 
   /**
@@ -140,7 +140,8 @@ export abstract class BaseHttpClient {
    * response payload. It checks if the response payload contains the
    * required properties.
    * @param responsePayload The response payload to be validated
-   * @returns void
+   * @returns void if the response payload contains the required
+   * properties
    * @throws HttpResponseError if the response payload does not contain
    * the required properties
    */
@@ -169,7 +170,7 @@ export abstract class BaseHttpClient {
    * @param errorResponse The error response received from the API call
    * @param responsePayloadDto The response payload DTO to be used for
    * transforming the error response
-   * @returns void
+   * @returns void if the error response is handled successfully
    * @throws HttpResponseError if the error response contains errors in
    * the response body, it throws an error with the error messages as
    * the context of the error response
@@ -182,7 +183,7 @@ export abstract class BaseHttpClient {
     responsePayloadDto: Constructor<HttpResponsePayloadDto<TResponse>>,
   ): void {
     if (isNil(errorResponse)) {
-      throw new HttpResponseError('API call failed', { context: 'No response received' });
+      throw new HttpResponseError('', { context: 'No response received' });
     } else if (!(errorResponse instanceof AxiosError)) throw errorResponse;
 
     const { response, message, cause } = errorResponse;
@@ -190,7 +191,7 @@ export abstract class BaseHttpClient {
     const rawErrorResponse = errorResponse.toString();
 
     if (isNil(response)) {
-      throw new HttpResponseError(`API call failed with message: ${message}`, {
+      throw new HttpResponseError(`with message: ${message}`, {
         context: rawErrorResponse,
         cause,
       });
@@ -214,7 +215,7 @@ export abstract class BaseHttpClient {
     if (!isNil(errors)) {
       const errorsArray = map(errors, (error) => error.message);
 
-      throw new HttpResponseError('API call failed', {
+      throw new HttpResponseError('', {
         context: errorsArray,
         cause: errorResponse,
       });
@@ -233,7 +234,8 @@ export abstract class BaseHttpClient {
    * request parameters.
    * @param requestParams The request parameters to be used for building
    * the query string
-   * @returns The query
+   * @returns The query string built from the request parameters or an
+   *
    */
   private buildQueryString(requestParams?: HttpRequestDto): string {
     if (isNil(requestParams)) return '';

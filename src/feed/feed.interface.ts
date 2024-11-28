@@ -26,9 +26,14 @@ export interface IFeed {
   stop: () => Promise<void>;
 
   /**
-   * Add new configured entity handler
-   * @param entityHandler call-back function represents the desire handle procedure
-   * @param entityConstructor class constructor represent the entity
+   * Add new configured entity handler for the feed service
+   * to handle the entity type with the entityHandler call-back
+   * function for the entityConstructor class type entity type
+   * @param entityHandler call-back function represents the
+   * desire handle procedure for the entity type
+   * @param entityConstructor class constructor represent
+   * the entity type to be handled by the entityHandler
+   * call-back function
    * @returns void
    */
   addEntityHandler: <TEntity extends BaseEntity>(

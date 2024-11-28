@@ -2,7 +2,9 @@ import { RetryError } from '@lsports/errors';
 import { ILogger } from '@logger';
 
 /**
- * Retry options for retrying an operation with exponential backoff
+ * Retry options for retrying an operation with
+ * exponential backoff based on the number of attempts
+ * and delay.
  */
 interface RetryOptions {
   maxAttempts: number;
@@ -11,12 +13,21 @@ interface RetryOptions {
 }
 
 /**
- * Retry an operation with exponential backoff
+ * Retry an operation with exponential backoff based
+ * on the number of attempts and delay.
  * @param operation the operation to retry
- * @param options the retry options based on the number of attempts and delay
- * @param operationName the name of the operation for logging
- * @param logger the logger to use for logging
- * @returns the result of the operation
+ * @param options the retry options based on the number
+ * of attempts and delay in milliseconds with an optional.
+ * backoff factor for exponential backoff (default is 1).
+ * @param operationName the name of the operation for
+ * logging purposes.
+ * @param logger the logger to use for logging the
+ * operation.
+ * @returns the result of the operation if it succeeds
+ * after the number of attempts.
+ * @throws a RetryError if the operation fails after the
+ * number of attempts. The error contains the number of
+ * attempts made.
  */
 export async function withRetry<T>(
   operation: (...args: never[]) => Promise<T>,
@@ -40,7 +51,7 @@ export async function withRetry<T>(
         logger.warn(`Attempt ${attempts} failed: ${error}`);
 
         if (attempts >= maxAttempts) {
-          reject(new RetryError(`${operationName} failed after ${maxAttempts} attempts`, attempts));
+          reject(new RetryError(operationName, maxAttempts));
         } else {
           const nextDelay = delayMs * Math.pow(backoffFactor, attempts - 1);
           logger.debug(`Retrying in ${nextDelay}ms...`);

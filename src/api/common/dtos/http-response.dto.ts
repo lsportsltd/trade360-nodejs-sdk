@@ -6,9 +6,10 @@ import { TransformerUtil } from '@utilities';
 import { HeaderContent } from './http-response-header';
 
 /**
- * HttpResponsePayloadDto class is responsible for the response structure of the HTTP response.
- * It contains the header and body of the response.
- * The header contains the HTTP status code and the errors if any.
+ * HttpResponsePayloadDto class is responsible for the
+ * response structure of the HTTP response.It contains
+ * the header and body of the response. The header
+ * contains the HTTP status code and the errors if any.
  * The body contains the response data.
  * @typeparam TResponse The type of the response data.
  */

@@ -5,8 +5,8 @@ import { TranslationsValidationError } from '@entities';
 
 /**
  * GetTranslationsRequestValidator class
- * (used for validation) - validates the request body
- * of the translations collection endpoint.
+ * (used for validation) - validates the request
+ *  body of the translations collection endpoint.
  */
 export class GetTranslationsRequestValidator {
   static validate(request: GetTranslationsRequest): void {

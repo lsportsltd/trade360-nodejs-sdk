@@ -1,6 +1,6 @@
 import { Options } from 'amqplib';
 
-import { MQSettings } from '@feed/vaildators';
+import { MQSettings } from '@feed/validators';
 import { BaseEntity } from '@entities';
 
 /**

@@ -2,17 +2,33 @@ import _ from 'lodash';
 import moment from 'moment';
 
 import {
+  ChangeManualSuspensionsRequestDto,
+  CompetitionsSubscriptionRequestBodyStructure,
+  CompetitionsSubscriptionRequestDto,
   CustomersApiFactory,
-  FixturesMedataValidationError,
+  FixtureScheduleCollectionResponse,
+  FixturesMetadataSubscriptionsCollectionResponse,
+  FixturesMetadataSubscriptionsRequestDto,
+  FixturesSubscriptionCollectionResponse,
+  FixturesSubscriptionRequestDto,
   GetCompetitionsRequestDto,
-  GetFixturesMetadataRequestDto,
+  GetFixtureScheduleRequestDto,
   GetLeaguesRequestDto,
+  GetManualSuspensionsResponse,
   GetMarketsRequestDto,
+  SubscriptionsCollectionResponse,
+  GetSubscriptionsRequestDto,
   GetTranslationsRequestDto,
   HttpResponseError,
   HttpResponsePayloadDto,
   IMetadataHttpClient,
+  ISubscriptionHttpClient,
   InvalidDateInRequestError,
+  LeaguesSubscriptionCollectionResponse,
+  LeaguesSubscriptionRequestBodyStructure,
+  LeaguesSubscriptionRequestDto,
+  ManualSuspensionsRequestBodyStructure,
+  RequestSuspendedMarket,
   Sport,
   StartResponseBody,
   StatusResponseBody,
@@ -33,15 +49,47 @@ const initApiSample = async () => {
   try {
     const customersApiFactory = new CustomersApiFactory();
 
-    const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
+    const subscriptionHttpClient = customersApiFactory.createSubscriptionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
       customersApiBaseUrl: config.trade360.customersApiBaseUrl,
       logger,
     });
 
-    await getLocations(metadataHttpClient);
+    // await getPackageQuota(subscriptionHttpClient);
 
-    await getSports(metadataHttpClient);
+    // await getFixtureSchedule(subscriptionHttpClient);
+
+    // await subscribeByFixtures(subscriptionHttpClient);
+
+    // await unSubscribeFromFixture(subscriptionHttpClient);
+
+    // await subscribeByLeagues(subscriptionHttpClient);
+
+    // await unSubscribeFromLeagues(subscriptionHttpClient);
+
+    // await getManualSuspensions(subscriptionHttpClient);
+
+    // await addManualSuspensions(subscriptionHttpClient);
+
+    // await removeManualSuspensions(subscriptionHttpClient);
+
+    // await getSubscriptions(subscriptionHttpClient);
+
+    // await subscribeByCompetitions(subscriptionHttpClient);
+
+    // await unSubscribeFromCompetitions(subscriptionHttpClient);
+
+    await getFixturesMetadataSubscriptions(subscriptionHttpClient);
+
+    // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
+    //   packageCredentials: config.trade360.inPlayMQSettings,
+    //   customersApiBaseUrl: config.trade360.customersApiBaseUrl,
+    //   logger,
+    // });
+
+    // await getLocations(metadataHttpClient);
+
+    // await getSports(metadataHttpClient);
 
     // await getLeagues(metadataHttpClient);
 
@@ -51,50 +99,44 @@ const initApiSample = async () => {
 
     // await getCompetitions(metadataHttpClient);
 
-    // await getFixturesMetadata(metadataHttpClient);
-
-    const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
-      packageCredentials: config.trade360.inPlayMQSettings,
-      customersApiBaseUrl: config.trade360.customersApiBaseUrl,
-      logger,
-    });
+    // const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
+    //   packageCredentials: config.trade360.inPlayMQSettings,
+    //   customersApiBaseUrl: config.trade360.customersApiBaseUrl,
+    //   logger,
+    // });
 
     process.on('exit' || 'SIGINT', async () => {
       process.exit(1);
     });
 
-    const distributionStatus: HttpResponsePayloadDto<StatusResponseBody> | undefined =
-      await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
-        StatusResponseBody,
-      );
+    // const distributionStatus: StatusResponseBody | undefined =
+    //   await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
+    //     StatusResponseBody,
+    //   );
 
-    if (!_.isNil(distributionStatus) && !_.isNil(distributionStatus.body)) {
-      const {
-        header: { httpStatusCode },
-        body: { isDistributionOn },
-      } = distributionStatus;
+    // if (!_.isNil(distributionStatus)) {
+    //   const { isDistributionOn } = distributionStatus;
 
-      if (httpStatusCode >= 200 && httpStatusCode < 300 && !isDistributionOn) {
-        const startRequest: HttpResponsePayloadDto<StartResponseBody> | undefined =
-          await packageDistributionHttpClient.startDistribution<StartResponseBody>(
-            StartResponseBody,
-          );
+    //   if (!isDistributionOn) {
+    //     const startRequest: StartResponseBody | undefined =
+    //       await packageDistributionHttpClient.startDistribution<StartResponseBody>(
+    //         StartResponseBody,
+    //       );
 
-        if (!_.isNil(startRequest) && !_.isNil(startRequest.body))
-          logger.log(startRequest.body.message);
-      }
-    }
+    //     if (!_.isNil(startRequest)) logger.log(startRequest.message);
+    //   }
+    // }
 
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        return resolve();
-      }, 5 * 1000);
-    });
+    // await new Promise<void>((resolve) => {
+    //   setTimeout(() => {
+    //     return resolve();
+    //   }, 5 * 1000);
+    // });
 
-    const stopRequest: HttpResponsePayloadDto<StopResponseBody> | undefined =
-      await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
+    // const stopRequest: StopResponseBody | undefined =
+    //   await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
 
-    if (!_.isNil(stopRequest) && !_.isNil(stopRequest.body)) logger.log(stopRequest.body.message);
+    // if (!_.isNil(stopRequest)) logger.log(stopRequest.message);
   } catch (err: unknown) {
     if (err instanceof ValidationError) {
       logger.error(`API sample got err from ValidationError instance: ${err}`);
@@ -124,8 +166,6 @@ const initApiSample = async () => {
       }
     } else if (err instanceof InvalidDateInRequestError) {
       logger.error(`API sample got err from InvalidDateInRequestError instance: ${err}`);
-    } else if (err instanceof FixturesMedataValidationError) {
-      logger.error(`API sample got err from FixturesMedataValidationError instance: ${err}`);
     } else {
       logger.error(`API sample got err: ${err}`);
     }
@@ -168,7 +208,7 @@ const getLeagues = async (metadataHttpClient: IMetadataHttpClient): Promise<void
 
     const response = await metadataHttpClient.getLeagues(request);
 
-    logger.log(`Response returned ${response.length} leagues:`);
+    logger.log(`Response returned ${response?.length} leagues:`);
 
     _.forEach(response, (league) => {
       logger.log(`LeagueId: ${league.id}, LeagueName: ${league.name}`);
@@ -201,18 +241,18 @@ const getTranslations = async (metadataHttpClient: IMetadataHttpClient): Promise
     languages: [4, 5],
   });
 
-  const { sports, leagues, locations } = await metadataHttpClient.getTranslations(request);
+  const response = await metadataHttpClient.getTranslations(request);
 
   logger.log(
-    `Count of translations received Sports: ${_.keys(sports).length} Translations retrieved.`,
+    `Count of translations received Sports: ${_.keys(response?.sports).length} Translations retrieved.`,
   );
 
   logger.log(
-    `Count of translations received Leagues: ${_.keys(leagues).length} Translations retrieved.`,
+    `Count of translations received Leagues: ${_.keys(response?.leagues).length} Translations retrieved.`,
   );
 
   logger.log(
-    `Count of translations received Locations: ${_.keys(locations).length} Translations retrieved.`,
+    `Count of translations received Locations: ${_.keys(response?.locations).length} Translations retrieved.`,
   );
 };
 
@@ -224,18 +264,211 @@ const getCompetitions = async (metadataHttpClient: IMetadataHttpClient): Promise
 
   const response = await metadataHttpClient.getCompetitions(request);
 
-  logger.log(`${response.competitions?.length} Competitions retrieved.`);
+  logger.log(`${response?.competitions?.length} Competitions retrieved.`);
 };
 
-const getFixturesMetadata = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
-  const request = new GetFixturesMetadataRequestDto({
+const getPackageQuota = async (subscriptionHttpClient: ISubscriptionHttpClient): Promise<void> => {
+  const packageQuota = await subscriptionHttpClient.getPackageQuota();
+
+  logger.log(JSON.stringify(packageQuota));
+};
+
+const getFixtureSchedule = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new GetFixtureScheduleRequestDto({
+    sportIds: [6046],
+  });
+
+  const response: FixtureScheduleCollectionResponse | undefined =
+    await subscriptionHttpClient.getFixturesSchedule(request);
+
+  logger.log(`${response?.fixtures?.length} Fixture schedule retrieved.`);
+};
+
+const subscribeByFixtures = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new FixturesSubscriptionRequestDto({
+    fixtures: [23498963],
+  });
+
+  const response: FixturesSubscriptionCollectionResponse | undefined =
+    await subscriptionHttpClient.subscribeByFixtures(request);
+
+  logger.info(`Successfully subscribed to ${response?.fixtures?.length} fixtures`);
+};
+
+const unSubscribeFromFixture = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new FixturesSubscriptionRequestDto({
+    fixtures: [23498963],
+  });
+
+  const response: FixturesSubscriptionCollectionResponse | undefined =
+    await subscriptionHttpClient.unSubscribeByFixtures(request);
+
+  logger.info(`Successfully unsubscribed from ${response?.fixtures?.length} fixtures`);
+};
+
+const subscribeByLeagues = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new LeaguesSubscriptionRequestDto({
+    subscriptions: [
+      new LeaguesSubscriptionRequestBodyStructure({
+        sportId: 6046,
+        locationId: 142,
+        leagueId: 5,
+      }),
+    ],
+  });
+
+  const response: LeaguesSubscriptionCollectionResponse | undefined =
+    await subscriptionHttpClient.subscribeByLeagues(request);
+
+  logger.info(`Successfully subscribed to ${response?.subscription?.length} leagues`);
+};
+
+const unSubscribeFromLeagues = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new LeaguesSubscriptionRequestDto({
+    subscriptions: [
+      {
+        sportId: 6046,
+        locationId: 142,
+        leagueId: 5,
+      },
+    ],
+  });
+
+  const response: LeaguesSubscriptionCollectionResponse | undefined =
+    await subscriptionHttpClient.unSubscribeByLeagues(request);
+
+  logger.info(`Successfully unsubscribed from ${response?.subscription?.length} leagues`);
+};
+
+const getManualSuspensions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const response: GetManualSuspensionsResponse | undefined =
+    await subscriptionHttpClient.getAllManualSuspensions();
+
+  if (_.isNil(response) || !response.succeeded || _.isEmpty(response.suspensions)) {
+    logger.log(`No manual suspensions entities received.`);
+    return;
+  }
+
+  logger.log('Manual suspensions entities received:');
+
+  _.each(response.suspensions, (suspension, index) => {
+    logger.log(`Suspension[${index}]: ${JSON.stringify(suspension)}`);
+  });
+};
+
+const addManualSuspensions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new ChangeManualSuspensionsRequestDto({
+    suspensions: [
+      new ManualSuspensionsRequestBodyStructure({
+        fixtureId: 13176576,
+        markets: [
+          new RequestSuspendedMarket({
+            marketId: 1439,
+            line: '-0.25',
+          }),
+        ],
+      }),
+    ],
+  });
+
+  const response = await subscriptionHttpClient.addManualSuspensions(request);
+
+  logger.log(`Manual suspensions added: ${response?.succeeded}`);
+};
+
+const removeManualSuspensions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new ChangeManualSuspensionsRequestDto({
+    suspensions: [
+      new ManualSuspensionsRequestBodyStructure({
+        fixtureId: 13176576,
+        markets: [
+          new RequestSuspendedMarket({
+            marketId: 1439,
+            line: '-0.25',
+          }),
+        ],
+      }),
+    ],
+  });
+
+  const response = await subscriptionHttpClient.removeManualSuspensions(request);
+
+  logger.log(`Manual suspensions removed: ${response?.succeeded}`);
+};
+
+const getSubscriptions = async (subscriptionHttpClient: ISubscriptionHttpClient): Promise<void> => {
+  const request = new GetSubscriptionsRequestDto({
+    sportIds: [6046],
+  });
+
+  const response: SubscriptionsCollectionResponse | undefined =
+    await subscriptionHttpClient.getSubscriptions(request);
+
+  logger.log(`Subscriptions received: ${response?.fixtures?.length}`);
+};
+
+const subscribeByCompetitions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new CompetitionsSubscriptionRequestDto({
+    subscriptions: [
+      new CompetitionsSubscriptionRequestBodyStructure({
+        sportId: 6046,
+        locationId: 142,
+        leagueId: 5,
+      }),
+    ],
+  });
+
+  const response = await subscriptionHttpClient.subscribeByCompetitions(request);
+
+  logger.log(`Subscribed to ${response?.subscription?.length} competitions`);
+};
+
+const unSubscribeFromCompetitions = async (subscriptionHttpClient: ISubscriptionHttpClient) => {
+  const request = new CompetitionsSubscriptionRequestDto({
+    subscriptions: [
+      new CompetitionsSubscriptionRequestBodyStructure({
+        sportId: 6046,
+        locationId: 142,
+        leagueId: 5,
+      }),
+    ],
+  });
+
+  const response = await subscriptionHttpClient.unSubscribeByCompetitions(request);
+
+  logger.log(`Unsubscribed from ${response?.subscription?.length} competitions`);
+};
+
+const getFixturesMetadataSubscriptions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient,
+): Promise<void> => {
+  const request = new FixturesMetadataSubscriptionsRequestDto({
     fromDate: moment(),
     toDate: moment().add(10, 'days'),
   });
 
-  const response = await metadataHttpClient.getFixturesMetadata(request);
+  const response: FixturesMetadataSubscriptionsCollectionResponse | undefined =
+    await subscriptionHttpClient.getFixturesMetadataSubscriptions(request);
 
-  logger.log(`${response.subscribedFixtures?.length} Fixture metadata retrieved.`);
+  logger.log(`Fixtures metadata subscriptions received: ${response?.subscribedFixtures?.length}`);
 };
 
 initApiSample();

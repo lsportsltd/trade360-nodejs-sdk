@@ -1,8 +1,6 @@
 import {
   CompetitionCollectionResponse,
-  FixturesMetadataCollectionResponse,
   GetCompetitionsRequestDto,
-  GetFixturesMetadataRequestDto,
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
@@ -19,13 +17,14 @@ import {
  * the methods for sending requests to the distribution API.
  */
 export interface IMetadataHttpClient {
-  getLocations(): Promise<LocationsBodyStructure[]>;
-  getSports(): Promise<SportsBodyStructure[]>;
-  getLeagues(requestDto: GetLeaguesRequestDto): Promise<LeaguesBodyStructure[]>;
-  getMarkets(requestDto: GetMarketsRequestDto): Promise<MarketBodyStructure[]>;
-  getTranslations(requestDto: GetTranslationsRequestDto): Promise<TranslationsCollectionResponse>;
-  getCompetitions(requestDto: GetCompetitionsRequestDto): Promise<CompetitionCollectionResponse>;
-  getFixturesMetadata(
-    requestDto: GetFixturesMetadataRequestDto,
-  ): Promise<FixturesMetadataCollectionResponse>;
+  getLocations(): Promise<LocationsBodyStructure[] | undefined>;
+  getSports(): Promise<SportsBodyStructure[] | undefined>;
+  getLeagues(requestDto: GetLeaguesRequestDto): Promise<LeaguesBodyStructure[] | undefined>;
+  getMarkets(requestDto: GetMarketsRequestDto): Promise<MarketBodyStructure[] | undefined>;
+  getTranslations(
+    requestDto: GetTranslationsRequestDto,
+  ): Promise<TranslationsCollectionResponse | undefined>;
+  getCompetitions(
+    requestDto: GetCompetitionsRequestDto,
+  ): Promise<CompetitionCollectionResponse | undefined>;
 }

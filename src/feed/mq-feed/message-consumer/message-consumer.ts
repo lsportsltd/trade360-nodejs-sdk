@@ -16,8 +16,10 @@ import { IBodyHandler, IConsumptionLatency } from './interfaces';
 
 /**
  * Convert json string to WrappedMessage instance
- * @param rawJson json string
- * @returns WrappedMessage instance
+ * @param rawJson json string to be converted to
+ * WrappedMessage instance
+ * @returns WrappedMessage instance from the json
+ * string provided
  */
 function ConvertJsonToMessage(rawJson: string): WrappedMessage {
   try {
@@ -25,12 +27,21 @@ function ConvertJsonToMessage(rawJson: string): WrappedMessage {
 
     return message;
   } catch (err) {
-    throw new ConversionError(`failed converting json to wrapped message instance!, err: ${err}`);
+    throw new ConversionError(WrappedMessage.name, err);
   }
 }
 
 /**
  * Class that represent message consumption process
+ * and handle them with all the configured desired
+ * handlers for entities types and process them with
+ * the entityHandler call-back function for the
+ * entityConstructor class type entity type and process
+ * them with the entityHandler call-back function for
+ * the entityConstructor class type entity type and
+ * check message consumption latency and log warning
+ * if it exceeds the threshold value in seconds or log
+ * info if it's within the threshold value in seconds
  */
 export class MessageConsumer {
   private bodyHandlers: Map<number, IBodyHandler> = new Map<number, IBodyHandler>();
@@ -38,7 +49,23 @@ export class MessageConsumer {
   constructor(private logger: ILogger) {}
 
   /**
-   * Handle basic message consumption process
+   * Handle basic message consumption process and handle
+   * them with all the configured desired handlers for
+   * entities types and process them with the entityHandler
+   * call-back function for the entityConstructor class type
+   * entity type and check message consumption latency and
+   * log warning if it exceeds the threshold value in seconds
+   * or log info if it's within the threshold value in seconds
+   * @param messageContent message content to be consumed and
+   * processed by the configured entity handlers for the entity
+   * type and entity handler call-back function for the entity
+   * constructor class type entity type
+   * @param messageMqTimestamp message timestamp in milliseconds
+   * to calculate the message consumption latency in seconds
+   * @param consumptionLatencyThreshold consumption latency
+   * threshold in seconds to check if the message consumption
+   * latency exceeds the threshold value in seconds or not
+   * @returns void
    */
   public async handleBasicMessage(
     messageContent: Uint8Array,
@@ -88,8 +115,19 @@ export class MessageConsumer {
   }
 
   /**
-   * Check message consumption latency and log warning if it exceeds the threshold value in seconds
-   * or log info if it's within the threshold value in seconds.
+   * Check message consumption latency and log warning if it
+   * exceeds the threshold value in seconds or log info if
+   * it's within the threshold value in seconds. If message or
+   * threshold is missing, log warning message with the message
+   * guid provided in the input object parameter and return void
+   * @param messageMqTimestamp message timestamp in milliseconds
+   * to calculate the message consumption latency in seconds
+   * @param consumptionLatencyThreshold consumption latency
+   * threshold in seconds to check if the message consumption
+   * latency exceeds the threshold value in seconds or not
+   * @param msgGuid message guid to be logged in the warning
+   * message if the message or threshold is missing
+   * @returns void
    */
   public checkConsumptionLatency({
     messageMqTimestamp,

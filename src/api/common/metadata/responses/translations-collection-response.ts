@@ -2,12 +2,12 @@ import { Expose } from 'class-transformer';
 
 import { BaseEntity } from '@entities';
 
-import { TranslationsBodyStructure } from '../body-entities';
+import { TranslationsBodyStructure } from '@api/common/body-entities';
 
 /**
- * Translations Collection Response class
- * (used for serialization) - represents the response
- * body of the translations collection endpoint.
+ * TranslationsCollectionResponse class is responsible
+ * for deserializing the response from the metadata
+ * API to a collection of translations.
  */
 export class TranslationsCollectionResponse implements BaseEntity {
   [key: string]: unknown;
