@@ -1,13 +1,17 @@
-import { HttpRequestDto } from '@api/common';
-import {
-  DistributionRoutesPrefixUrl,
-  MetadataRoutesPrefixUrl,
-  SubscriptionRoutesPrefixUrl,
-} from '@api/customers-api';
 import { BaseEntity, Constructor } from '@entities';
+import {
+  SubscriptionRoutesPrefixUrl,
+  MetadataRoutesPrefixUrl,
+  DistributionRoutesPrefixUrl,
+} from '@api/customers-api/enums';
+import { SnapshotRoutesPrefixUrl } from '@api/common';
 
 export interface IRequestArgs<TResponse extends BaseEntity> {
-  route: SubscriptionRoutesPrefixUrl | MetadataRoutesPrefixUrl | DistributionRoutesPrefixUrl;
+  route:
+    | SubscriptionRoutesPrefixUrl
+    | MetadataRoutesPrefixUrl
+    | DistributionRoutesPrefixUrl
+    | SnapshotRoutesPrefixUrl;
   responseBodyType: Constructor<TResponse>;
-  requestBody?: HttpRequestDto;
+  requestBody?: BaseEntity;
 }
