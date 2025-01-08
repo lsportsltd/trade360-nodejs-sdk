@@ -48,7 +48,6 @@ export class GetOutrightMarketRequest extends HttpRequestDto {
   @Expose()
   @Type(() => Number)
   fixtureIds?: number[];
-  
   @Expose()
   @Type(() => Number)
   marketsIds?: number[];
