@@ -15,7 +15,7 @@ import {
  * Interface for the In-Play Snapshot API client.
  */
 export interface InPlaySnapshotApiClient {
-  getFixtures(requestDto:GetFixtureRequest): Promise<GetLivescoreResultElement[] | undefined>;
+  getFixtures(requestDto: GetFixtureRequest): Promise<GetLivescoreResultElement[] | undefined>;
   getLivescore(requestDto:GetLivescoreRequest): Promise<GetFixturesResultElement[] | undefined>;
   getFixtureMarkets(requestDto: GetMarketRequest): Promise<GetFixtureMarketsResultElement[] | undefined>;
   getEvents(requestDto: GetInPlayEventRequest): Promise<GetEventsResultElement[] | undefined>;
