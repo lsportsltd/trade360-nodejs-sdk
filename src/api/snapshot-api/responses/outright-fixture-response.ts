@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 import { OutrightFixtureEventElement } from '@api/common/body-entities/responses/outright-fixture-event-element';
 
-
+export class GetOutrightFixtureResultElement {
 /**
  * GetOutrightFixtureResultElement class is responsible
  * for deserializing the response from the snapshot
