@@ -6,7 +6,7 @@ import { OutrightFixtureEventElement } from '@api/common/body-entities/responses
  * for deserializing the response from the snapshot
  * API to get outright fixture
  */
-export class GetOutrightFixtureResultElement  {
+export class GetOutrightFixtureResultElement {
 
   @Expose({ name: 'Id' })
   @Type(() => Number)
