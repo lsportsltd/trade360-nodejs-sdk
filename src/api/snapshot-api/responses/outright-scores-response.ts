@@ -7,7 +7,7 @@ import { OutrightScoreEventElement } from '@api/common/body-entities/responses/o
  * for deserializing the response from the snapshot
  * API to get outright scores 
  */
-export class GetOutrightScoresResultElement  {
+export class GetOutrightScoresResultElement {
 
   @Expose({ name: 'Id' })
   @Type(() => Number)
