@@ -8,13 +8,13 @@
     },
     "MQInPlaySettings": {
       "PackageId": 430,
-      "UserName": "biana_test@lsports.eu",
-      "Password": "P@ssw0rd!"
+      "UserName": "LSPORTS_USERNAME",
+      "Password": "LSPORTS_PASSWORD"
     },
     "MQPreMatchSettings": {
       "PackageId": 431,
-      "UserName": "biana_test@lsports.eu",
-      "Password": "P@ssw0rd!"
+      "UserName": "LSPORTS_USERNAME",
+      "Password": "LSPORTS_PASSWORD"
     }
   }
 }
