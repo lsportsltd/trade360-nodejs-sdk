@@ -5,7 +5,7 @@ import { Livescore } from '@lsports/entities';
  * for deserializing the response from the snapshot
  * API to get livescore
  */
-export class GetLivescoreResultElement  {
+export class GetLivescoreResultElement {
   @Expose({ name: 'Livescore' })
   @Type(() => Livescore)
   livescore!: Livescore;
