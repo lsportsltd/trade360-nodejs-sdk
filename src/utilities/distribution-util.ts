@@ -31,7 +31,7 @@ export class DistributionUtil {
     DistributionUtil.packageDistributionApi =
       customersApiFactory.createPackageDistributionHttpClient({
         packageCredentials: TransformerUtil.transform(settings, HttpRequestDto),
-        customersApiBaseUrl: settings.customersApiBaseUrl,
+        restApiBaseUrl: settings.customersApiBaseUrl,
         logger: (DistributionUtil.logger = logger),
       });
   }

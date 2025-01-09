@@ -1,13 +1,14 @@
 import { Expose, Type } from 'class-transformer';
 import { OutrightEventElement } from '@api/common/body-entities/responses/outright-event-element';
-
+import { BaseEntity } from '@entities';
 
 /**
  * GetOutrightEventsResultElement class is responsible
  * for deserializing the response from the snapshot
  * API to get outright events
  */
-export class GetOutrightEventsResultElement  {
+export class GetOutrightEventsResultElement  implements BaseEntity {
+  [key: string]: unknown;
 
   @Expose({ name: 'Id' })
   @Type(() => Number)

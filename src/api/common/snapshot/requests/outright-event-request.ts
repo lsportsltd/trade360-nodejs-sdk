@@ -3,23 +3,24 @@ import { Expose, Type } from 'class-transformer';
 import { HttpRequestDto } from '@api/common/dtos';
 
 /**
- * GetEventRequest class for sending request
- * to get event from the API. It extends the
+ * GetOutrightEventRequest class for sending request
+ * to get outright event from the API. It extends the
  * HttpRequestDto class and contains the properties
- * for the request to get event from the API.
+ * for the request to get market from the API.
  * @param timestamp The timestamp of the snapshot in UTC
  * @param fromDate The start date for the snapshot in UTC
  * @param toDate The end date for the snapshot in UTC
- * @param sportIds The sport IDs to filter the event
- * @param locationIds The location IDs to filter the event
- * @param leagueIds The league IDs to filter the event
- * @param fixtureIds The fixture IDs to filter the event
- * @returns GetEventRequest instance that
+ * @param sportIds The sport IDs to filter the market
+ * @param locationIds The location IDs to filter the market
+ * @param leagueIds The league IDs to filter the market
+ * @param fixtureIds The fixture IDs to filter the market
+ * @param marketIds The IDs of the markets
+ * @param tournamentsIds The IDs of the markets
+ * @returns GetOutrightEventRequest instance that
  * contains the properties for the request to get
- * event from the API.
+ * market from the API.
  */
-
-export class GetEventRequest extends HttpRequestDto {
+export class GetOutrightEventRequest extends HttpRequestDto {
   @Expose({ name: 'timestamp' })
   @Type(() => Date)
   public timestamp!: Date;
@@ -47,4 +48,12 @@ export class GetEventRequest extends HttpRequestDto {
   @Expose()
   @Type(() => Number)
   fixtureIds?: number[];
+
+  @Expose()
+  @Type(() => Number)
+  marketsIds?: number[];
+
+  @Expose()
+  @Type(() => Number)
+  tournamentsIds?: number[];
 }

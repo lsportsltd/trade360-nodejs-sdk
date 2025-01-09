@@ -13,9 +13,9 @@ import { IHttpService, IRequestArgs } from './interfaces';
 
 /**
  * BaseHttpClient class is responsible for sending requests
- * to the customers API. It is a base class for all HTTP clients.
+ * to the REST API. It is a base class for all HTTP clients.
  * It contains the basic logic for sending requests.
- * @param customersApiBaseUrl The base URL of the customers API
+ * @param apiBaseUrl The base URL of the REST API
  * @param packageCredentials The package credentials for the API
  * @param logger The logger instance to be used for logging
  */
@@ -28,15 +28,15 @@ export abstract class BaseHttpClient {
 
   protected readonly logger: ILogger;
 
-  constructor({ customersApiBaseUrl, packageCredentials, logger }: IHttpServiceConfig) {
+  constructor({ restApiBaseUrl, packageCredentials, logger }: IHttpServiceConfig) {
     this.requestSettings = RequestSettingsValidator.validate({
-      customersApiBaseUrl,
+      restApiBaseUrl,
       ...packageCredentials,
     });
 
     this.logger = !isNil(logger) ? logger : new ConsoleAdapter();
 
-    this.baseUrl = encodeURI(customersApiBaseUrl!);
+    this.baseUrl = encodeURI(restApiBaseUrl!);
 
     this.httpService = new AxiosService<HttpRequestDto>(this.baseUrl);
   }

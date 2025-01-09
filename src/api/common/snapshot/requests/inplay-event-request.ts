@@ -3,34 +3,33 @@ import { Expose, Type } from 'class-transformer';
 import { HttpRequestDto } from '@api/common/dtos';
 
 /**
- * GetOutrightEventRequest class for sending request
- * to get outright event from the API. It extends the
+ * GetInPlayEventRequest class for sending request
+ * to get event from the API. It extends the
  * HttpRequestDto class and contains the properties
- * for the request to get market from the API.
+ * for the request to get event from the API.
  * @param timestamp The timestamp of the snapshot in UTC
  * @param fromDate The start date for the snapshot in UTC
  * @param toDate The end date for the snapshot in UTC
- * @param sportIds The sport IDs to filter the market
- * @param locationIds The location IDs to filter the market
- * @param leagueIds The league IDs to filter the market
- * @param fixtureIds The fixture IDs to filter the market
+ * @param sportIds The sport IDs to filter the event
+ * @param locationIds The location IDs to filter the event
+ * @param leagueIds The league IDs to filter the event
+ * @param fixtureIds The fixture IDs to filter the event
  * @param marketIds The IDs of the markets
- * @param tournamentsIds The IDs of the markets
- * @returns GetOutrightEventRequest instance that
+ * @returns GetInPlayEventRequest instance that
  * contains the properties for the request to get
- * market from the API.
+ * event from the API.
  */
 
-export class GetOutrightEventRequest extends HttpRequestDto {
-  @Expose({ name: 'timestamp' })
+export class GetInPlayEventRequest extends HttpRequestDto {
+  @Expose({ name: 'Timestamp' })
   @Type(() => Date)
   public timestamp!: Date;
 
-  @Expose({ name: 'fromDate' })
+  @Expose({ name: 'FromDate' })
   @Type(() => Date)
   public fromDate?: Date;
 
-  @Expose({ name: 'toDate' })
+  @Expose({ name: 'ToDate' })
   @Type(() => Date)
   public toDate?: Date;
 
@@ -52,9 +51,5 @@ export class GetOutrightEventRequest extends HttpRequestDto {
 
   @Expose()
   @Type(() => Number)
-  marketsIds?: number[];
-
-  @Expose()
-  @Type(() => Number)
-  tournamentsIds?: number[];
+  marketIds?: number[];
 }

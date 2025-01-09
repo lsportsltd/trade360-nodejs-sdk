@@ -1,13 +1,14 @@
 import { Expose, Type } from 'class-transformer';
 import { OutrightFixtureMarketsElement } from '@api/common/body-entities/responses/outright-fixture-market-element';
-
+import { BaseEntity } from '@entities';
 
 /**
  * GetOutrightFixtureMarketsResultElement class is responsible
  * for deserializing the response from the snapshot
  * API to get outright fixture markets
  */
-export class GetOutrightFixtureMarketsResultElement  {
+export class GetOutrightFixtureMarketsResultElement implements BaseEntity {
+  [key: string]: unknown;
 
   @Expose({ name: 'Id' })
   @Type(() => Number)

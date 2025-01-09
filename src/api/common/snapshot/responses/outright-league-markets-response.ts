@@ -1,13 +1,14 @@
 import { Expose, Type } from 'class-transformer';
 import { OutrightLeagueMarketsCompetition } from '@api/common/body-entities/responses/outright-league-market-competition';
-
+import { BaseEntity } from '@entities';
 
 /**
  * GetOutrightLeagueMarketsResultElement class is responsible
  * for deserializing the response from the snapshot
  * API to get outright league markets
  */
-export class GetOutrightLeagueMarketsResultElement {
+export class GetOutrightLeagueMarketsResultElement implements BaseEntity {
+  [key: string]: unknown;
 
   @Expose({ name: 'Id' })
   @Type(() => Number)

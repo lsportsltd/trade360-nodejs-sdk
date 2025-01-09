@@ -1,75 +1,29 @@
 import { IHttpServiceConfig, Mapper } from '@api/common';
 import {
   ISnapshotApiFactory,
-  ISnapshotApiInPlayHttpClient,
-  ISnapshotApiPrematchHttpClient,
-} from '@snapshot-api/interfaces';
+  InPlaySnapshotApiClient,
+  PreMatchSnapshotApiClient,
+} from '@api/snapshot-api/interfaces';
 import {
-  MetadataHttpClient,
-  PackageDistributionHttpClient,
-  SubscriptionHttpClient,
-} from '@customers-api/services';
+  InPlaySnapshotApiClientImplementation,
+  PreMatchSnapshotApiClientImplementation
+} from '@api/snapshot-api/services';
 
 /**
- * Factory class for creating package distribution HTTP client.
- * @implements ICustomersApiFactory interface for creating package
- * distribution HTTP client.
- * @see ICustomersApiFactory interface for creating package
+ * Factory class for creating snapshot HTTP client.
+ * @implements ISnapshotApiFactory interface for creating snapshot
+ *  HTTP client.
+ * @see ISnapshotApiFactory interface for creating snapshot
  */
-export class CustomersApiFactory implements ICustomersApiFactory {
-  public createPackageDistributionHttpClient(
-    httpServiceConfig: IHttpServiceConfig,
-  ): IPackageDistributionHttpClient {
-    return new PackageDistributionHttpClient(httpServiceConfig);
+export class SnapshotApi implements ISnapshotApiFactory {
+  
+  public createSnapshotApiInPlayHttpClient(httpServiceConfig: IHttpServiceConfig): InPlaySnapshotApiClient {
+    const mapper = new Mapper(httpServiceConfig.packageCredentials);
+    return new InPlaySnapshotApiClientImplementation(httpServiceConfig, mapper);
   }
 
-  /**
-   * createMetadataHttpClient method is responsible for creating
-   * a new instance of the MetadataHttpClient class. It creates a
-   * new instance of the MetadataHttpClient class with the provided
-   * HTTP service configuration and mapper.
-   * @param httpServiceConfig The HTTP service configuration for the
-   * metadata HTTP client to use in sending requests to the metadata
-   * API.
-   * @returns A new instance of the MetadataHttpClient class with the
-   * provided HTTP service configuration and mapper.
-   * @see MetadataHttpClient class for sending requests to the
-   * metadata API.
-   * @see IHttpServiceConfig interface for the configuration of the
-   * HTTP service.
-   * @see IMapper interface for mapping between different types of
-   * objects.
-   * @see Mapper class for mapping between different types of objects
-   * in the application.
-   */
-  public createMetadataHttpClient(httpServiceConfig: IHttpServiceConfig): IMetadataHttpClient {
+  public createSnapshotApiPrematchHttpClient(httpServiceConfig: IHttpServiceConfig): PreMatchSnapshotApiClient {
     const mapper = new Mapper(httpServiceConfig.packageCredentials);
-    return new MetadataHttpClient(httpServiceConfig, mapper);
+    return new PreMatchSnapshotApiClientImplementation(httpServiceConfig, mapper);
   }
-
-  /**
-   * createSubscriptionHttpClient method is responsible for creating
-   * a new instance of the SubscriptionHttpClient class. It creates a
-   * new instance of the SubscriptionHttpClient class with the provided
-   * HTTP service configuration and mapper.
-   * @param httpServiceConfig The HTTP service configuration for the
-   * subscription HTTP client to use in sending requests to the
-   * subscription API.
-   * @returns A new instance of the SubscriptionHttpClient class with
-   * the provided HTTP service configuration and mapper.
-   * @see SubscriptionHttpClient class for sending requests to the
-   * subscription API.
-   * @see IHttpServiceConfig interface for the configuration of the
-   * HTTP service.
-   * @see IMapper interface for mapping between different types of
-   * objects.
-   * @see Mapper class for mapping between different types of objects
-   * in the application.
-   */
-  public createSubscriptionHttpClient(
-    httpServiceConfig: IHttpServiceConfig,
-  ): ISubscriptionHttpClient {
-    const mapper = new Mapper(httpServiceConfig.packageCredentials);
-    return new SubscriptionHttpClient(httpServiceConfig, mapper);
-  }
-}
+ }

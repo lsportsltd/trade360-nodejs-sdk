@@ -15,9 +15,8 @@ export interface ISnapshotApiFactory {
    * @param logger - Logger.
    * @return A new instance of {@link InPlaySnapshotApiClient}
    */
-  createSnapshotApiInPlayHttpClient: (
-    httpServiceConfig: IHttpServiceConfig,
-  ) => InPlaySnapshotApiClient;
+  createSnapshotApiInPlayHttpClient: (httpServiceConfig: IHttpServiceConfig) => InPlaySnapshotApiClient;
+
 
   /**
    * Create metadata HTTP client.
@@ -28,7 +27,5 @@ export interface ISnapshotApiFactory {
    * @param mapper - Mapper.
    * @return A new instance of {@link PreMatchSnapshotApiClient}
    */
-  createSnapshotApiPrematchHttpClient: (
-    httpServiceConfig: IHttpServiceConfig,
-  ) => PreMatchSnapshotApiClient;
+  createSnapshotApiPrematchHttpClient: (httpServiceConfig: IHttpServiceConfig) => PreMatchSnapshotApiClient;
 }
