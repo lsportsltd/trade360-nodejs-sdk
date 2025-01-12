@@ -89,7 +89,7 @@ export class InPlaySnapshotApiClientImplementation extends BaseHttpClient implem
    * @returns A promise that resolves to a
    * GetLivescoreResultElement object containing the livescores information.
    */
-  public async getLivescore(
+  public async getLivescores(
     requestDto: GetLivescoreRequestDto,
       ): Promise<GetLivescoreResultElement | undefined> {
         const request = this.mapper.map<GetLivescoreRequestDto, GetLivescoreRequest>(

@@ -29,7 +29,7 @@ export interface PreMatchSnapshotApiClient {
   getFixtures(
     requestDto: GetFixtureRequestDto,
   ): Promise<GetFixturesResultElement | undefined>;
-  getLivescore(
+  getLivescores(
     requestDto: GetLivescoreRequestDto,
   ): Promise<GetLivescoreResultElement | undefined>;
   getFixtureMarkets(
@@ -41,7 +41,7 @@ export interface PreMatchSnapshotApiClient {
   getOutrightEvents(
     requestDto: GetOutrightEventRequestDto,
   ): Promise<GetOutrightEventsResultElement | undefined>;
-  getOutrightFixture(
+  getOutrightFixtures(
     requestDto: GetOutrightFixtureRequestDto,
   ): Promise<GetOutrightFixtureResultElement | undefined>;
   getOutrightScores(

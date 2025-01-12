@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import { OutrightLivescore } from './outright-livescore';
 
@@ -13,5 +13,6 @@ export class OutrightScoreEventElement {
   fixtureId!: number;
 
   @Expose({ name: 'OutrightScore' })
+  @Type(() => OutrightLivescore)
   outrightScore!: OutrightLivescore;
 }

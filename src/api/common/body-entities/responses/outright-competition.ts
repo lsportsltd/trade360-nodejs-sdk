@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import { OutrightLeagueFixtureSnapshot } from './outright-league-fixture-snapshot';
 
@@ -12,5 +12,6 @@ export class OutrightCompetition {
   fixtureId!: number;
 
   @Expose({ name: 'OutrightLeague' })
+  @Type(() => OutrightLeagueFixtureSnapshot)
   outrightLeague!: OutrightLeagueFixtureSnapshot;
 }

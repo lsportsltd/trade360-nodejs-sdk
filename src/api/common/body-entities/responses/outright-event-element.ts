@@ -16,9 +16,11 @@ export class OutrightEventElement {
   fixtureId!: number;
 
   @Expose({ name: 'OutrightFixture' })
+  @Type(() => OutrightFixtureElement)
   outrightFixture!: OutrightFixtureElement;
 
   @Expose({ name: 'OutrightScore' })
+  @Type(() => OutrightScoreElement)
   outrightScore!: OutrightScoreElement;
 
   @Expose({ name: 'Markets' })

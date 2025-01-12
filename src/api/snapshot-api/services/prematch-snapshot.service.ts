@@ -113,7 +113,7 @@ export class PreMatchSnapshotApiClientImplementation extends BaseHttpClient impl
    * @returns A promise that resolves to a
    * GetLivescoreResultElement object containing the livescores information.
    */
-  public async getLivescore(
+  public async getLivescores(
     requestDto: GetLivescoreRequestDto,
       ): Promise<GetLivescoreResultElement | undefined> {
         const request = this.mapper.map<GetLivescoreRequestDto, GetLivescoreRequest>(
@@ -206,7 +206,7 @@ export class PreMatchSnapshotApiClientImplementation extends BaseHttpClient impl
    * @returns A promise that resolves to a
    * GetOutrightFixtureResultElement object containing the outright fixtures information.
    */
-    public async getOutrightFixture(
+    public async getOutrightFixtures(
       requestDto: GetOutrightFixtureRequestDto,
         ): Promise<GetOutrightFixtureResultElement | undefined> {
           const request = this.mapper.map<GetOutrightFixtureRequestDto, GetOutrightFixtureRequest>(

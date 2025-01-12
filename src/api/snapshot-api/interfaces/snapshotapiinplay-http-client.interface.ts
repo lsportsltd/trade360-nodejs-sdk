@@ -17,7 +17,7 @@ export interface InPlaySnapshotApiClient {
   getFixtures(
     requestDto: GetFixtureRequestDto,
   ): Promise<GetFixturesResultElement | undefined>;
-  getLivescore(
+  getLivescores(
     requestDto: GetLivescoreRequestDto,
   ): Promise<GetLivescoreResultElement | undefined>;
   getFixtureMarkets(

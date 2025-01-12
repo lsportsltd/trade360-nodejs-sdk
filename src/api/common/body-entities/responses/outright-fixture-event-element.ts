@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import { OutrightFixtureElement } from './outright-fixture-element';
 
@@ -13,5 +13,6 @@ export class OutrightFixtureEventElement {
   fixtureId!: number;
 
   @Expose({ name: 'OutrightFixture' })
+  @Type(() => OutrightFixtureElement)
   outrightFixture!: OutrightFixtureElement;
 }
