@@ -1,3 +1,4 @@
+import { Expose, Type } from 'class-transformer';
 import { MarketEvent } from '@lsports/entities';
 import { BaseEntity } from '@entities';
 /**
@@ -5,6 +6,10 @@ import { BaseEntity } from '@entities';
  * for deserializing the response from the snapshot
  * API to get get fixture markets
  */
-export class GetFixtureMarketsResultElement extends MarketEvent implements BaseEntity {
+export class GetFixtureMarketsResultElement implements BaseEntity {
     [key: string]: unknown;
+    
+    @Expose({ name: 'Markets' })
+    @Type(() => MarketEvent)
+    markets?: MarketEvent[];
 }

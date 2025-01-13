@@ -15,7 +15,7 @@ import {
  *  HTTP client.
  * @see ISnapshotApiFactory interface for creating snapshot
  */
-export class SnapshotApi implements ISnapshotApiFactory {
+export class SnapshotApiFactory implements ISnapshotApiFactory {
   
   public createSnapshotApiInPlayHttpClient(httpServiceConfig: IHttpServiceConfig): InPlaySnapshotApiClient {
     const mapper = new Mapper(httpServiceConfig.packageCredentials);

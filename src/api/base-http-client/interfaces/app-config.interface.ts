@@ -14,6 +14,7 @@ export interface HttpAppConfig {
  */
 export interface HttpSettings {
   customersApiBaseUrl: string;
+  snapshotApiBaseUrl: string;
   inPlayMQSettings?: HttpRequestSettings;
   preMatchMQSettings?: HttpRequestSettings;
 }

@@ -1,0 +1,24 @@
+{
+  "name": "customer-api-sample",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "watch": "tsc -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "fs": "^0.0.1-security",
+    "lodash": "^4.17.21",
+    "trade360-nodejs-sdk": "file:../../"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.6",
+    "@types/node": "^20.14.9",
+    "ts-node": "^10.9.2"
+  }
+}
