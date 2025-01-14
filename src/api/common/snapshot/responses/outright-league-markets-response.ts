@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
-import { OutrightLeagueMarketsCompetition } from '@api/common/body-entities/responses/outright-league-market-competition';
 import { BaseEntity } from '@entities';
+import { OutrightLeagueMarketBodyStructure } from '@api/common/body-entities/responses/outright-league-market-body-structure';
 
 /**
  * GetOutrightLeagueMarketsResultElement class is responsible
@@ -10,19 +10,7 @@ import { BaseEntity } from '@entities';
 export class GetOutrightLeagueMarketsResultElement implements BaseEntity {
   [key: string]: unknown;
 
-  @Expose({ name: 'Id' })
-  @Type(() => Number)
-  public id!: number;
-
-  @Expose({ name: 'Name' })
-  @Type(() => String)
-  public name!: string;
-
-  @Expose({ name: 'Type' })
-  @Type(() => Number)
-  public type!: number;
-
-  @Expose({ name: 'Events' })
-  @Type(() => OutrightLeagueMarketsCompetition)
-  events?: OutrightLeagueMarketsCompetition[];
+  @Expose({ name: 'Markets' })
+  @Type(() => OutrightLeagueMarketBodyStructure)
+  markets?: OutrightLeagueMarketBodyStructure[];
 }

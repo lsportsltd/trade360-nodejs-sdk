@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
-import { OutrightFixtureMarketsElement } from '@api/common/body-entities/responses/outright-fixture-market-element';
 import { BaseEntity } from '@entities';
+import { OutrightFixtureMarketBodyStructure } from '@api/common/body-entities/responses/outright-fixture-market-body-structure';
 
 /**
  * GetOutrightFixtureMarketsResultElement class is responsible
@@ -10,19 +10,7 @@ import { BaseEntity } from '@entities';
 export class GetOutrightFixtureMarketsResultElement implements BaseEntity {
   [key: string]: unknown;
 
-  @Expose({ name: 'Id' })
-  @Type(() => Number)
-  public id!: number;
-
-  @Expose({ name: 'Name' })
-  @Type(() => String)
-  public name!: string;
-
-  @Expose({ name: 'Type' })
-  @Type(() => Number)
-  public type!: number;
-
-  @Expose({ name: 'Events' })
-  @Type(() => OutrightFixtureMarketsElement)
-  events?: OutrightFixtureMarketsElement[];
+  @Expose({ name: 'Markets' })
+  @Type(() => OutrightFixtureMarketBodyStructure)
+  markets?: OutrightFixtureMarketBodyStructure[];
 }

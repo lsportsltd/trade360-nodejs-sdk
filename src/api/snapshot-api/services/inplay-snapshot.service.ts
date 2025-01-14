@@ -9,17 +9,21 @@ import {
   GetLivescoreResultElement,
 } from '@api/common/snapshot/responses';
 import {
+  GetEventRequest,
   GetFixtureRequest,
   GetInPlayEventRequest,
   GetLivescoreRequest,
   GetMarketRequest,
 } from '@api/common/snapshot/requests';
 import {
+  GetEventRequestDto,
   GetFixtureRequestDto,
   GetInPlayEventRequestDto,
   GetLivescoreRequestDto,
   GetMarketRequestDto,
 } from '@api/common/snapshot/dtos';
+import { EventBodyStructure } from '@api/common/body-entities/responses/event-body-structure';
+import { FixtureEvent, LivescoreEvent, MarketEvent } from '@entities';
 
 const {
   GET_EVENTS_PREFIX_URL,
@@ -67,7 +71,7 @@ export class InPlaySnapshotApiClientImplementation
    */
   public async getFixtures(
     requestDto: GetFixtureRequestDto,
-  ): Promise<GetFixturesResultElement | undefined> {
+  ): Promise<FixtureEvent[] | undefined> {
     const request = this.mapper.map<GetFixtureRequestDto, GetFixtureRequest>(
       requestDto,
       GetFixtureRequest,
@@ -79,7 +83,7 @@ export class InPlaySnapshotApiClientImplementation
       requestBody: request,
     });
 
-    return fixturesCollection;
+    return fixturesCollection?.fixtures;
   }
 
   /**
@@ -90,7 +94,7 @@ export class InPlaySnapshotApiClientImplementation
    */
   public async getLivescores(
     requestDto: GetLivescoreRequestDto,
-  ): Promise<GetLivescoreResultElement | undefined> {
+  ): Promise<LivescoreEvent[] | undefined> {
     const request = this.mapper.map<GetLivescoreRequestDto, GetLivescoreRequest>(
       requestDto,
       GetLivescoreRequest,
@@ -101,7 +105,7 @@ export class InPlaySnapshotApiClientImplementation
       responseBodyType: GetLivescoreResultElement,
       requestBody: request,
     });
-    return scoresCollection;
+    return scoresCollection?.scores;
   }
 
   /**
@@ -113,10 +117,10 @@ export class InPlaySnapshotApiClientImplementation
    */
   public async getFixtureMarkets(
     requestDto: GetMarketRequestDto,
-  ): Promise<GetFixtureMarketsResultElement | undefined> {
+  ): Promise<MarketEvent[] | undefined> {
     const request = this.mapper.map<GetMarketRequestDto, GetMarketRequest>(
       requestDto,
-      GetMarketRequest,
+      GetEventRequest,
     );
 
     const marketsCollection = await this.postRequest<GetFixtureMarketsResultElement>({
@@ -124,7 +128,8 @@ export class InPlaySnapshotApiClientImplementation
       responseBodyType: GetFixtureMarketsResultElement,
       requestBody: request,
     });
-    return marketsCollection;
+
+    return marketsCollection?.markets;
   }
 
   /**
@@ -134,8 +139,8 @@ export class InPlaySnapshotApiClientImplementation
    * GetEventsResultElement object containing the events information.
    */
   public async getEvents(
-    requestDto: GetInPlayEventRequestDto,
-  ): Promise<GetEventsResultElement | undefined> {
+    requestDto: GetEventRequestDto,
+  ): Promise<EventBodyStructure[] | undefined> {
     const request = this.mapper.map<GetInPlayEventRequestDto, GetInPlayEventRequest>(
       requestDto,
       GetInPlayEventRequest,
@@ -146,6 +151,7 @@ export class InPlaySnapshotApiClientImplementation
       responseBodyType: GetEventsResultElement,
       requestBody: request,
     });
-    return eventsCollection;
+
+    return eventsCollection?.events;
   }
 }

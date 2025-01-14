@@ -11,16 +11,6 @@ import {
   GetOutrightLeaguesRequestDto, 
   GetOutrightLivescoreRequestDto, 
   GetOutrightMarketRequestDto,
-  GetFixturesResultElement,
-  GetLivescoreResultElement,
-  GetFixtureMarketsResultElement,
-  GetEventsResultElement,
-  GetOutrightEventsResultElement, 
-  GetOutrightFixtureResultElement, 
-  GetOutrightScoresResultElement, 
-  GetOutrightFixtureMarketsResultElement, 
-  GetOutrightLeagueMarketsResultElement, 
-  GetOutrightLeaguesResultElement
 } from 'trade360-nodejs-sdk/src/api/common/snapshot';
 
 import {
@@ -119,188 +109,147 @@ const initApiSample = async () => {
 }
 };
 
-const getInPlayFixtures = async (
-  inplaySnapshotHttpClient: InPlaySnapshotApiClient,
-): Promise<void> => {
+const getInPlayFixtures = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
   const request = new GetFixtureRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetFixturesResultElement | undefined =
-    await inplaySnapshotHttpClient.getFixtures(request);
+  const response = await inplaySnapshotHttpClient.getFixtures(request);
 
-  logger.log(`${response?.fixtures?.length} Fixtures retrieved.`);
+  logger.log(`${response?.length} Fixtures retrieved.`);
 };
 
-const getInPlayLivescores = async (
-  inplaySnapshotHttpClient: InPlaySnapshotApiClient,
-): Promise<void> => {
+const getInPlayLivescores = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
   const request = new GetLivescoreRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetLivescoreResultElement | undefined =
-    await inplaySnapshotHttpClient.getLivescores(request);
+  const response = await inplaySnapshotHttpClient.getLivescores(request);
 
-  logger.log(`${response?.livescore?.length} Livescores retrieved.`);
+  logger.log(`${response?.length} Livescores retrieved.`);
 };
 
-const getInPlayFixtureMarkets = async (
-  inplaySnapshotHttpClient: InPlaySnapshotApiClient,
-): Promise<void> => {
+const getInPlayFixtureMarkets = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
   const request = new GetMarketsRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetEventsResultElement | undefined =
-    await inplaySnapshotHttpClient.getEvents(request);
+  const response = await inplaySnapshotHttpClient.getFixtureMarkets(request);
 
-  logger.log(`${response?.markets?.length} FixtureMarkets retrieved.`);
+  logger.log(`${response?.length} Fixture Markets retrieved.`);
 };
 
-const getInPlayEvents = async (
-  inplaySnapshotHttpClient: InPlaySnapshotApiClient,
-): Promise<void> => {
+const getInPlayEvents = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
   const request = new GetInPlayEventRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetFixtureMarketsResultElement | undefined =
-    await inplaySnapshotHttpClient.getEvents(request);
+  const response = await inplaySnapshotHttpClient.getEvents(request);
 
-  logger.log(`${response?.markets?.length} Events retrieved.`);
+  logger.log(`${response?.length} Events retrieved.`);
 };
 
-const getPreMatchFixtures = async (
-  prematchSnapshotHttpClient: PreMatchSnapshotApiClient,
-): Promise<void> => {
+const getPreMatchFixtures = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetFixtureRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetFixturesResultElement | undefined =
-    await prematchSnapshotHttpClient.getFixtures(request);
+  const response = await prematchSnapshotHttpClient.getFixtures(request);
 
-  logger.log(`${response?.fixtures?.length} Fixtures retrieved.`);
+  logger.log(`${response?.length} Fixtures retrieved.`);
 };
 
-const getPreMatchLivescores = async (
-  prematchSnapshotHttpClient: PreMatchSnapshotApiClient,
-): Promise<void> => {
+const getPreMatchLivescores = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetLivescoreRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetLivescoreResultElement | undefined =
-    await prematchSnapshotHttpClient.getLivescores(request);
+  const response = await prematchSnapshotHttpClient.getLivescores(request);
 
-  logger.log(`${response?.livescore?.length} Livescores retrieved.`);
+  logger.log(`${response?.length} Livescores retrieved.`);
 };
 
-
-const getPreMatchFixtureMarkets = async (
-  prematchSnapshotHttpClient: PreMatchSnapshotApiClient,
-): Promise<void> => {
+const getPreMatchFixtureMarkets = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetMarketsRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetFixtureMarketsResultElement | undefined =
-    await prematchSnapshotHttpClient.getFixtureMarkets(request);
+  const response = await prematchSnapshotHttpClient.getFixtureMarkets(request);
 
-  logger.log(`${response?.markets?.length} FixtureMarkets retrieved.`);
+  logger.log(`${response?.length} Fixture Markets retrieved.`);
 };
 
-const getPreMatchEvents = async (
-  prematchSnapshotHttpClient: PreMatchSnapshotApiClient,
-): Promise<void> => {
+const getPreMatchEvents = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetEventRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetEventsResultElement | undefined =
-    await prematchSnapshotHttpClient.getEvents(request);
+  const response = await prematchSnapshotHttpClient.getEvents(request);
 
-  logger.log(`${response?.markets?.length} Events retrieved.`);
+  logger.log(`${response?.length} Events retrieved.`);
 };
 
-const getOutrightEvents = async (
-  prematchSnapshotHttpClient: PreMatchSnapshotApiClient,
-): Promise<void> => {
+
+const getOutrightEvents = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightEventRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetOutrightEventsResultElement | undefined =
-    await prematchSnapshotHttpClient.getOutrightEvents(request);
+  const response = await prematchSnapshotHttpClient.getOutrightEvents(request);
 
-  logger.log(`${response?.events?.length} Outrigh Events retrieved.`);
+  logger.log(`${response?.length} Outright Events retrieved.`);
 };
 
-const getOutrightFixtures = async (
-  prematchSnapshotHttpClient: PreMatchSnapshotApiClient,
-): Promise<void> => {
+
+const getOutrightFixtures = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightFixtureRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetOutrightFixtureResultElement | undefined =
-    await prematchSnapshotHttpClient.getOutrightFixtures(request);
+  const response = await prematchSnapshotHttpClient.getOutrightFixtures(request);
 
-  logger.log(`${response?.events?.length} Outright Fixtures retrieved.`);
+  logger.log(`${response?.length} Outright Fixtures retrieved.`);
 };
 
-const getOutrightScores = async (
-  prematchSnapshotHttpClient: PreMatchSnapshotApiClient,
-): Promise<void> => {
+const getOutrightScores = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightLivescoreRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetOutrightScoresResultElement | undefined =
-    await prematchSnapshotHttpClient.getOutrightScores(request);
+  const response = await prematchSnapshotHttpClient.getOutrightScores(request);
 
-  logger.log(`${response?.events?.length}  Outright Scores retrieved.`);
+  logger.log(`${response?.length} Outright Scores retrieved.`);
 };
 
-
-const getOutrightFixtureMarkets = async (
-  prematchSnapshotHttpClient: PreMatchSnapshotApiClient,
-): Promise<void> => {
+const getOutrightFixtureMarkets = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightMarketRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetOutrightFixtureMarketsResultElement | undefined =
-    await prematchSnapshotHttpClient.getOutrightFixtureMarkets(request);
+  const response = await prematchSnapshotHttpClient.getOutrightFixtureMarkets(request);
 
-  logger.log(`${response?.events?.length} Outright Fixture Markets retrieved.`);
+  logger.log(`${response?.length} Outright Fixture Markets retrieved.`);
 };
 
-const getOutrightLeagues = async (
-  prematchSnapshotHttpClient: PreMatchSnapshotApiClient,
-): Promise<void> => {
+
+const getOutrightLeagues = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightLeaguesRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetOutrightLeaguesResultElement | undefined =
-    await prematchSnapshotHttpClient.getOutrightLeagues(request);
+  const response = await prematchSnapshotHttpClient.getOutrightLeagues(request);
 
-  logger.log(`${response?.events?.length} Outright Competitions retrieved.`);
+  logger.log(`${response?.length} Outright Leagues retrieved.`);
 };
 
-const getOutrightLeagueMarkets = async (
-  prematchSnapshotHttpClient: PreMatchSnapshotApiClient,
-): Promise<void> => {
+const getOutrightLeagueMarkets = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightLeagueMarketRequestDto({
-    sportIds: [6046],
+    sportIds: [6046]
   });
 
-  const response: GetOutrightLeagueMarketsResultElement | undefined =
-    await prematchSnapshotHttpClient.getOutrightLeagueMarkets(request);
+  const response = await prematchSnapshotHttpClient.getOutrightLeagueMarkets(request);
 
-  logger.log(`${response?.events?.length} Outright League Markets retrieved.`);
+  logger.log(`${response?.length} Outright League Markets retrieved.`);
 };
 
 initApiSample();

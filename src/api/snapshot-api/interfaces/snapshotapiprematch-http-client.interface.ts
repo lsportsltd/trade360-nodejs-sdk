@@ -1,16 +1,4 @@
 import {
-  GetEventsResultElement,
-  GetFixtureMarketsResultElement,
-  GetFixturesResultElement,
-  GetLivescoreResultElement,
-  GetOutrightEventsResultElement,
-  GetOutrightFixtureResultElement,
-  GetOutrightScoresResultElement,
-  GetOutrightFixtureMarketsResultElement,
-  GetOutrightLeagueMarketsResultElement,
-  GetOutrightLeaguesResultElement,
-} from '@api/common/snapshot/responses';
-import {
   GetEventRequestDto,
   GetFixtureRequestDto,
   GetLivescoreRequestDto,
@@ -22,33 +10,40 @@ import {
   GetOutrightLivescoreRequestDto,
   GetOutrightMarketRequestDto,
 } from '@api/common/snapshot/dtos';
+import { FixtureEvent, LivescoreEvent, MarketEvent } from '@entities';
+import { EventBodyStructure } from '@api/common/body-entities/responses/event-body-structure';
+import { OutrightEventBodyStructure } from '@api/common/body-entities/responses/outright-event-body-structure';
+import { OutrightFixtureBodyStructure } from '@api/common/body-entities/responses/outright-fixture-body-structure';
+import { OutrightScoreBodyStructure } from '@api/common/body-entities/responses/outright-score-body-structure';
+import { OutrightFixtureMarketBodyStructure } from '@api/common/body-entities/responses/outright-fixture-market-body-structure';
+import { OutrightLeagueBodyStructure } from '@api/common/body-entities/responses/outright-league-body-structure';
+import { OutrightLeagueMarketBodyStructure } from '@api/common/body-entities/responses/outright-league-market-body-structure';
+
 
 /**
  * Interface for the In-Play Snapshot API client.
  */
 export interface PreMatchSnapshotApiClient {
-  getFixtures(requestDto: GetFixtureRequestDto): Promise<GetFixturesResultElement | undefined>;
-  getLivescores(requestDto: GetLivescoreRequestDto): Promise<GetLivescoreResultElement | undefined>;
-  getFixtureMarkets(
-    requestDto: GetMarketRequestDto,
-  ): Promise<GetFixtureMarketsResultElement | undefined>;
-  getEvents(requestDto: GetEventRequestDto): Promise<GetEventsResultElement | undefined>;
+  getFixtures(requestDto: GetFixtureRequestDto): Promise<FixtureEvent[] | undefined>;
+  getLivescores(requestDto: GetLivescoreRequestDto): Promise<LivescoreEvent[] | undefined>;
+  getFixtureMarkets(requestDto: GetMarketRequestDto,): Promise<MarketEvent[] | undefined>;
+  getEvents(requestDto: GetEventRequestDto): Promise<EventBodyStructure[] | undefined>;
   getOutrightEvents(
     requestDto: GetOutrightEventRequestDto,
-  ): Promise<GetOutrightEventsResultElement | undefined>;
+  ): Promise<OutrightEventBodyStructure[] | undefined>;
   getOutrightFixtures(
     requestDto: GetOutrightFixtureRequestDto,
-  ): Promise<GetOutrightFixtureResultElement | undefined>;
+  ): Promise<OutrightFixtureBodyStructure[] | undefined>;
   getOutrightScores(
     requestDto: GetOutrightLivescoreRequestDto,
-  ): Promise<GetOutrightScoresResultElement | undefined>;
+  ): Promise<OutrightScoreBodyStructure[] | undefined>;
   getOutrightFixtureMarkets(
     requestDto: GetOutrightMarketRequestDto,
-  ): Promise<GetOutrightFixtureMarketsResultElement | undefined>;
+  ): Promise<OutrightFixtureMarketBodyStructure[] | undefined>;
   getOutrightLeagues(
     requestDto: GetOutrightLeaguesRequestDto,
-  ): Promise<GetOutrightLeaguesResultElement | undefined>;
+  ): Promise<OutrightLeagueBodyStructure[] | undefined>;
   getOutrightLeagueMarkets(
     requestDto: GetOutrightLeagueMarketRequestDto,
-  ): Promise<GetOutrightLeagueMarketsResultElement | undefined>;
+  ): Promise<OutrightLeagueMarketBodyStructure[] | undefined>;
 }

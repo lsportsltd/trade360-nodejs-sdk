@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { Livescore } from '@lsports/entities';
+import { LivescoreEvent } from '@lsports/entities';
 import { BaseEntity } from '@entities';
 /**
  * GetLivescoreResultElement class is responsible
@@ -9,11 +9,7 @@ import { BaseEntity } from '@entities';
 export class GetLivescoreResultElement implements BaseEntity {
   [key: string]: unknown;
 
-  @Expose({ name: 'Livescore' })
-  @Type(() => Livescore)
-  livescore!: Livescore;
-
-  @Expose({ name: 'FixtureId' })
-  @Type(() => Number)
-  public fixtureId!: number;
+  @Expose({ name: 'Scores' })
+  @Type(() => LivescoreEvent)
+  scores: LivescoreEvent[] = [];
 }

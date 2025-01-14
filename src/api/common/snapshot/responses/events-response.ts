@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
-import { Fixture, Livescore, Market } from '@lsports/entities';
 import { BaseEntity } from '@entities';
+import { EventBodyStructure } from '@api/common/body-entities/responses/event-body-structure';
 /**
  * GetEventsResultElement class is responsible
  * for deserializing the response from the snapshot
@@ -9,19 +9,7 @@ import { BaseEntity } from '@entities';
 export class GetEventsResultElement implements BaseEntity {
   [key: string]: unknown;
 
-  @Expose({ name: 'Fixture' })
-  @Type(() => Fixture)
-  fixture!: Fixture;
-
-  @Expose({ name: 'Livescore' })
-  @Type(() => Livescore)
-  livescore!: Livescore;
-
-  @Expose({ name: 'Markets' })
-  @Type(() => Market)
-  markets?: Market[];
-
-  @Expose({ name: 'FixtureId' })
-  @Type(() => Number)
-  public fixtureId!: number;
+  @Expose({ name: 'Events' })
+  @Type(() => EventBodyStructure)
+  events?: EventBodyStructure[];
 }
