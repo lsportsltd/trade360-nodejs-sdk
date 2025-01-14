@@ -7,9 +7,9 @@ import { BaseEntity } from '@entities';
  * API to get get fixture markets
  */
 export class GetFixtureMarketsResultElement implements BaseEntity {
-    [key: string]: unknown;
-    
-    @Expose({ name: 'Markets' })
-    @Type(() => MarketEvent)
-    markets?: MarketEvent[];
+  [key: string]: unknown;
+
+  @Expose({ name: 'Markets' })
+  @Type(() => MarketEvent)
+  markets?: MarketEvent[];
 }

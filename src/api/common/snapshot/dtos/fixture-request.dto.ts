@@ -3,7 +3,7 @@ import moment, { Moment } from 'moment';
 import { BaseEntity } from '@entities';
 /**
  * GetFixtureRequestDto class for sending request
- * to get fixture from the API. 
+ * to get fixture from the API.
  * @param timestamp The timestamp of the snapshot in UTC
  * @param fromDate The start date for the snapshot in UTC
  * @param toDate The end date for the snapshot in UTC

@@ -47,7 +47,7 @@ const initApiSample = async () => {
 
     const inPlaySnapshotHttpClient = snapshotApiFactory.createSnapshotApiInPlayHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
-      snapshotApiBaseUrl: config.trade360.snapshotApiBaseUrl,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
 
@@ -61,7 +61,7 @@ const initApiSample = async () => {
 
      const preMatchSnapshotHttpClient = snapshotApiFactory.createSnapshotApiPrematchHttpClient({
       packageCredentials: config.trade360.preMatchMQSettings,
-      snapshotApiBaseUrl: config.trade360.snapshotApiBaseUrl,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
     await getPreMatchFixtures(preMatchSnapshotHttpClient);

@@ -51,7 +51,7 @@ const initApiSample = async () => {
 
     const subscriptionHttpClient = customersApiFactory.createSubscriptionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
-      customersApiBaseUrl: config.trade360.customersApiBaseUrl,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
 
@@ -83,7 +83,7 @@ const initApiSample = async () => {
 
      const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
        packageCredentials: config.trade360.inPlayMQSettings,
-       customersApiBaseUrl: config.trade360.customersApiBaseUrl,
+       restApiBaseUrl: config.trade360.restApiBaseUrl,
        logger,
      });
 
@@ -101,7 +101,7 @@ const initApiSample = async () => {
 
      const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
        packageCredentials: config.trade360.inPlayMQSettings,
-       customersApiBaseUrl: config.trade360.customersApiBaseUrl,
+       restApiBaseUrl: config.trade360.restApiBaseUrl,
        logger,
      });
 

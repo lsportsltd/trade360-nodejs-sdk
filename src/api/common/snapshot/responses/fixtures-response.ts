@@ -7,9 +7,9 @@ import { BaseEntity } from '@entities';
  * API to get fixtures
  */
 export class GetFixturesResultElement implements BaseEntity {
-    [key: string]: unknown;
+  [key: string]: unknown;
 
-    @Expose({ name: 'Fixtures' })
-    @Type(() => FixtureEvent)
-    fixtures: FixtureEvent[] = [];
+  @Expose({ name: 'Fixtures' })
+  @Type(() => FixtureEvent)
+  fixtures: FixtureEvent[] = [];
 }

@@ -35,5 +35,4 @@ export class OutrightFixtureElement {
   @Expose({ name: 'Subscription' })
   @Type(() => Subscription)
   subscription!: Subscription;
-
 }

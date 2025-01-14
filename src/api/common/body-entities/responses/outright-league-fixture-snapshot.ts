@@ -31,5 +31,4 @@ export class OutrightLeagueFixtureSnapshot {
   @Expose({ name: 'ExtraData' })
   @Type(() => NameValueRecord)
   public extraData?: NameValueRecord[];
-
 }

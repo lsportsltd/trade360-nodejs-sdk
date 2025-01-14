@@ -8,7 +8,6 @@ import { OutrightLivescore } from './outright-livescore';
  * outright score event element structure.
  */
 export class OutrightScoreEventElement {
-
   @Expose({ name: 'FixtureId' })
   fixtureId!: number;
 

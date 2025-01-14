@@ -6,25 +6,26 @@ import {
   GetEventsResultElement,
   GetFixtureMarketsResultElement,
   GetFixturesResultElement,
-  GetLivescoreResultElement
+  GetLivescoreResultElement,
 } from '@api/common/snapshot/responses';
 import {
   GetFixtureRequest,
   GetInPlayEventRequest,
   GetLivescoreRequest,
-  GetMarketRequest
+  GetMarketRequest,
 } from '@api/common/snapshot/requests';
-import { GetFixtureRequestDto, 
-  GetInPlayEventRequestDto, 
-  GetLivescoreRequestDto, 
-  GetMarketRequestDto 
+import {
+  GetFixtureRequestDto,
+  GetInPlayEventRequestDto,
+  GetLivescoreRequestDto,
+  GetMarketRequestDto,
 } from '@api/common/snapshot/dtos';
 
 const {
   GET_EVENTS_PREFIX_URL,
   GET_FIXTURE_MARKETS_PREFIX_URL,
   GET_FIXTURES_PREFIX_URL,
-  GET_SCORES_PREFIX_URL
+  GET_SCORES_PREFIX_URL,
 } = InplaySnapshotApiClientPrefixUrl;
 /**
  * MetadataHttpClient class is responsible for sending requests
@@ -47,41 +48,39 @@ const {
  * @see IHttpServiceConfig interface for the configuration of
  * the HTTP service.
  */
-export class InPlaySnapshotApiClientImplementation extends BaseHttpClient implements InPlaySnapshotApiClient {
+export class InPlaySnapshotApiClientImplementation
+  extends BaseHttpClient
+  implements InPlaySnapshotApiClient
+{
   private readonly mapper: IMapper;
 
-
-  constructor(
-    { packageCredentials, restApiBaseUrl, logger }: IHttpServiceConfig,
-    mapper: IMapper,
-  ) {
+  constructor({ packageCredentials, restApiBaseUrl, logger }: IHttpServiceConfig, mapper: IMapper) {
     super({ restApiBaseUrl, packageCredentials, logger });
     this.mapper = mapper;
   }
+
   /**
    * Sends a request to the snapshot API to get fixtures.
    * @param requestDto The request DTO for getting fixtures.
    * @returns A promise that resolves to a
    * GetFixturesResultElement object containing the fixtures information.
    */
-    public async getFixtures(
-      requestDto: GetFixtureRequestDto,
-    ): Promise<GetFixturesResultElement | undefined> {
-      const request = this.mapper.map<GetFixtureRequestDto, GetFixtureRequest>(
-        requestDto,
-        GetFixtureRequest,
-      );
-  
-      const fixturesCollection = await this.postRequest<GetFixturesResultElement>(
-        {
-          route: GET_FIXTURES_PREFIX_URL,
-          responseBodyType: GetFixturesResultElement,
-          requestBody: request,
-        },
-      );
-  
-      return fixturesCollection;
-    }
+  public async getFixtures(
+    requestDto: GetFixtureRequestDto,
+  ): Promise<GetFixturesResultElement | undefined> {
+    const request = this.mapper.map<GetFixtureRequestDto, GetFixtureRequest>(
+      requestDto,
+      GetFixtureRequest,
+    );
+
+    const fixturesCollection = await this.postRequest<GetFixturesResultElement>({
+      route: GET_FIXTURES_PREFIX_URL,
+      responseBodyType: GetFixturesResultElement,
+      requestBody: request,
+    });
+
+    return fixturesCollection;
+  }
 
   /**
    * Sends a request to the snapshot API to get livescores.
@@ -91,21 +90,20 @@ export class InPlaySnapshotApiClientImplementation extends BaseHttpClient implem
    */
   public async getLivescores(
     requestDto: GetLivescoreRequestDto,
-      ): Promise<GetLivescoreResultElement | undefined> {
-        const request = this.mapper.map<GetLivescoreRequestDto, GetLivescoreRequest>(
-          requestDto,
-          GetLivescoreRequest,
-        );
-      
-        const scoresCollection = await this.postRequest<GetLivescoreResultElement>(
-          {
-            route: GET_SCORES_PREFIX_URL,
-            responseBodyType: GetLivescoreResultElement,
-            requestBody: request,
-          },
-        );
+  ): Promise<GetLivescoreResultElement | undefined> {
+    const request = this.mapper.map<GetLivescoreRequestDto, GetLivescoreRequest>(
+      requestDto,
+      GetLivescoreRequest,
+    );
+
+    const scoresCollection = await this.postRequest<GetLivescoreResultElement>({
+      route: GET_SCORES_PREFIX_URL,
+      responseBodyType: GetLivescoreResultElement,
+      requestBody: request,
+    });
     return scoresCollection;
   }
+
   /**
    * Sends a request to the snapshot API to get fixtures markets.
    * @param requestDto The request DTO for getting fixtures markets.
@@ -115,21 +113,20 @@ export class InPlaySnapshotApiClientImplementation extends BaseHttpClient implem
    */
   public async getFixtureMarkets(
     requestDto: GetMarketRequestDto,
-      ): Promise<GetFixtureMarketsResultElement | undefined> {
-        const request = this.mapper.map<GetMarketRequestDto, GetMarketRequest>(
-          requestDto,
-          GetMarketRequest,
-        );
-      
-        const marketsCollection = await this.postRequest<GetFixtureMarketsResultElement>(
-          {
-            route: GET_FIXTURE_MARKETS_PREFIX_URL,
-            responseBodyType: GetFixtureMarketsResultElement,
-            requestBody: request,
-          },
-        );
+  ): Promise<GetFixtureMarketsResultElement | undefined> {
+    const request = this.mapper.map<GetMarketRequestDto, GetMarketRequest>(
+      requestDto,
+      GetMarketRequest,
+    );
+
+    const marketsCollection = await this.postRequest<GetFixtureMarketsResultElement>({
+      route: GET_FIXTURE_MARKETS_PREFIX_URL,
+      responseBodyType: GetFixtureMarketsResultElement,
+      requestBody: request,
+    });
     return marketsCollection;
   }
+
   /**
    * Sends a request to the snapshot API to get events.
    * @param requestDto The request DTO for getting events.
@@ -138,19 +135,17 @@ export class InPlaySnapshotApiClientImplementation extends BaseHttpClient implem
    */
   public async getEvents(
     requestDto: GetInPlayEventRequestDto,
-      ): Promise<GetEventsResultElement | undefined> {
-        const request = this.mapper.map<GetInPlayEventRequestDto, GetInPlayEventRequest>(
-          requestDto,
-          GetInPlayEventRequest,
-        );
-      
-        const eventsCollection = await this.postRequest<GetEventsResultElement>(
-          {
-            route: GET_EVENTS_PREFIX_URL,
-            responseBodyType: GetEventsResultElement,
-            requestBody: request,
-          },
-        );
+  ): Promise<GetEventsResultElement | undefined> {
+    const request = this.mapper.map<GetInPlayEventRequestDto, GetInPlayEventRequest>(
+      requestDto,
+      GetInPlayEventRequest,
+    );
+
+    const eventsCollection = await this.postRequest<GetEventsResultElement>({
+      route: GET_EVENTS_PREFIX_URL,
+      responseBodyType: GetEventsResultElement,
+      requestBody: request,
+    });
     return eventsCollection;
   }
 }

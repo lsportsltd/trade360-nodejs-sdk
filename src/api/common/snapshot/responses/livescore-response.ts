@@ -8,6 +8,7 @@ import { BaseEntity } from '@entities';
  */
 export class GetLivescoreResultElement implements BaseEntity {
   [key: string]: unknown;
+
   @Expose({ name: 'Livescore' })
   @Type(() => Livescore)
   livescore!: Livescore;
@@ -15,5 +16,4 @@ export class GetLivescoreResultElement implements BaseEntity {
   @Expose({ name: 'FixtureId' })
   @Type(() => Number)
   public fixtureId!: number;
-
 }

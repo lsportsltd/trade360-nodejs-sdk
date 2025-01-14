@@ -7,7 +7,7 @@ import { BaseEntity } from '@entities';
  * for deserializing the response from the snapshot
  * API to get outright events
  */
-export class GetOutrightEventsResultElement  implements BaseEntity {
+export class GetOutrightEventsResultElement implements BaseEntity {
   [key: string]: unknown;
 
   @Expose({ name: 'Id' })

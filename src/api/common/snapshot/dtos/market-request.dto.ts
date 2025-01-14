@@ -3,7 +3,7 @@ import moment, { Moment } from 'moment';
 import { BaseEntity } from '@entities';
 /**
  * GetMarketRequestDto class for sending request
- * to get market from the API. 
+ * to get market from the API.
  * @param timestamp The timestamp of the snapshot in UTC
  * @param fromDate The start date for the snapshot in UTC
  * @param toDate The end date for the snapshot in UTC

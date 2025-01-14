@@ -8,7 +8,6 @@ import { OutrightFixtureElement } from './outright-fixture-element';
  * outright fixture event element structure.
  */
 export class OutrightFixtureEventElement {
-
   @Expose({ name: 'FixtureId' })
   fixtureId!: number;
 

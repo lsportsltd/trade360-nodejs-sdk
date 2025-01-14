@@ -9,7 +9,6 @@ import { FixtureStatus } from '@lsports/enums';
  * outright score element structure.
  */
 export class OutrightScoreElement {
-
   @Expose({ name: 'ParticipantResults' })
   @Type(() => OutrightParticipantResult)
   participantResults: OutrightParticipantResult[] = [];

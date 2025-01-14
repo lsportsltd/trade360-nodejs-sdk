@@ -8,7 +8,6 @@ import { OutrightMarketElement } from './outright-market-element';
  * outright fixture markets element structure.
  */
 export class OutrightFixtureMarketsElement {
-
   @Expose({ name: 'FixtureId' })
   fixtureId!: number;
 

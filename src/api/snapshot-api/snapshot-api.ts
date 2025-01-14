@@ -6,7 +6,7 @@ import {
 } from '@api/snapshot-api/interfaces';
 import {
   InPlaySnapshotApiClientImplementation,
-  PreMatchSnapshotApiClientImplementation
+  PreMatchSnapshotApiClientImplementation,
 } from '@api/snapshot-api/services';
 
 /**
@@ -16,14 +16,17 @@ import {
  * @see ISnapshotApiFactory interface for creating snapshot
  */
 export class SnapshotApiFactory implements ISnapshotApiFactory {
-  
-  public createSnapshotApiInPlayHttpClient(httpServiceConfig: IHttpServiceConfig): InPlaySnapshotApiClient {
+  public createSnapshotApiInPlayHttpClient(
+    httpServiceConfig: IHttpServiceConfig,
+  ): InPlaySnapshotApiClient {
     const mapper = new Mapper(httpServiceConfig.packageCredentials);
     return new InPlaySnapshotApiClientImplementation(httpServiceConfig, mapper);
   }
 
-  public createSnapshotApiPrematchHttpClient(httpServiceConfig: IHttpServiceConfig): PreMatchSnapshotApiClient {
+  public createSnapshotApiPrematchHttpClient(
+    httpServiceConfig: IHttpServiceConfig,
+  ): PreMatchSnapshotApiClient {
     const mapper = new Mapper(httpServiceConfig.packageCredentials);
     return new PreMatchSnapshotApiClientImplementation(httpServiceConfig, mapper);
   }
- }
+}

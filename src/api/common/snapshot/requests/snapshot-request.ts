@@ -53,7 +53,7 @@ export class GetSnapshotRequest extends HttpRequestDto {
   @Expose()
   @Type(() => Number)
   fixtureIds?: number[];
-  
+
   @Expose()
   @Type(() => Number)
   marketsIds?: number[];

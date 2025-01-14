@@ -69,10 +69,7 @@ const {
 export class SubscriptionHttpClient extends BaseHttpClient implements ISubscriptionHttpClient {
   private readonly mapper: IMapper;
 
-  constructor(
-    { packageCredentials, restApiBaseUrl, logger }: IHttpServiceConfig,
-    mapper: IMapper,
-  ) {
+  constructor({ packageCredentials, restApiBaseUrl, logger }: IHttpServiceConfig, mapper: IMapper) {
     super({ restApiBaseUrl, packageCredentials, logger });
     this.mapper = mapper;
   }

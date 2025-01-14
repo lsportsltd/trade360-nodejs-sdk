@@ -1,7 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { Fixture } from '@lsports/entities';
-import { Livescore } from '@lsports/entities';
-import { Market } from '@lsports/entities';
+import { Fixture, Livescore, Market } from '@lsports/entities';
 import { BaseEntity } from '@entities';
 /**
  * GetEventsResultElement class is responsible
@@ -10,6 +8,7 @@ import { BaseEntity } from '@entities';
  */
 export class GetEventsResultElement implements BaseEntity {
   [key: string]: unknown;
+
   @Expose({ name: 'Fixture' })
   @Type(() => Fixture)
   fixture!: Fixture;
@@ -25,5 +24,4 @@ export class GetEventsResultElement implements BaseEntity {
   @Expose({ name: 'FixtureId' })
   @Type(() => Number)
   public fixtureId!: number;
-
 }

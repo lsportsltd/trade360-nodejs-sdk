@@ -63,10 +63,7 @@ const {
 export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpClient {
   private readonly mapper: IMapper;
 
-  constructor(
-    { packageCredentials, restApiBaseUrl, logger }: IHttpServiceConfig,
-    mapper: IMapper,
-  ) {
+  constructor({ packageCredentials, restApiBaseUrl, logger }: IHttpServiceConfig, mapper: IMapper) {
     super({ restApiBaseUrl, packageCredentials, logger });
     this.mapper = mapper;
   }
