@@ -13,6 +13,6 @@ import { FixtureEvent, LivescoreEvent, MarketEvent } from '@entities';
 export interface InPlaySnapshotApiClient {
   getFixtures(requestDto: GetFixtureRequestDto): Promise<FixtureEvent[] | undefined>;
   getLivescores(requestDto: GetLivescoreRequestDto): Promise<LivescoreEvent[] | undefined>;
-  getFixtureMarkets(requestDto: GetMarketRequestDto,): Promise<MarketEvent[] | undefined>;
+  getFixtureMarkets(requestDto: GetMarketRequestDto): Promise<MarketEvent[] | undefined>;
   getEvents(requestDto: GetInPlayEventRequestDto): Promise<EventBodyStructure[] | undefined>;
 }

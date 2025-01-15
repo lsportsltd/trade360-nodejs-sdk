@@ -5,7 +5,7 @@ import { Fixture, Livescore, Market } from '@lsports/entities';
  * deserializing the response from the snapshot
  * API to a event.
  */
-export class  EventBodyStructure {
+export class EventBodyStructure {
   @Expose({ name: 'Fixture' })
   @Type(() => Fixture)
   fixture!: Fixture;

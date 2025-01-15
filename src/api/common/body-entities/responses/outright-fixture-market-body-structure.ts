@@ -5,7 +5,7 @@ import { OutrightFixtureMarketsElement } from '@api/common/body-entities/respons
  * for deserializing the response from the snapshot
  * API to get outright fixture markets
  */
-export class  OutrightFixtureMarketBodyStructure {
+export class OutrightFixtureMarketBodyStructure {
   @Expose({ name: 'Id' })
   @Type(() => Number)
   public id!: number;

@@ -5,7 +5,7 @@ import { OutrightEventElement } from '@api/common/body-entities/responses/outrig
  * deserializing the response from the snapshot
  * API to a outright event.
  */
-export class  OutrightEventBodyStructure {
+export class OutrightEventBodyStructure {
   @Expose({ name: 'Id' })
   @Type(() => Number)
   public id!: number;

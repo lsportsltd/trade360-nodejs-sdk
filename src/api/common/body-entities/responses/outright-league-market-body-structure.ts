@@ -5,7 +5,7 @@ import { OutrightLeagueMarketsCompetition } from '@api/common/body-entities/resp
  * for deserializing the response from the snapshot
  * API to get outright league markets
  */
-export class  OutrightLeagueMarketBodyStructure {
+export class OutrightLeagueMarketBodyStructure {
   @Expose({ name: 'Id' })
   @Type(() => Number)
   public id!: number;

@@ -19,14 +19,13 @@ import { OutrightFixtureMarketBodyStructure } from '@api/common/body-entities/re
 import { OutrightLeagueBodyStructure } from '@api/common/body-entities/responses/outright-league-body-structure';
 import { OutrightLeagueMarketBodyStructure } from '@api/common/body-entities/responses/outright-league-market-body-structure';
 
-
 /**
  * Interface for the In-Play Snapshot API client.
  */
 export interface PreMatchSnapshotApiClient {
   getFixtures(requestDto: GetFixtureRequestDto): Promise<FixtureEvent[] | undefined>;
   getLivescores(requestDto: GetLivescoreRequestDto): Promise<LivescoreEvent[] | undefined>;
-  getFixtureMarkets(requestDto: GetMarketRequestDto,): Promise<MarketEvent[] | undefined>;
+  getFixtureMarkets(requestDto: GetMarketRequestDto): Promise<MarketEvent[] | undefined>;
   getEvents(requestDto: GetEventRequestDto): Promise<EventBodyStructure[] | undefined>;
   getOutrightEvents(
     requestDto: GetOutrightEventRequestDto,

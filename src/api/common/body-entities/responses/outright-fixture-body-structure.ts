@@ -3,9 +3,9 @@ import { OutrightFixtureEventElement } from '@api/common/body-entities/responses
 /**
  * OutrightFixtureBodyStructure class is responsible
  * for deserializing the response from the snapshot
- * API to get outright fixture 
+ * API to get outright fixture
  */
-export class  OutrightFixtureBodyStructure {
+export class OutrightFixtureBodyStructure {
   @Expose({ name: 'Id' })
   @Type(() => Number)
   public id!: number;
