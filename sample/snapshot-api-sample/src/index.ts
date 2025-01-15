@@ -1,4 +1,7 @@
+import 'reflect-metadata';
+import 'module-alias/register';
 import _ from 'lodash';
+import moment from 'moment';
 
 import {
   GetFixtureRequestDto,
@@ -11,18 +14,21 @@ import {
   GetOutrightLeaguesRequestDto, 
   GetOutrightLivescoreRequestDto, 
   GetOutrightMarketRequestDto,
-} from 'trade360-nodejs-sdk/src/api/common/snapshot';
+  GetMarketRequestDto,
+} from '@api/common/snapshot/dtos';
 
 import {
   SnapshotApiFactory,
   InPlaySnapshotApiClient,
   PreMatchSnapshotApiClient,
-  GetMarketsRequestDto,
+} from '@api/snapshot-api';
+
+import {
   ValidationError,
   TranslationsValidationError,
   HttpResponseError,
-InvalidDateInRequestError
-} from 'trade360-nodejs-sdk/src';
+  InvalidDateInRequestError
+} from '@lsports/errors';
 
 import { getConfig } from './config';
 
@@ -130,7 +136,7 @@ const getInPlayLivescores = async (inplaySnapshotHttpClient: InPlaySnapshotApiCl
 };
 
 const getInPlayFixtureMarkets = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
-  const request = new GetMarketsRequestDto({
+  const request = new GetMarketRequestDto({
     sportIds: [6046]
   });
 
@@ -170,7 +176,7 @@ const getPreMatchLivescores = async (prematchSnapshotHttpClient: PreMatchSnapsho
 };
 
 const getPreMatchFixtureMarkets = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
-  const request = new GetMarketsRequestDto({
+  const request = new GetMarketRequestDto({
     sportIds: [6046]
   });
 
