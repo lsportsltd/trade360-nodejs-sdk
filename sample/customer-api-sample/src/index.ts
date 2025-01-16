@@ -20,7 +20,6 @@ import {
   GetSubscriptionsRequestDto,
   GetTranslationsRequestDto,
   HttpResponseError,
-  HttpResponsePayloadDto,
   IMetadataHttpClient,
   ISubscriptionHttpClient,
   InvalidDateInRequestError,

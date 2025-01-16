@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import 'module-alias/register';
 import _ from 'lodash';
-import moment from 'moment';
 
 import {
   GetFixtureRequestDto,
@@ -15,13 +14,16 @@ import {
   GetOutrightLivescoreRequestDto, 
   GetOutrightMarketRequestDto,
   GetMarketRequestDto,
-} from '@api/common/snapshot/dtos';
+} from '@api/common/snapshot';
 
 import {
   SnapshotApiFactory,
+} from '@api/snapshot-api/snapshot-api';
+
+import {
   InPlaySnapshotApiClient,
   PreMatchSnapshotApiClient,
-} from '@api/snapshot-api';
+} from '@api/snapshot-api/interfaces';
 
 import {
   ValidationError,
