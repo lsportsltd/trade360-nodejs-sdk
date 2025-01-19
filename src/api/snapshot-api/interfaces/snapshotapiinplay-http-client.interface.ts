@@ -11,8 +11,8 @@ import { FixtureEvent, LivescoreEvent, MarketEvent } from '@entities';
  * Interface for the In-Play Snapshot API client.
  */
 export interface InPlaySnapshotApiClient {
-  getFixtures(requestDto: GetFixtureRequestDto,): Promise<FixtureEvent | undefined>;
-  getLivescores(requestDto: GetLivescoreRequestDto,): Promise<LivescoreEvent[] | undefined>;
-  getFixtureMarkets(requestDto: GetMarketRequestDto,): Promise<MarketEvent[] | undefined>;
-  getEvents(requestDto: GetInPlayEventRequestDto,): Promise<EventBodyStructure[] | undefined>;
+  getFixtures(requestDto: GetFixtureRequestDto): Promise<FixtureEvent[] | undefined>;
+  getLivescores(requestDto: GetLivescoreRequestDto): Promise<LivescoreEvent[] | undefined>;
+  getFixtureMarkets(requestDto: GetMarketRequestDto): Promise<MarketEvent[] | undefined>;
+  getEvents(requestDto: GetInPlayEventRequestDto): Promise<EventBodyStructure[] | undefined>;
 }
