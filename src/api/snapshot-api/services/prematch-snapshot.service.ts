@@ -38,14 +38,6 @@ import {
   GetOutrightLivescoreRequestDto,
   GetOutrightMarketRequestDto,
 } from '@api/common/snapshot/dtos';
-import { FixtureEvent, LivescoreEvent, MarketEvent } from '@entities';
-import { EventBodyStructure } from '@api/common/body-entities/responses/event-body-structure';
-import { OutrightEventBodyStructure } from '@api/common/body-entities/responses/outright-event-body-structure';
-import { OutrightFixtureBodyStructure } from '@api/common/body-entities/responses/outright-fixture-body-structure';
-import { OutrightScoreBodyStructure } from '@api/common/body-entities/responses/outright-score-body-structure';
-import { OutrightFixtureMarketBodyStructure } from '@api/common/body-entities/responses/outright-fixture-market-body-structure';
-import { OutrightLeagueBodyStructure } from '@api/common/body-entities/responses/outright-league-body-structure';
-import { OutrightLeagueMarketBodyStructure } from '@api/common/body-entities/responses/outright-league-market-body-structure';
 
 const {
   GET_EVENTS_PREFIX_URL,
@@ -97,7 +89,7 @@ export class PreMatchSnapshotApiClientImplementation
    * @returns A promise that resolves to a
    * GetFixturesResultElement object containing the fixtures information.
    */
-  public async getFixtures(requestDto: GetFixtureRequestDto): Promise<FixtureEvent[] | undefined> {
+  public async getFixtures(requestDto: GetFixtureRequestDto): Promise<GetFixturesResultElement | undefined> {
     const request = this.mapper.map<GetFixtureRequestDto, GetFixtureRequest>(
       requestDto,
       GetFixtureRequest,
@@ -109,7 +101,7 @@ export class PreMatchSnapshotApiClientImplementation
       requestBody: request,
     });
 
-    return fixturesCollection?.fixtures;
+    return fixturesCollection;
   }
 
   /**
@@ -120,7 +112,7 @@ export class PreMatchSnapshotApiClientImplementation
    */
   public async getLivescores(
     requestDto: GetLivescoreRequestDto,
-  ): Promise<LivescoreEvent[] | undefined> {
+  ): Promise<GetLivescoreResultElement | undefined> {
     const request = this.mapper.map<GetLivescoreRequestDto, GetLivescoreRequest>(
       requestDto,
       GetFixtureRequest,
@@ -131,7 +123,7 @@ export class PreMatchSnapshotApiClientImplementation
       responseBodyType: GetLivescoreResultElement,
       requestBody: request,
     });
-    return scoresCollection?.scores;
+    return scoresCollection;
   }
 
   /**
@@ -143,7 +135,7 @@ export class PreMatchSnapshotApiClientImplementation
    */
   public async getFixtureMarkets(
     requestDto: GetMarketRequestDto,
-  ): Promise<MarketEvent[] | undefined> {
+  ): Promise<GetFixtureMarketsResultElement | undefined> {
     const request = this.mapper.map<GetMarketRequestDto, GetMarketRequest>(
       requestDto,
       GetMarketRequest,
@@ -154,7 +146,7 @@ export class PreMatchSnapshotApiClientImplementation
       responseBodyType: GetFixtureMarketsResultElement,
       requestBody: request,
     });
-    return marketsCollection?.markets;
+    return marketsCollection;
   }
 
   /**
@@ -165,7 +157,7 @@ export class PreMatchSnapshotApiClientImplementation
    */
   public async getEvents(
     requestDto: GetEventRequestDto,
-  ): Promise<EventBodyStructure[] | undefined> {
+  ): Promise<GetEventsResultElement | undefined> {
     const request = this.mapper.map<GetEventRequestDto, GetEventRequest>(
       requestDto,
       GetEventRequest,
@@ -176,7 +168,7 @@ export class PreMatchSnapshotApiClientImplementation
       responseBodyType: GetEventsResultElement,
       requestBody: request,
     });
-    return eventsCollection?.events;
+    return eventsCollection;
   }
 
   /**
@@ -187,7 +179,7 @@ export class PreMatchSnapshotApiClientImplementation
    */
   public async getOutrightEvents(
     requestDto: GetOutrightEventRequestDto,
-  ): Promise<OutrightEventBodyStructure[] | undefined> {
+  ): Promise<GetOutrightEventsResultElement | undefined> {
     const request = this.mapper.map<GetOutrightEventRequestDto, GetOutrightEventRequest>(
       requestDto,
       GetOutrightEventRequest,
@@ -198,7 +190,7 @@ export class PreMatchSnapshotApiClientImplementation
       responseBodyType: GetOutrightEventsResultElement,
       requestBody: request,
     });
-    return eventsCollection?.events;
+    return eventsCollection;
   }
 
   /**
@@ -209,7 +201,7 @@ export class PreMatchSnapshotApiClientImplementation
    */
   public async getOutrightFixtures(
     requestDto: GetOutrightFixtureRequestDto,
-  ): Promise<OutrightFixtureBodyStructure[] | undefined> {
+  ): Promise<GetOutrightFixtureResultElement | undefined> {
     const request = this.mapper.map<GetOutrightFixtureRequestDto, GetOutrightFixtureRequest>(
       requestDto,
       GetOutrightFixtureRequest,
@@ -220,7 +212,7 @@ export class PreMatchSnapshotApiClientImplementation
       responseBodyType: GetOutrightFixtureResultElement,
       requestBody: request,
     });
-    return fixturesCollection?.fixtures;
+    return fixturesCollection;
   }
 
   /**
@@ -231,7 +223,7 @@ export class PreMatchSnapshotApiClientImplementation
    */
   public async getOutrightScores(
     requestDto: GetOutrightLivescoreRequestDto,
-  ): Promise<OutrightScoreBodyStructure[] | undefined> {
+  ): Promise<GetOutrightScoresResultElement | undefined> {
     const request = this.mapper.map<GetOutrightLivescoreRequestDto, GetOutrightLivescoreRequest>(
       requestDto,
       GetOutrightLivescoreRequest,
@@ -242,7 +234,7 @@ export class PreMatchSnapshotApiClientImplementation
       responseBodyType: GetOutrightScoresResultElement,
       requestBody: request,
     });
-    return scoresCollection?.scores;
+    return scoresCollection;
   }
 
   /**
@@ -253,7 +245,7 @@ export class PreMatchSnapshotApiClientImplementation
    */
   public async getOutrightFixtureMarkets(
     requestDto: GetOutrightMarketRequestDto,
-  ): Promise<OutrightFixtureMarketBodyStructure[] | undefined> {
+  ): Promise<GetOutrightFixtureMarketsResultElement | undefined> {
     const request = this.mapper.map<GetOutrightMarketRequestDto, GetOutrightMarketRequest>(
       requestDto,
       GetOutrightMarketRequest,
@@ -264,7 +256,7 @@ export class PreMatchSnapshotApiClientImplementation
       responseBodyType: GetOutrightFixtureMarketsResultElement,
       requestBody: request,
     });
-    return marketsCollection?.markets;
+    return marketsCollection;
   }
 
   /**
@@ -275,7 +267,7 @@ export class PreMatchSnapshotApiClientImplementation
    */
   public async getOutrightLeagues(
     requestDto: GetOutrightLeaguesRequestDto,
-  ): Promise<OutrightLeagueBodyStructure[] | undefined> {
+  ): Promise<GetOutrightLeaguesResultElement | undefined> {
     const request = this.mapper.map<GetOutrightLeaguesRequestDto, GetOutrightLeaguesRequest>(
       requestDto,
       GetOutrightLeaguesRequest,
@@ -286,7 +278,7 @@ export class PreMatchSnapshotApiClientImplementation
       responseBodyType: GetOutrightLeaguesResultElement,
       requestBody: request,
     });
-    return leaguesCollection?.leagues;
+    return leaguesCollection;
   }
 
   /**
@@ -297,7 +289,7 @@ export class PreMatchSnapshotApiClientImplementation
    */
   public async getOutrightLeagueMarkets(
     requestDto: GetOutrightLeagueMarketRequestDto,
-  ): Promise<OutrightLeagueMarketBodyStructure[] | undefined> {
+  ): Promise<GetOutrightLeagueMarketsResultElement | undefined> {
     const request = this.mapper.map<
       GetOutrightLeagueMarketRequestDto,
       GetOutrightLeagueMarketRequest
@@ -308,6 +300,6 @@ export class PreMatchSnapshotApiClientImplementation
       responseBodyType: GetOutrightLeagueMarketsResultElement,
       requestBody: request,
     });
-    return leagueMarketsCollection?.markets;
+    return leagueMarketsCollection;
   }
 }

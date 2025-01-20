@@ -35,6 +35,24 @@ import {
 import { TransformerUtil } from '@utilities';
 
 import { IMapper } from './interfaces';
+import { 
+  GetEventRequest, GetEventRequestDto, 
+  GetFixtureRequest, GetFixtureRequestDto, 
+  GetInPlayEventRequest, GetInPlayEventRequestDto, 
+  GetLivescoreRequest, GetLivescoreRequestDto, 
+  GetMarketRequest, GetMarketRequestDto, 
+  GetOutrightEventRequest, 
+  GetOutrightEventRequestDto,
+  GetOutrightFixtureRequest,
+  GetOutrightFixtureRequestDto,
+  GetOutrightLeagueMarketRequest,
+  GetOutrightLeagueMarketRequestDto,
+  GetOutrightLeaguesRequest,
+  GetOutrightLeaguesRequestDto,
+  GetOutrightLivescoreRequest,
+  GetOutrightLivescoreRequestDto,
+  GetOutrightMarketRequest,
+  GetOutrightMarketRequestDto} from './snapshot';
 
 /**
  * Mapper class for mapping between different types
@@ -93,11 +111,89 @@ export class Mapper implements IMapper {
    * in the constructor of the mapping service.
    */
   private initializeMappings(packageCredentials?: PackageCredentials): void {
-    this.registerMapping<GetLeaguesRequestDto, GetLeaguesRequest>(
-      GetLeaguesRequestDto,
-      GetLeaguesRequest,
+    this.registerMapping<GetEventRequestDto, GetEventRequest>(
+      GetEventRequestDto,
+      GetEventRequest,
       (source) =>
-        TransformerUtil.transform({ ...packageCredentials, ...source }, GetLeaguesRequest),
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetEventRequest),
+    );
+
+    this.registerMapping<GetFixtureRequestDto, GetFixtureRequest>(
+      GetFixtureRequestDto,
+      GetFixtureRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetFixtureRequest),
+    );
+
+    this.registerMapping<GetInPlayEventRequestDto, GetInPlayEventRequest>(
+      GetInPlayEventRequestDto,
+      GetInPlayEventRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetInPlayEventRequest),
+    );
+
+    this.registerMapping<GetLivescoreRequestDto, GetLivescoreRequest>(
+      GetLivescoreRequestDto,
+      GetLivescoreRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetLivescoreRequest),
+    );
+
+    this.registerMapping<GetMarketRequestDto, GetMarketRequest>(
+      GetMarketRequestDto,
+      GetMarketRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetMarketRequest),
+    );
+
+    this.registerMapping<GetOutrightEventRequestDto, GetOutrightEventRequest>(
+      GetOutrightEventRequestDto,
+      GetOutrightEventRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetOutrightEventRequest),
+    );
+
+    this.registerMapping<GetOutrightEventRequestDto, GetOutrightEventRequest>(
+      GetOutrightEventRequestDto,
+      GetOutrightEventRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetOutrightEventRequest),
+    );
+
+    this.registerMapping<GetOutrightFixtureRequestDto, GetOutrightFixtureRequest>(
+      GetOutrightFixtureRequestDto,
+      GetOutrightFixtureRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetOutrightFixtureRequest),
+    );
+
+    this.registerMapping<GetOutrightLeagueMarketRequestDto, GetOutrightLeagueMarketRequest>(
+      GetOutrightLeagueMarketRequestDto,
+      GetOutrightLeagueMarketRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetOutrightLeagueMarketRequest),
+    );
+
+
+    this.registerMapping<GetOutrightLeaguesRequestDto, GetOutrightLeaguesRequest>(
+      GetOutrightLeaguesRequestDto,
+      GetOutrightLeaguesRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetOutrightLeaguesRequest),
+    );
+
+    this.registerMapping<GetOutrightLivescoreRequestDto, GetOutrightLivescoreRequest>(
+      GetOutrightLivescoreRequestDto,
+      GetOutrightLivescoreRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetOutrightLivescoreRequest),
+    );
+
+    this.registerMapping<GetOutrightMarketRequestDto, GetOutrightMarketRequest>(
+      GetOutrightMarketRequestDto,
+      GetOutrightMarketRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetOutrightMarketRequest),
     );
 
     this.registerMapping<GetMarketsRequestDto, GetMarketsRequest>(

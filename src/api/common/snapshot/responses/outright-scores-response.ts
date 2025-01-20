@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { BaseEntity } from '@entities';
-import { OutrightScoreBodyStructure } from '@api/common/body-entities/responses/outright-score-body-structure';
+import { OutrightScoreEventElement } from '@api/common/body-entities/responses/outright-score-event-element';
 /**
  * GetOutrightScoresResultElement class is responsible
  * for deserializing the response from the snapshot
@@ -8,8 +8,19 @@ import { OutrightScoreBodyStructure } from '@api/common/body-entities/responses/
  */
 export class GetOutrightScoresResultElement implements BaseEntity {
   [key: string]: unknown;
+  @Expose({ name: 'Id' })
+  @Type(() => Number)
+  public id!: number;
 
-  @Expose({ name: 'Scores' })
-  @Type(() => OutrightScoreBodyStructure)
-  scores?: OutrightScoreBodyStructure[];
+  @Expose({ name: 'Name' })
+  @Type(() => String)
+  public name!: string;
+
+  @Expose({ name: 'Type' })
+  @Type(() => Number)
+  public type!: number;
+
+  @Expose({ name: 'Events' })
+  @Type(() => OutrightScoreEventElement)
+  events?: OutrightScoreEventElement[];
 }

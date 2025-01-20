@@ -22,8 +22,6 @@ import {
   GetLivescoreRequestDto,
   GetMarketRequestDto,
 } from '@api/common/snapshot/dtos';
-import { EventBodyStructure } from '@api/common/body-entities/responses/event-body-structure';
-import { FixtureEvent, LivescoreEvent, MarketEvent } from '@entities';
 
 const {
   GET_EVENTS_PREFIX_URL,
@@ -69,7 +67,7 @@ export class InPlaySnapshotApiClientImplementation
    * @returns A promise that resolves to a
    * GetFixturesResultElement object containing the fixtures information.
    */
-  public async getFixtures(requestDto: GetFixtureRequestDto): Promise<FixtureEvent[] | undefined> {
+  public async getFixtures(requestDto: GetFixtureRequestDto): Promise<GetFixturesResultElement | undefined> {
     const request = this.mapper.map<GetFixtureRequestDto, GetFixtureRequest>(
       requestDto,
       GetFixtureRequest,
@@ -81,7 +79,7 @@ export class InPlaySnapshotApiClientImplementation
       requestBody: request,
     });
 
-    return fixturesCollection?.fixtures;
+    return fixturesCollection;
   }
 
   /**
@@ -92,7 +90,7 @@ export class InPlaySnapshotApiClientImplementation
    */
   public async getLivescores(
     requestDto: GetLivescoreRequestDto,
-  ): Promise<LivescoreEvent[] | undefined> {
+  ): Promise<GetLivescoreResultElement | undefined> {
     const request = this.mapper.map<GetLivescoreRequestDto, GetLivescoreRequest>(
       requestDto,
       GetLivescoreRequest,
@@ -103,7 +101,7 @@ export class InPlaySnapshotApiClientImplementation
       responseBodyType: GetLivescoreResultElement,
       requestBody: request,
     });
-    return scoresCollection?.scores;
+    return scoresCollection;
   }
 
   /**
@@ -115,7 +113,7 @@ export class InPlaySnapshotApiClientImplementation
    */
   public async getFixtureMarkets(
     requestDto: GetMarketRequestDto,
-  ): Promise<MarketEvent[] | undefined> {
+  ): Promise<GetFixtureMarketsResultElement | undefined> {
     const request = this.mapper.map<GetMarketRequestDto, GetMarketRequest>(
       requestDto,
       GetEventRequest,
@@ -127,7 +125,7 @@ export class InPlaySnapshotApiClientImplementation
       requestBody: request,
     });
 
-    return marketsCollection?.markets;
+    return marketsCollection;
   }
 
   /**
@@ -138,7 +136,7 @@ export class InPlaySnapshotApiClientImplementation
    */
   public async getEvents(
     requestDto: GetEventRequestDto,
-  ): Promise<EventBodyStructure[] | undefined> {
+  ): Promise<GetEventsResultElement | undefined> {
     const request = this.mapper.map<GetInPlayEventRequestDto, GetInPlayEventRequest>(
       requestDto,
       GetInPlayEventRequest,
@@ -150,6 +148,6 @@ export class InPlaySnapshotApiClientImplementation
       requestBody: request,
     });
 
-    return eventsCollection?.events;
+    return eventsCollection;
   }
 }

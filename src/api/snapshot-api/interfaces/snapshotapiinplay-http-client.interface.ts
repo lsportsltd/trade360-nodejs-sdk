@@ -4,16 +4,20 @@ import {
   GetLivescoreRequestDto,
   GetMarketRequestDto,
 } from '@api/common/snapshot/dtos';
-import { EventBodyStructure } from '@api/common/body-entities/responses/event-body-structure';
-import { FixtureEvent, LivescoreEvent, MarketEvent } from '@entities';
+import { 
+  GetEventsResultElement, 
+  GetFixtureMarketsResultElement, 
+  GetFixturesResultElement, 
+  GetLivescoreResultElement 
+} from '@api/common/snapshot';
 
 /**
  * Interface for the In-Play Snapshot API client.
  */
 /* eslint-disable no-unused-vars */
 export interface InPlaySnapshotApiClient {
-  getFixtures(_requestDto: GetFixtureRequestDto): Promise<FixtureEvent[] | undefined>;
-  getLivescores(_requestDto: GetLivescoreRequestDto): Promise<LivescoreEvent[] | undefined>;
-  getFixtureMarkets(_requestDto: GetMarketRequestDto): Promise<MarketEvent[] | undefined>;
-  getEvents(_requestDto: GetInPlayEventRequestDto): Promise<EventBodyStructure[] | undefined>;
+  getFixtures(_requestDto: GetFixtureRequestDto): Promise<GetFixturesResultElement | undefined>;
+  getLivescores(_requestDto: GetLivescoreRequestDto): Promise<GetLivescoreResultElement | undefined>;
+  getFixtureMarkets(_requestDto: GetMarketRequestDto): Promise<GetFixtureMarketsResultElement | undefined>;
+  getEvents(_requestDto: GetInPlayEventRequestDto): Promise<GetEventsResultElement | undefined>;
 }
