@@ -5,6 +5,6 @@ import { BaseEntity } from '@entities';
  * for deserializing the response from the snapshot
  * API to get get fixture markets
  */
-export class GetFixtureMarketsResultElement extends MarketEvent implements BaseEntity{
+export class GetFixtureMarketsResultElement extends MarketEvent implements BaseEntity {
   [key: string]: unknown;
 }

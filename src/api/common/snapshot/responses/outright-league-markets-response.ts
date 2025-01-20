@@ -9,6 +9,7 @@ import { OutrightLeagueMarketsCompetition } from '@api/common/body-entities/resp
  */
 export class GetOutrightLeagueMarketsResultElement implements BaseEntity {
   [key: string]: unknown;
+
   @Expose({ name: 'Id' })
   @Type(() => Number)
   public id!: number;

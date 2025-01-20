@@ -67,7 +67,9 @@ export class InPlaySnapshotApiClientImplementation
    * @returns A promise that resolves to a
    * GetFixturesResultElement object containing the fixtures information.
    */
-  public async getFixtures(requestDto: GetFixtureRequestDto): Promise<GetFixturesResultElement | undefined> {
+  public async getFixtures(
+    requestDto: GetFixtureRequestDto,
+  ): Promise<GetFixturesResultElement | undefined> {
     const request = this.mapper.map<GetFixtureRequestDto, GetFixtureRequest>(
       requestDto,
       GetFixtureRequest,

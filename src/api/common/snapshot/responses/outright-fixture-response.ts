@@ -8,6 +8,7 @@ import { OutrightFixtureEventElement } from '@api/common/body-entities/responses
  */
 export class GetOutrightFixtureResultElement implements BaseEntity {
   [key: string]: unknown;
+
   @Expose({ name: 'Id' })
   @Type(() => Number)
   public id!: number;

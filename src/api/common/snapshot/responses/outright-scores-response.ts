@@ -8,6 +8,7 @@ import { OutrightScoreEventElement } from '@api/common/body-entities/responses/o
  */
 export class GetOutrightScoresResultElement implements BaseEntity {
   [key: string]: unknown;
+
   @Expose({ name: 'Id' })
   @Type(() => Number)
   public id!: number;

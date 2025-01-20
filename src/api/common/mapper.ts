@@ -35,13 +35,18 @@ import {
 import { TransformerUtil } from '@utilities';
 
 import { IMapper } from './interfaces';
-import { 
-  GetEventRequest, GetEventRequestDto, 
-  GetFixtureRequest, GetFixtureRequestDto, 
-  GetInPlayEventRequest, GetInPlayEventRequestDto, 
-  GetLivescoreRequest, GetLivescoreRequestDto, 
-  GetMarketRequest, GetMarketRequestDto, 
-  GetOutrightEventRequest, 
+import {
+  GetEventRequest,
+  GetEventRequestDto,
+  GetFixtureRequest,
+  GetFixtureRequestDto,
+  GetInPlayEventRequest,
+  GetInPlayEventRequestDto,
+  GetLivescoreRequest,
+  GetLivescoreRequestDto,
+  GetMarketRequest,
+  GetMarketRequestDto,
+  GetOutrightEventRequest,
   GetOutrightEventRequestDto,
   GetOutrightFixtureRequest,
   GetOutrightFixtureRequestDto,
@@ -52,7 +57,8 @@ import {
   GetOutrightLivescoreRequest,
   GetOutrightLivescoreRequestDto,
   GetOutrightMarketRequest,
-  GetOutrightMarketRequestDto} from './snapshot';
+  GetOutrightMarketRequestDto,
+} from './snapshot';
 
 /**
  * Mapper class for mapping between different types
@@ -114,8 +120,7 @@ export class Mapper implements IMapper {
     this.registerMapping<GetEventRequestDto, GetEventRequest>(
       GetEventRequestDto,
       GetEventRequest,
-      (source) =>
-        TransformerUtil.transform({ ...packageCredentials, ...source }, GetEventRequest),
+      (source) => TransformerUtil.transform({ ...packageCredentials, ...source }, GetEventRequest),
     );
 
     this.registerMapping<GetFixtureRequestDto, GetFixtureRequest>(
@@ -142,8 +147,7 @@ export class Mapper implements IMapper {
     this.registerMapping<GetMarketRequestDto, GetMarketRequest>(
       GetMarketRequestDto,
       GetMarketRequest,
-      (source) =>
-        TransformerUtil.transform({ ...packageCredentials, ...source }, GetMarketRequest),
+      (source) => TransformerUtil.transform({ ...packageCredentials, ...source }, GetMarketRequest),
     );
 
     this.registerMapping<GetOutrightEventRequestDto, GetOutrightEventRequest>(
@@ -171,9 +175,11 @@ export class Mapper implements IMapper {
       GetOutrightLeagueMarketRequestDto,
       GetOutrightLeagueMarketRequest,
       (source) =>
-        TransformerUtil.transform({ ...packageCredentials, ...source }, GetOutrightLeagueMarketRequest),
+        TransformerUtil.transform(
+          { ...packageCredentials, ...source },
+          GetOutrightLeagueMarketRequest,
+        ),
     );
-
 
     this.registerMapping<GetOutrightLeaguesRequestDto, GetOutrightLeaguesRequest>(
       GetOutrightLeaguesRequestDto,
@@ -186,7 +192,10 @@ export class Mapper implements IMapper {
       GetOutrightLivescoreRequestDto,
       GetOutrightLivescoreRequest,
       (source) =>
-        TransformerUtil.transform({ ...packageCredentials, ...source }, GetOutrightLivescoreRequest),
+        TransformerUtil.transform(
+          { ...packageCredentials, ...source },
+          GetOutrightLivescoreRequest,
+        ),
     );
 
     this.registerMapping<GetOutrightMarketRequestDto, GetOutrightMarketRequest>(
@@ -194,6 +203,13 @@ export class Mapper implements IMapper {
       GetOutrightMarketRequest,
       (source) =>
         TransformerUtil.transform({ ...packageCredentials, ...source }, GetOutrightMarketRequest),
+    );
+
+    this.registerMapping<GetLeaguesRequestDto, GetLeaguesRequest>(
+      GetLeaguesRequestDto,
+      GetLeaguesRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetLeaguesRequest),
     );
 
     this.registerMapping<GetMarketsRequestDto, GetMarketsRequest>(

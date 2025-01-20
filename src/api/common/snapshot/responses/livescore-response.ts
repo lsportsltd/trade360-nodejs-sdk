@@ -5,7 +5,6 @@ import { BaseEntity } from '@entities';
  * for deserializing the response from the snapshot
  * API to get livescore
  */
-export class GetLivescoreResultElement extends LivescoreEvent implements BaseEntity{
+export class GetLivescoreResultElement extends LivescoreEvent implements BaseEntity {
   [key: string]: unknown;
-
 }
