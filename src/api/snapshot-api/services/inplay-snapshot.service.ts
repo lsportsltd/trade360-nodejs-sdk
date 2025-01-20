@@ -9,14 +9,12 @@ import {
   GetLivescoreResultElement,
 } from '@api/common/snapshot/responses';
 import {
-  GetEventRequest,
   GetFixtureRequest,
   GetInPlayEventRequest,
   GetLivescoreRequest,
   GetMarketRequest,
 } from '@api/common/snapshot/requests';
 import {
-  GetEventRequestDto,
   GetFixtureRequestDto,
   GetInPlayEventRequestDto,
   GetLivescoreRequestDto,
@@ -118,7 +116,7 @@ export class InPlaySnapshotApiClientImplementation
   ): Promise<GetFixtureMarketsResultElement | undefined> {
     const request = this.mapper.map<GetMarketRequestDto, GetMarketRequest>(
       requestDto,
-      GetEventRequest,
+      GetMarketRequest,
     );
 
     const marketsCollection = await this.postRequest<GetFixtureMarketsResultElement>({
@@ -137,7 +135,7 @@ export class InPlaySnapshotApiClientImplementation
    * GetEventsResultElement object containing the events information.
    */
   public async getEvents(
-    requestDto: GetEventRequestDto,
+    requestDto: GetInPlayEventRequestDto,
   ): Promise<GetEventsResultElement | undefined> {
     const request = this.mapper.map<GetInPlayEventRequestDto, GetInPlayEventRequest>(
       requestDto,

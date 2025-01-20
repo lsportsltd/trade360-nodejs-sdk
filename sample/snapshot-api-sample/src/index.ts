@@ -47,36 +47,36 @@ const initApiSample = async () => {
       logger,
     });
 
-     await getInPlayFixtures(inPlaySnapshotHttpClient);
+ //    await getInPlayFixtures(inPlaySnapshotHttpClient);
 
-     await getInPlayLivescores(inPlaySnapshotHttpClient);
+//     await getInPlayLivescores(inPlaySnapshotHttpClient);
 
-     await getInPlayFixtureMarkets(inPlaySnapshotHttpClient);
+ //    await getInPlayFixtureMarkets(inPlaySnapshotHttpClient);
 
-     await getInPlayEvents(inPlaySnapshotHttpClient);
+//     await getInPlayEvents(inPlaySnapshotHttpClient);
 
      const preMatchSnapshotHttpClient = snapshotApiFactory.createSnapshotApiPrematchHttpClient({
       packageCredentials: config.trade360.preMatchMQSettings,
       restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
-    await getPreMatchFixtures(preMatchSnapshotHttpClient);
+//    await getPreMatchFixtures(preMatchSnapshotHttpClient);
 
-    await getPreMatchLivescores(preMatchSnapshotHttpClient);
+//    await getPreMatchLivescores(preMatchSnapshotHttpClient);
 
-    await getPreMatchFixtureMarkets(preMatchSnapshotHttpClient);
+ //   await getPreMatchFixtureMarkets(preMatchSnapshotHttpClient);
 
-    await getPreMatchEvents(preMatchSnapshotHttpClient);
+ //    await getPreMatchEvents(preMatchSnapshotHttpClient);
 
-    await getOutrightEvents(preMatchSnapshotHttpClient);
+  //  await getOutrightEvents(preMatchSnapshotHttpClient);
 
-    await getOutrightFixtures(preMatchSnapshotHttpClient);
+ //   await getOutrightFixtures(preMatchSnapshotHttpClient);
 
-    await getOutrightScores(preMatchSnapshotHttpClient);
+  //  await getOutrightScores(preMatchSnapshotHttpClient);
 
-    await getOutrightFixtureMarkets(preMatchSnapshotHttpClient);
+ //   await getOutrightFixtureMarkets(preMatchSnapshotHttpClient);
 
-    await getOutrightLeagues(preMatchSnapshotHttpClient);
+   // await getOutrightLeagues(preMatchSnapshotHttpClient);
 
     await getOutrightLeagueMarkets(preMatchSnapshotHttpClient);
   }

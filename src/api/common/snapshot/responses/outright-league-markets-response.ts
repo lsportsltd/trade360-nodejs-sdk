@@ -22,7 +22,7 @@ export class GetOutrightLeagueMarketsResultElement implements BaseEntity {
   @Type(() => Number)
   public type!: number;
 
-  @Expose({ name: 'Events' })
+  @Expose({ name: 'Competitions' })
   @Type(() => OutrightLeagueMarketsCompetition)
-  events?: OutrightLeagueMarketsCompetition[];
+  competitions?: OutrightLeagueMarketsCompetition[];
 }

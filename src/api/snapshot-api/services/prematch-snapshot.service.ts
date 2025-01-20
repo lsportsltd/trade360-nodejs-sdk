@@ -117,7 +117,7 @@ export class PreMatchSnapshotApiClientImplementation
   ): Promise<GetLivescoreResultElement | undefined> {
     const request = this.mapper.map<GetLivescoreRequestDto, GetLivescoreRequest>(
       requestDto,
-      GetFixtureRequest,
+      GetLivescoreRequest,
     );
 
     const scoresCollection = await this.postRequest<GetLivescoreResultElement>({
