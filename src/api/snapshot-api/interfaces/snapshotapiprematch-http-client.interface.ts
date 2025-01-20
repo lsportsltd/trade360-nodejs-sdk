@@ -22,27 +22,28 @@ import { OutrightLeagueMarketBodyStructure } from '@api/common/body-entities/res
 /**
  * Interface for the In-Play Snapshot API client.
  */
+/* eslint-disable no-unused-vars */
 export interface PreMatchSnapshotApiClient {
-  getFixtures(requestDto: GetFixtureRequestDto): Promise<FixtureEvent[] | undefined>;
-  getLivescores(requestDto: GetLivescoreRequestDto): Promise<LivescoreEvent[] | undefined>;
-  getFixtureMarkets(requestDto: GetMarketRequestDto): Promise<MarketEvent[] | undefined>;
-  getEvents(requestDto: GetEventRequestDto): Promise<EventBodyStructure[] | undefined>;
+  getFixtures(_requestDto: GetFixtureRequestDto): Promise<FixtureEvent[] | undefined>;
+  getLivescores(_requestDto: GetLivescoreRequestDto): Promise<LivescoreEvent[] | undefined>;
+  getFixtureMarkets(_requestDto: GetMarketRequestDto): Promise<MarketEvent[] | undefined>;
+  getEvents(_requestDto: GetEventRequestDto): Promise<EventBodyStructure[] | undefined>;
   getOutrightEvents(
-    requestDto: GetOutrightEventRequestDto,
+    _requestDto: GetOutrightEventRequestDto,
   ): Promise<OutrightEventBodyStructure[] | undefined>;
   getOutrightFixtures(
-    requestDto: GetOutrightFixtureRequestDto,
+    _requestDto: GetOutrightFixtureRequestDto,
   ): Promise<OutrightFixtureBodyStructure[] | undefined>;
   getOutrightScores(
-    requestDto: GetOutrightLivescoreRequestDto,
+    _requestDto: GetOutrightLivescoreRequestDto,
   ): Promise<OutrightScoreBodyStructure[] | undefined>;
   getOutrightFixtureMarkets(
-    requestDto: GetOutrightMarketRequestDto,
+    _requestDto: GetOutrightMarketRequestDto,
   ): Promise<OutrightFixtureMarketBodyStructure[] | undefined>;
   getOutrightLeagues(
-    requestDto: GetOutrightLeaguesRequestDto,
+    _requestDto: GetOutrightLeaguesRequestDto,
   ): Promise<OutrightLeagueBodyStructure[] | undefined>;
   getOutrightLeagueMarkets(
-    requestDto: GetOutrightLeagueMarketRequestDto,
+    _requestDto: GetOutrightLeagueMarketRequestDto,
   ): Promise<OutrightLeagueMarketBodyStructure[] | undefined>;
 }

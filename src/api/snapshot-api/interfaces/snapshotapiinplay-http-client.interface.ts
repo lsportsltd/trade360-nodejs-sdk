@@ -10,9 +10,10 @@ import { FixtureEvent, LivescoreEvent, MarketEvent } from '@entities';
 /**
  * Interface for the In-Play Snapshot API client.
  */
+/* eslint-disable no-unused-vars */
 export interface InPlaySnapshotApiClient {
-  getFixtures(requestDto: GetFixtureRequestDto): Promise<FixtureEvent[] | undefined>;
-  getLivescores(requestDto: GetLivescoreRequestDto): Promise<LivescoreEvent[] | undefined>;
-  getFixtureMarkets(requestDto: GetMarketRequestDto): Promise<MarketEvent[] | undefined>;
-  getEvents(requestDto: GetInPlayEventRequestDto): Promise<EventBodyStructure[] | undefined>;
+  getFixtures(_requestDto: GetFixtureRequestDto): Promise<FixtureEvent[] | undefined>;
+  getLivescores(_requestDto: GetLivescoreRequestDto): Promise<LivescoreEvent[] | undefined>;
+  getFixtureMarkets(_requestDto: GetMarketRequestDto): Promise<MarketEvent[] | undefined>;
+  getEvents(_requestDto: GetInPlayEventRequestDto): Promise<EventBodyStructure[] | undefined>;
 }

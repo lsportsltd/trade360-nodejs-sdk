@@ -66,6 +66,9 @@
     "@httpClient": "dist/api/base-http-client",
     "@httpClient/*": "dist/api/base-http-client/*",
     "@utilities": "dist/utilities",
-    "@logger": "dist/logger"
+    "@logger": "dist/logger",
+    "@api/common/snapshot": "dist/api/common/snapshot",
+    "@api/snapshot-api/snapshot-api": "dist/api/snapshot-api/snapshot-api",
+    "@api/snapshot-api/interfaces": "dist/api/snapshot-api/interfaces"
   }
 }

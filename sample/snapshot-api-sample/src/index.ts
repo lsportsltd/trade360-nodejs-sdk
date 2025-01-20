@@ -16,9 +16,7 @@ import {
   GetMarketRequestDto,
 } from '@api/common/snapshot';
 
-import {
-  SnapshotApiFactory,
-} from '@api/snapshot-api/snapshot-api';
+import { SnapshotApiFactory } from '@api/snapshot-api/snapshot-api';
 
 import {
   InPlaySnapshotApiClient,
