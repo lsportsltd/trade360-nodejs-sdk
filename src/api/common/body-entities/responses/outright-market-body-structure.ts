@@ -7,7 +7,7 @@ import { Bet } from '@lsports/entities/market/bet';
  * deserializing the response from the snapshot API to a
  * outright market element structure.
  */
-export class OutrightMarketElement {
+export class OutrightMarketBodyStructure {
   @Expose({ name: 'id' })
   id!: number;
 

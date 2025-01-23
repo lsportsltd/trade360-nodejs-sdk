@@ -1,17 +1,17 @@
 import { Expose, Type } from 'class-transformer';
 
-import { OutrightFixtureElement } from './outright-fixture-element';
+import { OutrightFixtureBodyStructure } from './outright-fixture-body-structure';
 
 /**
  * Outright Fixture Event Element class is responsible for
  * deserializing the response from the snapshot API to a
  * outright fixture event element structure.
  */
-export class OutrightFixtureEventElement {
+export class OutrightFixtureEventBodyStructure {
   @Expose({ name: 'FixtureId' })
   fixtureId!: number;
 
   @Expose({ name: 'OutrightFixture' })
-  @Type(() => OutrightFixtureElement)
-  outrightFixture!: OutrightFixtureElement;
+  @Type(() => OutrightFixtureBodyStructure)
+  outrightFixture!: OutrightFixtureBodyStructure;
 }

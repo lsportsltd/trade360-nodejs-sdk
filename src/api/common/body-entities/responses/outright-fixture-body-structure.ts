@@ -10,7 +10,7 @@ import { Subscription } from '@lsports/entities/common';
  * deserializing the response from the snapshot API to a
  * outright fixture element structure.
  */
-export class OutrightFixtureElement {
+export class OutrightFixtureBodyStructure {
   @Expose({ name: 'Sport' })
   @Type(() => SportsBodyStructure)
   sport!: SportsBodyStructure;

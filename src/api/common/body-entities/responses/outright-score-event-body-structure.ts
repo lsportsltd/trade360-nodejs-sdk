@@ -7,7 +7,7 @@ import { OutrightLivescore } from './outright-livescore';
  * deserializing the response from the snapshot API to a
  * outright score event element structure.
  */
-export class OutrightScoreEventElement {
+export class OutrightScoreEventBodyStructure {
   @Expose({ name: 'FixtureId' })
   fixtureId!: number;
 

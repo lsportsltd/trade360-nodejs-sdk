@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { BaseEntity } from '@entities';
-import { OutrightFixtureEventElement } from '@api/common/body-entities/responses/outright-fixture-event-element';
+import { OutrightFixtureEventBodyStructure } from '@api/common/body-entities/responses/outright-fixture-event-body-structure';
 /**
  * GetOutrightFixtureResultElement class is responsible
  * for deserializing the response from the snapshot
@@ -22,6 +22,6 @@ export class GetOutrightFixtureResultElement implements BaseEntity {
   public type!: number;
 
   @Expose({ name: 'Events' })
-  @Type(() => OutrightFixtureEventElement)
-  events?: OutrightFixtureEventElement[];
+  @Type(() => OutrightFixtureEventBodyStructure)
+  events?: OutrightFixtureEventBodyStructure[];
 }

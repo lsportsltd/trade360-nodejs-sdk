@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { BaseEntity } from '@entities';
-import { OutrightEventElement } from '@api/common/body-entities/responses/outright-event-element';
+import { OutrightEventBodyStructure } from '@api/common/body-entities/responses/outright-event-body-structure';
 
 /**
  * GetOutrightEventsResultElement class is responsible
@@ -23,6 +23,6 @@ export class GetOutrightEventsResultElement implements BaseEntity {
   public type!: number;
 
   @Expose({ name: 'Events' })
-  @Type(() => OutrightEventElement)
-  events?: OutrightEventElement[];
+  @Type(() => OutrightEventBodyStructure)
+  events?: OutrightEventBodyStructure[];
 }

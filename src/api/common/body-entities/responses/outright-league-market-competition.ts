@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { OutrightFixtureMarketsElement } from './outright-fixture-market-element';
+import { OutrightFixtureMarketsBodyStructure } from './outright-fixture-market-body-structure';
 
 /**
  * Outright League Markets Competition Structure class is responsible for
@@ -18,6 +18,6 @@ export class OutrightLeagueMarketsCompetition {
   type!: number;
 
   @Expose({ name: 'Events' })
-  @Type(() => OutrightFixtureMarketsElement)
-  events: OutrightFixtureMarketsElement[] = [];
+  @Type(() => OutrightFixtureMarketsBodyStructure)
+  events: OutrightFixtureMarketsBodyStructure[] = [];
 }

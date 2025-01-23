@@ -7,7 +7,7 @@ import { OutrightCompetition } from './outright-competition';
  * deserializing the response from the snapshot API to a
  * outright competition body structure.
  */
-export class OutrightCompetitionsResultElement {
+export class OutrightCompetitionsResultBodyStructure {
   @Expose({ name: 'id' })
   id!: number;
 

@@ -7,7 +7,7 @@ import { Bet } from '@lsports/entities/market/bet';
  * deserializing the response from the snapshot API to a
  * fixture market element structure.
  */
-export class FixtureMarketElement {
+export class FixtureMarketBodyStructure {
   @Expose({ name: 'id' })
   id!: number;
 

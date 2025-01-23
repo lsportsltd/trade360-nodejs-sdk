@@ -5,7 +5,7 @@ import { Expose } from 'class-transformer';
  * deserializing the response from the snapshot API to a
  * outright participant structure.
  */
-export class OutrightParticipantResult {
+export class OutrightParticipantResultBodyStructure {
   @Expose({ name: 'ParticipantId' })
   participantId!: number;
 

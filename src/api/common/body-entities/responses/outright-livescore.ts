@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { OutrightParticipantResult } from './outright-participant-element';
+import { OutrightParticipantResultBodyStructure } from './outright-participant-body-structure';
 import { FixtureStatus } from '@lsports/enums';
 
 /**
@@ -13,6 +13,6 @@ export class OutrightLivescore {
   status!: FixtureStatus;
 
   @Expose({ name: 'ParticipantResults' })
-  @Type(() => OutrightParticipantResult)
-  events: OutrightParticipantResult[] = [];
+  @Type(() => OutrightParticipantResultBodyStructure)
+  events: OutrightParticipantResultBodyStructure[] = [];
 }

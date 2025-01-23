@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { OutrightParticipantResult } from './outright-participant-element';
+import { OutrightParticipantResultBodyStructure } from './outright-participant-body-structure';
 import { FixtureStatus } from '@lsports/enums';
 
 /**
@@ -8,10 +8,10 @@ import { FixtureStatus } from '@lsports/enums';
  * deserializing the response from the snapshot API to a
  * outright score element structure.
  */
-export class OutrightScoreElement {
+export class OutrightScoreBodyStructure {
   @Expose({ name: 'ParticipantResults' })
-  @Type(() => OutrightParticipantResult)
-  participantResults: OutrightParticipantResult[] = [];
+  @Type(() => OutrightParticipantResultBodyStructure)
+  participantResults: OutrightParticipantResultBodyStructure[] = [];
 
   @Expose({ name: 'Status' })
   status!: FixtureStatus;

@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { BaseEntity } from '@entities';
-import { OutrightCompetitionsResultElement } from '@api/common/body-entities/responses/outright-competitions-result-element';
+import { OutrightCompetitionsResultBodyStructure } from '@api/common/body-entities/responses/outright-competitions-result-body-structure';
 
 /**
  * GetOutrightLeaguesResultElement class is responsible
@@ -23,6 +23,6 @@ export class GetOutrightLeaguesResultElement implements BaseEntity {
   public type!: number;
 
   @Expose({ name: 'Competitions' })
-  @Type(() => OutrightCompetitionsResultElement)
-  competitions?: OutrightCompetitionsResultElement[];
+  @Type(() => OutrightCompetitionsResultBodyStructure)
+  competitions?: OutrightCompetitionsResultBodyStructure[];
 }
