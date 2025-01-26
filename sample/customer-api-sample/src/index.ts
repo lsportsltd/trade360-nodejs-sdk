@@ -35,6 +35,7 @@ import {
   SubscriptionState,
   TranslationsValidationError,
   ValidationError,
+  IPackageDistributionHttpClient,
 } from 'trade360-nodejs-sdk';
 
 import { getConfig } from './config';
@@ -48,93 +49,83 @@ const initApiSample = async () => {
   try {
     const customersApiFactory = new CustomersApiFactory();
 
-    const subscriptionHttpClient = customersApiFactory.createSubscriptionHttpClient({
+    const subscriptionInplayHttpClient = customersApiFactory.createSubscriptionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
       restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
 
-     await getPackageQuota(subscriptionHttpClient);
+    const subscriptionPremtachHttpClient = customersApiFactory.createSubscriptionHttpClient({
+      packageCredentials: config.trade360.preMatchMQSettings,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
+      logger,
+    });
+     await getPackageQuota(subscriptionInplayHttpClient);
 
-     await getFixtureSchedule(subscriptionHttpClient);
+     await getFixtureSchedule(subscriptionInplayHttpClient);
 
-     await subscribeByFixtures(subscriptionHttpClient);
+     await subscribeByFixtures(subscriptionInplayHttpClient);
 
-     await unSubscribeFromFixture(subscriptionHttpClient);
+     await unSubscribeFromFixture(subscriptionInplayHttpClient);
 
-     await subscribeByLeagues(subscriptionHttpClient);
+     await subscribeByLeagues(subscriptionInplayHttpClient);
 
-     await unSubscribeFromLeagues(subscriptionHttpClient);
+     await unSubscribeFromLeagues(subscriptionInplayHttpClient);
 
-     await getManualSuspensions(subscriptionHttpClient);
+     await getManualSuspensions(subscriptionInplayHttpClient);
 
-     await addManualSuspensions(subscriptionHttpClient);
+     await addManualSuspensions(subscriptionInplayHttpClient);
 
-     await removeManualSuspensions(subscriptionHttpClient);
+     await removeManualSuspensions(subscriptionInplayHttpClient);
 
-     await getSubscriptions(subscriptionHttpClient);
+     await getSubscriptions(subscriptionInplayHttpClient);
 
-     await subscribeByCompetitions(subscriptionHttpClient);
+     await subscribeByCompetitions(subscriptionPremtachHttpClient);
 
-     await unSubscribeFromCompetitions(subscriptionHttpClient);
+     await unSubscribeFromCompetitions(subscriptionPremtachHttpClient);
 
-     await getFixturesMetadataSubscriptions(subscriptionHttpClient);
+     await getFixturesMetadataSubscriptions(subscriptionInplayHttpClient);
 
-     const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
-       packageCredentials: config.trade360.inPlayMQSettings,
-       restApiBaseUrl: config.trade360.restApiBaseUrl,
-       logger,
-     });
+    const metadataInplayHttpClient = customersApiFactory.createMetadataHttpClient({
+      packageCredentials: config.trade360.inPlayMQSettings,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
+      logger,
+    });
 
-     await getLocations(metadataHttpClient);
+    const metadataPrematchHttpClient = customersApiFactory.createMetadataHttpClient({
+      packageCredentials: config.trade360.preMatchMQSettings,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
+      logger,
+    });
 
-     await getSports(metadataHttpClient);
+     await getLocations(metadataInplayHttpClient);
 
-     await getLeagues(metadataHttpClient);
+     await getSports(metadataInplayHttpClient);
 
-     await getMarkets(metadataHttpClient);
+     await getLeagues(metadataInplayHttpClient);
 
-     await getTranslations(metadataHttpClient);
+     await getMarkets(metadataInplayHttpClient);
 
-     await getCompetitions(metadataHttpClient);
+     await getTranslations(metadataPrematchHttpClient);
 
-     const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
-       packageCredentials: config.trade360.inPlayMQSettings,
-       restApiBaseUrl: config.trade360.restApiBaseUrl,
-       logger,
-     });
+     await getCompetitions(metadataPrematchHttpClient);
+
+    const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
+      packageCredentials: config.trade360.inPlayMQSettings,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
+      logger,
+    });
 
     process.on('exit' || 'SIGINT', async () => {
       process.exit(1);
     });
 
-     const distributionStatus: StatusResponseBody | undefined =
-       await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
-         StatusResponseBody,
-       );
+    await getDistributionStatus(packageDistributionHttpClient);
+  
+    await startDistibution(packageDistributionHttpClient);
+   
+    await stopDistribution(packageDistributionHttpClient);
 
-    if (!_.isNil(distributionStatus)) {
-      const { isDistributionOn } = distributionStatus;
-      if (!isDistributionOn) {
-         const startRequest: StartResponseBody | undefined =
-           await packageDistributionHttpClient.startDistribution<StartResponseBody>(
-             StartResponseBody,
-           );
-
-      if (!_.isNil(startRequest)) logger.log(startRequest.message);
-     }
-   }
-
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        return resolve();
-      }, 5 * 1000);
-    });
-
-     const stopRequest: StopResponseBody | undefined =
-      await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
-
-    // if (!_.isNil(stopRequest)) logger.log(stopRequest.message);
   } catch (err: unknown) {
     if (err instanceof ValidationError) {
       logger.error(`API sample got err from ValidationError instance: ${err}`);
@@ -167,8 +158,34 @@ const initApiSample = async () => {
     } else {
       logger.error(`API sample got err: ${err}`);
     }
-  }
+}
 };
+
+const stopDistribution = async(packageDistributionHttpClient: IPackageDistributionHttpClient) => {
+  const stopRequest: StopResponseBody | undefined = await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
+  console.log('Stop Distribution Response:', stopRequest);
+}
+
+const startDistibution = async(packageDistributionHttpClient: IPackageDistributionHttpClient)=> {
+  const distributionStatus = await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(StatusResponseBody);
+  if (!_.isNil(distributionStatus)) {      
+    const { isDistributionOn } = distributionStatus;
+    if (!isDistributionOn) {
+      const startRequest: StartResponseBody | undefined = await packageDistributionHttpClient.startDistribution<StartResponseBody>(
+        StartResponseBody
+      );
+      console.log('Start Distribution Response:', startRequest);
+        if (!_.isNil(startRequest)) logger.log(startRequest.message);
+      }
+    }
+  }
+
+const getDistributionStatus = async (packageDistributionHttpClient: IPackageDistributionHttpClient) => {
+  const distributionStatus = await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
+    StatusResponseBody
+  );
+  console.log('Distribution Status:', distributionStatus);
+}
 
 const getLocations = async (metadataHttpClient: IMetadataHttpClient) => {
   const response = await metadataHttpClient.getLocations();

@@ -15,6 +15,7 @@ import {
   ChangeManualSuspensionsRequest,
   CompetitionsSubscriptionRequest,
   FixturesMetadataSubscriptionsRequest,
+  FixturesSubscriptionRequest,
   GetFixtureScheduleRequest,
   GetSubscriptionsRequest,
   LeaguesSubscriptionRequest,
@@ -122,9 +123,9 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   public async subscribeByFixtures(
     requestDto: FixturesSubscriptionRequestDto,
   ): Promise<FixturesSubscriptionCollectionResponse | undefined> {
-    const request = this.mapper.map<GetFixtureScheduleRequestDto, GetFixtureScheduleRequest>(
+    const request = this.mapper.map<FixturesSubscriptionRequestDto, FixturesSubscriptionRequest>(
       requestDto,
-      GetFixtureScheduleRequest,
+      FixturesSubscriptionRequest,
     );
 
     const fixturesSubscriptionResponse =
@@ -147,9 +148,9 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   public async unSubscribeByFixtures(
     requestDto: FixturesSubscriptionRequestDto,
   ): Promise<FixturesSubscriptionCollectionResponse | undefined> {
-    const request = this.mapper.map<GetFixtureScheduleRequestDto, GetFixtureScheduleRequest>(
+    const request = this.mapper.map<FixturesSubscriptionRequestDto, FixturesSubscriptionRequest>(
       requestDto,
-      GetFixtureScheduleRequest,
+      FixturesSubscriptionRequest,
     );
 
     const fixturesUnSubscriptionsResponse =
