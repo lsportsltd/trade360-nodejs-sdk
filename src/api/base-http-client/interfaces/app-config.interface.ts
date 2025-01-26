@@ -13,7 +13,7 @@ export interface HttpAppConfig {
  * for the package types HTTP settings
  */
 export interface HttpSettings {
-  customersApiBaseUrl: string;
+  restApiBaseUrl: string;
   inPlayMQSettings?: HttpRequestSettings;
   preMatchMQSettings?: HttpRequestSettings;
 }

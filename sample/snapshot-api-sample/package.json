@@ -1,5 +1,5 @@
 {
-  "name": "api-sample",
+  "name": "snapshot-api-sample",
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
