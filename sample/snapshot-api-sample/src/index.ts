@@ -31,88 +31,151 @@ import {
 } from '@lsports/errors';
 
 import { getConfig } from './config';
+import readline from 'readline';
 
 // Load configuration
 const config = getConfig();
 
 let logger = console;
 
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
 const initApiSample = async () => {
   try {
     const snapshotApiFactory = new SnapshotApiFactory();
 
+    // Create Snapshot API clients
     const inPlaySnapshotHttpClient = snapshotApiFactory.createSnapshotApiInPlayHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
       restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
 
-     // await getInPlayFixtures(inPlaySnapshotHttpClient);
-
-    // await getInPlayLivescores(inPlaySnapshotHttpClient);
-
-   //  await getInPlayFixtureMarkets(inPlaySnapshotHttpClient);
-
-   //  await getInPlayEvents(inPlaySnapshotHttpClient);
-
-     const preMatchSnapshotHttpClient = snapshotApiFactory.createSnapshotApiPrematchHttpClient({
+    const preMatchSnapshotHttpClient = snapshotApiFactory.createSnapshotApiPrematchHttpClient({
       packageCredentials: config.trade360.preMatchMQSettings,
       restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
-    await getPreMatchFixtures(preMatchSnapshotHttpClient);
 
-    await getPreMatchLivescores(preMatchSnapshotHttpClient);
+    const showMenu = () => {
+      console.log('\n=== Snapshot API Operations Menu ===');
+      console.log('1. Get In-Play Fixtures');
+      console.log('2. Get In-Play Livescores');
+      console.log('3. Get In-Play Fixture Markets');
+      console.log('4. Get In-Play Events');
+      console.log('5. Get Pre-Match Fixtures');
+      console.log('6. Get Pre-Match Livescores');
+      console.log('7. Get Pre-Match Fixture Markets');
+      console.log('8. Get Pre-Match Events');
+      console.log('9. Get Outright Events');
+      console.log('10. Get Outright Fixtures');
+      console.log('11. Get Outright Scores');
+      console.log('12. Get Outright Fixture Markets');
+      console.log('13. Get Outright Leagues');
+      console.log('14. Get Outright League Markets');
+      console.log('0. Exit');
+      console.log('==============================');
+    };
 
- //   await getPreMatchFixtureMarkets(preMatchSnapshotHttpClient);
+    const handleUserInput = async (choice: string) => {
+      switch (choice) {
+        case '1':
+          await getInPlayFixtures(inPlaySnapshotHttpClient);
+          break;
+        case '2':
+          await getInPlayLivescores(inPlaySnapshotHttpClient);
+          break;
+        case '3':
+          await getInPlayFixtureMarkets(inPlaySnapshotHttpClient);
+          break;
+        case '4':
+          await getInPlayEvents(inPlaySnapshotHttpClient);
+          break;
+        case '5':
+          await getPreMatchFixtures(preMatchSnapshotHttpClient);
+          break;
+        case '6':
+          await getPreMatchLivescores(preMatchSnapshotHttpClient);
+          break;
+        case '7':
+          await getPreMatchFixtureMarkets(preMatchSnapshotHttpClient);
+          break;
+        case '8':
+          await getPreMatchEvents(preMatchSnapshotHttpClient);
+          break;
+        case '9':
+          await getOutrightEvents(preMatchSnapshotHttpClient);
+          break;
+        case '10':
+          await getOutrightFixtures(preMatchSnapshotHttpClient);
+          break;
+        case '11':
+          await getOutrightScores(preMatchSnapshotHttpClient);
+          break;
+        case '12':
+          await getOutrightFixtureMarkets(preMatchSnapshotHttpClient);
+          break;
+        case '13':
+          await getOutrightLeagues(preMatchSnapshotHttpClient);
+          break;
+        case '14':
+          await getOutrightLeagueMarkets(preMatchSnapshotHttpClient);
+          break;
+        case '0':
+          console.log('Exiting...');
+          rl.close();
+          return;
+        default:
+          console.log('Invalid choice. Please try again.');
+          break;
+      }
 
- //    await getPreMatchEvents(preMatchSnapshotHttpClient);
+      // Show the menu again after handling the choice
+      promptUser();
+    };
 
-    await getOutrightEvents(preMatchSnapshotHttpClient);
-
-    await getOutrightFixtures(preMatchSnapshotHttpClient);
-
-    await getOutrightScores(preMatchSnapshotHttpClient);
-
-    await getOutrightFixtureMarkets(preMatchSnapshotHttpClient);
-
-    await getOutrightLeagues(preMatchSnapshotHttpClient);
-
-    await getOutrightLeagueMarkets(preMatchSnapshotHttpClient);
-  }
-  catch (err: unknown) {
-  if (err instanceof ValidationError) {
-    logger.error(`API sample got err from ValidationError instance: ${err}`);
-
-    if (!_.isNil(err.context) && typeof err.context == 'object') {
-      _.each(err.context, (value, key) => {
-        logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
+    const promptUser = () => {
+      showMenu(); // Display the menu
+      rl.question('Select an option: ', (answer: string) => {
+        handleUserInput(answer); // Call the appropriate handler based on user input
       });
-    }
-  } else if (err instanceof TranslationsValidationError) {
-    logger.error(`API sample got err from TranslationsValidationError instance: ${err}`);
-  } else if (err instanceof HttpResponseError) {
-    logger.error(`API sample got err from HttpResponseError instance: ${err}`);
+    };
 
-    let errors = [];
+    // Start the prompt
+    promptUser();
 
-    if (!_.isNil(err.context) && typeof err.context == 'string') {
-      errors = [logger.error(`Error [${err.name}]: ${JSON.stringify(err.context)}`)];
-    } else if (_.isArray(err.context)) {
-      errors = err.context;
+  } catch (err: unknown) {
+    if (err instanceof ValidationError) {
+      logger.error(`API sample got err from ValidationError instance: ${err}`);
+      if (!_.isNil(err.context) && typeof err.context === 'object') {
+        _.each(err.context, (value, key) => {
+          logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
+        });
+      }
+    } else if (err instanceof TranslationsValidationError) {
+      logger.error(`API sample got err from TranslationsValidationError instance: ${err}`);
+    } else if (err instanceof HttpResponseError) {
+      logger.error(`API sample got err from HttpResponseError instance: ${err}`);
+      let errors = [];
+      if (!_.isNil(err.context) && typeof err.context === 'string') {
+        errors = [logger.error(`Error [${err.name}]: ${JSON.stringify(err.context)}`)];
+      } else if (_.isArray(err.context)) {
+        errors = err.context;
+      }
+      if (typeof err.context === 'object') {
+        _.each(err.context, (value, key) => {
+          logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
+        });
+      }
+    } else if (err instanceof InvalidDateInRequestError) {
+      logger.error(`API sample got err from InvalidDateInRequestError instance: ${err}`);
+    } else {
+      logger.error(`API sample got err: ${err}`);
     }
-
-    if (typeof err.context == 'object') {
-      _.each(err.context, (value, key) => {
-        logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
-      });
-    }
-  } else if (err instanceof InvalidDateInRequestError) {
-    logger.error(`API sample got err from InvalidDateInRequestError instance: ${err}`);
-  } else {
-    logger.error(`API sample got err: ${err}`);
   }
-}
 };
 
 const getInPlayFixtures = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {

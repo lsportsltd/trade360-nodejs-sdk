@@ -24,11 +24,12 @@
       "name": "Debug Customer Api Sample Project",
       "type": "node",
       "request": "launch",
-      "outputCapture": "std",
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["${workspaceFolder}/sample/customer-api-sample/src/index.ts"],
       "preLaunchTask": "tsc: build - tsconfig.json",
-      "sourceMaps": true
+      "sourceMaps": true,
+      "outputCapture": "std",
+      "console": "integratedTerminal"
     },
     {
       "name": "Debug Snapshot Api Sample Project",
@@ -38,7 +39,8 @@
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["${workspaceFolder}/sample/snapshot-api-sample/src/index.ts"],
       "preLaunchTask": "tsc: build - tsconfig.json",
-      "sourceMaps": true
+      "sourceMaps": true,
+      "console": "integratedTerminal"
     }
   ]
 }

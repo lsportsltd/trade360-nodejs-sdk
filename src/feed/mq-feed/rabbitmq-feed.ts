@@ -151,10 +151,10 @@ class RabbitMQFeed implements IFeed {
 
     this.isConnected = false;
 
-    const { automaticRecoveryEnabled, networkRecoveryIntervalInMs } = this.mqSettings;
+    const { automaticRecoveryEnabled, networkRecoveryIntervalInMs, maxRetryAttempts } =
 
     const options = {
-      maxAttempts: 12,
+      maxAttempts: maxRetryAttempts,
       delayMs: networkRecoveryIntervalInMs,
       backoffFactor: 1,
     };
