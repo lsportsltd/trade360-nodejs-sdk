@@ -39,7 +39,7 @@ export const MQSettingsSchema = z.object({
     .positive()
     .min(MIN_NETWORK_RECOVERY_INTERVAL_IN_MS)
     .default(DEFUALT_NETWORK_RECOVERY_INTERVAL_IN_MS),
-  maxRetryAttempts: z
+  maxRetryAttempts: z.number().int().positive(),
   .number()
   .int()
   .positive(),
