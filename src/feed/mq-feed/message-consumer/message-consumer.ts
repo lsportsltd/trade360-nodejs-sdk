@@ -109,6 +109,10 @@ export class MessageConsumer {
         return;
       }
     } catch (err) {
+      if(err instanceof ConversionError){
+        this.logger?.warn(`Failed to deserialise message: ${err}`);
+        return;
+      }
       this.logger?.error(`Error handling message consumption, error: ${err}`);
       throw err;
     }
