@@ -109,7 +109,7 @@ export class MessageConsumer {
         return;
       }
     } catch (err) {
-      if(err instanceof ConversionError){
+      if (err instanceof ConversionError) {
         this.logger?.warn(`Failed to deserialise message: ${err}`);
         return;
       }
