@@ -69,29 +69,29 @@ A step-by-step series of instructions to set up your development environment.
 ### Connecting to Trade360 Feed <a name = "usage_guide_feed"></a>
 
 This is an example usage of the feed SDK, which gives you the ability to create an instance and connect to your RabbitMQ feed. You can create a handler to deal with each type of message being produced (fixture, livescore, markets, settlement) for standard sports, outright sports, and outright league sports (tournaments). Please download the repo and run the examples for more information.
-#### Example Configuration (`appsettings.json`)
-**[config.js](sample/feed-sample/src/config/app-config.json)**
 
+#### Example Configuration (`sample/feed-sample/src/config/app-config.json`)
 ```js
-  "trade360": {
-    "inPlayMQSettings": {
-      "hostname": "trade360-inplay-rabbitmq-host",
-      "port":  "trade360-inplay-rabbitmq-port",
-      "vhost": "trade360-inplay-rabbitmq-virtual-host",
-      "username": "your-username",
-      "password": "your-password",
-      "packageId": "your-packageid",
-      "prefetchCount": 1,
-      "networkRecoveryIntervalInMs": 5000,
-      "maxRetryAttempts":3000, 
-      "automaticRecoveryEnabled": true,
-      "autoAck": false,
-      "consumptionLatencyThreshold": 5,
-      "customersApiBaseUrl": "https://stm-api.lsports.eu/",
-      "PACKAGE_FORMAT_TYPE": "2",
-      "requestedHeartbeatSeconds": 30,
-      "dispatchConsumersAsync": true
-    },
+"trade360": {
+  "inPlayMQSettings": {
+    "hostname": "trade360-inplay-rabbitmq-host",
+    "port":  "trade360-inplay-rabbitmq-port",
+    "vhost": "trade360-inplay-rabbitmq-virtual-host",
+    "username": "your-username",
+    "password": "your-password",
+    "packageId": "your-packageid",
+    "prefetchCount": 1,
+    "networkRecoveryIntervalInMs": 5000,
+    "maxRetryAttempts":3000, 
+    "automaticRecoveryEnabled": true,
+    "autoAck": false,
+    "consumptionLatencyThreshold": 5,
+    "customersApiBaseUrl": "https://stm-api.lsports.eu/",
+    "PACKAGE_FORMAT_TYPE": "2",
+    "requestedHeartbeatSeconds": 30,
+    "dispatchConsumersAsync": true
+  }
+},
 ```
 same for configuration need to be define for pre match.
 Then, initialize the SDK in your application:
@@ -103,15 +103,15 @@ const config = getConfig();
 define new feed for each inPlay or preMatch or both-
 ```js
 // Load configuration from appConfig file
-    const feedInPlay = new Feed(config.trade360.inPlayMQSettings!, logger);
+const feedInPlay = new Feed(config.trade360.inPlayMQSettings!, logger);
 ```
 Then, you need to define which messages the feed will consume, for example-
 ```js
-    feedInPlay.addEntityHandler(new FixtureMetadataUpdateHandler(), FixtureMetadataUpdate);
+feedInPlay.addEntityHandler(new FixtureMetadataUpdateHandler(), FixtureMetadataUpdate);
 ```
 Now, you can start consuming messages via SDK-
 ```js
-    await feedInPlay.start(true);
+await feedInPlay.start(true);
 ```
 ### Using the Snapshot API <a name = "usage_snapshot_api"></a>
 This is an example usage of the Snapshot API SDK, which provides an easy way to interact with the Snapshot API for recovery purposes. The SDK offers a simplified HTTP client with request and response handling.
@@ -141,17 +141,17 @@ const config = getConfig();
 ```
 Implementing The Snapshot API Client
 ```js
-    const snapshotApiFactory = new SnapshotApiFactory();
+const snapshotApiFactory = new SnapshotApiFactory();
 ```
 Create API client for each inplay and prematch-
 ```js
-    const inPlaySnapshotHttpClient = snapshotApiFactory.createSnapshotApiInPlayHttpClient({
+const inPlaySnapshotHttpClient = snapshotApiFactory.createSnapshotApiInPlayHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
       restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
 
-    const preMatchSnapshotHttpClient = snapshotApiFactory.createSnapshotApiPrematchHttpClient({
+const preMatchSnapshotHttpClient = snapshotApiFactory.createSnapshotApiPrematchHttpClient({
       packageCredentials: config.trade360.preMatchMQSettings,
       restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
@@ -159,7 +159,7 @@ Create API client for each inplay and prematch-
 ```
 then you can use menu to select relvant api and update the request details in the specific method, for example-
 ```js
-    const getInPlayFixtures = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
+const getInPlayFixtures = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
   const request = new GetFixtureRequestDto({
     sportIds: [/* List of sport IDs, e.g., 1234, 2345 */ ],
     locationIds: [/* List of fixture IDs, e.g., 12345678, 23456789 */],
@@ -208,36 +208,35 @@ const config = getConfig();
 ```
 Implementing The Snapshot API Client
 ```js
-    const customersApiFactory = new CustomersApiFactory();
+const customersApiFactory = new CustomersApiFactory();
 ```
 Create API client for each subscription, metadata and package distriubtion apis-
 ```js
+const subscriptionInplayHttpClient = customersApiFactory.createSubscriptionHttpClient({
+    packageCredentials: config.trade360.inPlayMQSettings,
+    restApiBaseUrl: config.trade360.restApiBaseUrl,
+    logger,
+  });
 
-    const subscriptionInplayHttpClient = customersApiFactory.createSubscriptionHttpClient({
-      packageCredentials: config.trade360.inPlayMQSettings,
-      restApiBaseUrl: config.trade360.restApiBaseUrl,
-      logger,
-    });
-
-    const subscriptionPremtachHttpClient = customersApiFactory.createSubscriptionHttpClient({
+const subscriptionPremtachHttpClient = customersApiFactory.createSubscriptionHttpClient({
       packageCredentials: config.trade360.preMatchMQSettings,
       restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
 
-    const metadataInplayHttpClient = customersApiFactory.createMetadataHttpClient({
+const metadataInplayHttpClient = customersApiFactory.createMetadataHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
       restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
 
-    const metadataPrematchHttpClient = customersApiFactory.createMetadataHttpClient({
+const metadataPrematchHttpClient = customersApiFactory.createMetadataHttpClient({
       packageCredentials: config.trade360.preMatchMQSettings,
       restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
 
-    const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
+const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
       restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
@@ -268,54 +267,54 @@ The SDK provides structured error responses. Handle errors as follows:
 1. feed
 ```js
  if (err instanceof ValidationError) {
-      logger.error(`feed sample got err from ValidationError instance: ${err}`);
-      if (!_.isNil(err.context) && typeof err.context == 'object') {
-        _.each(err.context, (value, key) => {
-          logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
-        });
-      }
-    }
-    if (err instanceof ConversionError) {
-      logger.error(`feed sample got err from ConversionError instance: ${err}`);
-    }
-    if (err instanceof ConsumptionMessageError) {
-      logger.error(`feed sample got err from ConsumptionMessageError instance: ${err}`);
-    }
-    if (err instanceof RetryError) {
-      logger.error(`feed sample got err from RetryError instance: ${err}`);
+    logger.error(`feed sample got err from ValidationError instance: ${err}`);
+    if (!_.isNil(err.context) && typeof err.context == 'object') {
+       _.each(err.context, (value, key) => {
+        logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
+      });
     }
   }
+  if (err instanceof ConversionError) {
+    logger.error(`feed sample got err from ConversionError instance: ${err}`);
+  }
+  if (err instanceof ConsumptionMessageError) {
+    logger.error(`feed sample got err from ConsumptionMessageError instance: ${err}`);
+  }
+  if (err instanceof RetryError) {
+    logger.error(`feed sample got err from RetryError instance: ${err}`);
+  }
+}
 ```
 
 2. customer & snapshot api
 ```js
-    if (err instanceof ValidationError) {
-        logger.error(`API sample got err from ValidationError instance: ${err}`);
-        if (!_.isNil(err.context) && typeof err.context == 'object') {
-            _.each(err.context, (value, key) => {
-            logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
-            });
-        }
-        } else if (err instanceof TranslationsValidationError) {
-        logger.error(`API sample got err from TranslationsValidationError instance: ${err}`);
-        } else if (err instanceof HttpResponseError) {
-        logger.error(`API sample got err from HttpResponseError instance: ${err}`);
-        let errors = [];
-        if (!_.isNil(err.context) && typeof err.context == 'string') {
-            errors = [logger.error(`Error [${err.name}]: ${JSON.stringify(err.context)}`)];
-        } else if (_.isArray(err.context)) {
-            errors = err.context;
-        }
-        if (typeof err.context == 'object') {
-            _.each(err.context, (value, key) => {
-            logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
-            });
-        }
-        } else if (err instanceof InvalidDateInRequestError) {
-        logger.error(`API sample got err from InvalidDateInRequestError instance: ${err}`);
-        } else {
-        logger.error(`API sample got err: ${err}`);
-        }
+if (err instanceof ValidationError) {
+  logger.error(`API sample got err from ValidationError instance: ${err}`);
+  if (!_.isNil(err.context) && typeof err.context == 'object') {
+    _.each(err.context, (value, key) => {
+      logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
+    });
+  }
+} else if (err instanceof TranslationsValidationError) {
+  logger.error(`API sample got err from TranslationsValidationError instance: ${err}`);
+} else if (err instanceof HttpResponseError) {
+  logger.error(`API sample got err from HttpResponseError instance: ${err}`);
+  let errors = [];
+  if (!_.isNil(err.context) && typeof err.context == 'string') {
+    errors = [logger.error(`Error [${err.name}]: ${JSON.stringify(err.context)}`)];
+  } else if (_.isArray(err.context)) {
+    errors = err.context;
+  }
+  if (typeof err.context == 'object') {
+    _.each(err.context, (value, key) => {
+      logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
+    });
+  }
+} else if (err instanceof InvalidDateInRequestError) {
+  logger.error(`API sample got err from InvalidDateInRequestError instance: ${err}`);
+} else {
+  logger.error(`API sample got err: ${err}`);
+}
 ```
 
 ## License <a name = "license"></a>
