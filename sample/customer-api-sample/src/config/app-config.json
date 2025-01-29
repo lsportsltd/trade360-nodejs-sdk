@@ -1,0 +1,15 @@
+{
+  "trade360": {
+    "restApiBaseUrl": "https://stm-api.qa.lsports.cloud/",
+    "inPlayMQSettings": {
+      "username": "LSPORTS_USERNAME",
+      "password": "LSPORTS_PASSWORD",
+      "packageId": 430
+    },
+    "preMatchMQSettings": {
+      "packageId": 431,
+      "username": "LSPORTS_USERNAME",
+      "password": "LSPORTS_PASSWORD"
+    }
+  }
+}

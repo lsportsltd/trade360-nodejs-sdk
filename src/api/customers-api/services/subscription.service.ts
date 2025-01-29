@@ -15,6 +15,7 @@ import {
   ChangeManualSuspensionsRequest,
   CompetitionsSubscriptionRequest,
   FixturesMetadataSubscriptionsRequest,
+  FixturesSubscriptionRequest,
   GetFixtureScheduleRequest,
   GetSubscriptionsRequest,
   LeaguesSubscriptionRequest,
@@ -52,7 +53,7 @@ const {
  * to the subscription API. It is a HTTP client for the subscription
  * API. It contains the logic for sending requests to the subscription
  * API.
- * @param customersApiBaseUrl The base URL of the customers API
+ * @param restApiBaseUrl The base URL of the customers API
  * @param packageCredentials The package credentials for the API
  * @param logger The logger instance
  * @param mapper The mapper instance
@@ -69,11 +70,8 @@ const {
 export class SubscriptionHttpClient extends BaseHttpClient implements ISubscriptionHttpClient {
   private readonly mapper: IMapper;
 
-  constructor(
-    { packageCredentials, customersApiBaseUrl, logger }: IHttpServiceConfig,
-    mapper: IMapper,
-  ) {
-    super({ customersApiBaseUrl, packageCredentials, logger });
+  constructor({ packageCredentials, restApiBaseUrl, logger }: IHttpServiceConfig, mapper: IMapper) {
+    super({ restApiBaseUrl, packageCredentials, logger });
     this.mapper = mapper;
   }
 
@@ -125,9 +123,9 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   public async subscribeByFixtures(
     requestDto: FixturesSubscriptionRequestDto,
   ): Promise<FixturesSubscriptionCollectionResponse | undefined> {
-    const request = this.mapper.map<GetFixtureScheduleRequestDto, GetFixtureScheduleRequest>(
+    const request = this.mapper.map<FixturesSubscriptionRequestDto, FixturesSubscriptionRequest>(
       requestDto,
-      GetFixtureScheduleRequest,
+      FixturesSubscriptionRequest,
     );
 
     const fixturesSubscriptionResponse =
@@ -150,9 +148,9 @@ export class SubscriptionHttpClient extends BaseHttpClient implements ISubscript
   public async unSubscribeByFixtures(
     requestDto: FixturesSubscriptionRequestDto,
   ): Promise<FixturesSubscriptionCollectionResponse | undefined> {
-    const request = this.mapper.map<GetFixtureScheduleRequestDto, GetFixtureScheduleRequest>(
+    const request = this.mapper.map<FixturesSubscriptionRequestDto, FixturesSubscriptionRequest>(
       requestDto,
-      GetFixtureScheduleRequest,
+      FixturesSubscriptionRequest,
     );
 
     const fixturesUnSubscriptionsResponse =

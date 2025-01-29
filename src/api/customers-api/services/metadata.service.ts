@@ -44,7 +44,7 @@ const {
  * to the metadata API. It extends the BaseHttpClient class and
  * contains the logic for sending requests to the metadata API.
  * @param packageCredentials The package credentials for the API
- * @param customersApiBaseUrl The base URL of the customers API
+ * @param restApiBaseUrl The base URL of the customers API
  * @param logger The logger instance
  * @param mapper The mapper instance
  * @returns MetadataHttpClient instance that is responsible for
@@ -63,11 +63,8 @@ const {
 export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpClient {
   private readonly mapper: IMapper;
 
-  constructor(
-    { packageCredentials, customersApiBaseUrl, logger }: IHttpServiceConfig,
-    mapper: IMapper,
-  ) {
-    super({ customersApiBaseUrl, packageCredentials, logger });
+  constructor({ packageCredentials, restApiBaseUrl, logger }: IHttpServiceConfig, mapper: IMapper) {
+    super({ restApiBaseUrl, packageCredentials, logger });
     this.mapper = mapper;
   }
 

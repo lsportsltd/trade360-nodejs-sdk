@@ -12,7 +12,7 @@ const { STATUS_PREFIX_URL, START_PREFIX_URL, STOP_PREFIX_URL } = DistributionRou
  * It extends the BaseHttpClient class and contains the logic for
  * sending requests to the distribution API.
  * @param packageCredentials The package credentials for the API
- * @param customersApiBaseUrl The base URL of the customers API
+ * @param restApiBaseUrl The base URL of the customers API
  * @param logger The logger instance
  * @returns PackageDistributionHttpClient instance that is
  * responsible for sending requests to the distribution API.
@@ -38,8 +38,8 @@ export class PackageDistributionHttpClient
   extends BaseHttpClient
   implements IPackageDistributionHttpClient
 {
-  constructor({ packageCredentials, customersApiBaseUrl, logger }: IHttpServiceConfig) {
-    super({ customersApiBaseUrl, packageCredentials, logger });
+  constructor({ packageCredentials, restApiBaseUrl, logger }: IHttpServiceConfig) {
+    super({ restApiBaseUrl, packageCredentials, logger });
   }
 
   public async getDistributionStatus<TResponse extends BaseEntity>(

@@ -10,7 +10,7 @@ export const HttpRequestSettingsSchema = z.object({
   username: z.string(),
   password: z.string(),
   packageId: z.number().int().positive(),
-  customersApiBaseUrl: z.string().url(),
+  restApiBaseUrl: z.string().url(),
   languageId: z.number().int().optional(),
 });
 

@@ -20,7 +20,6 @@ import {
   GetSubscriptionsRequestDto,
   GetTranslationsRequestDto,
   HttpResponseError,
-  HttpResponsePayloadDto,
   IMetadataHttpClient,
   ISubscriptionHttpClient,
   InvalidDateInRequestError,
@@ -36,6 +35,7 @@ import {
   SubscriptionState,
   TranslationsValidationError,
   ValidationError,
+  IPackageDistributionHttpClient,
 } from 'trade360-nodejs-sdk';
 
 import { getConfig } from './config';
@@ -44,103 +44,167 @@ import { getConfig } from './config';
 const config = getConfig();
 
 let logger = console;
+const readline = require('readline');
 
 const initApiSample = async () => {
   try {
     const customersApiFactory = new CustomersApiFactory();
 
-    const subscriptionHttpClient = customersApiFactory.createSubscriptionHttpClient({
+    const subscriptionInplayHttpClient = customersApiFactory.createSubscriptionHttpClient({
       packageCredentials: config.trade360.inPlayMQSettings,
-      customersApiBaseUrl: config.trade360.customersApiBaseUrl,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
       logger,
     });
 
-    // await getPackageQuota(subscriptionHttpClient);
-
-    // await getFixtureSchedule(subscriptionHttpClient);
-
-    // await subscribeByFixtures(subscriptionHttpClient);
-
-    // await unSubscribeFromFixture(subscriptionHttpClient);
-
-    // await subscribeByLeagues(subscriptionHttpClient);
-
-    // await unSubscribeFromLeagues(subscriptionHttpClient);
-
-    // await getManualSuspensions(subscriptionHttpClient);
-
-    // await addManualSuspensions(subscriptionHttpClient);
-
-    // await removeManualSuspensions(subscriptionHttpClient);
-
-    // await getSubscriptions(subscriptionHttpClient);
-
-    // await subscribeByCompetitions(subscriptionHttpClient);
-
-    // await unSubscribeFromCompetitions(subscriptionHttpClient);
-
-    await getFixturesMetadataSubscriptions(subscriptionHttpClient);
-
-    // const metadataHttpClient = customersApiFactory.createMetadataHttpClient({
-    //   packageCredentials: config.trade360.inPlayMQSettings,
-    //   customersApiBaseUrl: config.trade360.customersApiBaseUrl,
-    //   logger,
-    // });
-
-    // await getLocations(metadataHttpClient);
-
-    // await getSports(metadataHttpClient);
-
-    // await getLeagues(metadataHttpClient);
-
-    // await getMarkets(metadataHttpClient);
-
-    // await getTranslations(metadataHttpClient);
-
-    // await getCompetitions(metadataHttpClient);
-
-    // const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
-    //   packageCredentials: config.trade360.inPlayMQSettings,
-    //   customersApiBaseUrl: config.trade360.customersApiBaseUrl,
-    //   logger,
-    // });
-
-    process.on('exit' || 'SIGINT', async () => {
-      process.exit(1);
+    const subscriptionPremtachHttpClient = customersApiFactory.createSubscriptionHttpClient({
+      packageCredentials: config.trade360.preMatchMQSettings,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
+      logger,
     });
 
-    // const distributionStatus: StatusResponseBody | undefined =
-    //   await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
-    //     StatusResponseBody,
-    //   );
+    const metadataInplayHttpClient = customersApiFactory.createMetadataHttpClient({
+      packageCredentials: config.trade360.inPlayMQSettings,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
+      logger,
+    });
 
-    // if (!_.isNil(distributionStatus)) {
-    //   const { isDistributionOn } = distributionStatus;
+    const metadataPrematchHttpClient = customersApiFactory.createMetadataHttpClient({
+      packageCredentials: config.trade360.preMatchMQSettings,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
+      logger,
+    });
 
-    //   if (!isDistributionOn) {
-    //     const startRequest: StartResponseBody | undefined =
-    //       await packageDistributionHttpClient.startDistribution<StartResponseBody>(
-    //         StartResponseBody,
-    //       );
+    const packageDistributionHttpClient = customersApiFactory.createPackageDistributionHttpClient({
+      packageCredentials: config.trade360.inPlayMQSettings,
+      restApiBaseUrl: config.trade360.restApiBaseUrl,
+      logger,
+    });
 
-    //     if (!_.isNil(startRequest)) logger.log(startRequest.message);
-    //   }
-    // }
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
 
-    // await new Promise<void>((resolve) => {
-    //   setTimeout(() => {
-    //     return resolve();
-    //   }, 5 * 1000);
-    // });
+    const showMenu = () => {
+      console.log('\n=== API Operations Menu ===');
+      console.log('1. Get Package Quota');
+      console.log('2. Get Fixture Schedule');
+      console.log('3. Subscribe by Fixtures');
+      console.log('4. Unsubscribe from Fixture');
+      console.log('5. Subscribe by Leagues');
+      console.log('6. Unsubscribe from Leagues');
+      console.log('7. Get Manual Suspensions');
+      console.log('8. Add Manual Suspensions');
+      console.log('9. Remove Manual Suspensions');
+      console.log('10. Get Subscriptions');
+      console.log('11. Subscribe by Competitions');
+      console.log('12. Unsubscribe from Competitions');
+      console.log('13. Get Fixtures Metadata Subscriptions');
+      console.log('14. Get Locations');
+      console.log('15. Get Sports');
+      console.log('16. Get Leagues');
+      console.log('17. Get Markets');
+      console.log('18. Get Translations');
+      console.log('19. Get Competitions');
+      console.log('20. Get Distribution Status');
+      console.log('21. Start Distribution');
+      console.log('22. Stop Distribution');
+      console.log('0. Exit');
+      console.log('===========================');
+    };
 
-    // const stopRequest: StopResponseBody | undefined =
-    //   await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
+    const handleUserInput = async (choice: string) => {
+      switch (choice) {
+        case '1':
+          await getPackageQuota(subscriptionInplayHttpClient);
+          break;
+        case '2':
+          await getFixtureSchedule(subscriptionInplayHttpClient);
+          break;
+        case '3':
+          await subscribeByFixtures(subscriptionInplayHttpClient);
+          break;
+        case '4':
+          await unSubscribeFromFixture(subscriptionInplayHttpClient);
+          break;
+        case '5':
+          await subscribeByLeagues(subscriptionInplayHttpClient);
+          break;
+        case '6':
+          await unSubscribeFromLeagues(subscriptionInplayHttpClient);
+          break;
+        case '7':
+          await getManualSuspensions(subscriptionInplayHttpClient);
+          break;
+        case '8':
+          await addManualSuspensions(subscriptionInplayHttpClient);
+          break;
+        case '9':
+          await removeManualSuspensions(subscriptionInplayHttpClient);
+          break;
+        case '10':
+          await getSubscriptions(subscriptionInplayHttpClient);
+          break;
+        case '11':
+          await subscribeByCompetitions(subscriptionPremtachHttpClient);
+          break;
+        case '12':
+          await unSubscribeFromCompetitions(subscriptionPremtachHttpClient);
+          break;
+        case '13':
+          await getFixturesMetadataSubscriptions(subscriptionInplayHttpClient);
+          break;
+        case '14':
+          await getLocations(metadataInplayHttpClient);
+          break;
+        case '15':
+          await getSports(metadataInplayHttpClient);
+          break;
+        case '16':
+          await getLeagues(metadataInplayHttpClient);
+          break;
+        case '17':
+          await getMarkets(metadataInplayHttpClient);
+          break;
+        case '18':
+          await getTranslations(metadataPrematchHttpClient);
+          break;
+        case '19':
+          await getCompetitions(metadataPrematchHttpClient);
+          break;
+        case '20':
+          await getDistributionStatus(packageDistributionHttpClient);
+          break;
+        case '21':
+          await startDistibution(packageDistributionHttpClient);
+          break;
+        case '22':
+          await stopDistribution(packageDistributionHttpClient);
+          break;
+        case '0':
+          console.log('Exiting...');
+          rl.close();
+          return;
+        default:
+          console.log('Invalid choice. Please try again.');
+          break;
+      }
 
-    // if (!_.isNil(stopRequest)) logger.log(stopRequest.message);
+      // Show the menu again after handling the choice
+      promptUser();
+    };
+
+    const promptUser = () => {
+      showMenu();
+      rl.question('Select an option: ', (answer: string) => {
+        handleUserInput(answer);
+      });
+    };
+    promptUser();
   } catch (err: unknown) {
+    // Error handling (same as original)
     if (err instanceof ValidationError) {
       logger.error(`API sample got err from ValidationError instance: ${err}`);
-
       if (!_.isNil(err.context) && typeof err.context == 'object') {
         _.each(err.context, (value, key) => {
           logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
@@ -150,15 +214,12 @@ const initApiSample = async () => {
       logger.error(`API sample got err from TranslationsValidationError instance: ${err}`);
     } else if (err instanceof HttpResponseError) {
       logger.error(`API sample got err from HttpResponseError instance: ${err}`);
-
       let errors = [];
-
       if (!_.isNil(err.context) && typeof err.context == 'string') {
         errors = [logger.error(`Error [${err.name}]: ${JSON.stringify(err.context)}`)];
       } else if (_.isArray(err.context)) {
         errors = err.context;
       }
-
       if (typeof err.context == 'object') {
         _.each(err.context, (value, key) => {
           logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
@@ -171,6 +232,33 @@ const initApiSample = async () => {
     }
   }
 };
+
+
+const stopDistribution = async(packageDistributionHttpClient: IPackageDistributionHttpClient) => {
+  const stopRequest: StopResponseBody | undefined = await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
+  console.log('Stop Distribution Response:', stopRequest);
+}
+
+const startDistibution = async(packageDistributionHttpClient: IPackageDistributionHttpClient)=> {
+  const distributionStatus = await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(StatusResponseBody);
+  if (!_.isNil(distributionStatus)) {      
+    const { isDistributionOn } = distributionStatus;
+    if (!isDistributionOn) {
+      const startRequest: StartResponseBody | undefined = await packageDistributionHttpClient.startDistribution<StartResponseBody>(
+        StartResponseBody
+      );
+      console.log('Start Distribution Response:', startRequest);
+        if (!_.isNil(startRequest)) logger.log(startRequest.message);
+      }
+    }
+  }
+
+const getDistributionStatus = async (packageDistributionHttpClient: IPackageDistributionHttpClient) => {
+  const distributionStatus = await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
+    StatusResponseBody
+  );
+  console.log('Distribution Status:', distributionStatus);
+}
 
 const getLocations = async (metadataHttpClient: IMetadataHttpClient) => {
   const response = await metadataHttpClient.getLocations();
