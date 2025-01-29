@@ -3,13 +3,13 @@
     "restApiBaseUrl": "https://stm-snapshot.lsports.eu/",
     "inPlayMQSettings": {      
       "packageId": 430,
-      "username": "LSPORTS_USERNAME",
-      "password": "LSPORTS_PASSWORD"
+      "username": "biana_test@lsports.eu",
+      "password": "P@ssw0rd!"
     },
     "preMatchMQSettings": {
       "packageId": 431,
-      "username": "LSPORTS_USERNAME",
-      "password": "LSPORTS_PASSWORD"
+      "username": "biana_test@lsports.eu",
+      "password": "P@ssw0rd!"
     }
   }
 }
