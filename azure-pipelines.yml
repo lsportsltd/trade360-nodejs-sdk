@@ -13,6 +13,4 @@ stages:
       packageManager: 'npm'
       language: 'nodejs'
       languageVersion: '20'
-      artifactImageLocation: '/app/target'
-      locationToBuild: 'trade360-nodejs-sdk/'
-      
+      artifactImageLocation: '/app/target'      
