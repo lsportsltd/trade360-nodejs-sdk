@@ -1,43 +1,44 @@
-FROM node:21-alpine as base
+# ---- Base Node ----
+FROM node:18-alpine AS base
+# set working directory
 WORKDIR /usr/src/app
-RUN apk add dumb-init
+# copy project file
 COPY package*.json ./
-
-FROM base as dependencies
-COPY tsconfig*.json ./
+# get and set NPM_TOKEN
 ARG NPM_TOKEN
-ENV NPM_TOKEN=$NPM_TOKEN
+ENV NPM_TOKEN=${NPM_TOKEN}
 
-# Test
-FROM dependencies as test
-COPY jest.config.ts ./
-COPY src src
-RUN npm run test:cov
+# Deps image
+FROM base AS dependencies 
+# install node packages
+RUN npm set progress=false && npm config set depth 0
+# install ALL node_modules, including 'devDependencies'
+RUN npm ci && npm cache clean --force
 
-# Codacy
-ARG CODACY_TOKEN
-ARG SERVICE_NAME
-ENV CODACY_API_TOKEN=${CODACY_TOKEN}
-ENV CODACY_PROJECT_NAME=${SERVICE_NAME}
-ENV CODACY_ORGANIZATION_PROVIDER=gh
-ENV CODACY_USERNAME=lsportsltd
-
-RUN wget -qO - https://coverage.codacy.com/get.sh | sh -s -- report -r /usr/src/app/coverage/lcov.info
-
-FROM dependencies as prod_dependencies
-RUN npm prune --omit=dev
-
-FROM dependencies as build
-COPY src src
+# Builder image
+FROM dependencies as builder 
+# copy ALL node_modules, including 'devDependencies'
+COPY --from=dependencies /usr/src/app/node_modules/ ./node_modules/
+# copy all contents
+COPY . .
+# build nest application
 RUN npm run build
 
 # Final image
 FROM base as production
-COPY --from=prod_dependencies /usr/src/app/node_modules node_modules
-COPY --from=build /usr/src/app/dist dist
-
-ENV NODE_ENV=production
+# set node_env to production
+ENV NODE_ENV=PRODUCTION
+# set timezone to UTC
+ENV TZ=UTC
+# add dumb-init
+RUN apk --no-cache --update add dumb-init
+# copy all node_modules
+COPY --from=dependencies /usr/src/app/node_modules ./node_modules
+# discard dev dependencies
+RUN npm prune --production
+# copy build artifact
+COPY --from=builder /usr/src/app/dist/ ./dist/
+# set user as least priviliged user
 USER node
 
-ENTRYPOINT [ "dumb-init", "--" ]
-CMD ["node", "dist/index.js" ]
+ENTRYPOINT ["dumb-init", "node", "dist/index.js"]
