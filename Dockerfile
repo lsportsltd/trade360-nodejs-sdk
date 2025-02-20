@@ -8,9 +8,6 @@ COPY tsconfig*.json ./
 ARG NPM_TOKEN
 ENV NPM_TOKEN=$NPM_TOKEN
 
-COPY ci.npmrc .npmrc
-RUN npm ci
-
 # Test
 FROM dependencies as test
 COPY jest.config.ts ./
