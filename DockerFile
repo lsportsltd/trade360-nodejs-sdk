@@ -43,4 +43,4 @@ ENV NODE_ENV=production
 USER node
 
 ENTRYPOINT [ "dumb-init", "--" ]
-CMD ["node", "dist/main.js" ]
+CMD ["node", "dist/index.js" ]
