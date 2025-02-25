@@ -16,4 +16,5 @@ export class ProviderMarket {
   @Expose({ name: 'LastUpdate' })
   @Type(() => Date)
   lastUpdate?: Date;
+
 }
