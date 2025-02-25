@@ -17,4 +17,3 @@ export class ProviderMarket {
   @Type(() => Date)
   lastUpdate?: Date;
 }
-}
