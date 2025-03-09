@@ -10,3 +10,5 @@ export * from './outright-score-status';
 export * from './competition-type';
 export * from './market-type';
 export * from './subscription-state';
+export * from './danger-indicator-status';
+export * from './danger-indicator-type';
