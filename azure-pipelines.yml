@@ -4,7 +4,6 @@ resources:
       type: github
       name: lsportsltd/devops-pipeline-templates
       endpoint: lsportsltd
-      ref: PLT-27521
 
 trigger: none
 
