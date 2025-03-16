@@ -13,4 +13,5 @@ stages:
       packageManager: 'npm'
       language: 'nodejs'
       languageVersion: '20'
-      artifactImageLocation: '/usr/src/app/'      
+      artifactImageLocation: '/usr/src/app/'
+      isPublicArtifact: 'true'      

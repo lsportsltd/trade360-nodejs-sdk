@@ -1,5 +1,5 @@
 {
-  "name": "trade360-nodejs-sdk",
+  "name": "@lsportsltd/trade360-nodejs-sdk",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
