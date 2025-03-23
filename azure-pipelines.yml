@@ -1,0 +1,16 @@
+resources:
+  repositories:
+    - repository: pipeline-templates
+      type: github
+      name: lsportsltd/devops-pipeline-templates
+      endpoint: lsportsltd
+
+trigger: none
+
+stages:
+  - template: general/generic-package-CICD.yaml@pipeline-templates
+    parameters: 
+      packageManager: 'npm'
+      language: 'nodejs'
+      languageVersion: '20'
+      artifactImageLocation: '/usr/src/app/'      
