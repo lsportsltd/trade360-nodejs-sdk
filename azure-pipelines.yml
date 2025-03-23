@@ -41,6 +41,12 @@ stages:
               echo "//registry.npmjs.org/:_authToken=${NPM_AUTOMATION_TOKEN}" > ~/.npmrc
               echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
               
+              echo "Installing dependencies..."
+              npm ci
+              
+              echo "Building package..."
+              npm run build
+              
               echo "Publishing to NPM..."
               npm publish --access public
               
