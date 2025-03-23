@@ -46,16 +46,12 @@ stages:
             echo "//registry.npmjs.org/:_authToken=${NPM_AUTOMATION_TOKEN}" > ~/.npmrc
             echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
             
-            echo "Verifying npm configuration..."
-            npm config list
-            
-            echo "Checking package.json version..."
-            npm version
-            
             echo "Publishing to NPM..."
-            npm publish --access public --verbose
+            npm publish --access public
             
             if [ $? -eq 0 ]; then
+              # Create the status file that the template expects
+              touch /usr/src/app/deploy_status_done_npm
               echo "Successfully published to NPM"
             else
               echo "Failed to publish to NPM"
