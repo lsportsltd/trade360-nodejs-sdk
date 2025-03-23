@@ -1,7 +1,7 @@
 {
   "name": "trade360-nodejs-sdk",
   "version": "1.0.0",
-  "description": "",
+  "description": "LSports Trade360 SDK for Node.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -9,10 +9,26 @@
     "build:dev": "npm run lint && npm run build",
     "watch": "tsc -w",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix"
+    "lint:fix": "eslint . --ext .ts --fix",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": [],
-  "author": "",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "lsports",
+    "trade360",
+    "sdk",
+    "sports",
+    "betting",
+    "api"
+  ],
+  "author": "LSports",
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.10.4",
