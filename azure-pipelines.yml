@@ -14,29 +14,20 @@ stages:
       language: 'nodejs'
       languageVersion: '20'
       artifactImageLocation: '/usr/src/app/'
+      serviceName: 'trade360-nodejs-sdk'
 
   - stage: PublishToNPM
     displayName: 'Publish to NPM Registry'
-    dependsOn: BuildAndDeployPackage_default
+    dependsOn: BuildAndDeployPackage_trade360-nodejs-sdk
     condition: succeeded()
     jobs:
       - job: PublishPackage
         displayName: 'Publish NPM Package'
         steps:
-          - task: AWSCLI@1
-            displayName: 'Get NPM credentials from SSM'
-            inputs:
-              awsCredentials: 'AWS'
-              regionName: 'us-east-1'
-              awsCommand: 'ssm'
-              awsSubCommand: 'get-parameters'
-              awsArguments: '--names "/devopsr/npm/automation-token" --with-decryption'
-
           - script: |
               echo "Starting NPM publish process..."
               
-              # Get SSM parameters
-              echo "Fetching SSM parameters..."
+              # Get NPM token from SSM
               NPM_AUTOMATION_TOKEN=$(aws ssm get-parameter --name "/devopsr/npm/automation-token" --with-decryption --query "Parameter.Value" --output text)
               
               if [ -z "$NPM_AUTOMATION_TOKEN" ]; then
@@ -59,5 +50,3 @@ stages:
                 exit 1
               fi
             displayName: 'Publish to NPM'
-            env:
-              AWS_DEFAULT_REGION: 'us-east-1'
