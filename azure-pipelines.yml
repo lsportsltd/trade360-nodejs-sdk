@@ -18,7 +18,7 @@ stages:
       packageManager: 'npm'
       language: 'nodejs'
       languageVersion: '20'
-      artifactImageLocation: '/'
+      artifactImageLocation: '/usr/src/app/'
       postBuildSteps:
         - task: AWSCLI@1
           displayName: 'Get NPM credentials from SSM'
@@ -46,20 +46,8 @@ stages:
             echo "//registry.npmjs.org/:_authToken=${NPM_AUTOMATION_TOKEN}" > ~/.npmrc
             echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
             
-            # Ensure all files are copied
-            echo "Copying necessary files..."
-            cp package*.json tsconfig.json /tmp/trade360-nodejs-sdk/
-            cp -r src /tmp/trade360-nodejs-sdk/
-            cd /tmp/trade360-nodejs-sdk
-            
-            echo "Installing dependencies..."
-            npm ci
-            
             echo "Verifying npm configuration..."
             npm config list
-            
-            echo "Building the package..."
-            npm run build
             
             echo "Checking package.json version..."
             npm version
