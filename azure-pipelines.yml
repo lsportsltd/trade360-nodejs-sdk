@@ -5,12 +5,7 @@ resources:
       name: lsportsltd/devops-pipeline-templates
       endpoint: lsportsltd
 
-trigger:
-  branches:
-    include:
-      - main
-      - master
-      - publishing-sdk
+trigger: none
 
 stages:
   - template: general/generic-package-CICD.yaml@pipeline-templates
@@ -19,54 +14,50 @@ stages:
       language: 'nodejs'
       languageVersion: '20'
       artifactImageLocation: '/usr/src/app/'
-      postBuildSteps:
-        - task: AWSCLI@1
-          displayName: 'Get NPM credentials from SSM'
-          inputs:
-            awsCredentials: 'AWS'
-            regionName: 'us-east-1'
-            awsCommand: 'ssm'
-            awsSubCommand: 'get-parameters'
-            awsArguments: '--names "/devopsr/npm/automation-token" --with-decryption'
 
-        - script: |
-            echo "Starting NPM publish process..."
-            
-            # Get SSM parameters
-            echo "Fetching SSM parameters..."
-            NPM_AUTOMATION_TOKEN=$(aws ssm get-parameter --name "/devopsr/npm/automation-token" --with-decryption --query "Parameter.Value" --output text)
-            
-            if [ -z "$NPM_AUTOMATION_TOKEN" ]; then
-              echo "Error: NPM_AUTOMATION_TOKEN is empty"
-              exit 1
-            fi
-            
-            echo "Configuring NPM..."
-            # Configure NPM authentication
-            echo "//registry.npmjs.org/:_authToken=${NPM_AUTOMATION_TOKEN}" > ~/.npmrc
-            echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
-            
-            # Change to the correct directory where package.json and tsconfig.json are located
-            cd /usr/src/app
-            
-            echo "Current directory contents:"
-            ls -la
-            
-            echo "Building package..."
-            npm run build
-            
-            echo "Publishing to NPM..."
-            npm publish --access public
-            
-            if [ $? -eq 0 ]; then
-              # Create the status file in the correct location
-              mkdir -p /tmp/trade360-nodejs-sdk/app/dist
-              touch /tmp/trade360-nodejs-sdk/app/dist/deploy_status_done_npm
-              echo "Successfully published to NPM"
-            else
-              echo "Failed to publish to NPM"
-              exit 1
-            fi
-          displayName: 'Publish to NPM'
-          env:
-            AWS_DEFAULT_REGION: 'us-east-1'
+  - stage: PublishToNPM
+    displayName: 'Publish to NPM Registry'
+    dependsOn: BuildAndDeployPackage_default
+    condition: succeeded()
+    jobs:
+      - job: PublishPackage
+        displayName: 'Publish NPM Package'
+        steps:
+          - task: AWSCLI@1
+            displayName: 'Get NPM credentials from SSM'
+            inputs:
+              awsCredentials: 'AWS'
+              regionName: 'us-east-1'
+              awsCommand: 'ssm'
+              awsSubCommand: 'get-parameters'
+              awsArguments: '--names "/devopsr/npm/automation-token" --with-decryption'
+
+          - script: |
+              echo "Starting NPM publish process..."
+              
+              # Get SSM parameters
+              echo "Fetching SSM parameters..."
+              NPM_AUTOMATION_TOKEN=$(aws ssm get-parameter --name "/devopsr/npm/automation-token" --with-decryption --query "Parameter.Value" --output text)
+              
+              if [ -z "$NPM_AUTOMATION_TOKEN" ]; then
+                echo "Error: NPM_AUTOMATION_TOKEN is empty"
+                exit 1
+              fi
+              
+              echo "Configuring NPM..."
+              # Configure NPM authentication using automation token
+              echo "//registry.npmjs.org/:_authToken=${NPM_AUTOMATION_TOKEN}" > ~/.npmrc
+              echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+              
+              echo "Publishing to NPM..."
+              npm publish --access public
+              
+              if [ $? -eq 0 ]; then
+                echo "Successfully published to NPM"
+              else
+                echo "Failed to publish to NPM"
+                exit 1
+              fi
+            displayName: 'Publish to NPM'
+            env:
+              AWS_DEFAULT_REGION: 'us-east-1'
