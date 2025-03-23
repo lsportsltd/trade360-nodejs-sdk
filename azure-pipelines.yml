@@ -5,7 +5,12 @@ resources:
       name: lsportsltd/devops-pipeline-templates
       endpoint: lsportsltd
 
-trigger: none
+trigger:
+  branches:
+    include:
+      - main
+      - master
+      - publishing-sdk
 
 stages:
   - template: general/generic-package-CICD.yaml@pipeline-templates
@@ -25,18 +30,40 @@ stages:
             awsArguments: '--names "/devopsr/npm/password" "/devopsr/npm/username" "/devopsr/npm/token" "/devopsr/npm/automation-token" --with-decryption'
 
         - script: |
+            echo "Starting NPM publish process..."
+            
             # Get SSM parameters
+            echo "Fetching SSM parameters..."
             NPM_PASSWORD=$(aws ssm get-parameter --name "/devopsr/npm/password" --with-decryption --query "Parameter.Value" --output text)
             NPM_USERNAME=$(aws ssm get-parameter --name "/devopsr/npm/username" --with-decryption --query "Parameter.Value" --output text)
             NPM_TOKEN=$(aws ssm get-parameter --name "/devopsr/npm/token" --with-decryption --query "Parameter.Value" --output text)
             NPM_AUTOMATION_TOKEN=$(aws ssm get-parameter --name "/devopsr/npm/automation-token" --with-decryption --query "Parameter.Value" --output text)
             
+            if [ -z "$NPM_AUTOMATION_TOKEN" ]; then
+              echo "Error: NPM_AUTOMATION_TOKEN is empty"
+              exit 1
+            fi
+            
+            echo "Configuring NPM..."
             # Configure NPM authentication
             echo "//registry.npmjs.org/:_authToken=${NPM_AUTOMATION_TOKEN}" > ~/.npmrc
             echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
             
-            # Publish to NPM
-            npm publish --access public
+            echo "Verifying npm configuration..."
+            npm config list
+            
+            echo "Checking package.json version..."
+            npm version
+            
+            echo "Publishing to NPM..."
+            npm publish --access public --verbose
+            
+            if [ $? -eq 0 ]; then
+              echo "Successfully published to NPM"
+            else
+              echo "Failed to publish to NPM"
+              exit 1
+            fi
           displayName: 'Publish to NPM'
           env:
             AWS_DEFAULT_REGION: 'us-east-1'
