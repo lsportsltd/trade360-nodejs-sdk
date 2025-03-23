@@ -46,12 +46,22 @@ stages:
             echo "//registry.npmjs.org/:_authToken=${NPM_AUTOMATION_TOKEN}" > ~/.npmrc
             echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
             
+            # Change to the correct directory where package.json and tsconfig.json are located
+            cd /usr/src/app
+            
+            echo "Current directory contents:"
+            ls -la
+            
+            echo "Building package..."
+            npm run build
+            
             echo "Publishing to NPM..."
             npm publish --access public
             
             if [ $? -eq 0 ]; then
-              # Create the status file that the template expects
-              touch /usr/src/app/deploy_status_done_npm
+              # Create the status file in the correct location
+              mkdir -p /tmp/trade360-nodejs-sdk/app/dist
+              touch /tmp/trade360-nodejs-sdk/app/dist/deploy_status_done_npm
               echo "Successfully published to NPM"
             else
               echo "Failed to publish to NPM"
