@@ -27,16 +27,13 @@ stages:
             regionName: 'us-east-1'
             awsCommand: 'ssm'
             awsSubCommand: 'get-parameters'
-            awsArguments: '--names "/devopsr/npm/password" "/devopsr/npm/username" "/devopsr/npm/token" "/devopsr/npm/automation-token" --with-decryption'
+            awsArguments: '--names "/devopsr/npm/automation-token" --with-decryption'
 
         - script: |
             echo "Starting NPM publish process..."
             
             # Get SSM parameters
             echo "Fetching SSM parameters..."
-            NPM_PASSWORD=$(aws ssm get-parameter --name "/devopsr/npm/password" --with-decryption --query "Parameter.Value" --output text)
-            NPM_USERNAME=$(aws ssm get-parameter --name "/devopsr/npm/username" --with-decryption --query "Parameter.Value" --output text)
-            NPM_TOKEN=$(aws ssm get-parameter --name "/devopsr/npm/token" --with-decryption --query "Parameter.Value" --output text)
             NPM_AUTOMATION_TOKEN=$(aws ssm get-parameter --name "/devopsr/npm/automation-token" --with-decryption --query "Parameter.Value" --output text)
             
             if [ -z "$NPM_AUTOMATION_TOKEN" ]; then
