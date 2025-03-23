@@ -13,4 +13,30 @@ stages:
       packageManager: 'npm'
       language: 'nodejs'
       languageVersion: '20'
-      artifactImageLocation: '/usr/src/app/'      
+      artifactImageLocation: '/usr/src/app/'
+      postBuildSteps:
+        - task: AWSCLI@1
+          displayName: 'Get NPM credentials from SSM'
+          inputs:
+            awsCredentials: 'AWS'
+            regionName: 'us-east-1'
+            awsCommand: 'ssm'
+            awsSubCommand: 'get-parameters'
+            awsArguments: '--names "/devopsr/npm/password" "/devopsr/npm/username" "/devopsr/npm/token" "/devopsr/npm/automation-token" --with-decryption'
+
+        - script: |
+            # Get SSM parameters
+            NPM_PASSWORD=$(aws ssm get-parameter --name "/devopsr/npm/password" --with-decryption --query "Parameter.Value" --output text)
+            NPM_USERNAME=$(aws ssm get-parameter --name "/devopsr/npm/username" --with-decryption --query "Parameter.Value" --output text)
+            NPM_TOKEN=$(aws ssm get-parameter --name "/devopsr/npm/token" --with-decryption --query "Parameter.Value" --output text)
+            NPM_AUTOMATION_TOKEN=$(aws ssm get-parameter --name "/devopsr/npm/automation-token" --with-decryption --query "Parameter.Value" --output text)
+            
+            # Configure NPM authentication
+            echo "//registry.npmjs.org/:_authToken=${NPM_AUTOMATION_TOKEN}" > ~/.npmrc
+            echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+            
+            # Publish to NPM
+            npm publish --access public
+          displayName: 'Publish to NPM'
+          env:
+            AWS_DEFAULT_REGION: 'us-east-1'
