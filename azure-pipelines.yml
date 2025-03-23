@@ -14,11 +14,11 @@ stages:
       language: 'nodejs'
       languageVersion: '20'
       artifactImageLocation: '/usr/src/app/'
-      serviceName: 'trade360-nodejs-sdk'
+      serviceName: 'trade360_nodejs_sdk'
 
   - stage: PublishToNPM
     displayName: 'Publish to NPM Registry'
-    dependsOn: BuildAndDeployPackage_trade360-nodejs-sdk
+    dependsOn: BuildAndDeployPackage_trade360_nodejs_sdk
     condition: succeeded()
     jobs:
       - job: PublishPackage
