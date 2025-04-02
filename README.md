@@ -84,7 +84,7 @@ This is an example usage of the feed SDK, which gives you the ability to create 
     "networkRecoveryIntervalInMs": 5000,
     "maxRetryAttempts":3000, 
     "automaticRecoveryEnabled": true,
-    "autoAck": false,
+    "autoAck": true,
     "consumptionLatencyThreshold": 5,
     "customersApiBaseUrl": "https://stm-api.lsports.eu/",
     "PACKAGE_FORMAT_TYPE": "2",
