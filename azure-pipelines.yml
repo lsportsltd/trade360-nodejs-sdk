@@ -19,16 +19,12 @@ stages:
   - stage: PublishToNPM
     displayName: 'Publish to NPM Registry'
     dependsOn: BuildAndDeployPackage_trade360_nodejs_sdk
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch']))
     jobs:
       - job: PublishPackage
         pool: k8s-agents-ci
         displayName: 'Publish NPM Package'
         steps:
-          - checkout: self
-            persistCredentials: true
-            clean: true
-
           - script: |
               echo "Starting NPM publish process..."
               
@@ -44,11 +40,6 @@ stages:
               # Configure NPM authentication using automation token
               echo "//registry.npmjs.org/:_authToken=${NPM_AUTOMATION_TOKEN}" > ~/.npmrc
               echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
-              
-              echo "Setting up build environment..."
-              # Ensure we're in the correct directory and files are in place
-              pwd
-              ls -la
               
               echo "Installing dependencies..."
               npm ci
