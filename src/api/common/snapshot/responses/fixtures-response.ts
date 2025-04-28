@@ -1,4 +1,4 @@
-import { FixtureEvent } from '@lsports/entities';
+import { FixtureEvent } from '../../../../entities/core-entities/fixture/fixture-event';
 import { BaseEntity } from '@entities';
 /**
  * GetFixtureMarketsResultElement class is responsible
