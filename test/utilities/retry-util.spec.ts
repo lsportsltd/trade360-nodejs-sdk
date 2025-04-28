@@ -37,7 +37,7 @@ describe('withRetry', () => {
   it('should retry on failure and succeed', async () => {
     const op = jest.fn().mockRejectedValueOnce(new Error('fail1')).mockResolvedValueOnce('ok');
     const resultPromise = withRetry(op, { maxAttempts: 3, delayMs: 100 }, operationName, logger);
-    // Remove the line: await Promise.resolve();
+    await new Promise((r) => setImmediate(r));
     jest.runAllTimers();
     await expect(resultPromise).resolves.toBe('ok');
     expect(op).toHaveBeenCalledTimes(2);
@@ -62,10 +62,10 @@ describe('withRetry', () => {
     const flushAll = async (): Promise<void> => {
       for (let i = 0; i < 3; i++) {
         jest.runOnlyPendingTimers();
-        await Promise.resolve();
+        await new Promise((r) => setImmediate(r));
       }
     };
-    await Promise.resolve();
+    await new Promise((r) => setImmediate(r));
     await flushAll();
     await expect(resultPromise).resolves.toBe('ok');
     expect(op).toHaveBeenCalledTimes(3);
@@ -76,7 +76,7 @@ describe('withRetry', () => {
   it('should throw RetryError after max attempts', async () => {
     const op = jest.fn().mockRejectedValue(new Error('fail'));
     const resultPromise = withRetry(op, { maxAttempts: 2, delayMs: 100 }, operationName, logger);
-    await Promise.resolve();
+    await new Promise((r) => setImmediate(r));
     jest.runAllTimers();
     await expect(resultPromise).rejects.toThrow(RetryError);
     await expect(resultPromise).rejects.toThrow(`${operationName} failed after 2 attempts`);
