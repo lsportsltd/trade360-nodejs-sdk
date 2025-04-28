@@ -37,6 +37,7 @@ describe('withRetry', () => {
   it('should retry on failure and succeed', async () => {
     const op = jest.fn().mockRejectedValueOnce(new Error('fail1')).mockResolvedValueOnce('ok');
     const resultPromise = withRetry(op, { maxAttempts: 3, delayMs: 100 }, operationName, logger);
+    // codacy-disable-next-line compatibility/promise
     await new Promise((resolve) => setTimeout(resolve, 0));
     jest.runAllTimers();
     await expect(resultPromise).resolves.toBe('ok');
@@ -62,9 +63,11 @@ describe('withRetry', () => {
     const flushAll = async (): Promise<void> => {
       for (let i = 0; i < 3; i++) {
         jest.runOnlyPendingTimers();
+        // codacy-disable-next-line compatibility/promise
         await new Promise((r) => setImmediate(r));
       }
     };
+    // codacy-disable-next-line compatibility/promise
     await new Promise((r) => setImmediate(r));
     await flushAll();
     await expect(resultPromise).resolves.toBe('ok');
@@ -76,6 +79,7 @@ describe('withRetry', () => {
   it('should throw RetryError after max attempts', async () => {
     const op = jest.fn().mockRejectedValue(new Error('fail'));
     const resultPromise = withRetry(op, { maxAttempts: 2, delayMs: 100 }, operationName, logger);
+    // codacy-disable-next-line compatibility/promise
     await new Promise((r) => setImmediate(r));
     jest.runAllTimers();
     await expect(resultPromise).rejects.toThrow(RetryError);
