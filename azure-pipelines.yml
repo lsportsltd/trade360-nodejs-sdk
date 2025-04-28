@@ -77,7 +77,7 @@ stages:
       - job: ReportCoverage
         displayName: 'Report Coverage to Codacy'
         pool:
-          vmImage: 'ubuntu-latest'
+          name: k8s-agents-ci
         steps:
           - checkout: self
           - task: NodeTool@0
@@ -86,15 +86,13 @@ stages:
             displayName: 'Set up Node.js'
           - script: npm ci
             displayName: 'Install dependencies'
-          - script: npx jest --coverage
-            displayName: 'Run tests and collect coverage'
           - task: Bash@3
             displayName: Create And Publish Codacy Report
             condition: succeeded()
             inputs:
               targetType: 'inline'
               script: |
-                # Fetch Codacy API token from AWS SSM
+                npx jest --coverage
                 export CODACY_API_TOKEN=$(aws ssm get-parameter --with-decryption --name /devops/token/codacy | jq -r .Parameter.Value)
                 export CODACY_ORGANIZATION_PROVIDER=gh
                 export CODACY_USERNAME=lsportsltd
