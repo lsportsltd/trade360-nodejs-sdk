@@ -1,4 +1,4 @@
-import { LivescoreEvent } from '@lsports/entities';
+import { LivescoreEvent } from '../../../../entities/core-entities/livescore/livescore-event';
 import { BaseEntity } from '@entities';
 /**
  * GetLivescoreResultElement class is responsible
