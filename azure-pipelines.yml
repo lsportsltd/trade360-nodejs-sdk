@@ -70,37 +70,6 @@ stages:
               fi
             displayName: 'Publish to NPM'
 
-name: Codacy Coverage
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-
-jobs:
-  test-and-report:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests and collect coverage
-        run: npx jest --coverage
-
-      - name: Upload coverage to Codacy
-        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/lcov.info
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-
   - stage: CodacyCoverage
     displayName: 'Codacy Coverage'
     dependsOn: []
