@@ -17,4 +17,10 @@ module.exports = {
       tsconfig: '<rootDir>/tsconfig.json',
     },
   },
+  // Ensure coverage paths are relative to repository root
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
+  rootDir: '.',
+  cwd: process.cwd(),
+  // Map absolute paths to relative in coverage report
+  coverageProvider: 'v8',
 }; 
