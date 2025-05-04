@@ -30,9 +30,9 @@ describe('Fixture Entity', () => {
     expect(fixture.location).toBeInstanceOf(Location);
     expect(fixture.league).toBeInstanceOf(League);
     expect(fixture.startDate).toBeInstanceOf(Date);
-    expect(fixture.startDate?.toString()).toBe('2024-06-01T12:00:00.000Z');
+    expect(fixture.startDate?.toISOString()).toBe('2024-06-01T12:00:00.000Z');
     expect(fixture.lastUpdate).toBeInstanceOf(Date);
-    expect(fixture.lastUpdate?.toString()).toBe('2024-06-01T13:00:00.000Z');
+    expect(fixture.lastUpdate?.toISOString()).toBe('2024-06-01T13:00:00.000Z');
     expect(fixture.status).toBe('Scheduled');
     expect(Array.isArray(fixture.participants)).toBe(true);
     expect(fixture.participants?.[0]).toBeInstanceOf(Participant);

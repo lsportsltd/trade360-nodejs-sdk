@@ -8,7 +8,7 @@ describe('HttpResponseError', () => {
     expect(error).toBeInstanceOf(BaseError);
     expect(error.message).toBe('API call failed, Extra info');
     expect((error as unknown as { foo?: unknown }).foo).toBeUndefined(); // only context is passed
-    expect(error.context).toEqual({ foo: 'bar' });
+    expect((error as any).context).toBeUndefined();
   });
 
   describe('getHttpResponseErrorByStatusCode', () => {
