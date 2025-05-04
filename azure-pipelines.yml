@@ -69,32 +69,3 @@ stages:
                 exit 1
               fi
             displayName: 'Publish to NPM'
-
-  - stage: CodacyCoverage
-    displayName: 'Codacy Coverage'
-    dependsOn: []
-    jobs:
-      - job: ReportCoverage
-        displayName: 'Report Coverage to Codacy'
-        pool:
-          name: k8s-agents-ci
-        steps:
-          - checkout: self
-          - task: NodeTool@0
-            inputs:
-              versionSpec: '18.x'
-            displayName: 'Set up Node.js'
-          - script: npm ci
-            displayName: 'Install dependencies'
-          - task: Bash@3
-            displayName: Create And Publish Codacy Report
-            condition: succeeded()
-            inputs:
-              targetType: 'inline'
-              script: |
-                npx jest --coverage
-                export CODACY_API_TOKEN=$(aws ssm get-parameter --with-decryption --name /devops/token/codacy | jq -r .Parameter.Value)
-                export CODACY_ORGANIZATION_PROVIDER=gh
-                export CODACY_USERNAME=lsportsltd
-                export CODACY_PROJECT_NAME=$(cut -d'/' -f2 <<<"$(Build.Repository.Name)")
-                bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l JavaScript -r coverage/lcov.info
