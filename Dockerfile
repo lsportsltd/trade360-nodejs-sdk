@@ -30,7 +30,8 @@ ENV CODACY_ORGANIZATION_PROVIDER=gh
 ENV CODACY_USERNAME=lsportsltd
 ENV CODACY_PROJECT_NAME=${SERVICE_NAME}
 
-RUN wget -qO - https://coverage.codacy.com/get.sh | sh -s -- report -r /usr/src/app/coverage/lcov.info
+RUN curl -Ls https://coverage.codacy.com/get.sh -o codacy-coverage-reporter.sh
+RUN bash codacy-coverage-reporter.sh report -r coverage.xml
 
 # build nest application
 RUN npm run build
