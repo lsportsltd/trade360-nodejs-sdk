@@ -31,6 +31,8 @@ ENV CODACY_PROJECT_NAME=${SERVICE_NAME}
 RUN npm run test:cov
 
 # send coverage report to Codacy
-RUN apt-get update && apt-get install -y --no-install-recommends bash=5.2.15-2+deb12u1 && rm -rf /var/lib/apt/lists/* && wget -qO - https://coverage.codacy.com/get.sh | bash -s -- report -r coverage/lcov.info
+RUN apt-get update && apt-get install -y --no-install-recommends bash && \
+wget -qO - https://coverage.codacy.com/get.sh | bash -s -- report -r coverage/lcov.info
+
 # build nest application
 RUN npm run build
