@@ -18,13 +18,6 @@ RUN npm set progress=false && npm config set depth 0
 # install ALL node_modules, including 'devDependencies'
 RUN npm ci && npm cache clean --force
 
-## Builder image
-FROM dependencies as builder 
-# copy ALL node_modules, including 'devDependencies'
-COPY --from=dependencies /usr/src/app/node_modules/ ./node_modules/
-# copy all contents
-COPY . .
-
 # test application
 RUN npm run test:cov
 
