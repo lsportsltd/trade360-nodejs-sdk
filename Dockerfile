@@ -11,6 +11,10 @@ COPY . .
 ARG NPM_TOKEN
 ENV NPM_TOKEN=${NPM_TOKEN}
 
+# codacy args
+ARG SERVICE_NAME
+ARG CODACY_TOKEN
+
 # Deps image
 # install node packages
 RUN npm set progress=false && npm config set depth 0
@@ -26,6 +30,8 @@ ENV CODACY_ORGANIZATION_PROVIDER=gh
 ENV CODACY_USERNAME=lsportsltd
 ENV CODACY_PROJECT_NAME=${SERVICE_NAME}
 
-RUN wget -qO - https://coverage.codacy.com/get.sh | sh -s -- report -r /usr/src/app/coverage/lcov.info
+RUN apt-get update && apt-get install -y bash wget
+RUN wget -qO - https://coverage.codacy.com/get.sh | bash -s -- report -r /usr/src/app/coverage/lcov.info
+
 # build nest application
 RUN npm run build
