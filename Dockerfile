@@ -30,8 +30,8 @@ ENV CODACY_PROJECT_NAME=${SERVICE_NAME}
 # test application
 RUN npm run test:cov
 
-RUN curl -Ls https://coverage.codacy.com/get.sh -o codacy-coverage-reporter.sh
-RUN bash codacy-coverage-reporter.sh report -r coverage.xml
+# send coverage report to Codacy
+RUN wget -qO - https://coverage.codacy.com/get.sh | sh -s -- report -r coverage/lcov.info
 
 # build nest application
 RUN npm run build
