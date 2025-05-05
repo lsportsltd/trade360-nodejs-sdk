@@ -13,16 +13,19 @@ ENV NPM_TOKEN=${NPM_TOKEN}
 
 # codacy args
 ARG CODACY_TOKEN
-ENV CODACY_API_TOKEN=${CODACY_TOKEN}
 ARG SERVICE_NAME=trade360-nodejs-sdk
-ENV CODACY_PROJECT_NAME=${SERVICE_NAME}
-
 # Deps image
 # install node packages
 RUN npm set progress=false && npm config set depth 0
 
 # install ALL node_modules, including 'devDependencies'
 RUN npm ci && npm cache clean --force
+
+# assign build arguments to environment variables
+ENV CODACY_API_TOKEN=${CODACY_TOKEN}
+ENV CODACY_ORGANIZATION_PROVIDER=gh
+ENV CODACY_USERNAME=lsportsltd
+ENV CODACY_PROJECT_NAME=${SERVICE_NAME}
 
 # test application
 RUN npm run test:cov
