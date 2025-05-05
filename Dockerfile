@@ -12,8 +12,8 @@ ARG NPM_TOKEN
 ENV NPM_TOKEN=${NPM_TOKEN}
 
 # codacy args
-ARG SERVICE_NAME
-ARG CODACY_TOKEN
+ARG SERVICE_NAME=trade360-nodejs-sdk
+RUN export CODACY_TOKEN=$(aws ssm get-parameter --with-decryption --name /devops/token/codacy | jq -r .Parameter.Value)
 
 # Deps image
 # install node packages
