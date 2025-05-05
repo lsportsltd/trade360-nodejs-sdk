@@ -30,8 +30,7 @@ ENV CODACY_ORGANIZATION_PROVIDER=gh
 ENV CODACY_USERNAME=lsportsltd
 ENV CODACY_PROJECT_NAME=${SERVICE_NAME}
 
-RUN apt-get update && apt-get install -y bash wget
-RUN wget -qO - https://coverage.codacy.com/get.sh | bash -s -- report -r /usr/src/app/coverage/lcov.info
+RUN wget -qO - https://coverage.codacy.com/get.sh | sh -s -- report -r /usr/src/app/coverage/lcov.info
 
 # build nest application
 RUN npm run build
