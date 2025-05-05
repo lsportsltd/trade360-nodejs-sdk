@@ -27,11 +27,11 @@ export class Fixture {
 
   @Expose({ name: 'StartDate' })
   @Type(() => Date)
-  public startDate?: string;
+  public startDate?: Date;
 
   @Expose({ name: 'LastUpdate' })
   @Type(() => Date)
-  public lastUpdate?: string;
+  public lastUpdate?: Date;
 
   @Expose({ name: 'Status' })
   public status?: FixtureStatus;

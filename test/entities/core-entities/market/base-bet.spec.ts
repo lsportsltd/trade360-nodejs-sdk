@@ -50,7 +50,7 @@ describe('BaseBet Entity', () => {
     expect(baseBet.priceUK).toBeUndefined();
     expect(baseBet.priceMA).toBeUndefined();
     expect(baseBet.priceHK).toBeUndefined();
-    expect(baseBet.isChanged).toBe(-1);
+    expect(baseBet.isChanged).toBeUndefined();
     expect(baseBet.probability).toBeUndefined();
     expect(baseBet.participantId).toBeUndefined();
     expect(baseBet.playerName).toBeUndefined();
