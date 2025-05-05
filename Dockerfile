@@ -12,8 +12,10 @@ ARG NPM_TOKEN
 ENV NPM_TOKEN=${NPM_TOKEN}
 
 # codacy args
+ARG CODACY_TOKEN
+ENV CODACY_API_TOKEN=${CODACY_TOKEN}
 ARG SERVICE_NAME=trade360-nodejs-sdk
-RUN export CODACY_TOKEN=$(aws ssm get-parameter --with-decryption --name /devops/token/codacy | jq -r .Parameter.Value)
+ENV CODACY_PROJECT_NAME=${SERVICE_NAME}
 
 # Deps image
 # install node packages
@@ -24,11 +26,6 @@ RUN npm ci && npm cache clean --force
 
 # test application
 RUN npm run test:cov
-
-ENV CODACY_API_TOKEN=${CODACY_TOKEN}
-ENV CODACY_ORGANIZATION_PROVIDER=gh
-ENV CODACY_USERNAME=lsportsltd
-ENV CODACY_PROJECT_NAME=${SERVICE_NAME}
 
 RUN curl -Ls https://coverage.codacy.com/get.sh -o codacy-coverage-reporter.sh
 RUN bash codacy-coverage-reporter.sh report -r coverage.xml
