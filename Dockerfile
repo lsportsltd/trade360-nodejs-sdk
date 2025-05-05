@@ -32,9 +32,5 @@ RUN npm run test:cov
 
 # send coverage report to Codacy
 RUN apt-get update && apt-get install -y --no-install-recommends bash=5.1* && rm -rf /var/lib/apt/lists/* && wget -qO - https://coverage.codacy.com/get.sh | bash -s -- report -r coverage/lcov.info
-    apt-get install -y bash=5.1* && \
-    rm -rf /var/lib/apt/lists/* && \
-    wget -qO - https://coverage.codacy.com/get.sh | bash -s -- report -r coverage/lcov.info
-
 # build nest application
 RUN npm run build
