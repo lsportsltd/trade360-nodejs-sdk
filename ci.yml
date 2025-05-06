@@ -16,7 +16,7 @@ stages:
       artifactImageLocation: '/usr/src/app/'
       serviceName: 'trade360_nodejs_sdk'
       group: trd
-      domain: trade360
+      domain: trade360-sdk
       product: stm
       team: guns-n-roses
 
