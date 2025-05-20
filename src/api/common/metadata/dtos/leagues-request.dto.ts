@@ -1,7 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { SubscriptionState } from '@lsports/entities';
-import { BaseEntity } from '@entities';
+import { SubscriptionState, BaseEntity } from '@lsports/entities';
 
 /**
  * GetLeaguesRequestDto class for sending request

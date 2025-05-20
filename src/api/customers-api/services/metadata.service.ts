@@ -14,13 +14,15 @@ import {
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
-} from '@metadata-api/dtos';
+  GetIncidentsRequestDto,
+} from '@api/common/metadata/dtos';
 import {
   GetCompetitionsRequest,
   GetLeaguesRequest,
   GetMarketsRequest,
   GetTranslationsRequest,
-} from '@metadata-api/requests';
+  GetIncidentsRequest,
+} from '@api/common/metadata/requests';
 import {
   CompetitionCollectionResponse,
   LeaguesCollectionResponse,
@@ -28,7 +30,8 @@ import {
   MarketsCollectionResponse,
   SportsCollectionResponse,
   TranslationsCollectionResponse,
-} from '@metadata-api/responses';
+  IncidentsCollectionResponse,
+} from '@api/common/metadata/responses';
 
 const {
   GET_COMPETITIONS_PREFIX_URL,
@@ -37,6 +40,7 @@ const {
   GET_MARKETS_PREFIX_URL,
   GET_SPORTS_PREFIX_URL,
   GET_TRANSLATION_PREFIX_URL,
+  GET_INCIDENT_PREFIX_URL,
 } = MetadataRoutesPrefixUrl;
 
 /**
@@ -241,5 +245,33 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     });
 
     return competitionsCollection;
+  }
+
+  /**
+   * getIncidents method is responsible for sending a request
+   * to the metadata API to get the incidents.
+   * It sends a POST request to the metadata API with the
+   * GET_INCIDENT_PREFIX_URL and IncidentsCollectionResponse
+   * as the response type.
+   * @param requestDto The request DTO for getting incidents
+   * from the metadata API.
+   * @returns A promise that contains the incidents data and total count.
+   * @throws Error if the request is invalid or incorrect.
+   */
+  public async getIncidents(
+    requestDto: GetIncidentsRequestDto,
+  ): Promise<IncidentsCollectionResponse | undefined> {
+    const request = this.mapper.map<GetIncidentsRequestDto, GetIncidentsRequest>(
+      requestDto,
+      GetIncidentsRequest,
+    );
+
+    const response = await this.postRequest<IncidentsCollectionResponse>({
+      route: GET_INCIDENT_PREFIX_URL,
+      responseBodyType: IncidentsCollectionResponse,
+      requestBody: request,
+    });
+
+    return response;
   }
 }

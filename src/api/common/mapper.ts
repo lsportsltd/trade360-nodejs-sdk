@@ -7,12 +7,16 @@ import {
   GetLeaguesRequestDto,
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
+  GetIncidentsRequestDto,
+  IncidentsFilterDto,
 } from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
   GetLeaguesRequest,
   GetMarketsRequest,
   GetTranslationsRequest,
+  GetIncidentsRequest,
+  IncidentsFilter,
 } from '@metadata-api/requests';
 import {
   ChangeManualSuspensionsRequestDto,
@@ -210,6 +214,47 @@ export class Mapper implements IMapper {
       GetLeaguesRequest,
       (source) =>
         TransformerUtil.transform({ ...packageCredentials, ...source }, GetLeaguesRequest),
+    );
+
+    // Mapping for IncidentsFilterDto to IncidentsFilter
+    this.registerMapping<IncidentsFilterDto, IncidentsFilter>(
+      IncidentsFilterDto as Constructor<IncidentsFilterDto>, // MODIFIED: Added type assertion
+      IncidentsFilter,
+      (sourceFilterDtoUntyped: BaseEntity) => { // Lambda param changed to BaseEntity to match registerMapping
+        const sourceFilterDto = sourceFilterDtoUntyped as IncidentsFilterDto; // Cast back
+        const destinationFilter = new IncidentsFilter();
+        destinationFilter.ids = sourceFilterDto.ids;
+        destinationFilter.sports = sourceFilterDto.sports;
+        destinationFilter.searchText = sourceFilterDto.searchText;
+        if (sourceFilterDto.from) {
+          destinationFilter.from = sourceFilterDto.from.format('YYYY-MM-DD HH:mm:ss');
+        }
+        return destinationFilter;
+      },
+    );
+
+    // Mapping for GetIncidentsRequestDto to GetIncidentsRequest
+    this.registerMapping<GetIncidentsRequestDto, GetIncidentsRequest>(
+      GetIncidentsRequestDto as Constructor<GetIncidentsRequestDto>, // MODIFIED: Added type assertion
+      GetIncidentsRequest,
+      (sourceDtoUntyped: BaseEntity) => { // Lambda param changed to BaseEntity
+        const sourceDto = sourceDtoUntyped as GetIncidentsRequestDto; // Cast back
+        const request = new GetIncidentsRequest();
+
+        if (packageCredentials) {
+          request.userName = packageCredentials.username;
+          request.password = packageCredentials.password;
+          request.packageId = packageCredentials.packageId;
+        }
+
+        if (sourceDto.filter) {
+          // Ensure sourceDto.filter is an instance of IncidentsFilterDto before mapping
+          // This should be guaranteed by the GetIncidentsRequestDto constructor change
+          request.filter = this.map(sourceDto.filter, IncidentsFilter);
+        }
+
+        return request;
+      },
     );
 
     this.registerMapping<GetMarketsRequestDto, GetMarketsRequest>(
