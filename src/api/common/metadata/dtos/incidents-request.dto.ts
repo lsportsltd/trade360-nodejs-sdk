@@ -1,6 +1,6 @@
-import { Expose, Transform, Type, plainToInstance } from 'class-transformer';
+import { Expose, Transform, Type, TransformationType, TransformFnParams } from 'class-transformer';
 import { BaseEntity } from '@entities';
-import moment, { Moment } from 'moment';
+import moment, { Moment as MomentType } from 'moment';
 
 /**
  * Filter structure for the incidents request
@@ -17,11 +17,35 @@ export class IncidentsFilterDto implements BaseEntity {
   sports?: number[];
 
   @Expose({ name: 'SearchText' })
-  @Type(() => String)
   searchText?: string[];
 
   @Expose({ name: 'From' })
-  from?: Moment;
+  @Transform(({ value, type }: TransformFnParams) => {
+    if (type === TransformationType.PLAIN_TO_CLASS) {
+      if (moment.isMoment(value)) return value;
+      if (typeof value === 'string') {
+        const m = moment(value);
+        if (m.isValid()) return m;
+      }
+      return undefined;
+    }
+    if (type === TransformationType.CLASS_TO_PLAIN) {
+      if (moment.isMoment(value)) return (value as MomentType).toISOString();
+      return value;
+    }
+    return value;
+  })
+  from?: MomentType;
+
+  constructor(data?: Partial<IncidentsFilterDto>) {
+    if (data) {
+      Object.assign(this, data);
+    }
+  }
+
+  get EntityId(): string {
+    return this.searchText?.join(',') || '';
+  }
 }
 
 /**
@@ -32,25 +56,21 @@ export class IncidentsFilterDto implements BaseEntity {
 export class GetIncidentsRequestDto implements BaseEntity {
   [key: string]: unknown;
 
-  constructor(data?: Partial<GetIncidentsRequestDto>) {
+  @Expose({ name: 'Filter' })
+  @Type(() => IncidentsFilterDto)
+  filter?: IncidentsFilterDto;
+
+  constructor(data?: Partial<GetIncidentsRequestDto & { filter: Partial<IncidentsFilterDto> }>) {
     if (data) {
-      if (data.filter) {
-        if (data.filter instanceof IncidentsFilterDto) {
-          this.filter = data.filter;
-        } else {
-          // data.filter here is your plain object: { Sports: [...], From: momentInstance }
-          // This plainToInstance should take momentInstance and assign it to this.filter.from
-          this.filter = plainToInstance(
-            IncidentsFilterDto,
-            data.filter as Record<string, unknown>,
-            { excludeExtraneousValues: true },
-          );
-        }
+      if (data.filter instanceof IncidentsFilterDto) {
+        this.filter = data.filter;
+      } else if (data.filter) {
+        this.filter = new IncidentsFilterDto(data.filter);
       }
     }
   }
 
-  @Expose({ name: 'Filter' })
-  @Type(() => IncidentsFilterDto)
-  filter?: IncidentsFilterDto;
+  get EntityId(): string {
+    return this.filter?.EntityId || '';
+  }
 }

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
+import { instanceToPlain } from 'class-transformer';
 
 import {
   ChangeManualSuspensionsRequestDto,
@@ -37,6 +38,7 @@ import {
   GetSubscriptionsRequestDto,
   SubscriptionsCollectionResponse,
   GetIncidentsRequestDto,
+  IncidentsFilterDto,
 } from 'trade360-nodejs-sdk';
 
 import { getConfig } from './config';
@@ -509,35 +511,33 @@ const getCompetitions = async (metadataHttpClient: IMetadataHttpClient): Promise
 };
 
 const getIncidents = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
-  const request = new GetIncidentsRequestDto({
-    filter: {
-      // You can add other optional filter properties here as needed:
-      // Sports: [6046],
-      From: moment("2023-10-07 10:00:37", "YYYY-MM-DD HH:mm:ss", true), // Example: Filter for incidents from the last 7 days
-      // ids: [8, 27],
-      // searchText: ["Pen", "Goal"],
-    }
+  logger.info('Getting incidents...');
+
+  const incidentsFilter = new IncidentsFilterDto({
+    // sports: [6046],
+    from: moment("2023-10-07 10:00:37", "YYYY-MM-DD HH:mm:ss", true),
+    // searchText : ["Pen", "ste"],
+    // ids: [2166],
   });
+
+  const request = new GetIncidentsRequestDto({
+    filter: incidentsFilter,
+  });
+
+  const requestPayload = instanceToPlain(request);
+  logger.info('Request Payload being sent (should have PascalCase, e.g., Filter.From, Filter.Sports):');
+  logger.info(JSON.stringify(requestPayload, null, 2));
 
   try {
     const response = await metadataHttpClient.getIncidents(request);
-
-    if (response && response.data) {
-      logger.log(`Retrieved ${response.data.length} incidents out of ${response.totalItems || response.data.length} total items`);
-
-      _.each(response.data, (incident) => {
-        logger.log(
-          `Incident: ${incident.incidentName} (ID: ${incident.incidentId}) - Sport: ${incident.sportName} (ID: ${incident.sportId}) - LastUpdate: ${incident.lastUpdate ? incident.lastUpdate.format('YYYY-MM-DD HH:mm:ss') : 'N/A'} - CreationDate: ${incident.creationDate ? incident.creationDate.format('YYYY-MM-DD HH:mm:ss') : 'N/A'}`
-        );
-      });
-    } else {
-      logger.log('No incidents data received or response was undefined.');
-    }
+    logger.info('Raw response from API:');
+    logger.info(JSON.stringify(response, null, 2));
+    logger.info(`Successfully retrieved ${response?.incidents?.length} incidents, total count: ${response?.total}`);
   } catch (error) {
-    // Error logging is already handled by the main try/catch in initApiSample,
-    // but specific error handling for this call can be added here if needed.
-    logger.error('Error fetching incidents:', error);
-    // Re-throw or handle as per existing error handling strategy if necessary
+    logger.error(`Error getting incidents: ${error}`);
+    if (error instanceof HttpResponseError && error.context) {
+      logger.error(`Error context: ${JSON.stringify(error.context)}`);
+    }
   }
 };
 //endregion
