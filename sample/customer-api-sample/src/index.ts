@@ -514,9 +514,9 @@ const getIncidents = async (metadataHttpClient: IMetadataHttpClient): Promise<vo
   logger.info('Getting incidents...');
 
   const incidentsFilter = new IncidentsFilterDto({
-    // sports: [6046],
-    from: moment("2023-10-07 10:00:37", "YYYY-MM-DD HH:mm:ss", true),
-    // searchText : ["Pen", "ste"],
+    sports: [6046],
+    // from: moment("2023-10-07 10:00:37", "YYYY-MM-DD HH:mm:ss", true),
+    searchText : ["Pen", "ste"],
     // ids: [2166],
   });
 

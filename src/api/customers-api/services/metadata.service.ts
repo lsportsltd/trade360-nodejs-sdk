@@ -15,14 +15,14 @@ import {
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
   GetIncidentsRequestDto,
-} from '@api/common/metadata/dtos';
+} from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
   GetLeaguesRequest,
   GetMarketsRequest,
   GetTranslationsRequest,
   GetIncidentsRequest,
-} from '@api/common/metadata/requests';
+} from '@metadata-api/requests';
 import {
   CompetitionCollectionResponse,
   LeaguesCollectionResponse,
@@ -31,7 +31,7 @@ import {
   SportsCollectionResponse,
   TranslationsCollectionResponse,
   IncidentsCollectionResponse,
-} from '@api/common/metadata/responses';
+} from '@metadata-api/responses';
 
 const {
   GET_COMPETITIONS_PREFIX_URL,

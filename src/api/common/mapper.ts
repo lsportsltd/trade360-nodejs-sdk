@@ -218,10 +218,10 @@ export class Mapper implements IMapper {
 
     // Mapping for IncidentsFilterDto to IncidentsFilter
     this.registerMapping<IncidentsFilterDto, IncidentsFilter>(
-      IncidentsFilterDto as Constructor<IncidentsFilterDto>, // MODIFIED: Added type assertion
+      IncidentsFilterDto as Constructor<IncidentsFilterDto>,
       IncidentsFilter,
-      (sourceFilterDtoUntyped: BaseEntity) => { // Lambda param changed to BaseEntity to match registerMapping
-        const sourceFilterDto = sourceFilterDtoUntyped as IncidentsFilterDto; // Cast back
+      (sourceFilterDtoUntyped: BaseEntity) => {
+        const sourceFilterDto = sourceFilterDtoUntyped as IncidentsFilterDto;
         const destinationFilter = new IncidentsFilter();
         destinationFilter.ids = sourceFilterDto.ids;
         destinationFilter.sports = sourceFilterDto.sports;
@@ -235,10 +235,10 @@ export class Mapper implements IMapper {
 
     // Mapping for GetIncidentsRequestDto to GetIncidentsRequest
     this.registerMapping<GetIncidentsRequestDto, GetIncidentsRequest>(
-      GetIncidentsRequestDto as Constructor<GetIncidentsRequestDto>, // MODIFIED: Added type assertion
+      GetIncidentsRequestDto as Constructor<GetIncidentsRequestDto>,
       GetIncidentsRequest,
-      (sourceDtoUntyped: BaseEntity) => { // Lambda param changed to BaseEntity
-        const sourceDto = sourceDtoUntyped as GetIncidentsRequestDto; // Cast back
+      (sourceDtoUntyped: BaseEntity) => {
+        const sourceDto = sourceDtoUntyped as GetIncidentsRequestDto;
         const request = new GetIncidentsRequest();
 
         if (packageCredentials) {
