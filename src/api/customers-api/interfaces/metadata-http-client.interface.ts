@@ -9,6 +9,8 @@ import {
   MarketBodyStructure,
   SportsBodyStructure,
   TranslationsCollectionResponse,
+  GetIncidentsRequestDto,
+  IncidentsCollectionResponse,
 } from '@api/common';
 
 /**
@@ -27,4 +29,7 @@ export interface IMetadataHttpClient {
   getCompetitions(
     requestDto: GetCompetitionsRequestDto,
   ): Promise<CompetitionCollectionResponse | undefined>;
+  getIncidents(
+    requestDto: GetIncidentsRequestDto,
+  ): Promise<IncidentsCollectionResponse | undefined>;
 }

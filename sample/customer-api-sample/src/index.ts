@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
+import { instanceToPlain } from 'class-transformer';
 
 import {
   ChangeManualSuspensionsRequestDto,
@@ -16,8 +17,6 @@ import {
   GetLeaguesRequestDto,
   GetManualSuspensionsResponse,
   GetMarketsRequestDto,
-  SubscriptionsCollectionResponse,
-  GetSubscriptionsRequestDto,
   GetTranslationsRequestDto,
   HttpResponseError,
   IMetadataHttpClient,
@@ -36,6 +35,10 @@ import {
   TranslationsValidationError,
   ValidationError,
   IPackageDistributionHttpClient,
+  GetSubscriptionsRequestDto,
+  SubscriptionsCollectionResponse,
+  GetIncidentsRequestDto,
+  IncidentsFilterDto,
 } from 'trade360-nodejs-sdk';
 
 import { getConfig } from './config';
@@ -85,113 +88,52 @@ const initApiSample = async () => {
       output: process.stdout,
     });
 
+    // Define menu options as an array of objects without explicit keys
+    const menuOptions = [
+      { label: 'Metadata API - Get Locations', handler: async () => await getLocations(metadataInplayHttpClient) },
+      { label: 'Metadata API - Get Sports', handler: async () => await getSports(metadataInplayHttpClient) },
+      { label: 'Metadata API - Get Leagues', handler: async () => await getLeagues(metadataInplayHttpClient) },
+      { label: 'Metadata API - Get Markets', handler: async () => await getMarkets(metadataInplayHttpClient) },
+      { label: 'Metadata API - Get Translations', handler: async () => await getTranslations(metadataPrematchHttpClient) },
+      { label: 'Metadata API - Get Competitions', handler: async () => await getCompetitions(metadataPrematchHttpClient) },
+      { label: 'Metadata API - Get Incidents', handler: async () => await getIncidents(metadataPrematchHttpClient) },
+      { label: 'Subscription API - Get Package Quota', handler: async () => await getPackageQuota(subscriptionInplayHttpClient) },
+      { label: 'Subscription API - Get Fixture Schedule', handler: async () => await getFixtureSchedule(subscriptionInplayHttpClient) },
+      { label: 'Subscription API - Subscribe by Fixtures', handler: async () => await subscribeByFixtures(subscriptionInplayHttpClient) },
+      { label: 'Subscription API - Unsubscribe from Fixture', handler: async () => await unSubscribeFromFixture(subscriptionInplayHttpClient) },
+      { label: 'Subscription API - Subscribe by Leagues', handler: async () => await subscribeByLeagues(subscriptionInplayHttpClient) },
+      { label: 'Subscription API - Unsubscribe from Leagues', handler: async () => await unSubscribeFromLeagues(subscriptionInplayHttpClient) },
+      { label: 'Subscription API - Get Manual Suspensions', handler: async () => await getManualSuspensions(subscriptionInplayHttpClient) },
+      { label: 'Subscription API - Add Manual Suspensions', handler: async () => await addManualSuspensions(subscriptionInplayHttpClient) },
+      { label: 'Subscription API - Remove Manual Suspensions', handler: async () => await removeManualSuspensions(subscriptionInplayHttpClient) },
+      { label: 'Subscription API - Get Subscriptions', handler: async () => await getSubscriptions(subscriptionInplayHttpClient) },
+      { label: 'Subscription API - Subscribe by Competitions', handler: async () => await subscribeByCompetitions(subscriptionPremtachHttpClient) },
+      { label: 'Subscription API - Unsubscribe from Competitions', handler: async () => await unSubscribeFromCompetitions(subscriptionPremtachHttpClient) },
+      { label: 'Subscription API - Get Fixtures Metadata Subscriptions', handler: async () => await getFixturesMetadataSubscriptions(subscriptionInplayHttpClient) },
+      { label: 'Package Distribution API - Get Distribution Status', handler: async () => await getDistributionStatus(packageDistributionHttpClient) },
+      { label: 'Package Distribution API - Start Distribution', handler: async () => await startDistibution(packageDistributionHttpClient) },
+      { label: 'Package Distribution API - Stop Distribution', handler: async () => await stopDistribution(packageDistributionHttpClient) },
+      { label: 'Exit', handler: async () => { console.log('Exiting...'); rl.close(); } },
+    ];
+
+    // Show the menu dynamically with auto-generated keys
     const showMenu = () => {
       console.log('\n=== API Operations Menu ===');
-      console.log('1. Get Package Quota');
-      console.log('2. Get Fixture Schedule');
-      console.log('3. Subscribe by Fixtures');
-      console.log('4. Unsubscribe from Fixture');
-      console.log('5. Subscribe by Leagues');
-      console.log('6. Unsubscribe from Leagues');
-      console.log('7. Get Manual Suspensions');
-      console.log('8. Add Manual Suspensions');
-      console.log('9. Remove Manual Suspensions');
-      console.log('10. Get Subscriptions');
-      console.log('11. Subscribe by Competitions');
-      console.log('12. Unsubscribe from Competitions');
-      console.log('13. Get Fixtures Metadata Subscriptions');
-      console.log('14. Get Locations');
-      console.log('15. Get Sports');
-      console.log('16. Get Leagues');
-      console.log('17. Get Markets');
-      console.log('18. Get Translations');
-      console.log('19. Get Competitions');
-      console.log('20. Get Distribution Status');
-      console.log('21. Start Distribution');
-      console.log('22. Stop Distribution');
-      console.log('0. Exit');
+      menuOptions.forEach((opt, idx) => console.log(`${idx}. ${opt.label}`));
       console.log('===========================');
     };
 
+    // Handle user input using the index
     const handleUserInput = async (choice: string) => {
-      switch (choice) {
-        case '1':
-          await getPackageQuota(subscriptionInplayHttpClient);
-          break;
-        case '2':
-          await getFixtureSchedule(subscriptionInplayHttpClient);
-          break;
-        case '3':
-          await subscribeByFixtures(subscriptionInplayHttpClient);
-          break;
-        case '4':
-          await unSubscribeFromFixture(subscriptionInplayHttpClient);
-          break;
-        case '5':
-          await subscribeByLeagues(subscriptionInplayHttpClient);
-          break;
-        case '6':
-          await unSubscribeFromLeagues(subscriptionInplayHttpClient);
-          break;
-        case '7':
-          await getManualSuspensions(subscriptionInplayHttpClient);
-          break;
-        case '8':
-          await addManualSuspensions(subscriptionInplayHttpClient);
-          break;
-        case '9':
-          await removeManualSuspensions(subscriptionInplayHttpClient);
-          break;
-        case '10':
-          await getSubscriptions(subscriptionInplayHttpClient);
-          break;
-        case '11':
-          await subscribeByCompetitions(subscriptionPremtachHttpClient);
-          break;
-        case '12':
-          await unSubscribeFromCompetitions(subscriptionPremtachHttpClient);
-          break;
-        case '13':
-          await getFixturesMetadataSubscriptions(subscriptionInplayHttpClient);
-          break;
-        case '14':
-          await getLocations(metadataInplayHttpClient);
-          break;
-        case '15':
-          await getSports(metadataInplayHttpClient);
-          break;
-        case '16':
-          await getLeagues(metadataInplayHttpClient);
-          break;
-        case '17':
-          await getMarkets(metadataInplayHttpClient);
-          break;
-        case '18':
-          await getTranslations(metadataPrematchHttpClient);
-          break;
-        case '19':
-          await getCompetitions(metadataPrematchHttpClient);
-          break;
-        case '20':
-          await getDistributionStatus(packageDistributionHttpClient);
-          break;
-        case '21':
-          await startDistibution(packageDistributionHttpClient);
-          break;
-        case '22':
-          await stopDistribution(packageDistributionHttpClient);
-          break;
-        case '0':
-          console.log('Exiting...');
-          rl.close();
-          return;
-        default:
-          console.log('Invalid choice. Please try again.');
-          break;
+      const idx = parseInt(choice, 10);
+      const option = menuOptions[idx];
+      if (option) {
+        await option.handler();
+        if (idx !== menuOptions.length - 1) promptUser(); // last option is Exit
+      } else {
+        console.log('Invalid choice. Please try again.');
+        promptUser();
       }
-
-      // Show the menu again after handling the choice
-      promptUser();
     };
 
     const promptUser = () => {
@@ -233,131 +175,11 @@ const initApiSample = async () => {
   }
 };
 
-
-const stopDistribution = async(packageDistributionHttpClient: IPackageDistributionHttpClient) => {
-  const stopRequest: StopResponseBody | undefined = await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
-  console.log('Stop Distribution Response:', stopRequest);
-}
-
-const startDistibution = async(packageDistributionHttpClient: IPackageDistributionHttpClient)=> {
-  const distributionStatus = await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(StatusResponseBody);
-  if (!_.isNil(distributionStatus)) {      
-    const { isDistributionOn } = distributionStatus;
-    if (!isDistributionOn) {
-      const startRequest: StartResponseBody | undefined = await packageDistributionHttpClient.startDistribution<StartResponseBody>(
-        StartResponseBody
-      );
-      console.log('Start Distribution Response:', startRequest);
-        if (!_.isNil(startRequest)) logger.log(startRequest.message);
-      }
-    }
-  }
-
-const getDistributionStatus = async (packageDistributionHttpClient: IPackageDistributionHttpClient) => {
-  const distributionStatus = await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
-    StatusResponseBody
-  );
-  console.log('Distribution Status:', distributionStatus);
-}
-
-const getLocations = async (metadataHttpClient: IMetadataHttpClient) => {
-  const response = await metadataHttpClient.getLocations();
-
-  logger.log('Locations entities received:');
-
-  _.each(response, (location) => {
-    logger.log(`LocationId: ${location.id}, LocationName: ${location.name}`);
-  });
-};
-
-const getSports = async (metadataHttpClient: IMetadataHttpClient) => {
-  const response = await metadataHttpClient.getSports();
-
-  logger.log('Sports entities received:');
-
-  _.each(response, (sport) => {
-    logger.log(`SportId: ${sport.id}, SportName: ${sport.name}`);
-  });
-};
-
-const getLeagues = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
-  try {
-    const sportsResults = await metadataHttpClient.getSports();
-    const footballSportEntity = _.find(sportsResults, (x: Sport) => x.name === 'Football');
-
-    if (_.isNil(footballSportEntity)) {
-      logger.log('Football sport entity not found.');
-      return;
-    }
-
-    const request = new GetLeaguesRequestDto({
-      sportIds: footballSportEntity.id ? [footballSportEntity.id] : undefined,
-    });
-
-    const response = await metadataHttpClient.getLeagues(request);
-
-    logger.log(`Response returned ${response?.length} leagues:`);
-
-    _.forEach(response, (league) => {
-      logger.log(`LeagueId: ${league.id}, LeagueName: ${league.name}`);
-    });
-  } catch (error) {
-    logger.error('Error fetching leagues:', error);
-    throw error;
-  }
-};
-
-const getMarkets = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
-  const request = new GetMarketsRequestDto({
-    marketIds: [1, 2],
-    isSettleable: true,
-    sportIds: [6046],
-  });
-
-  const response = await metadataHttpClient.getMarkets(request);
-
-  logger.log('Markets entities received:');
-
-  _.each(response, (market) => {
-    logger.log(`MarketId: ${market.id}, MarketName: ${market.name}`);
-  });
-};
-
-const getTranslations = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
-  const request = new GetTranslationsRequestDto({
-    sportIds: [6046],
-    languages: [4, 5],
-  });
-
-  const response = await metadataHttpClient.getTranslations(request);
-
-  logger.log(
-    `Count of translations received Sports: ${_.keys(response?.sports).length} Translations retrieved.`,
-  );
-
-  logger.log(
-    `Count of translations received Leagues: ${_.keys(response?.leagues).length} Translations retrieved.`,
-  );
-
-  logger.log(
-    `Count of translations received Locations: ${_.keys(response?.locations).length} Translations retrieved.`,
-  );
-};
-
-const getCompetitions = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
-  const request = new GetCompetitionsRequestDto({
-    locationIds: [1],
-    subscriptionStatus: SubscriptionState.All,
-  });
-
-  const response = await metadataHttpClient.getCompetitions(request);
-
-  logger.log(`${response?.competitions?.length} Competitions retrieved.`);
-};
-
-const getPackageQuota = async (subscriptionHttpClient: ISubscriptionHttpClient): Promise<void> => {
+//region Subscription API
+const getPackageQuota = async (
+  subscriptionHttpClient: ISubscriptionHttpClient
+): Promise<void> => {
   const packageQuota = await subscriptionHttpClient.getPackageQuota();
-
   logger.log(JSON.stringify(packageQuota));
 };
 
@@ -500,7 +322,9 @@ const removeManualSuspensions = async (
   logger.log(`Manual suspensions removed: ${response?.succeeded}`);
 };
 
-const getSubscriptions = async (subscriptionHttpClient: ISubscriptionHttpClient): Promise<void> => {
+const getSubscriptions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient
+): Promise<void> => {
   const request = new GetSubscriptionsRequestDto({
     sportIds: [6046],
   });
@@ -529,7 +353,9 @@ const subscribeByCompetitions = async (
   logger.log(`Subscribed to ${response?.subscription?.length} competitions`);
 };
 
-const unSubscribeFromCompetitions = async (subscriptionHttpClient: ISubscriptionHttpClient) => {
+const unSubscribeFromCompetitions = async (
+  subscriptionHttpClient: ISubscriptionHttpClient
+) => {
   const request = new CompetitionsSubscriptionRequestDto({
     subscriptions: [
       new CompetitionsSubscriptionRequestBodyStructure({
@@ -558,5 +384,162 @@ const getFixturesMetadataSubscriptions = async (
 
   logger.log(`Fixtures metadata subscriptions received: ${response?.subscribedFixtures?.length}`);
 };
+//endregion
+
+//region Distribution API
+const stopDistribution = async(packageDistributionHttpClient: IPackageDistributionHttpClient) => {
+  const stopRequest: StopResponseBody | undefined = await packageDistributionHttpClient.stopDistribution<StopResponseBody>(StopResponseBody);
+  console.log('Stop Distribution Response:', stopRequest);
+}
+
+const startDistibution = async(packageDistributionHttpClient: IPackageDistributionHttpClient)=> {
+  const distributionStatus = await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(StatusResponseBody);
+  if (!_.isNil(distributionStatus)) {      
+    const { isDistributionOn } = distributionStatus;
+    if (!isDistributionOn) {
+      const startRequest: StartResponseBody | undefined = await packageDistributionHttpClient.startDistribution<StartResponseBody>(
+        StartResponseBody
+      );
+      console.log('Start Distribution Response:', startRequest);
+        if (!_.isNil(startRequest)) logger.log(startRequest.message);
+      }
+    }
+  }
+
+const getDistributionStatus = async (packageDistributionHttpClient: IPackageDistributionHttpClient) => {
+  const distributionStatus = await packageDistributionHttpClient.getDistributionStatus<StatusResponseBody>(
+    StatusResponseBody
+  );
+  console.log('Distribution Status:', distributionStatus);
+}
+//endregion
+
+//region Metadata API
+const getLocations = async (metadataHttpClient: IMetadataHttpClient) => {
+  const response = await metadataHttpClient.getLocations();
+
+  logger.log('Locations entities received:');
+
+  _.each(response, (location) => {
+    logger.log(`LocationId: ${location.id}, LocationName: ${location.name}`);
+  });
+};
+
+const getSports = async (metadataHttpClient: IMetadataHttpClient) => {
+  const response = await metadataHttpClient.getSports();
+
+  logger.log('Sports entities received:');
+
+  _.each(response, (sport) => {
+    logger.log(`SportId: ${sport.id}, SportName: ${sport.name}`);
+  });
+};
+
+const getLeagues = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  try {
+    const sportsResults = await metadataHttpClient.getSports();
+    const footballSportEntity = _.find(sportsResults, (x: Sport) => x.name === 'Football');
+
+    if (_.isNil(footballSportEntity)) {
+      logger.log('Football sport entity not found.');
+      return;
+    }
+
+    const request = new GetLeaguesRequestDto({
+      sportIds: footballSportEntity.id ? [footballSportEntity.id] : undefined,
+    });
+
+    const response = await metadataHttpClient.getLeagues(request);
+
+    logger.log(`Response returned ${response?.length} leagues:`);
+
+    _.forEach(response, (league) => {
+      logger.log(`LeagueId: ${league.id}, LeagueName: ${league.name}`);
+    });
+  } catch (error) {
+    logger.error('Error fetching leagues:', error);
+    throw error;
+  }
+};
+
+const getMarkets = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  const request = new GetMarketsRequestDto({
+    marketIds: [1, 2],
+    isSettleable: true,
+    sportIds: [6046],
+  });
+
+  const response = await metadataHttpClient.getMarkets(request);
+
+  logger.log('Markets entities received:');
+
+  _.each(response, (market) => {
+    logger.log(`MarketId: ${market.id}, MarketName: ${market.name}`);
+  });
+};
+
+const getTranslations = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  const request = new GetTranslationsRequestDto({
+    sportIds: [6046],
+    languages: [4, 5],
+  });
+
+  const response = await metadataHttpClient.getTranslations(request);
+
+  logger.log(
+    `Count of translations received Sports: ${_.keys(response?.sports).length} Translations retrieved.`,
+  );
+
+  logger.log(
+    `Count of translations received Leagues: ${_.keys(response?.leagues).length} Translations retrieved.`,
+  );
+
+  logger.log(
+    `Count of translations received Locations: ${_.keys(response?.locations).length} Translations retrieved.`,
+  );
+};
+
+const getCompetitions = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  const request = new GetCompetitionsRequestDto({
+    locationIds: [1],
+    subscriptionStatus: SubscriptionState.All,
+  });
+
+  const response = await metadataHttpClient.getCompetitions(request);
+
+  logger.log(`${response?.competitions?.length} Competitions retrieved.`);
+};
+
+const getIncidents = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  logger.info('Getting incidents...');
+
+  const incidentsFilter = new IncidentsFilterDto({
+    sports: [6046],
+    // from: moment("2023-10-07 10:00:37", "YYYY-MM-DD HH:mm:ss", true),
+    searchText : ["Pen", "ste"],
+    // ids: [2166],
+  });
+
+  const request = new GetIncidentsRequestDto({
+    filter: incidentsFilter,
+  });
+
+  const requestPayload = instanceToPlain(request);
+  logger.info('Request Payload being sent (should have PascalCase, e.g., Filter.From, Filter.Sports):');
+  logger.info(JSON.stringify(requestPayload, null, 2));
+
+  try {
+    const response = await metadataHttpClient.getIncidents(request);
+    logger.info('Raw response from API:');
+    logger.info(JSON.stringify(response, null, 2));
+    logger.info(`Successfully retrieved ${response?.incidents?.length} incidents, total count: ${response?.total}`);
+  } catch (error) {
+    logger.error(`Error getting incidents: ${error}`);
+    if (error instanceof HttpResponseError && error.context) {
+      logger.error(`Error context: ${JSON.stringify(error.context)}`);
+    }
+  }
+};
+//endregion
 
 initApiSample();
