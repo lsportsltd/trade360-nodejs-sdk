@@ -1,6 +1,6 @@
 import { Expose, Transform, Type, TransformationType, TransformFnParams } from 'class-transformer';
 import { BaseEntity } from '@entities';
-import moment, { isMoment, Moment as MomentType } from 'moment';
+import moment, { isMoment, Moment as MomentType, ISO_8601 } from 'moment';
 
 /**
  * Filter structure for the incidents request
@@ -24,16 +24,20 @@ export class IncidentsFilterDto implements BaseEntity {
     if (type === TransformationType.PLAIN_TO_CLASS) {
       if (isMoment(value)) return value.utc(); // Ensure UTC
       if (typeof value === 'string') {
-        // Only accept ISO date-time formats:
+        // Accept two specific formats with strict parsing:
         // 1. "2023-04-27 18:36:39" - standard format with space
-        // 2. "2023-04-27T18:36:39Z" - ISO 8601 format with T and optional Z
-        const isLikelyValidDateString =
-          /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(Z|[+-]\d{2}:\d{2})?$/.test(value);
-        if (isLikelyValidDateString) {
-          const parsedDate = moment(value);
-          if (parsedDate.isValid()) {
-            return parsedDate.utc();
-          }
+        // 2. "2023-04-27T18:36:39Z" - ISO 8601 format with T and Z
+        const parsedDate = moment(
+          value,
+          [
+            'YYYY-MM-DD HH:mm:ss', // Standard format
+            ISO_8601, // ISO 8601 format (includes T and Z)
+          ],
+          true,
+        );
+
+        if (parsedDate.isValid()) {
+          return parsedDate.utc();
         }
         return undefined;
       }
