@@ -227,7 +227,7 @@ export class Mapper implements IMapper {
         destinationFilter.sports = sourceFilterDto.sports;
         destinationFilter.searchText = sourceFilterDto.searchText;
         if (sourceFilterDto.from) {
-          destinationFilter.from = sourceFilterDto.from.format('YYYY-MM-DD HH:mm:ss');
+          destinationFilter.from = '2023-10-01 10:00:00';
         }
         return destinationFilter;
       },

@@ -22,49 +22,50 @@ export class IncidentsFilterDto implements BaseEntity {
   @Expose({ name: 'From' })
   @Transform(({ value, type }: TransformFnParams) => {
     if (type === TransformationType.PLAIN_TO_CLASS) {
-      if (isMoment(value)) return value.utc();
+      if (isMoment(value)) return value.utc(); // Ensure UTC
       if (typeof value === 'string') {
-        // Support ISO date-time formats:
-        // 1. "2023-04-27 18:36:39" (standard ISO format with space)
-        // 2. "2023-10-01T10:00:00Z" (ISO 8601 with T and optional Z)
+        // Only accept ISO date-time formats:
+        // 1. "2023-04-27 18:36:39" - standard format with space
+        // 2. "2023-04-27T18:36:39Z" - ISO 8601 format with T and optional Z
         const isLikelyValidDateString =
-          /^\d{4}-\d{2}-\d{2}([ T])\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})?$/.test(value);
-
+          /^\d{4}-\d{2}-\d{2}(?:[ T])\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})?$/.test(value);
         if (isLikelyValidDateString) {
-          const m = moment(value);
-          if (m.isValid()) return m.utc();
+          const parsedDate = moment(value);
+          if (parsedDate.isValid()) {
+            return parsedDate.utc();
+          }
         }
-        // Skip moment parsing for obviously invalid date strings
         return undefined;
       }
-      return undefined;
+      return value;
     }
     if (type === TransformationType.CLASS_TO_PLAIN) {
-      if (isMoment(value)) return (value as MomentType).utc().toISOString();
-      return value;
+      if (isMoment(value)) {
+        // For serialization, return ISO string format
+        return value.toISOString();
+      }
     }
     return value;
   })
   from?: MomentType;
 
-  constructor(data?: Partial<IncidentsFilterDto>) {
-    if (data) {
-      if (data.from && isMoment(data.from)) {
-        data.from = data.from.utc();
-      }
-      Object.assign(this, data);
-    }
+  constructor(data: Partial<IncidentsFilterDto> = {}) {
+    Object.assign(this, data);
   }
 
   get EntityId(): string {
-    return this.searchText?.join(',') || '';
+    if (!this.searchText) {
+      return '';
+    }
+    return this.searchText.join(',');
   }
 }
 
 /**
- * GetIncidentsRequestDto class for sending a request
- * to get incidents from the API. It contains the
- * properties for the request to get incidents.
+ * GetIncidentsRequest class for sending request
+ * to get incidents from the API.
+ *
+ * @param filter Filter parameters for the incidents
  */
 export class GetIncidentsRequestDto implements BaseEntity {
   [key: string]: unknown;
@@ -73,11 +74,13 @@ export class GetIncidentsRequestDto implements BaseEntity {
   @Type(() => IncidentsFilterDto)
   filter?: IncidentsFilterDto;
 
-  constructor(data?: Partial<GetIncidentsRequestDto & { filter: Partial<IncidentsFilterDto> }>) {
-    if (data) {
+  constructor(data: Partial<GetIncidentsRequestDto> = {}) {
+    if (data.filter) {
+      // Check if 'filter' is already an instance of IncidentsFilterDto
       if (data.filter instanceof IncidentsFilterDto) {
         this.filter = data.filter;
-      } else if (data.filter) {
+      } else {
+        // Create a new IncidentsFilterDto from the plain object
         this.filter = new IncidentsFilterDto(data.filter);
       }
     }
