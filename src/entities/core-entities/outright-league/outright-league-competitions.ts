@@ -1,7 +1,6 @@
 import { Expose, Transform } from 'class-transformer';
 
-import { BaseEntity } from '@entities';
-import { transformToEventInstance } from '@lsports/entities';
+import { BaseEntity, transformToEventInstance } from '@entities';
 
 export class OutrightLeagueCompetitions<TEvent extends BaseEntity> {
   @Expose({ name: 'Id' })

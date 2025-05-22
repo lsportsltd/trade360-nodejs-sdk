@@ -515,8 +515,8 @@ const getIncidents = async (metadataHttpClient: IMetadataHttpClient): Promise<vo
 
   const incidentsFilter = new IncidentsFilterDto({
     sports: [6046],
-    // from: moment("2023-10-07 10:00:37", "YYYY-MM-DD HH:mm:ss", true),
-    searchText : ["Pen", "ste"],
+    // from: moment("2023-10-07 10:00:37"),
+    // searchText : ["Pen", "ste"],
     // ids: [2166],
   });
 
@@ -532,7 +532,7 @@ const getIncidents = async (metadataHttpClient: IMetadataHttpClient): Promise<vo
     const response = await metadataHttpClient.getIncidents(request);
     logger.info('Raw response from API:');
     logger.info(JSON.stringify(response, null, 2));
-    logger.info(`Successfully retrieved ${response?.incidents?.length} incidents, total count: ${response?.total}`);
+    logger.info(`Successfully retrieved ${response?.data?.length} incidents, total count: ${response?.totalItems}`);
   } catch (error) {
     logger.error(`Error getting incidents: ${error}`);
     if (error instanceof HttpResponseError && error.context) {
