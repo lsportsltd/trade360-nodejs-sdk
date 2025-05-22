@@ -22,18 +22,17 @@ export class IncidentsFilterDto implements BaseEntity {
   @Expose({ name: 'From' })
   @Transform(({ value, type }: TransformFnParams) => {
     if (type === TransformationType.PLAIN_TO_CLASS) {
-      if (isMoment(value)) return value;
+      if (isMoment(value)) return value.utc();
       if (typeof value === 'string') {
         // Support ISO date-time formats:
         // 1. "2023-04-27 18:36:39" (standard ISO format with space)
         // 2. "2023-10-01T10:00:00Z" (ISO 8601 with T and optional Z)
         const isLikelyValidDateString =
-          /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value) || // Format: YYYY-MM-DD HH:MM:SS
-          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|[+-]\d{2}:\d{2})?$/.test(value); // ISO 8601 format
+          /^\d{4}-\d{2}-\d{2}([ T])\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})?$/.test(value);
 
         if (isLikelyValidDateString) {
           const m = moment(value);
-          if (m.isValid()) return m;
+          if (m.isValid()) return m.utc();
         }
         // Skip moment parsing for obviously invalid date strings
         return undefined;
@@ -41,7 +40,7 @@ export class IncidentsFilterDto implements BaseEntity {
       return undefined;
     }
     if (type === TransformationType.CLASS_TO_PLAIN) {
-      if (isMoment(value)) return (value as MomentType).toISOString();
+      if (isMoment(value)) return (value as MomentType).utc().toISOString();
       return value;
     }
     return value;
@@ -50,6 +49,9 @@ export class IncidentsFilterDto implements BaseEntity {
 
   constructor(data?: Partial<IncidentsFilterDto>) {
     if (data) {
+      if (data.from && isMoment(data.from)) {
+        data.from = data.from.utc();
+      }
       Object.assign(this, data);
     }
   }
