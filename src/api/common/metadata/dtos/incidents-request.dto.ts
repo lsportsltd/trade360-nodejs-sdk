@@ -1,6 +1,6 @@
 import { Expose, Transform, Type, TransformationType, TransformFnParams } from 'class-transformer';
 import { BaseEntity } from '@entities';
-import moment, { Moment as MomentType } from 'moment';
+import moment, { isMoment, Moment as MomentType } from 'moment';
 
 /**
  * Filter structure for the incidents request
@@ -22,15 +22,26 @@ export class IncidentsFilterDto implements BaseEntity {
   @Expose({ name: 'From' })
   @Transform(({ value, type }: TransformFnParams) => {
     if (type === TransformationType.PLAIN_TO_CLASS) {
-      if (moment.isMoment(value)) return value;
+      if (isMoment(value)) return value;
       if (typeof value === 'string') {
-        const m = moment(value);
-        if (m.isValid()) return m;
+        // Support ISO date-time formats:
+        // 1. "2023-04-27 18:36:39" (standard ISO format with space)
+        // 2. "2023-10-01T10:00:00Z" (ISO 8601 with T and optional Z)
+        const isLikelyValidDateString =
+          /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value) || // Format: YYYY-MM-DD HH:MM:SS
+          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|[+-]\d{2}:\d{2})?$/.test(value); // ISO 8601 format
+
+        if (isLikelyValidDateString) {
+          const m = moment(value);
+          if (m.isValid()) return m;
+        }
+        // Skip moment parsing for obviously invalid date strings
+        return undefined;
       }
       return undefined;
     }
     if (type === TransformationType.CLASS_TO_PLAIN) {
-      if (moment.isMoment(value)) return (value as MomentType).toISOString();
+      if (isMoment(value)) return (value as MomentType).toISOString();
       return value;
     }
     return value;

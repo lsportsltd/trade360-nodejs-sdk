@@ -99,7 +99,7 @@ describe('IncidentsFilterDto', () => {
     } as ExtendedFilter);
     expect(filter.ids).toEqual([1, 2, 3]);
     // Using bracket notation for accessing dynamic property
-    expect(filter['extraProp']).toBe('extra'); // eslint-disable-line dot-notation
+    expect(filter.extraProp).toBe('extra'); // eslint-disable-line dot-notation
   });
 });
 
@@ -122,11 +122,11 @@ describe('GetIncidentsRequestDto', () => {
       ids: [1, 2, 3],
       sports: [6046],
     });
-    
+
     const request = new GetIncidentsRequestDto({
       filter: filterDto,
     });
-    
+
     expect(request.filter).toBeInstanceOf(IncidentsFilterDto);
     expect(request.filter?.ids).toEqual([1, 2, 3]);
     expect(request.filter?.sports).toEqual([6046]);
@@ -189,4 +189,4 @@ describe('GetIncidentsRequestDto', () => {
     expect(request.filter?.from?.utc().hour()).toBe(10);
     expect(request.filter?.from?.utc().minute()).toBe(0);
   });
-}); 
+});

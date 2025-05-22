@@ -183,4 +183,4 @@ describe('MetadataHttpClient - getIncidents', () => {
     // Assertions
     expect(result).toBeUndefined();
   });
-}); 
+});

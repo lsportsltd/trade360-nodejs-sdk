@@ -4,10 +4,7 @@ import {
   GetIncidentsRequestDto,
   IncidentsFilterDto,
 } from '@metadata-api/dtos/incidents-request.dto';
-import {
-  GetIncidentsRequest,
-  IncidentsFilter,
-} from '@metadata-api/requests/incidents-request';
+import { GetIncidentsRequest, IncidentsFilter } from '@metadata-api/requests/incidents-request';
 
 describe('Mapper - GetIncidents Flow', () => {
   // Setup
@@ -136,4 +133,4 @@ describe('Mapper - GetIncidents Flow', () => {
     expect(filter.sports).toEqual([]);
     expect(filter.searchText).toEqual([]);
   });
-}); 
+});
