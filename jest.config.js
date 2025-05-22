@@ -1,3 +1,6 @@
+/* eslint-env node */
+/* eslint-disable no-undef */
+
 const { pathsToModuleNameMapper } = require('ts-jest');
 const { compilerOptions } = require('./tsconfig');
 
@@ -13,9 +16,12 @@ module.exports = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
   setupFiles: ['<rootDir>/jest.setup.js'],
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', {
-      tsconfig: '<rootDir>/tsconfig.json'
-    }]
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: '<rootDir>/tsconfig.json',
+      },
+    ],
   },
   // Ensure coverage paths are relative to repository root
   coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
