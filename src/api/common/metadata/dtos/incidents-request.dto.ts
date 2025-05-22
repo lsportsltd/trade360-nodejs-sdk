@@ -28,7 +28,7 @@ export class IncidentsFilterDto implements BaseEntity {
         // 1. "2023-04-27 18:36:39" - standard format with space
         // 2. "2023-04-27T18:36:39Z" - ISO 8601 format with T and optional Z
         const isLikelyValidDateString =
-          /^\d{4}-\d{2}-\d{2}(?:[ T])\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})?$/.test(value);
+          /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})?$/.test(value);
         if (isLikelyValidDateString) {
           const parsedDate = moment(value);
           if (parsedDate.isValid()) {
