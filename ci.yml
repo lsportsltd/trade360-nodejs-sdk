@@ -19,6 +19,7 @@ stages:
       domain: trade360-sdk
       product: stm
       team: guns-n-roses
+      skipDeploy: "true"
 
   - stage: PublishToNPM
     displayName: 'Publish to NPM Registry'
