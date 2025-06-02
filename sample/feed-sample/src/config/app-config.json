@@ -1,7 +1,7 @@
 {
   "trade360": {
     "inPlayMQSettings": {
-      "hostname": "localhost",
+      "hostname": "stm-inplay.lsports.eu",
       "port": 5672,
       "vhost": "StmInPlay",
       "username": "LSPORTS_USERNAME",
@@ -19,7 +19,7 @@
       "dispatchConsumersAsync": true
     },
     "preMatchMQSettings": {
-      "hostname": "localhost",
+      "hostname": "stm-prematch.lsports.eu",
       "port": 5672,
       "vhost": "StmPreMatch",
       "username": "LSPORTS_USERNAME",
