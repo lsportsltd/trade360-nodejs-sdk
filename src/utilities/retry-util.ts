@@ -1,5 +1,5 @@
 import { RetryError } from '@lsports/errors';
-import { ILogger } from '../logger/interfaces';
+import { ILogger } from '@logger';
 
 /**
  * Retry options for retrying an operation with

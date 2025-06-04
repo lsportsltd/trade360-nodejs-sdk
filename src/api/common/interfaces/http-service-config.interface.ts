@@ -1,5 +1,5 @@
 import { PackageCredentials } from '@entities';
-import { ILogger } from '../../../logger/interfaces';
+import { ILogger } from '@logger';
 
 /**
  * HTTP service configuration interface. It contains
