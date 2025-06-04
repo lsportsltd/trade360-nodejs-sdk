@@ -9,7 +9,7 @@ import {
 } from '@entities';
 import { IEntityHandler } from '@feed';
 import { TransformerUtil } from '@utilities';
-import { ILogger } from '@logger';
+import { ILogger } from '../../../logger/interfaces';
 
 import { BodyHandler } from './handler';
 import { IBodyHandler, IConsumptionLatency } from './interfaces';

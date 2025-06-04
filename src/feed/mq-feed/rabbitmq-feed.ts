@@ -3,7 +3,8 @@ import { isNil } from 'lodash';
 
 import { BaseEntity, Constructor } from '@entities';
 import { IEntityHandler, IFeed, MQSettingsOptions } from '@feed';
-import { ConsoleAdapter, ILogger } from '@logger';
+import { ConsoleAdapter } from '../../logger/adapters';
+import { ILogger } from '../../logger/interfaces';
 import { ConsumptionMessageError } from '@lsports/errors';
 import { AsyncLock, withRetry } from '@utilities';
 
