@@ -1,7 +1,7 @@
 import { isNil } from 'lodash';
 
 import { MQSettingsOptions } from '@feed';
-import { ILogger } from '@logger';
+import { ILogger } from '../logger/interfaces';
 import {
   HttpRequestDto,
   StartResponseBody,
