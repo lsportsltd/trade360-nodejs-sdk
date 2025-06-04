@@ -61,5 +61,5 @@ export class GetMarketsRequest extends HttpRequestDto {
   marketType?: MarketType;
 
   @Expose()
-  languageId?: number;
+  declare languageId?: number;
 }

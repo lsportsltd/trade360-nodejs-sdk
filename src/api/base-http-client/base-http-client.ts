@@ -7,8 +7,7 @@ import { BaseEntity, Constructor } from '@entities';
 import { HttpResponseError } from '@lsports/errors';
 import { AxiosService } from '@httpClient/services';
 import { RequestSettingsValidator } from '@httpClient/validators';
-import { ConsoleAdapter } from '../../logger/adapters';
-import { ILogger } from '../../logger/interfaces';
+import { ConsoleAdapter, ILogger } from '@logger';
 import { TransformerUtil } from '@utilities';
 
 import { IHttpService, IRequestArgs } from './interfaces';

@@ -34,7 +34,7 @@ export class HttpResponsePayloadDto<TResponse extends BaseEntity> implements Bas
     class CustomHttpResponsePayloadDto extends HttpResponsePayloadDto<TResponse> {
       @Expose({ name: 'Body' })
       @Transform(({ value }) => TransformerUtil.transform(value, entityClass))
-      body!: TResponse;
+      declare body: TResponse;
     }
 
     return CustomHttpResponsePayloadDto;

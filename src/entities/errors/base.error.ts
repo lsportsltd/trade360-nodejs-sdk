@@ -1,4 +1,4 @@
-type Jsonable =
+export type Jsonable =
   | string
   | number
   | boolean

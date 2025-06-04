@@ -4,7 +4,7 @@ import { isNil } from 'lodash';
 import { BaseEntity, Constructor } from '@entities';
 import { IEntityHandler, IFeed, MQSettingsOptions } from '@feed';
 import { ConsoleAdapter } from '../../logger/adapters';
-import { ILogger } from '../../logger/interfaces';
+import { ILogger } from '@logger';
 import { ConsumptionMessageError } from '@lsports/errors';
 import { AsyncLock, withRetry } from '@utilities';
 
