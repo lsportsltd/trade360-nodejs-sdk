@@ -117,7 +117,7 @@ const initSample = async () => {
     if (err instanceof ValidationError) {
       logger.error(`feed sample got err from ValidationError instance: ${err}`);
       if (!_.isNil(err.context) && typeof err.context == 'object') {
-        _.each(err.context, (value, key) => {
+        _.each(err.context, (value: any, key: any) => {
           logger.error(`Error [${key}]: ${JSON.stringify(value)}`);
         });
       }
