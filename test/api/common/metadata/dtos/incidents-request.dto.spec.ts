@@ -3,7 +3,7 @@ import {
   IncidentsFilterDto,
 } from '@metadata-api/dtos/incidents-request.dto';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
-import moment from 'moment';
+import moment, { isMoment } from 'moment';
 
 describe('IncidentsFilterDto', () => {
   // Test Case 2.1: Constructor Initialization
@@ -66,7 +66,7 @@ describe('IncidentsFilterDto', () => {
     };
     const filter = plainToInstance(IncidentsFilterDto, plain);
     expect(filter.ids).toEqual([1, 2, 3]);
-    expect(moment.isMoment(filter.from)).toBe(true);
+    expect(isMoment(filter.from)).toBe(true);
     // Verify the parsed date is valid and the same day/hour/minute as the source
     expect(filter.from?.isValid()).toBe(true);
     expect(filter.from?.utc().year()).toBe(2023);
@@ -180,7 +180,7 @@ describe('GetIncidentsRequestDto', () => {
     const request = plainToInstance(GetIncidentsRequestDto, plain);
     expect(request.filter).toBeInstanceOf(IncidentsFilterDto);
     expect(request.filter?.ids).toEqual([1, 2, 3]);
-    expect(moment.isMoment(request.filter?.from)).toBe(true);
+    expect(isMoment(request.filter?.from)).toBe(true);
     // Verify the parsed date is valid and the same day/hour/minute as the source
     expect(request.filter?.from?.isValid()).toBe(true);
     expect(request.filter?.from?.utc().year()).toBe(2023);
