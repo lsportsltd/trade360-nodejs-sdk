@@ -49,9 +49,6 @@ export class BaseBet {
   @Expose({ name: 'PriceHK' })
   priceHK?: string;
 
-  @Expose({ name: 'IsChanged' })
-  isChanged: number = -1;
-
   @Expose({ name: 'Probability' })
   probability?: number;
 
