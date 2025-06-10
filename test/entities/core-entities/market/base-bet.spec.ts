@@ -26,7 +26,6 @@ describe('BaseBet Entity', () => {
     expect(baseBet.settlement).toBe(SettlementType.Winner);
     expect(baseBet.lastUpdate).toBeInstanceOf(Date);
     expect(baseBet.lastUpdate?.toISOString()).toBe('2024-06-01T12:00:00.000Z');
-    expect(baseBet.isChanged).toBe(1);
     expect(baseBet.probability).toBe(0.75);
     expect(baseBet.participantId).toBe(42);
     expect(baseBet.playerName).toBe('Player X');
@@ -50,7 +49,6 @@ describe('BaseBet Entity', () => {
     expect(baseBet.priceUK).toBeUndefined();
     expect(baseBet.priceMA).toBeUndefined();
     expect(baseBet.priceHK).toBeUndefined();
-    expect(baseBet.isChanged).toBeUndefined();
     expect(baseBet.probability).toBeUndefined();
     expect(baseBet.participantId).toBeUndefined();
     expect(baseBet.playerName).toBeUndefined();
