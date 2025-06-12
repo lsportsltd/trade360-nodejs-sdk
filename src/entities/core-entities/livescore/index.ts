@@ -7,3 +7,4 @@ export * from './result';
 export * from './current-incident';
 export * from './danger-indicator';
 export * from './incident';
+export * from './clock';
