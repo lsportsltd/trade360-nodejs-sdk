@@ -3,6 +3,8 @@ import { Scoreboard } from '../../../../src/entities/core-entities/livescore/sco
 import { FixtureStatus } from '../../../../src/entities/core-entities/enums/fixture-status';
 import { StatusDescription } from '../../../../src/entities/core-entities/enums/status-description';
 import { Result } from '../../../../src/entities/core-entities/livescore/result';
+import { Clock } from '../../../../src/entities/core-entities/livescore/clock';
+import { ClockStatus } from '../../../../src/entities/core-entities/enums/clock-status';
 
 describe('Scoreboard Entity', () => {
   it('should deserialize a plain object into a Scoreboard instance', (): void => {
@@ -11,6 +13,10 @@ describe('Scoreboard Entity', () => {
       Description: StatusDescription.HT,
       CurrentPeriod: 2,
       Time: '45:00',
+      Clock: {
+        Status: ClockStatus.Running,
+        Seconds: 45
+      },
       Results: [{ id: 1 }, { id: 2 }],
     };
     const scoreboard = plainToInstance(Scoreboard, plain, { excludeExtraneousValues: true });
@@ -19,6 +25,9 @@ describe('Scoreboard Entity', () => {
     expect(scoreboard.description).toBe(StatusDescription.HT);
     expect(scoreboard.currentPeriod).toBe(2);
     expect(scoreboard.time).toBe('45:00');
+    expect(scoreboard.clock).toBeInstanceOf(Clock);
+    expect(scoreboard.clock?.status).toBe(ClockStatus.Running);
+    expect(scoreboard.clock?.seconds).toBe(45);
     expect(Array.isArray(scoreboard.results)).toBe(true);
     expect(scoreboard.results?.[0]).toBeInstanceOf(Result);
   });
@@ -30,6 +39,7 @@ describe('Scoreboard Entity', () => {
     expect(scoreboard.description).toBeUndefined();
     expect(scoreboard.currentPeriod).toBeUndefined();
     expect(scoreboard.time).toBeUndefined();
+    expect(scoreboard.clock).toBeUndefined();
     expect(scoreboard.results).toBeUndefined();
   });
 
