@@ -6,10 +6,52 @@ export class BaseBet {
   @Expose({ name: 'Id' })
   @Transform(({ value }) => {
     if (value === null || value === undefined) return value;
+
     // If the value is already a BigInt (from lossless-json), return it as is
     if (typeof value === 'bigint') return value;
-    // Otherwise, convert to BigInt
-    return BigInt(value);
+
+    // Handle string values
+    if (typeof value === 'string') {
+      // Check if string is empty or whitespace only
+      if (value.trim() === '') return undefined;
+
+      // Check if string contains only digits (and optional leading minus)
+      if (!/^-?\d+$/.test(value.trim())) {
+        console.warn(
+          `Invalid ID format received: "${value}". Expected integer, got non-numeric string.`,
+        );
+        return undefined;
+      }
+
+      try {
+        return BigInt(value.trim());
+      } catch (error) {
+        console.warn(`Failed to convert ID "${value}" to BigInt:`, error);
+        return undefined;
+      }
+    }
+
+    // Handle number values
+    if (typeof value === 'number') {
+      // Check for NaN, Infinity, or decimal numbers
+      if (!Number.isFinite(value) || !Number.isInteger(value)) {
+        console.warn(
+          `Invalid ID format received: ${value}. Expected integer, got ${typeof value === 'number' && !Number.isInteger(value) ? 'decimal' : 'non-finite'} number.`,
+        );
+        return undefined;
+      }
+
+      try {
+        return BigInt(Math.trunc(value));
+      } catch (error) {
+        console.warn(`Failed to convert ID ${value} to BigInt:`, error);
+        return undefined;
+      }
+    }
+
+    // Unexpected type
+    console.warn(`Invalid ID type received: ${typeof value}. Expected string, number, or bigint.`);
+    return undefined;
   })
   id?: bigint;
 

@@ -197,4 +197,123 @@ describe('BaseBet Entity', () => {
     });
     expect(baseBetFromNumber.id).toBe(123n);
   });
+
+  it('should handle invalid ID values gracefully without crashing', (): void => {
+    // Spy on console.warn to verify warnings are logged
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+    try {
+      // Test decimal number (should warn and return undefined)
+      const plainWithDecimal = { Id: 123.45 };
+      const baseBetFromDecimal = plainToInstance(BaseBet, plainWithDecimal, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromDecimal.id).toBeUndefined();
+
+      // Test non-numeric string (should warn and return undefined)
+      const plainWithInvalidString = { Id: 'not-a-number' };
+      const baseBetFromInvalidString = plainToInstance(BaseBet, plainWithInvalidString, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromInvalidString.id).toBeUndefined();
+
+      // Test empty string (should return undefined without warning)
+      const plainWithEmptyString = { Id: '' };
+      const baseBetFromEmptyString = plainToInstance(BaseBet, plainWithEmptyString, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromEmptyString.id).toBeUndefined();
+
+      // Test whitespace string (should return undefined without warning)
+      const plainWithWhitespace = { Id: '   ' };
+      const baseBetFromWhitespace = plainToInstance(BaseBet, plainWithWhitespace, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromWhitespace.id).toBeUndefined();
+
+      // Test NaN (should warn and return undefined)
+      const plainWithNaN = { Id: NaN };
+      const baseBetFromNaN = plainToInstance(BaseBet, plainWithNaN, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromNaN.id).toBeUndefined();
+
+      // Test Infinity (should warn and return undefined)
+      const plainWithInfinity = { Id: Infinity };
+      const baseBetFromInfinity = plainToInstance(BaseBet, plainWithInfinity, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromInfinity.id).toBeUndefined();
+
+      // Test boolean (should warn and return undefined)
+      const plainWithBoolean = { Id: true };
+      const baseBetFromBoolean = plainToInstance(BaseBet, plainWithBoolean, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromBoolean.id).toBeUndefined();
+
+      // Test object (should warn and return undefined)
+      const plainWithObject = { Id: {} };
+      const baseBetFromObject = plainToInstance(BaseBet, plainWithObject, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromObject.id).toBeUndefined();
+
+      // Verify that warnings were logged for problematic cases
+      expect(consoleWarnSpy).toHaveBeenCalled();
+      
+      // Check specific warning messages
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Invalid ID format received: 123.45')
+      );
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Invalid ID format received: "not-a-number"')
+      );
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Invalid ID format received: NaN')
+      );
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Invalid ID format received: Infinity')
+      );
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Invalid ID type received: boolean')
+      );
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Invalid ID type received: object')
+      );
+    } finally {
+      consoleWarnSpy.mockRestore();
+    }
+  });
+
+  it('should handle edge cases in string ID conversion', (): void => {
+    // Test string with leading/trailing whitespace
+    const plainWithWhitespaceString = { Id: '  123456  ' };
+    const baseBetFromWhitespaceString = plainToInstance(BaseBet, plainWithWhitespaceString, {
+      excludeExtraneousValues: true,
+    });
+    expect(baseBetFromWhitespaceString.id).toBe(123456n);
+
+    // Test negative string ID
+    const plainWithNegativeString = { Id: '-123456' };
+    const baseBetFromNegativeString = plainToInstance(BaseBet, plainWithNegativeString, {
+      excludeExtraneousValues: true,
+    });
+    expect(baseBetFromNegativeString.id).toBe(-123456n);
+
+    // Test string with scientific notation (should fail validation)
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    try {
+      const plainWithScientific = { Id: '1e10' };
+      const baseBetFromScientific = plainToInstance(BaseBet, plainWithScientific, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromScientific.id).toBeUndefined();
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Invalid ID format received: "1e10"')
+      );
+    } finally {
+      consoleWarnSpy.mockRestore();
+    }
+  });
 });
