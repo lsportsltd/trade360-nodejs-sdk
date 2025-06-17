@@ -34,17 +34,17 @@ export class GetOutrightLivescoreRequest extends HttpRequestDto {
 
   @Expose()
   @Type(() => Number)
-  sportIds?: number[];
+  sports?: number[];
 
   @Expose()
   @Type(() => Number)
-  locationIds?: number[];
+  locations?: number[];
 
   @Expose()
   @Type(() => Number)
-  tournamentsIds?: number[];
+  tournaments?: number[];
 
   @Expose()
   @Type(() => Number)
-  fixtureIds?: number[];
+  fixtures?: number[];
 }
