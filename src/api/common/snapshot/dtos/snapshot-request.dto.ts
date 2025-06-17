@@ -36,27 +36,27 @@ export class GetSnapshotRequestDto implements BaseEntity {
   @Transform((field) => moment(field.value))
   toDate!: Moment;
 
-  @Expose({ name: 'SportIds' })
+  @Expose({ name: 'Sports' })
   @Type(() => Number)
-  sportIds?: number[];
+  sports?: number[];
 
-  @Expose({ name: 'LocationIds' })
+  @Expose({ name: 'Locations' })
   @Type(() => Number)
-  locationIds?: number[];
+  locations?: number[];
 
-  @Expose({ name: 'LeagueIds' })
+  @Expose({ name: 'Leagues' })
   @Type(() => Number)
-  leagueIds?: number[];
+  leagues?: number[];
 
-  @Expose({ name: 'FixtureIds' })
+  @Expose({ name: 'Fixtures' })
   @Type(() => Number)
-  fixtureIds?: number[];
+  fixtures?: number[];
 
-  @Expose({ name: 'MarketIds' })
+  @Expose({ name: 'Markets' })
   @Type(() => Number)
-  marketIds?: number[];
+  markets?: number[];
 
-  @Expose({ name: 'TournamentsIds' })
+  @Expose({ name: 'Tournaments' })
   @Type(() => Number)
-  tournamentsIds?: number[];
+  tournaments?: number[];
 }
