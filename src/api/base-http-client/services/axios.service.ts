@@ -18,7 +18,7 @@ function customNumberParser(value: string): number | bigint {
       if (value.length > 16) {
         return BigInt(value);
       }
-      
+
       // For 16-digit numbers, compare against MAX_SAFE_INTEGER as string
       if (value.length === 16) {
         const maxSafeIntegerStr = '9007199254740991';
@@ -27,7 +27,7 @@ function customNumberParser(value: string): number | bigint {
         }
       }
     }
-    
+
     // Safe to convert to number (includes all negative numbers and safe positive numbers)
     return parseInt(value, 10);
   }
