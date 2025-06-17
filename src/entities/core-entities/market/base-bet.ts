@@ -11,7 +11,7 @@ import { BetStatus, SettlementType } from '@lsports/enums';
  * @returns BigInt for valid large integers, undefined for invalid inputs
  */
 export function transformToBigInt(value: unknown): bigint | undefined {
-  if (value === null || value === undefined) return value;
+  if (value === null || value === undefined) return undefined;
 
   // If the value is already a BigInt (from lossless-json), return it as is
   if (typeof value === 'bigint') return value;
