@@ -34,21 +34,21 @@ export class GetOutrightFixtureRequest extends HttpRequestDto {
 
   @Expose()
   @Type(() => Number)
-  sportIds?: number[];
+  sports?: number[];
 
   @Expose()
   @Type(() => Number)
-  locationIds?: number[];
+  locations?: number[];
 
   @Expose()
   @Type(() => Number)
-  leagueIds?: number[];
+  leagues?: number[];
 
   @Expose()
   @Type(() => Number)
-  fixtureIds?: number[];
+  fixtures?: number[];
 
   @Expose()
   @Type(() => Number)
-  tournamentsIds?: number[];
+  tournaments?: number[];
 }
