@@ -1,10 +1,17 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 
 import { BetStatus, SettlementType } from '@lsports/enums';
 
 export class BaseBet {
   @Expose({ name: 'Id' })
-  id?: number;
+  @Transform(({ value }) => {
+    if (value === null || value === undefined) return value;
+    // If the value is already a BigInt (from lossless-json), return it as is
+    if (typeof value === 'bigint') return value;
+    // Otherwise, convert to BigInt (for positive IDs only)
+    return BigInt(value);
+  })
+  id?: bigint;
 
   @Expose({ name: 'Name' })
   name?: string;

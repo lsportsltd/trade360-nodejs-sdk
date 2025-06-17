@@ -11,7 +11,7 @@ describe('ProviderBet Entity', () => {
     const providerBet = plainToInstance(ProviderBet, plain, { excludeExtraneousValues: true });
     expect(providerBet).toBeInstanceOf(ProviderBet);
     expect(providerBet).toBeInstanceOf(BaseBet);
-    expect(providerBet.id).toBe(1);
+    expect(providerBet.id).toBe(1n);
     expect(providerBet.name).toBe('Provider Bet');
   });
 

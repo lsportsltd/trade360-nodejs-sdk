@@ -19,7 +19,7 @@ describe('BaseBet Entity', () => {
     };
     const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
     expect(baseBet).toBeInstanceOf(BaseBet);
-    expect(baseBet.id).toBe(1);
+    expect(baseBet.id).toBe(1n);
     expect(baseBet.name).toBe('Base Bet');
     expect(baseBet.line).toBe('2.5');
     expect(baseBet.status).toBe(BetStatus.Open);
@@ -62,5 +62,19 @@ describe('BaseBet Entity', () => {
     };
     const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
     expect((baseBet as unknown as { Extra?: unknown }).Extra).toBeUndefined();
+  });
+
+  it('should handle large ID values without precision loss', (): void => {
+    // Using BigInt literal to avoid precision loss in test
+    const largeId = 11060329315062111n;
+    const plain = {
+      Id: largeId, // The original problematic large number
+      Name: 'Large ID Bet',
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet).toBeInstanceOf(BaseBet);
+    expect(baseBet.id).toBe(largeId);
+    expect(typeof baseBet.id).toBe('bigint');
+    expect(baseBet.id?.toString()).toBe('11060329315062111');
   });
 });

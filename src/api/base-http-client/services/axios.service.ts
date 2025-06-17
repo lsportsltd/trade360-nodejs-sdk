@@ -1,8 +1,38 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { parse, isInteger } from 'lossless-json';
 
 import { BaseEntity } from '@entities';
 
 import { IHttpService } from '../interfaces';
+
+/**
+ * Custom number parser for lossless-json that converts large integers to BigInt
+ * and other numeric values to regular numbers. Only converts integers that
+ * exceed JavaScript's MAX_SAFE_INTEGER to prevent precision loss.
+ */
+function customNumberParser(value: string): number | bigint {
+  if (isInteger(value)) {
+    // For positive integers only (since IDs are always positive)
+    if (!value.startsWith('-')) {
+      // For very long numbers (17+ digits), definitely use BigInt
+      if (value.length > 16) {
+        return BigInt(value);
+      }
+      
+      // For 16-digit numbers, compare against MAX_SAFE_INTEGER as string
+      if (value.length === 16) {
+        const maxSafeIntegerStr = '9007199254740991';
+        if (value > maxSafeIntegerStr) {
+          return BigInt(value);
+        }
+      }
+    }
+    
+    // Safe to convert to number (includes all negative numbers and safe positive numbers)
+    return parseInt(value, 10);
+  }
+  return parseFloat(value);
+}
 
 /**
  * Axios service instance for different API endpoints with
@@ -19,10 +49,25 @@ export class AxiosService<TRequest extends BaseEntity> implements IHttpService<T
   private axiosInstance: AxiosInstance;
 
   private configRequest: AxiosRequestConfig = {
-    validateStatus: function (status) {
+    validateStatus: function (status): boolean {
       return status >= 200 && status < 300; // Resolve only if the status
       // code is above then 200 and less then 300
     },
+    // Override the default JSON parsing to use lossless-json
+    transformResponse: [
+      function (data: string): unknown {
+        if (typeof data === 'string') {
+          try {
+            // Use lossless-json to parse with BigInt support for large integers
+            return parse(data, undefined, customNumberParser);
+          } catch (error) {
+            // If lossless-json fails, return the original data
+            return data;
+          }
+        }
+        return data;
+      },
+    ],
   };
 
   constructor(baseURL: string) {
