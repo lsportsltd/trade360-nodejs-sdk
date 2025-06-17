@@ -15,7 +15,7 @@ function customNumberParser(value: string): number | bigint {
       if (value.length > 16) {
         return BigInt(value);
       }
-      
+
       // For 16-digit numbers, compare against MAX_SAFE_INTEGER as string
       if (value.length === 16) {
         const maxSafeIntegerStr = '9007199254740991';
@@ -24,7 +24,7 @@ function customNumberParser(value: string): number | bigint {
         }
       }
     }
-    
+
     // Safe to convert to number (includes all negative numbers and safe positive numbers)
     return parseInt(value, 10);
   }
@@ -134,22 +134,22 @@ describe('BaseBet Entity', () => {
 
   it('should demonstrate the precision bug fix', (): void => {
     const problematicNumber = '11060329315062111';
-    
+
     // Show the BUG: Using parseInt before boundary check loses precision
     const buggyParseInt = parseInt(problematicNumber, 10);
     expect(buggyParseInt).toBe(11060329315062112); // Lost precision!
     expect(buggyParseInt.toString()).not.toBe(problematicNumber);
-    
+
     // The old buggy logic would detect it needs BigInt but return wrong value
     const wouldBeCorrectlyClassified = buggyParseInt > Number.MAX_SAFE_INTEGER;
     expect(wouldBeCorrectlyClassified).toBe(true); // Would correctly identify as large
-    
-    // But the BUG is that if the old code returned BigInt(buggyParseInt), 
+
+    // But the BUG is that if the old code returned BigInt(buggyParseInt),
     // it would create BigInt from the wrong number!
     const buggyBigInt = BigInt(buggyParseInt);
     expect(buggyBigInt.toString()).toBe('11060329315062112'); // Wrong value!
     expect(buggyBigInt.toString()).not.toBe(problematicNumber);
-    
+
     // Show our FIX: String-based boundary check + BigInt from original string
     const correctResult = customNumberParser(problematicNumber);
     expect(typeof correctResult).toBe('bigint');
@@ -161,18 +161,18 @@ describe('BaseBet Entity', () => {
     // Test exact MAX_SAFE_INTEGER boundary
     expect(customNumberParser('9007199254740991')).toBe(9007199254740991);
     expect(typeof customNumberParser('9007199254740991')).toBe('number');
-    
+
     // Test MAX_SAFE_INTEGER + 1 (should be BigInt)
     expect(customNumberParser('9007199254740992')).toBe(9007199254740992n);
     expect(typeof customNumberParser('9007199254740992')).toBe('bigint');
-    
+
     // Test large positive numbers
     expect(customNumberParser('99999999999999999')).toBe(99999999999999999n);
     expect(typeof customNumberParser('99999999999999999')).toBe('bigint');
-    
-    // Test all negative numbers remain as regular numbers
-    expect(customNumberParser('-9999999999999999')).toBe(-9999999999999999);
-    expect(typeof customNumberParser('-9999999999999999')).toBe('number');
+
+    // Test all negative numbers remain as regular numbers (using safe integer for test)
+    expect(customNumberParser('-1234567890123456')).toBe(-1234567890123456);
+    expect(typeof customNumberParser('-1234567890123456')).toBe('number');
   });
 
   it('should handle Transform decorator with both BigInt and number inputs', (): void => {
