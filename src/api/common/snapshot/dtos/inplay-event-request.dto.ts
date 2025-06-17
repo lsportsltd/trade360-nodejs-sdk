@@ -36,9 +36,9 @@ export class GetInPlayEventRequestDto implements BaseEntity {
   @Transform((field) => moment(field.value))
   toDate!: Moment;
 
-  @Expose({ name: 'SportIds' })
+  @Expose({ name: 'Sports' })
   @Type(() => Number)
-  sportIds?: number[];
+  sports?: number[];
 
   @Expose({ name: 'Locations' })
   @Type(() => Number)
