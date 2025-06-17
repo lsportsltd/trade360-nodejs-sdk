@@ -137,3 +137,17 @@ dist
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+
+#Ignore cursor AI rules
+.cursor/rules/lsports/backend/nodejs.mdc
+.cursor/rules/lsports/fundamentals/main.mdc
+.cursor/rules/codacy.mdc
+
+#Extentions
+.codacy/codacy.yaml
+.codacy/cli.sh
+
+# JetBrains IDE project specific config and metadata
+.idea/*
+

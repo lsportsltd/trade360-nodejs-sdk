@@ -1,8 +1,25 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { parse, isInteger } from 'lossless-json';
 
 import { BaseEntity } from '@entities';
 
 import { IHttpService } from '../interfaces';
+
+/**
+ * Custom number parser for lossless-json that converts large integers to BigInt
+ * and other numeric values to regular numbers. Only converts integers that
+ * exceed JavaScript's MAX_SAFE_INTEGER to prevent precision loss.
+ */
+function customNumberParser(value: string): number | bigint {
+  if (isInteger(value)) {
+    const numValue = parseInt(value, 10);
+    // Convert to BigInt only if the number exceeds MAX_SAFE_INTEGER
+    return numValue > Number.MAX_SAFE_INTEGER || numValue < Number.MIN_SAFE_INTEGER
+      ? BigInt(value)
+      : numValue;
+  }
+  return parseFloat(value);
+}
 
 /**
  * Axios service instance for different API endpoints with
@@ -23,6 +40,21 @@ export class AxiosService<TRequest extends BaseEntity> implements IHttpService<T
       return status >= 200 && status < 300; // Resolve only if the status
       // code is above then 200 and less then 300
     },
+    // Override the default JSON parsing to use lossless-json
+    transformResponse: [
+      function (data: string) {
+        if (typeof data === 'string') {
+          try {
+            // Use lossless-json to parse with BigInt support for large integers
+            return parse(data, undefined, customNumberParser);
+          } catch (error) {
+            // If lossless-json fails, return the original data
+            return data;
+          }
+        }
+        return data;
+      },
+    ],
   };
 
   constructor(baseURL: string) {
