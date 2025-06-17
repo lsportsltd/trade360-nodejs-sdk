@@ -138,3 +138,13 @@ dist
 !.vscode/launch.json
 !.vscode/extensions.json
 
+
+#Ignore cursor AI rules
+.cursor/*
+
+#Extentions
+.codacy/*
+
+# JetBrains IDE project specific config and metadata
+.idea/*
+
