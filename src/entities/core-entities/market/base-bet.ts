@@ -6,7 +6,7 @@ import { BetStatus, SettlementType } from '@lsports/enums';
  * Safely transforms a value to BigInt with comprehensive error handling.
  * Handles precision loss prevention for large numbers while gracefully
  * handling invalid inputs without crashing the application.
- * 
+ *
  * @param value - The value to transform (string, number, bigint, null, or undefined)
  * @returns BigInt for valid large integers, undefined for invalid inputs
  */
@@ -24,7 +24,7 @@ export function transformToBigInt(value: unknown): bigint | undefined {
     // Check if string contains only digits (and optional leading minus)
     if (!/^-?\d+$/.test(value.trim())) {
       console.warn(
-        `Invalid ID format received: "${value}". Expected integer, got non-numeric string.`,
+        'Invalid ID format received: "' + value + '". Expected integer, got non-numeric string.',
       );
       return undefined;
     }
@@ -32,7 +32,7 @@ export function transformToBigInt(value: unknown): bigint | undefined {
     try {
       return BigInt(value.trim());
     } catch (error) {
-      console.warn(`Failed to convert ID "${value}" to BigInt:`, error);
+      console.warn('Failed to convert ID "' + value + '" to BigInt:', error);
       return undefined;
     }
   }
@@ -50,7 +50,7 @@ export function transformToBigInt(value: unknown): bigint | undefined {
     try {
       return BigInt(Math.trunc(value));
     } catch (error) {
-      console.warn(`Failed to convert ID ${value} to BigInt:`, error);
+      console.warn('Failed to convert ID ' + value + ' to BigInt:', error);
       return undefined;
     }
   }

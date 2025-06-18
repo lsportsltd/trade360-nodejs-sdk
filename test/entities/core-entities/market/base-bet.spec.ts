@@ -264,22 +264,22 @@ describe('BaseBet Entity', () => {
       
       // Check specific warning messages
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID format received: 123.45')
+        expect.stringContaining('Invalid ID format received: 123.45'),
       );
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID format received: "not-a-number"')
+        expect.stringContaining('Invalid ID format received: "not-a-number"'),
       );
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID format received: NaN')
+        expect.stringContaining('Invalid ID format received: NaN'),
       );
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID format received: Infinity')
+        expect.stringContaining('Invalid ID format received: Infinity'),
       );
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID type received: boolean')
+        expect.stringContaining('Invalid ID type received: boolean'),
       );
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID type received: object')
+        expect.stringContaining('Invalid ID type received: object'),
       );
     } finally {
       consoleWarnSpy.mockRestore();
@@ -310,7 +310,7 @@ describe('BaseBet Entity', () => {
       });
       expect(baseBetFromScientific.id).toBeUndefined();
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID format received: "1e10"')
+        expect.stringContaining('Invalid ID format received: "1e10"'),
       );
     } finally {
       consoleWarnSpy.mockRestore();
