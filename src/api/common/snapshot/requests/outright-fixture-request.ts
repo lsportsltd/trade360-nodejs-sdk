@@ -21,15 +21,15 @@ import { HttpRequestDto } from '@api/common/dtos';
  */
 
 export class GetOutrightFixtureRequest extends HttpRequestDto {
-  @Expose({ name: 'Timestamp' })
+  @Expose()
   @Type(() => Number)
-  public timestamp!: number;
+  public timestamp?: number;
 
-  @Expose({ name: 'FromDate' })
+  @Expose()
   @Type(() => Number)
   public fromDate?: number;
 
-  @Expose({ name: 'ToDate' })
+  @Expose()
   @Type(() => Number)
   public toDate?: number;
 

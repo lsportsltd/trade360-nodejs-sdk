@@ -24,15 +24,15 @@ export class GetOutrightLivescoreRequestDto implements BaseEntity {
 
   @Expose({ name: 'Timestamp' })
   @Type(() => Number)
-  timestamp!: number;
+  timestamp?: number;
 
   @Expose({ name: 'FromDate' })
   @Type(() => Number)
-  fromDate!: number;
+  fromDate?: number;
 
   @Expose({ name: 'ToDate' })
   @Type(() => Number)
-  toDate!: number;
+  toDate?: number;
 
   @Expose({ name: 'Sports' })
   @Type(() => Number)
