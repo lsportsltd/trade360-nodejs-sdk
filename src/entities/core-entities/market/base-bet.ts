@@ -23,16 +23,14 @@ export function transformToBigInt(value: unknown): bigint | undefined {
 
     // Check if string contains only digits (and optional leading minus)
     if (!/^-?\d+$/.test(value.trim())) {
-      console.warn(
-        'Invalid ID format received: "' + value + '". Expected integer, got non-numeric string.',
-      );
+      console.warn('Invalid ID format received. Expected integer, got non-numeric string:', value);
       return undefined;
     }
 
     try {
       return BigInt(value.trim());
     } catch (error) {
-      console.warn('Failed to convert ID "' + value + '" to BigInt:', error);
+      console.warn('Failed to convert ID to BigInt:', value, error);
       return undefined;
     }
   }
@@ -50,7 +48,7 @@ export function transformToBigInt(value: unknown): bigint | undefined {
     try {
       return BigInt(Math.trunc(value));
     } catch (error) {
-      console.warn('Failed to convert ID ' + value + ' to BigInt:', error);
+      console.warn('Failed to convert ID to BigInt:', value, error);
       return undefined;
     }
   }
