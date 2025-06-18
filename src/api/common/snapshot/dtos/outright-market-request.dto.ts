@@ -1,20 +1,19 @@
-import { Expose, Type, Transform } from 'class-transformer';
-import moment, { Moment } from 'moment';
+import { Expose, Type } from 'class-transformer';
 import { BaseEntity } from '@entities';
 /**
  * GetOutrightMarketRequestDto class for sending request
  * to get outright market from the API.
- * @param timestamp The timestamp of the snapshot in UTC
- * @param fromDate The start date for the snapshot in UTC
- * @param toDate The end date for the snapshot in UTC
- * @param sportIds The sport IDs to filter the market
- * @param locationIds The location IDs to filter the market
- * @param tournamentsIds The IDs of the markets
- * @param fixtureIds The fixture IDs to filter the market
- * @param marketIds The IDs of the markets
+ * @param timestamp The Unix timestamp of the snapshot (seconds since epoch)
+ * @param fromDate The Unix timestamp for the start date of the snapshot (seconds since epoch)
+ * @param toDate The Unix timestamp for the end date of the snapshot (seconds since epoch)
+ * @param sports The sport IDs to filter the outright market
+ * @param locations The location IDs to filter the outright market
+ * @param fixtures The fixture IDs to filter the outright market
+ * @param markets The IDs of the markets
+ * @param tournaments The tournament IDs to filter the outright market
  * @returns GetOutrightMarketRequestDto instance that
  * contains the properties for the request to get
- * market from the API.
+ * outright market from the API.
  */
 
 export class GetOutrightMarketRequestDto implements BaseEntity {
@@ -25,16 +24,16 @@ export class GetOutrightMarketRequestDto implements BaseEntity {
   }
 
   @Expose({ name: 'Timestamp' })
-  @Transform((field) => moment(field.value))
-  timestamp!: Moment;
+  @Type(() => Number)
+  timestamp!: number;
 
   @Expose({ name: 'FromDate' })
-  @Transform((field) => moment(field.value))
-  fromDate!: Moment;
+  @Type(() => Number)
+  fromDate!: number;
 
   @Expose({ name: 'ToDate' })
-  @Transform((field) => moment(field.value))
-  toDate!: Moment;
+  @Type(() => Number)
+  toDate!: number;
 
   @Expose({ name: 'Sports' })
   @Type(() => Number)

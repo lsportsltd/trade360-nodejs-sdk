@@ -1,17 +1,16 @@
-import { Expose, Type, Transform } from 'class-transformer';
-import moment, { Moment } from 'moment';
+import { Expose, Type } from 'class-transformer';
 import { BaseEntity } from '@entities';
 /**
  * GetLiveScoreRequestDto class for sending request
  * to get livescore from the API.
- * @param timestamp The timestamp of the snapshot in UTC
- * @param fromDate The start date for the snapshot in UTC
- * @param toDate The end date for the snapshot in UTC
- * @param sportIds The sport IDs to filter the livescore
- * @param locationIds The location IDs to filter the livescore
- * @param leagueIds The league IDs to filter the livescore
- * @param fixtureIds The fixture IDs to filter the livescore
- * @returns GetLiveScoreRequestDto instance that
+ * @param timestamp The Unix timestamp of the snapshot (seconds since epoch)
+ * @param fromDate The Unix timestamp for the start date of the snapshot (seconds since epoch)
+ * @param toDate The Unix timestamp for the end date of the snapshot (seconds since epoch)
+ * @param sports The sport IDs to filter the livescore
+ * @param locations The location IDs to filter the livescore
+ * @param leagues The league IDs to filter the livescore
+ * @param fixtures The fixture IDs to filter the livescore
+ * @returns GetLivescoreRequestDto instance that
  * contains the properties for the request to get
  * livescore from the API.
  */
@@ -23,16 +22,16 @@ export class GetLivescoreRequestDto implements BaseEntity {
   }
 
   @Expose({ name: 'Timestamp' })
-  @Transform((field) => moment(field.value))
-  timestamp!: Moment;
+  @Type(() => Number)
+  timestamp!: number;
 
   @Expose({ name: 'FromDate' })
-  @Transform((field) => moment(field.value))
-  fromDate!: Moment;
+  @Type(() => Number)
+  fromDate!: number;
 
   @Expose({ name: 'ToDate' })
-  @Transform((field) => moment(field.value))
-  toDate!: Moment;
+  @Type(() => Number)
+  toDate!: number;
 
   @Expose({ name: 'Sports' })
   @Type(() => Number)
