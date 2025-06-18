@@ -261,25 +261,26 @@ describe('BaseBet Entity', () => {
 
       // Verify that warnings were logged for problematic cases
       expect(consoleWarnSpy).toHaveBeenCalled();
-      
+
       // Check specific warning messages
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID format received: 123.45'),
+        'Invalid ID format received: 123.45. Expected integer, got decimal number.',
       );
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID format received: "not-a-number"'),
+        'Invalid ID format received. Expected integer, got non-numeric string:',
+        'not-a-number',
       );
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID format received: NaN'),
+        'Invalid ID format received: NaN. Expected integer, got decimal number.',
       );
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID format received: Infinity'),
+        'Invalid ID format received: Infinity. Expected integer, got decimal number.',
       );
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID type received: boolean'),
+        'Invalid ID type received: boolean. Expected string, number, or bigint.',
       );
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID type received: object'),
+        'Invalid ID type received: object. Expected string, number, or bigint.',
       );
     } finally {
       consoleWarnSpy.mockRestore();
@@ -310,7 +311,8 @@ describe('BaseBet Entity', () => {
       });
       expect(baseBetFromScientific.id).toBeUndefined();
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Invalid ID format received: "1e10"'),
+        'Invalid ID format received. Expected integer, got non-numeric string:',
+        '1e10',
       );
     } finally {
       consoleWarnSpy.mockRestore();
