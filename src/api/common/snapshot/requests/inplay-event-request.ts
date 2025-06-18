@@ -4,34 +4,34 @@ import { HttpRequestDto } from '@api/common/dtos';
 
 /**
  * GetInPlayEventRequest class for sending request
- * to get event from the API. It extends the
+ * to get inplay event from the API. It extends the
  * HttpRequestDto class and contains the properties
- * for the request to get event from the API.
- * @param timestamp The timestamp of the snapshot in UTC
- * @param fromDate The start date for the snapshot in UTC
- * @param toDate The end date for the snapshot in UTC
- * @param sportIds The sport IDs to filter the event
- * @param locationIds The location IDs to filter the event
- * @param leagueIds The league IDs to filter the event
- * @param fixtureIds The fixture IDs to filter the event
- * @param marketIds The IDs of the markets
+ * for the request to get inplay event from the API.
+ * @param timestamp The Unix timestamp of the snapshot (seconds since epoch)
+ * @param fromDate The Unix timestamp for the start date of the snapshot (seconds since epoch)
+ * @param toDate The Unix timestamp for the end date of the snapshot (seconds since epoch)
+ * @param sports The sport IDs to filter the inplay event
+ * @param locations The location IDs to filter the inplay event
+ * @param leagues The league IDs to filter the inplay event
+ * @param fixtures The fixture IDs to filter the inplay event
+ * @param markets The IDs of the markets
  * @returns GetInPlayEventRequest instance that
  * contains the properties for the request to get
- * event from the API.
+ * inplay event from the API.
  */
 
 export class GetInPlayEventRequest extends HttpRequestDto {
-  @Expose({ name: 'Timestamp' })
-  @Type(() => Date)
-  public timestamp!: Date;
+  @Expose()
+  @Type(() => Number)
+  public timestamp?: number;
 
-  @Expose({ name: 'FromDate' })
-  @Type(() => Date)
-  public fromDate?: Date;
+  @Expose()
+  @Type(() => Number)
+  public fromDate?: number;
 
-  @Expose({ name: 'ToDate' })
-  @Type(() => Date)
-  public toDate?: Date;
+  @Expose()
+  @Type(() => Number)
+  public toDate?: number;
 
   @Expose()
   @Type(() => Number)
