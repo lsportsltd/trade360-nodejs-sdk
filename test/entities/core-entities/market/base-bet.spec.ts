@@ -3,6 +3,7 @@ import { parse, isInteger } from 'lossless-json';
 import { BaseBet } from '../../../../src/entities/core-entities/market/base-bet';
 import { BetStatus } from '../../../../src/entities/core-entities/enums/bet-status';
 import { SettlementType } from '../../../../src/entities/core-entities/enums/settlement-type';
+import { IdTransformationError } from '../../../../src/entities/errors/id-transformation.error';
 
 /**
  * Custom number parser for lossless-json (same logic as in AxiosService)
@@ -61,10 +62,17 @@ describe('BaseBet Entity', () => {
 
   it('should handle missing properties', (): void => {
     const plain = {};
-    // Since ID is now mandatory, creating a BaseBet without an ID should throw an error
     expect(() => {
       plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
-    }).toThrow('ID is required but received null or undefined');
+    }).toThrow(IdTransformationError);
+
+    try {
+      plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    } catch (error) {
+      expect((error as IdTransformationError).message).toContain(
+        'Field is required but received null or undefined',
+      );
+    }
   });
 
   it('should handle missing properties with valid ID', (): void => {
@@ -206,58 +214,6 @@ describe('BaseBet Entity', () => {
     expect(baseBetFromNumber.id).toBe(123n);
   });
 
-  it('should throw errors for invalid ID values since ID is mandatory', (): void => {
-    // Test decimal number (should throw error)
-    expect(() => {
-      const plainWithDecimal = { Id: 123.45 };
-      plainToInstance(BaseBet, plainWithDecimal, { excludeExtraneousValues: true });
-    }).toThrow('Invalid ID format received: 123.45. Expected integer, got decimal number.');
-
-    // Test non-numeric string (should throw error)
-    expect(() => {
-      const plainWithInvalidString = { Id: 'not-a-number' };
-      plainToInstance(BaseBet, plainWithInvalidString, { excludeExtraneousValues: true });
-    }).toThrow(
-      'Invalid ID format received. Expected integer, got non-numeric string: not-a-number',
-    );
-
-    // Test empty string (should throw error)
-    expect(() => {
-      const plainWithEmptyString = { Id: '' };
-      plainToInstance(BaseBet, plainWithEmptyString, { excludeExtraneousValues: true });
-    }).toThrow('ID is required but received empty string');
-
-    // Test whitespace string (should throw error)
-    expect(() => {
-      const plainWithWhitespace = { Id: '   ' };
-      plainToInstance(BaseBet, plainWithWhitespace, { excludeExtraneousValues: true });
-    }).toThrow('ID is required but received empty string');
-
-    // Test NaN (should throw error)
-    expect(() => {
-      const plainWithNaN = { Id: NaN };
-      plainToInstance(BaseBet, plainWithNaN, { excludeExtraneousValues: true });
-    }).toThrow('Invalid ID format received: NaN. Expected integer, got non-finite number.');
-
-    // Test Infinity (should throw error)
-    expect(() => {
-      const plainWithInfinity = { Id: Infinity };
-      plainToInstance(BaseBet, plainWithInfinity, { excludeExtraneousValues: true });
-    }).toThrow('Invalid ID format received: Infinity. Expected integer, got non-finite number.');
-
-    // Test boolean (should throw error)
-    expect(() => {
-      const plainWithBoolean = { Id: true };
-      plainToInstance(BaseBet, plainWithBoolean, { excludeExtraneousValues: true });
-    }).toThrow('Invalid ID type received: boolean. Expected string, number, or bigint.');
-
-    // Test object (should throw error)
-    expect(() => {
-      const plainWithObject = { Id: {} };
-      plainToInstance(BaseBet, plainWithObject, { excludeExtraneousValues: true });
-    }).toThrow('Invalid ID type received: object. Expected string, number, or bigint.');
-  });
-
   it('should handle edge cases in string ID conversion', (): void => {
     // Test string with leading/trailing whitespace
     const plainWithWhitespaceString = { Id: '  123456  ' };
@@ -273,10 +229,180 @@ describe('BaseBet Entity', () => {
     });
     expect(baseBetFromNegativeString.id).toBe(-123456n);
 
-    // Test string with scientific notation (should throw error since ID is mandatory)
+    // Test string with scientific notation (should fail validation)
     expect(() => {
       const plainWithScientific = { Id: '1e10' };
       plainToInstance(BaseBet, plainWithScientific, { excludeExtraneousValues: true });
-    }).toThrow('Invalid ID format received. Expected integer, got non-numeric string: 1e10');
+    }).toThrow(IdTransformationError);
+
+    try {
+      const plainWithScientific = { Id: '1e10' };
+      plainToInstance(BaseBet, plainWithScientific, { excludeExtraneousValues: true });
+    } catch (error) {
+      expect((error as IdTransformationError).message).toContain(
+        "Expected integer, got non-numeric string: '1e10'",
+      );
+    }
+  });
+
+  describe('Error Handling for Required ID Field', () => {
+    it('should throw IdTransformationError for null ID', (): void => {
+      const plainWithNullId = { Id: null };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithNullId, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+
+    it('should throw IdTransformationError for undefined ID', (): void => {
+      const plainWithUndefinedId = { Id: undefined };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithUndefinedId, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+
+    it('should throw IdTransformationError for empty string ID', (): void => {
+      const plainWithEmptyId = { Id: '' };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithEmptyId, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+
+    it('should throw IdTransformationError for whitespace-only string ID', (): void => {
+      const plainWithWhitespaceId = { Id: '   ' };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithWhitespaceId, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+
+    it('should throw IdTransformationError for non-numeric string ID', (): void => {
+      const plainWithInvalidId = { Id: 'not-a-number' };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithInvalidId, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+
+    it('should throw IdTransformationError for decimal number ID', (): void => {
+      const plainWithDecimalId = { Id: 123.45 };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithDecimalId, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+
+    it('should throw IdTransformationError for NaN ID', (): void => {
+      const plainWithNaNId = { Id: NaN };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithNaNId, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+
+    it('should throw IdTransformationError for Infinity ID', (): void => {
+      const plainWithInfinityId = { Id: Infinity };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithInfinityId, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+
+    it('should throw IdTransformationError for boolean ID', (): void => {
+      const plainWithBooleanId = { Id: true };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithBooleanId, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+
+    it('should throw IdTransformationError for object ID', (): void => {
+      const plainWithObjectId = { Id: {} };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithObjectId, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+
+    it('should provide detailed error information in IdTransformationError', (): void => {
+      const plainWithInvalidId = { Id: 123.45 };
+
+      try {
+        plainToInstance(BaseBet, plainWithInvalidId, { excludeExtraneousValues: true });
+        fail('Expected IdTransformationError to be thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(IdTransformationError);
+        expect((error as IdTransformationError).fieldName).toBe('Id');
+        expect((error as IdTransformationError).originalValue).toBe(123.45);
+        expect((error as IdTransformationError).message).toContain(
+          "Invalid ID transformation for field 'Id'",
+        );
+        expect((error as IdTransformationError).message).toContain('decimal number');
+      }
+    });
+
+    it('should provide appropriate error message for different invalid types', (): void => {
+      const testCases = [
+        { value: 'abc', expectedMessage: 'non-numeric string' },
+        { value: NaN, expectedMessage: 'decimal number' },
+        { value: Infinity, expectedMessage: 'decimal number' },
+        { value: 123.45, expectedMessage: 'decimal number' },
+        { value: true, expectedMessage: 'Invalid ID type' },
+        { value: {}, expectedMessage: 'Invalid ID type' },
+      ];
+
+      testCases.forEach(({ value, expectedMessage }) => {
+        try {
+          plainToInstance(BaseBet, { Id: value }, { excludeExtraneousValues: true });
+          fail(`Expected IdTransformationError to be thrown for value: ${value}`);
+        } catch (error) {
+          expect(error).toBeInstanceOf(IdTransformationError);
+          expect((error as IdTransformationError).message).toContain(expectedMessage);
+        }
+      });
+    });
+
+    it('should handle string with scientific notation as invalid', (): void => {
+      const plainWithScientific = { Id: '1e10' };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithScientific, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+
+      try {
+        plainToInstance(BaseBet, plainWithScientific, { excludeExtraneousValues: true });
+      } catch (error) {
+        expect((error as IdTransformationError).message).toContain('non-numeric string');
+      }
+    });
+  });
+
+  describe('Backward Compatibility', () => {
+    it('should maintain backward compatibility for valid inputs', (): void => {
+      const validInputs = [
+        { Id: 1 },
+        { Id: '123' },
+        { Id: 9007199254740991 }, // MAX_SAFE_INTEGER
+        { Id: '9007199254740992' }, // MAX_SAFE_INTEGER + 1 as string
+        { Id: 123n }, // BigInt input
+      ];
+
+      validInputs.forEach((input) => {
+        expect(() => {
+          const result = plainToInstance(BaseBet, input, { excludeExtraneousValues: true });
+          expect(typeof result.id).toBe('bigint');
+        }).not.toThrow();
+      });
+    });
+
+    it('should handle missing Id property by throwing error', (): void => {
+      const plainWithoutId = { Name: 'Test Bet' };
+
+      expect(() => {
+        plainToInstance(BaseBet, plainWithoutId, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
   });
 });
