@@ -245,6 +245,235 @@ describe('BaseBet Entity', () => {
     }
   });
 
+  describe('Additional Edge Cases for ID Transformation', () => {
+    it('should handle zero values correctly', (): void => {
+      // Test zero as number
+      const plainWithZeroNumber = { Id: 0 };
+      const baseBetFromZeroNumber = plainToInstance(BaseBet, plainWithZeroNumber, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromZeroNumber.id).toBe(0n);
+
+      // Test zero as string
+      const plainWithZeroString = { Id: '0' };
+      const baseBetFromZeroString = plainToInstance(BaseBet, plainWithZeroString, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromZeroString.id).toBe(0n);
+    });
+
+    it('should handle string numbers with leading zeros', (): void => {
+      const plainWithLeadingZeros = { Id: '000123' };
+      const baseBet = plainToInstance(BaseBet, plainWithLeadingZeros, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBet.id).toBe(123n);
+    });
+
+    it('should reject hexadecimal and octal string formats', (): void => {
+      const testCases = ['0x123', '0X123', '0o123', '0O123', '0b101', '0B101'];
+
+      testCases.forEach((hexValue) => {
+        expect(() => {
+          plainToInstance(BaseBet, { Id: hexValue }, { excludeExtraneousValues: true });
+        }).toThrow(IdTransformationError);
+      });
+    });
+
+    it('should reject float strings', (): void => {
+      const testCases = ['123.0', '123.45', '-456.78', '0.0'];
+
+      testCases.forEach((floatString) => {
+        expect(() => {
+          plainToInstance(BaseBet, { Id: floatString }, { excludeExtraneousValues: true });
+        }).toThrow(IdTransformationError);
+      });
+    });
+
+    it('should handle very large negative numbers', (): void => {
+      const veryLargeNegative = '-99999999999999999';
+      const baseBet = plainToInstance(
+        BaseBet,
+        { Id: veryLargeNegative },
+        {
+          excludeExtraneousValues: true,
+        },
+      );
+      expect(baseBet.id).toBe(-99999999999999999n);
+    });
+
+    it('should reject strings with unicode characters', (): void => {
+      const testCases = ['123α', '１２３', '123\u0000'];
+
+      testCases.forEach((unicodeString) => {
+        expect(() => {
+          plainToInstance(BaseBet, { Id: unicodeString }, { excludeExtraneousValues: true });
+        }).toThrow(IdTransformationError);
+      });
+    });
+
+    it('should reject array inputs', (): void => {
+      const testCases = [[], [123], ['123'], [1, 2, 3]];
+
+      testCases.forEach((arrayValue) => {
+        expect(() => {
+          plainToInstance(BaseBet, { Id: arrayValue }, { excludeExtraneousValues: true });
+        }).toThrow(IdTransformationError);
+      });
+    });
+
+    it('should handle mixed whitespace in strings', (): void => {
+      // Valid cases - should trim and work
+      const validCases = ['\t123\t', '\n456\n', '\r789\r', '  \t  123  \t  '];
+
+      validCases.forEach((whitespaceString) => {
+        const baseBet = plainToInstance(
+          BaseBet,
+          { Id: whitespaceString },
+          {
+            excludeExtraneousValues: true,
+          },
+        );
+        expect(typeof baseBet.id).toBe('bigint');
+      });
+
+      // Invalid cases - internal whitespace should fail
+      const invalidCases = ['1 23', '1\t23', '1\n23', '12 3'];
+
+      invalidCases.forEach((invalidString) => {
+        expect(() => {
+          plainToInstance(BaseBet, { Id: invalidString }, { excludeExtraneousValues: true });
+        }).toThrow(IdTransformationError);
+      });
+    });
+
+    it('should handle function inputs', (): void => {
+      const functionValue = (): number => 123;
+
+      expect(() => {
+        plainToInstance(BaseBet, { Id: functionValue }, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+
+    it('should handle symbol inputs', (): void => {
+      const symbolValue = Symbol('123');
+
+      expect(() => {
+        plainToInstance(BaseBet, { Id: symbolValue }, { excludeExtraneousValues: true });
+      }).toThrow(IdTransformationError);
+    });
+  });
+
+  describe('Date Field Transformation', () => {
+    it('should transform valid date strings to Date objects', (): void => {
+      const plain = {
+        Id: 123,
+        LastUpdate: '2024-06-01T12:00:00Z',
+      };
+      const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+      expect(baseBet.lastUpdate).toBeInstanceOf(Date);
+      expect(baseBet.lastUpdate?.toISOString()).toBe('2024-06-01T12:00:00.000Z');
+    });
+
+    it('should handle Date objects as input', (): void => {
+      const testDate = new Date('2024-06-01T12:00:00Z');
+      const plain = {
+        Id: 123,
+        LastUpdate: testDate,
+      };
+      const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+      expect(baseBet.lastUpdate).toBeInstanceOf(Date);
+      expect(baseBet.lastUpdate?.getTime()).toBe(testDate.getTime());
+    });
+
+    it('should handle invalid date strings gracefully', (): void => {
+      const plain = {
+        Id: 123,
+        LastUpdate: 'invalid-date',
+      };
+      const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+      expect(baseBet.lastUpdate).toBeInstanceOf(Date);
+      expect(baseBet.lastUpdate?.toString()).toBe('Invalid Date');
+    });
+
+    it('should handle null/undefined for optional date field', (): void => {
+      const plainWithNull = { Id: 123, LastUpdate: null };
+      const baseBetFromNull = plainToInstance(BaseBet, plainWithNull, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromNull.lastUpdate).toBeNull();
+
+      const plainWithUndefined = { Id: 123, LastUpdate: undefined };
+      const baseBetFromUndefined = plainToInstance(BaseBet, plainWithUndefined, {
+        excludeExtraneousValues: true,
+      });
+      expect(baseBetFromUndefined.lastUpdate).toBeUndefined();
+    });
+  });
+
+  describe('Enum Field Validation', () => {
+    it('should handle valid enum values for Status', (): void => {
+      const validStatuses = [
+        BetStatus.NotSet,
+        BetStatus.Open,
+        BetStatus.Suspended,
+        BetStatus.Settled,
+      ];
+
+      validStatuses.forEach((status) => {
+        const plain = { Id: 123, Status: status };
+        const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+        expect(baseBet.status).toBe(status);
+      });
+    });
+
+    it('should handle valid enum values for Settlement', (): void => {
+      const validSettlements = [
+        SettlementType.Cancelled,
+        SettlementType.NotSettled,
+        SettlementType.Loser,
+        SettlementType.Winner,
+        SettlementType.Refund,
+        SettlementType.HalfLost,
+        SettlementType.HalfWon,
+      ];
+
+      validSettlements.forEach((settlement) => {
+        const plain = { Id: 123, Settlement: settlement };
+        const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+        expect(baseBet.settlement).toBe(settlement);
+      });
+    });
+
+    it('should handle invalid enum values by preserving them', (): void => {
+      // class-transformer doesn't validate enum values by default
+      const plain = { Id: 123, Status: 999, Settlement: -1 };
+      const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+      expect(baseBet.status).toBe(999);
+      expect(baseBet.settlement).toBe(-1);
+    });
+  });
+
+  describe('Default Value Behavior', () => {
+    it('should handle IsChanged field when not provided', (): void => {
+      const plain = { Id: 123 };
+      const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+      expect(baseBet.isChanged).toBeUndefined();
+    });
+
+    it('should handle explicit IsChanged value', (): void => {
+      const plain = { Id: 123, IsChanged: 5 };
+      const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+      expect(baseBet.isChanged).toBe(5);
+    });
+
+    it('should handle IsChanged with default constructor behavior', (): void => {
+      // When creating new instance directly, default value applies
+      const baseBet = new BaseBet();
+      expect(baseBet.isChanged).toBe(-1);
+    });
+  });
+
   describe('Error Handling for Required ID Field', () => {
     it('should throw IdTransformationError for null ID', (): void => {
       const plainWithNullId = { Id: null };
@@ -331,7 +560,7 @@ describe('BaseBet Entity', () => {
 
       try {
         plainToInstance(BaseBet, plainWithInvalidId, { excludeExtraneousValues: true });
-        fail('Expected IdTransformationError to be thrown');
+        throw new Error('Expected IdTransformationError to be thrown');
       } catch (error) {
         expect(error).toBeInstanceOf(IdTransformationError);
         expect((error as IdTransformationError).fieldName).toBe('Id');
@@ -356,7 +585,7 @@ describe('BaseBet Entity', () => {
       testCases.forEach(({ value, expectedMessage }) => {
         try {
           plainToInstance(BaseBet, { Id: value }, { excludeExtraneousValues: true });
-          fail(`Expected IdTransformationError to be thrown for value: ${value}`);
+          throw new Error(`Expected IdTransformationError to be thrown for value: ${value}`);
         } catch (error) {
           expect(error).toBeInstanceOf(IdTransformationError);
           expect((error as IdTransformationError).message).toContain(expectedMessage);
@@ -403,6 +632,75 @@ describe('BaseBet Entity', () => {
       expect(() => {
         plainToInstance(BaseBet, plainWithoutId, { excludeExtraneousValues: true });
       }).toThrow(IdTransformationError);
+    });
+  });
+
+  describe('Complex Scenarios', () => {
+    it('should handle complete bet data with all fields', (): void => {
+      const completeData = {
+        Id: '999999999999999999',
+        Name: 'Complete Bet',
+        Line: '1.5',
+        BaseLine: '1.0',
+        Status: BetStatus.Open,
+        StartPrice: '2.50',
+        Price: '2.75',
+        PriceVolume: '1000.00',
+        Settlement: SettlementType.Winner,
+        SuspensionReason: 5,
+        LastUpdate: '2024-06-01T12:00:00Z',
+        PriceIN: '2.75',
+        PriceUS: '+175',
+        PriceUK: '7/4',
+        PriceMA: '1.75',
+        PriceHK: '1.75',
+        IsChanged: 1,
+        Probability: 0.36,
+        ParticipantId: 789,
+        PlayerName: 'Test Player',
+      };
+
+      const baseBet = plainToInstance(BaseBet, completeData, { excludeExtraneousValues: true });
+
+      expect(baseBet.id).toBe(999999999999999999n);
+      expect(baseBet.name).toBe('Complete Bet');
+      expect(baseBet.line).toBe('1.5');
+      expect(baseBet.baseLine).toBe('1.0');
+      expect(baseBet.status).toBe(BetStatus.Open);
+      expect(baseBet.startPrice).toBe('2.50');
+      expect(baseBet.price).toBe('2.75');
+      expect(baseBet.priceVolume).toBe('1000.00');
+      expect(baseBet.settlement).toBe(SettlementType.Winner);
+      expect(baseBet.suspensionReason).toBe(5);
+      expect(baseBet.lastUpdate).toBeInstanceOf(Date);
+      expect(baseBet.priceIN).toBe('2.75');
+      expect(baseBet.priceUS).toBe('+175');
+      expect(baseBet.priceUK).toBe('7/4');
+      expect(baseBet.priceMA).toBe('1.75');
+      expect(baseBet.priceHK).toBe('1.75');
+      expect(baseBet.isChanged).toBe(1);
+      expect(baseBet.probability).toBe(0.36);
+      expect(baseBet.participantId).toBe(789);
+      expect(baseBet.playerName).toBe('Test Player');
+    });
+
+    it('should handle partial data gracefully', (): void => {
+      const partialData = {
+        Id: 12345,
+        Name: 'Partial Bet',
+        Status: BetStatus.Suspended,
+      };
+
+      const baseBet = plainToInstance(BaseBet, partialData, { excludeExtraneousValues: true });
+
+      expect(baseBet.id).toBe(12345n);
+      expect(baseBet.name).toBe('Partial Bet');
+      expect(baseBet.status).toBe(BetStatus.Suspended);
+      expect(baseBet.isChanged).toBeUndefined(); // Not provided in partial data
+      // All other fields should be undefined
+      expect(baseBet.line).toBeUndefined();
+      expect(baseBet.price).toBeUndefined();
+      expect(baseBet.lastUpdate).toBeUndefined();
     });
   });
 });
