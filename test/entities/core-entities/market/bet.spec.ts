@@ -70,7 +70,7 @@ describe('Bet Entity', () => {
     expect(bet.line).toBe('2.5');
     expect(bet.status).toBe(1);
     expect(bet.price).toBe('1.95');
-    
+
     // Test Bet-specific property
     expect(bet.providerBetId).toBe('PB_LARGE');
   });

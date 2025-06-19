@@ -180,4 +180,4 @@ export function transformToBigInt(
 
   logger?.warn('ID transformation failed for optional field', logData);
   return undefined;
-} 
+}
