@@ -1,28 +1,16 @@
-import { Expose, Transform, Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import { BetStatus, SettlementType } from '@lsports/enums';
-import { transformToBigInt } from '../utilities/id-transformation';
 
 /**
- * Base betting entity with precision-safe ID handling.
- *
- * **Data Integrity Note**: The `id` field uses strict validation that throws
- * IdTransformationError for invalid data. This prevents creation of entities
- * with corrupted IDs but requires error handling in consuming applications.
- *
- * @see {@link IdTransformationError} for error handling details
- * @see {@link transformToBigInt} for transformation logic
+ * Base betting entity with simplified ID handling.
  */
 export class BaseBet {
   /**
    * Unique identifier for the bet.
-   * Uses BigInt to prevent JavaScript precision loss for large numbers.
-   *
-   * @throws {IdTransformationError} During deserialization if ID is invalid
    */
   @Expose({ name: 'Id' })
-  @Transform(({ value }) => transformToBigInt(value, true, 'Id'))
-  id!: bigint;
+  id?: number;
 
   @Expose({ name: 'Name' })
   name?: string;

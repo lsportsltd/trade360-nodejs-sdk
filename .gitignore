@@ -148,3 +148,7 @@ dist
 # JetBrains IDE project specific config and metadata
 .idea/*
 
+
+
+#Ignore cursor AI rules
+.cursor/rules/codacy.mdc
