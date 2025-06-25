@@ -81,6 +81,12 @@ export class MessageConsumer {
 
       const { header, body } = ConvertJsonToMessage(rawMessage);
 
+      if (isNil(messageMqTimestamp)) {
+        this.logger?.warn('message property timestamp_in_ms was not provided by message broker');
+      } else {
+        header.messageBrokerTimestamp = messageMqTimestamp;
+      }
+
       if (isNil(header)) {
         this.logger?.warn('invalid message format');
         return;

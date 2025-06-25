@@ -209,9 +209,11 @@ export abstract class BaseHttpClient {
       );
     }
 
-    const {
-      header: { httpStatusCode, errors },
-    } = TransformerUtil.transform(data, responsePayloadDto);
+    const transformed = TransformerUtil.transform(data, responsePayloadDto);
+    if (!transformed.header) {
+      throw new HttpResponseError("Missing 'header' in error response", { context: data });
+    }
+    const { httpStatusCode, errors } = transformed.header;
 
     if (!isNil(errors)) {
       const errorsArray = map(errors, (error) => error.message);
