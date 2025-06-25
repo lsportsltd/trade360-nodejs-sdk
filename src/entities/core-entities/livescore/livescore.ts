@@ -7,6 +7,7 @@ import { Scoreboard } from './scoreboard';
 import { Statistic } from './statistic';
 import { CurrentIncident } from './current-incident';
 import { DangerIndicator } from './danger-indicator';
+import { PlayerStatistic } from './player-statistic';
 
 export class Livescore {
   @Expose({ name: 'Scoreboard' })
@@ -20,6 +21,10 @@ export class Livescore {
   @Expose({ name: 'Statistics' })
   @Type(() => Statistic)
   statistics?: Statistic[];
+
+  @Expose({ name: 'PlayerStatistics' })
+  @Type(() => PlayerStatistic)
+  playerStatistics?: PlayerStatistic[];
 
   @Expose({ name: 'LivescoreExtraData' })
   @Type(() => NameValueRecord)
