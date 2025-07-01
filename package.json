@@ -12,7 +12,8 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "prepublishOnly": "npm run build",
     "test": "jest",
-    "test:cov": "jest --coverage"
+    "test:cov": "jest --coverage",
+    "docs": "typedoc --out docs/typedoc src"
   },
   "publishConfig": {
     "access": "public",
@@ -67,7 +68,8 @@
     "prettier": "^3.3.3",
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
-    "tsc-alias": "^1.8.8"
+    "tsc-alias": "^1.8.8",
+    "typedoc": "^0.25.2"
   },
   "_moduleAliases": {
     "@feed": "dist/src/feed",

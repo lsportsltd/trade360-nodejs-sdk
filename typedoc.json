@@ -1,0 +1,9 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs/typedoc",
+  "exclude": ["**/dist/**", "**/test/**", "**/sample/**"],
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "excludeProtected": true,
+  "name": "Trade360 Node.js SDK"
+}
