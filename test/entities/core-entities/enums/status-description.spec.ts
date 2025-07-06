@@ -14,6 +14,40 @@ describe('StatusDescription Enum', () => {
     expect(StatusDescription.Timeout).toBe(9);
     expect(StatusDescription.HomeWalkover).toBe(10);
     expect(StatusDescription.AwayWalkover).toBe(11);
+    expect(StatusDescription.MatchDrawn).toBe(12);
+    expect(StatusDescription.BallMarkInspection).toBe(13);
+    expect(StatusDescription.BallMarkInspectionCompleted).toBe(14);
+    expect(StatusDescription.CorrectionMode).toBe(15);
+    expect(StatusDescription.MedicalTreatment).toBe(16);
+    expect(StatusDescription.TreatmentCompleted).toBe(17);
+    expect(StatusDescription.PlayersOnCourt).toBe(18);
+    expect(StatusDescription.TossStarted).toBe(19);
+    expect(StatusDescription.TossSaved).toBe(20);
+    expect(StatusDescription.UmpireOnCourt).toBe(21);
+    expect(StatusDescription.UmpiringCancelled).toBe(22);
+    expect(StatusDescription.WarmUpStarted).toBe(23);
+    expect(StatusDescription.WarmUpCompleted).toBe(24);
+    expect(StatusDescription.MedicalTimeoutCancelled).toBe(25);
+    expect(StatusDescription.MedicalTimeoutCompleted).toBe(26);
+    expect(StatusDescription.SwapServer).toBe(27);
+    expect(StatusDescription.SwapReceiver).toBe(28);
+    expect(StatusDescription.ChallengeStarted).toBe(29);
+    expect(StatusDescription.ChallengeCompleted).toBe(30);
+    expect(StatusDescription.ChallengeCancelled).toBe(31);
+    expect(StatusDescription.ToiletBreakStarted).toBe(32);
+    expect(StatusDescription.ToiletBreakCompleted).toBe(33);
+    expect(StatusDescription.ToiletBreakCancelled).toBe(34);
+    expect(StatusDescription.EvaluationStarted).toBe(35);
+    expect(StatusDescription.TimePenalty).toBe(36);
+    expect(StatusDescription.GamePenalty).toBe(37);
+    expect(StatusDescription.CoachingStarted).toBe(38);
+    expect(StatusDescription.CoachingCancelled).toBe(39);
+    expect(StatusDescription.CoachingCompleted).toBe(40);
+    expect(StatusDescription.Breaktime).toBe(41);
+    expect(StatusDescription.PointStarted).toBe(42);
+    expect(StatusDescription.PointScored).toBe(43);
+    expect(StatusDescription.PointFault).toBe(44);
+    expect(StatusDescription.PointReplayed).toBe(45);
   });
 
   it('should map values to names correctly (reverse mapping)', () => {
@@ -29,6 +63,40 @@ describe('StatusDescription Enum', () => {
     expect(StatusDescription[9]).toBe('Timeout');
     expect(StatusDescription[10]).toBe('HomeWalkover');
     expect(StatusDescription[11]).toBe('AwayWalkover');
+    expect(StatusDescription[12]).toBe('MatchDrawn');
+    expect(StatusDescription[13]).toBe('BallMarkInspection');
+    expect(StatusDescription[14]).toBe('BallMarkInspectionCompleted');
+    expect(StatusDescription[15]).toBe('CorrectionMode');
+    expect(StatusDescription[16]).toBe('MedicalTreatment');
+    expect(StatusDescription[17]).toBe('TreatmentCompleted');
+    expect(StatusDescription[18]).toBe('PlayersOnCourt');
+    expect(StatusDescription[19]).toBe('TossStarted');
+    expect(StatusDescription[20]).toBe('TossSaved');
+    expect(StatusDescription[21]).toBe('UmpireOnCourt');
+    expect(StatusDescription[22]).toBe('UmpiringCancelled');
+    expect(StatusDescription[23]).toBe('WarmUpStarted');
+    expect(StatusDescription[24]).toBe('WarmUpCompleted');
+    expect(StatusDescription[25]).toBe('MedicalTimeoutCancelled');
+    expect(StatusDescription[26]).toBe('MedicalTimeoutCompleted');
+    expect(StatusDescription[27]).toBe('SwapServer');
+    expect(StatusDescription[28]).toBe('SwapReceiver');
+    expect(StatusDescription[29]).toBe('ChallengeStarted');
+    expect(StatusDescription[30]).toBe('ChallengeCompleted');
+    expect(StatusDescription[31]).toBe('ChallengeCancelled');
+    expect(StatusDescription[32]).toBe('ToiletBreakStarted');
+    expect(StatusDescription[33]).toBe('ToiletBreakCompleted');
+    expect(StatusDescription[34]).toBe('ToiletBreakCancelled');
+    expect(StatusDescription[35]).toBe('EvaluationStarted');
+    expect(StatusDescription[36]).toBe('TimePenalty');
+    expect(StatusDescription[37]).toBe('GamePenalty');
+    expect(StatusDescription[38]).toBe('CoachingStarted');
+    expect(StatusDescription[39]).toBe('CoachingCancelled');
+    expect(StatusDescription[40]).toBe('CoachingCompleted');
+    expect(StatusDescription[41]).toBe('Breaktime');
+    expect(StatusDescription[42]).toBe('PointStarted');
+    expect(StatusDescription[43]).toBe('PointScored');
+    expect(StatusDescription[44]).toBe('PointFault');
+    expect(StatusDescription[45]).toBe('PointReplayed');
   });
 
   it('should contain all expected enum keys', () => {
@@ -46,6 +114,40 @@ describe('StatusDescription Enum', () => {
       'Timeout',
       'HomeWalkover',
       'AwayWalkover',
+      'MatchDrawn',
+      'BallMarkInspection',
+      'BallMarkInspectionCompleted',
+      'CorrectionMode',
+      'MedicalTreatment',
+      'TreatmentCompleted',
+      'PlayersOnCourt',
+      'TossStarted',
+      'TossSaved',
+      'UmpireOnCourt',
+      'UmpiringCancelled',
+      'WarmUpStarted',
+      'WarmUpCompleted',
+      'MedicalTimeoutCancelled',
+      'MedicalTimeoutCompleted',
+      'SwapServer',
+      'SwapReceiver',
+      'ChallengeStarted',
+      'ChallengeCompleted',
+      'ChallengeCancelled',
+      'ToiletBreakStarted',
+      'ToiletBreakCompleted',
+      'ToiletBreakCancelled',
+      'EvaluationStarted',
+      'TimePenalty',
+      'GamePenalty',
+      'CoachingStarted',
+      'CoachingCancelled',
+      'CoachingCompleted',
+      'Breaktime',
+      'PointStarted',
+      'PointScored',
+      'PointFault',
+      'PointReplayed',
     ]);
   });
 });
