@@ -18,4 +18,6 @@ export class MessageHeader {
   @Expose({ name: 'ServerTimestamp' })
   @Type(() => Date)
   public serverTimestamp!: number;
+
+  public messageBrokerTimestamp!: number;
 }
