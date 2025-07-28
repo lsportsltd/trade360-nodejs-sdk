@@ -1,3 +1,4 @@
+import { ActiveParticipant } from '@lsports/enums';
 import { Expose } from 'class-transformer';
 
 export class Participant {
@@ -9,4 +10,11 @@ export class Participant {
 
   @Expose({ name: 'Position' })
   public position?: string;
+
+  @Expose({ name: 'RotationId' })
+  public rotationId?: number;
+
+  @Expose({ name: 'IsActive' })
+  isActive?: ActiveParticipant;
+
 }

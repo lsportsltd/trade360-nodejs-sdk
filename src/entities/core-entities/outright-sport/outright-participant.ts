@@ -13,6 +13,9 @@ export class OutrightParticipant {
   @Expose({ name: 'Position' })
   position?: string;
 
+  @Expose({ name: 'RotationId' })
+  public rotationId?: number;
+
   @Expose({ name: 'IsActive' })
   isActive?: ActiveParticipant;
 
