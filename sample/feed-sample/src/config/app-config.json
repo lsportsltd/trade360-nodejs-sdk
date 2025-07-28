@@ -21,7 +21,8 @@
     "preMatchMQSettings": {
       "hostname": "stm-prematch.lsports.eu",
       "port": 5672,
-      "username": "LSPORTS_USERNAME",
+      "vhost": "StmPreMatch",	
+      "username": "LSPORTS_USERNAME",      
       "password": "LSPORTS_PASSWORD",
       "packageId": 431,
       "prefetchCount": 100,
