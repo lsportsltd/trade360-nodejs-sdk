@@ -1,8 +1,9 @@
 import { isNil } from 'lodash';
+import { parse } from 'lossless-json';
 
 import { IEntityHandler } from '@feed';
 import { BaseEntity } from '@entities';
-import { TransformerUtil } from '@utilities';
+import { TransformerUtil, BigIntSerializationUtil } from '@utilities';
 import { ILogger } from '@logger';
 
 import { IBodyHandler, IMessageStructure } from '../interfaces';
@@ -58,14 +59,18 @@ export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
   async processAsync({ header, body }: IMessageStructure<BaseEntity>): Promise<void> {
     try {
       const entity = !isNil(body)
-        ? TransformerUtil.transform(JSON.parse(body), this.entityConstructor)
+        ? TransformerUtil.transform(
+            parse(body, undefined, BigIntSerializationUtil.customNumberParser) as BaseEntity,
+            this.entityConstructor,
+          )
         : undefined;
 
       return await this.entityHandler.processAsync({ header, entity });
     } catch (err) {
-      this.logger?.warn(
-        `Failed to deserialize ${typeof this.entityConstructor} entity, Due to: ${err}`,
-      );
+      const errorInfo = BigIntSerializationUtil.extractErrorInfo(err);
+      this.logger?.warn(`Failed to deserialize ${this.entityConstructor.name} entity`, {
+        error: errorInfo,
+      });
     }
   }
 }

@@ -23,7 +23,9 @@ export class TransformerUtil {
         exposeUnsetFields: false,
       });
     } catch (err) {
-      throw new ConversionError(targetClass.name, err);
+      // Create a safe error that doesn't contain BigInt values that could cause serialization issues
+      const safeError = new Error(err instanceof Error ? err.message : String(err));
+      throw new ConversionError(targetClass.name, safeError);
     }
   }
 

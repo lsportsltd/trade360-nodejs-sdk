@@ -4,12 +4,12 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "debug": "node --inspect -r ts-node/register src/index.ts",
     "watch": "tsc -w"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
   "dependencies": {
     "bunyan": "^1.8.15",
     "dotenv": "^16.4.5",
@@ -22,5 +22,6 @@
     "@types/bunyan": "^1.8.11",
     "@types/node": "^20.14.9",
     "ts-node": "^10.9.2"
-  }
+  },
+  "description": ""
 }

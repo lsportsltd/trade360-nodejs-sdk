@@ -1,5 +1,7 @@
-import { LogLevel } from '../enums';
-import { ILogger } from '../interfaces';
+'use strict';
+
+import { ILogger, LogLevel } from '../';
+import { BigIntSerializationUtil } from '@utilities';
 
 /**
  * ConsoleAdapter class to log messages with different
@@ -7,7 +9,19 @@ import { ILogger } from '../interfaces';
  * */
 export class ConsoleAdapter implements ILogger {
   log(level: LogLevel, message: string, ...meta: unknown[]): void {
-    console[level](message, ...meta);
+    if (meta.length > 0) {
+      // Convert BigInt values to strings in metadata to prevent serialization errors
+      const safeMeta = meta.map((item) => {
+        try {
+          return JSON.parse(BigIntSerializationUtil.stringify(item));
+        } catch {
+          return item;
+        }
+      });
+      console[level](message, ...safeMeta);
+    } else {
+      console[level](message);
+    }
   }
 
   debug(message: string, ...meta: unknown[]): void {

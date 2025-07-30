@@ -1,4 +1,5 @@
 import { isNil } from 'lodash';
+import { parse } from 'lossless-json';
 
 import {
   BaseEntity,
@@ -8,7 +9,7 @@ import {
   knownEntityKeys,
 } from '@entities';
 import { IEntityHandler } from '@feed';
-import { TransformerUtil } from '@utilities';
+import { TransformerUtil, BigIntSerializationUtil } from '@utilities';
 import { ILogger } from '@logger';
 
 import { BodyHandler } from './handler';
@@ -23,11 +24,16 @@ import { IBodyHandler, IConsumptionLatency } from './interfaces';
  */
 function ConvertJsonToMessage(rawJson: string): WrappedMessage {
   try {
-    const message: WrappedMessage = TransformerUtil.transform(JSON.parse(rawJson), WrappedMessage);
+    const message: WrappedMessage = TransformerUtil.transform(
+      parse(rawJson, undefined, BigIntSerializationUtil.customNumberParser) as BaseEntity,
+      WrappedMessage,
+    );
 
     return message;
   } catch (err) {
-    throw new ConversionError(WrappedMessage.name, err);
+    // Create a safe error that doesn't contain BigInt values that could cause serialization issues
+    const safeError = new Error(err instanceof Error ? err.message : String(err));
+    throw new ConversionError(WrappedMessage.name, safeError);
   }
 }
 
@@ -94,6 +100,11 @@ export class MessageConsumer {
 
       const { type: entityType, msgGuid } = header;
 
+      if (entityType == 3) {
+        this.logger?.info('Entity Type', { entityType });
+        this.logger?.info('RawMsg', { rawMessage });
+      }
+
       const bodyHandler = this.bodyHandlers.get(entityType);
 
       if (!isNil(bodyHandler)) {
@@ -116,10 +127,19 @@ export class MessageConsumer {
       }
     } catch (err) {
       if (err instanceof ConversionError) {
-        this.logger?.warn(`Failed to deserialise message: ${err}`);
+        // Use safe error logging to prevent BigInt serialization issues
+        const errorInfo = BigIntSerializationUtil.extractErrorInfo(err);
+        this.logger?.warn('Failed to deserialise message', {
+          error: errorInfo,
+          errorMessage: err.message,
+        });
         return;
       }
-      this.logger?.error(`Error handling message consumption, error: ${err}`);
+      // Use safe error logging for other errors as well
+      const errorInfo = BigIntSerializationUtil.extractErrorInfo(err);
+      this.logger?.error('Error handling message consumption', {
+        error: errorInfo,
+      });
       throw err;
     }
   }

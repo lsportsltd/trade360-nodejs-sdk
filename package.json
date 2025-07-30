@@ -20,7 +20,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "lsports",
@@ -31,7 +32,7 @@
     "api"
   ],
   "author": "LSports",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "amqplib": "^0.10.4",
     "axios": "^1.8.2",
@@ -69,29 +70,15 @@
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.8"
   },
-  "_moduleAliases": {
-    "@feed": "dist/src/feed",
-    "@feed/*": "dist/src/feed/*",
-    "@entities": "dist/src/entities",
-    "@lsports/entities": "dist/src/entities/core-entities",
-    "@lsports/entities/*": "dist/src/entities/core-entities/*",
-    "@lsports/enums": "dist/src/entities/core-entities/enums",
-    "@lsports/decorators": "dist/src/entities/decorators",
-    "@lsports/errors": "dist/src/entities/errors",
-    "@api": "dist/src/api",
-    "@api/*": "dist/src/api/*",
-    "@customers-api": "dist/src/api/customers-api",
-    "@customers-api/*": "dist/src/api/customers-api/*",
-    "@metadata-api": "dist/src/api/common/metadata",
-    "@metadata-api/*": "dist/src/api/common/metadata/*",
-    "@subscription-api": "dist/src/api/common/subscription",
-    "@subscription-api/*": "dist/src/api/common/subscription/*",
-    "@httpClient": "dist/src/api/base-http-client",
-    "@httpClient/*": "dist/src/api/base-http-client/*",
-    "@utilities": "dist/src/utilities",
-    "@logger": "dist/src/logger",
-    "@api/common/snapshot": "dist/src/api/common/snapshot",
-    "@api/snapshot-api/snapshot-api": "dist/src/api/snapshot-api/snapshot-api",
-    "@api/snapshot-api/interfaces": "dist/src/api/snapshot-api/interfaces"
-  }
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lsportsltd/trade360-nodejs-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lsportsltd/trade360-nodejs-sdk/issues"
+  },
+  "homepage": "https://github.com/lsportsltd/trade360-nodejs-sdk#readme"
 }
