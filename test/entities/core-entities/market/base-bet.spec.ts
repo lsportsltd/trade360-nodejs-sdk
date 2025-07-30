@@ -765,7 +765,7 @@ describe('BaseBet Entity', () => {
 
     it('should not lose precision when compared to direct Number conversion', () => {
       const problematicValueString = '11060329315062111'; // Use string to avoid precision loss
-      const problematicValueNumber = 11060329315062111; // The original problematic number
+      const problematicValueNumber = '11060329315062111'; // Use string to avoid precision loss
       const plainData = { Id: problematicValueString };
 
       const baseBet = plainToInstance(BaseBet, plainData, { excludeExtraneousValues: true });

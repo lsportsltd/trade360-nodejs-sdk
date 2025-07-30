@@ -9,6 +9,10 @@ import { BigIntSerializationUtil } from '@utilities';
  * */
 export class ConsoleAdapter implements ILogger {
   log(level: LogLevel, message: string, ...meta: unknown[]): void {
+    // Validate log level to prevent object injection attacks
+    const validLevels = ['log', 'debug', 'info', 'warn', 'error'] as const;
+    const safeLevel = validLevels.includes(level as any) ? level : 'log';
+    
     if (meta.length > 0) {
       // Convert BigInt values to strings in metadata to prevent serialization errors
       const safeMeta = meta.map((item) => {
@@ -18,9 +22,9 @@ export class ConsoleAdapter implements ILogger {
           return item;
         }
       });
-      console[level](message, ...safeMeta);
+      console[safeLevel](message, ...safeMeta);
     } else {
-      console[level](message);
+      console[safeLevel](message);
     }
   }
 

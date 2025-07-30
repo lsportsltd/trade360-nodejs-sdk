@@ -320,7 +320,6 @@ describe('WrappedMessage', () => {
           Type: 200,
           MsgGuid: 'preservation-test',
           ServerTimestamp: 555,
-
           CustomField: 'should-be-preserved',
         },
         Body: {

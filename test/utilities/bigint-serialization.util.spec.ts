@@ -508,7 +508,9 @@ describe('BigIntSerializationUtil', () => {
         toJSON(): Record<string, unknown> {
           const result: Record<string, unknown> = {};
           for (const [key, value] of Object.entries(this)) {
-            result[key] = BigIntSerializationUtil.bigIntReplacer(key, value);
+            if (typeof key === 'string' && (typeof value === 'bigint' || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null || value === undefined)) {
+              result[key] = BigIntSerializationUtil.bigIntReplacer(key, value);
+            }
           }
           return result;
         }

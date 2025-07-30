@@ -100,7 +100,9 @@ export class BaseBet {
 
     // Get all enumerable properties (class-transformer exposed properties)
     for (const [key, value] of Object.entries(this)) {
-      result[key] = BigIntSerializationUtil.bigIntReplacer(key, value);
+      if (typeof key === 'string') {
+        result[key] = BigIntSerializationUtil.bigIntReplacer(key, value);
+      }
     }
 
     return result;
