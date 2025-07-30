@@ -517,9 +517,10 @@ describe('BigIntSerializationUtil', () => {
                 value === null ||
                 value === undefined)
             ) {
-              result[key] = typeof value === 'bigint' 
-                ? BigIntSerializationUtil.bigIntReplacer(key, value) 
-                : value;
+              result[key] =
+                typeof value === 'bigint'
+                  ? BigIntSerializationUtil.bigIntReplacer(key, value)
+                  : value;
             }
           }
           return result;
