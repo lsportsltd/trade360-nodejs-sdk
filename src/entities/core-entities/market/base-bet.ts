@@ -100,10 +100,26 @@ export class BaseBet {
 
     // Define allowed properties to prevent object injection
     const allowedKeys = [
-      'id', 'name', 'line', 'baseLine', 'status', 'startPrice', 'price', 
-      'priceVolume', 'settlement', 'suspensionReason', 'lastUpdate', 
-      'priceIN', 'priceUS', 'priceUK', 'priceMA', 'priceHK', 'isChanged', 
-      'probability', 'participantId', 'playerName'
+      'id',
+      'name',
+      'line',
+      'baseLine',
+      'status',
+      'startPrice',
+      'price',
+      'priceVolume',
+      'settlement',
+      'suspensionReason',
+      'lastUpdate',
+      'priceIN',
+      'priceUS',
+      'priceUK',
+      'priceMA',
+      'priceHK',
+      'isChanged',
+      'probability',
+      'participantId',
+      'playerName',
     ];
 
     // Get all enumerable properties (class-transformer exposed properties)
