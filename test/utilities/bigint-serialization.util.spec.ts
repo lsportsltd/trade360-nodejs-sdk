@@ -198,7 +198,7 @@ describe('BigIntSerializationUtil', () => {
     it('should handle standard Error objects', () => {
       const error = new Error('Standard error');
       const result = BigIntSerializationUtil.errorToString(error);
-      
+
       const parsed = JSON.parse(result);
       expect(parsed.name).toBe('Error');
       expect(parsed.message).toBe('Standard error');
@@ -207,7 +207,10 @@ describe('BigIntSerializationUtil', () => {
 
     it('should handle custom Error classes', () => {
       class CustomError extends Error {
-        constructor(message: string, public code: number) {
+        constructor(
+          message: string,
+          public code: number,
+        ) {
           super(message);
           this.name = 'CustomError';
         }
@@ -215,7 +218,7 @@ describe('BigIntSerializationUtil', () => {
 
       const error = new CustomError('Custom error message', 500);
       const result = BigIntSerializationUtil.errorToString(error);
-      
+
       const parsed = JSON.parse(result);
       expect(parsed.name).toBe('CustomError');
       expect(parsed.message).toBe('Custom error message');
@@ -333,10 +336,10 @@ describe('BigIntSerializationUtil', () => {
 
       // Stringify with BigInt handling
       const serialized = BigIntSerializationUtil.stringify(original);
-      
+
       // Parse back (BigInt values become strings with 'n' suffix)
       const parsed = JSON.parse(serialized);
-      
+
       expect(parsed.id).toBe('999999999999999999n');
       expect(parsed.user.id).toBe('123n');
       expect(parsed.user.name).toBe('John');
@@ -345,15 +348,7 @@ describe('BigIntSerializationUtil', () => {
     });
 
     it('should handle mixed data types in arrays', () => {
-      const mixedArray = [
-        123n,
-        'string',
-        456,
-        true,
-        null,
-        { id: 789n },
-        [1n, 2, '3'],
-      ];
+      const mixedArray = [123n, 'string', 456, true, null, { id: 789n }, [1n, 2, '3']];
 
       const result = BigIntSerializationUtil.stringify(mixedArray);
       const parsed = JSON.parse(result);
@@ -407,7 +402,7 @@ describe('BigIntSerializationUtil', () => {
     it('should handle invalid BigInt conversion gracefully', () => {
       // Extreme case that might cause BigInt to throw
       const invalidButLooksValid = '99999999999999999999999999999999999999999999999999999999999n';
-      
+
       expect(() => {
         BigIntSerializationUtil.bigIntReviver('test', invalidButLooksValid);
       }).not.toThrow();
@@ -494,7 +489,7 @@ describe('BigIntSerializationUtil', () => {
       expect(step2.id).toBe(problematicValue);
       expect(step2.metadata.largeId).toBe(999999999999999999999n);
       expect(step2.description).toBe('Precision test');
-      
+
       // Verify no precision loss occurred
       expect(step2.id.toString()).toBe('11060329315062111');
       expect(step2.metadata.largeId.toString()).toBe('999999999999999999999');
@@ -505,7 +500,10 @@ describe('BigIntSerializationUtil', () => {
     it('should work seamlessly with class toJSON methods', () => {
       // Simulate the BaseBet toJSON pattern
       class TestClass {
-        constructor(public id: bigint, public name: string) {}
+        constructor(
+          public id: bigint,
+          public name: string,
+        ) {}
 
         toJSON(): Record<string, unknown> {
           const result: Record<string, unknown> = {};
@@ -517,13 +515,13 @@ describe('BigIntSerializationUtil', () => {
       }
 
       const instance = new TestClass(11060329315062111n, 'test');
-      
+
       // Serialize via toJSON
       const jsonString = JSON.stringify(instance.toJSON());
-      
+
       // Parse back via safeParse
       const restored = BigIntSerializationUtil.safeParse(jsonString) as any;
-      
+
       expect(restored.id).toBe(11060329315062111n);
       expect(typeof restored.id).toBe('bigint');
       expect(restored.name).toBe('test');

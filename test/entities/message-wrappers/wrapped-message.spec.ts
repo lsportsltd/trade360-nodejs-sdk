@@ -70,7 +70,9 @@ describe('WrappedMessage', () => {
 
       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
 
-      expect(wrapped.body).toBe('{"id":"123n","userId":"999999999999999999n","name":"test","count":456}');
+      expect(wrapped.body).toBe(
+        '{"id":"123n","userId":"999999999999999999n","name":"test","count":456}',
+      );
     });
 
     it('should handle nested objects with BigInt values in body', () => {
@@ -182,7 +184,9 @@ describe('WrappedMessage', () => {
 
       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
 
-      expect(wrapped.body).toBe('{"name":"test","count":123,"active":true,"data":null,"items":["a","b","c"]}');
+      expect(wrapped.body).toBe(
+        '{"name":"test","count":123,"active":true,"data":null,"items":["a","b","c"]}',
+      );
     });
   });
 
@@ -265,7 +269,6 @@ describe('WrappedMessage', () => {
           Type: 35, // Market update type
           MsgGuid: 'market-update-guid',
           ServerTimestamp: 12345,
-
         },
         Body: {
           Fixture: {
@@ -363,7 +366,6 @@ describe('WrappedMessage', () => {
           Type: 202,
           MsgGuid: 'null-body-test',
           ServerTimestamp: 777,
-
         },
         Body: null,
       };

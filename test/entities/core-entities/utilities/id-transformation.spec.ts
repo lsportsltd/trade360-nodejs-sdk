@@ -6,7 +6,7 @@ describe('transformToBigInt utility function', () => {
     describe('BigInt inputs', () => {
       it('should return BigInt values unchanged', () => {
         const testCases = [0n, 123n, -456n, 999999999999999999n];
-        
+
         testCases.forEach((value) => {
           const result = transformToBigInt(value, false, 'test');
           expect(result).toBe(value);
@@ -37,13 +37,7 @@ describe('transformToBigInt utility function', () => {
       });
 
       it('should handle strings with leading and trailing whitespace', () => {
-        const testCases = [
-          '  123  ',
-          '\t456\t',
-          '\n789\n',
-          '\r123\r',
-          '  \t  456  \t  ',
-        ];
+        const testCases = ['  123  ', '\t456\t', '\n789\n', '\r123\r', '  \t  456  \t  '];
 
         testCases.forEach((input) => {
           const result = transformToBigInt(input, true, 'test');
@@ -108,7 +102,7 @@ describe('transformToBigInt utility function', () => {
 
     it('should return undefined for empty string when not required', () => {
       const testCases = ['', '   ', '\t', '\n', '\r'];
-      
+
       testCases.forEach((input) => {
         const result = transformToBigInt(input, false, 'test');
         expect(result).toBeUndefined();
@@ -117,7 +111,7 @@ describe('transformToBigInt utility function', () => {
 
     it('should return undefined for non-numeric strings when not required', () => {
       const testCases = ['abc', '12.3', '1e10', '0x123', 'NaN', 'Infinity'];
-      
+
       testCases.forEach((input) => {
         const result = transformToBigInt(input, false, 'test');
         expect(result).toBeUndefined();
@@ -126,7 +120,7 @@ describe('transformToBigInt utility function', () => {
 
     it('should return undefined for invalid numbers when not required', () => {
       const testCases = [NaN, Infinity, -Infinity, 12.3, -45.6];
-      
+
       testCases.forEach((input) => {
         const result = transformToBigInt(input, false, 'test');
         expect(result).toBeUndefined();
@@ -135,7 +129,7 @@ describe('transformToBigInt utility function', () => {
 
     it('should return undefined for invalid types when not required', () => {
       const testCases = [true, false, {}, [], () => {}, Symbol('test')];
-      
+
       testCases.forEach((input) => {
         const result = transformToBigInt(input, false, 'test');
         expect(result).toBeUndefined();
@@ -251,7 +245,7 @@ describe('transformToBigInt utility function', () => {
   describe('Error details and context', () => {
     it('should include proper field name in error', () => {
       const fieldName = 'customFieldName';
-      
+
       try {
         transformToBigInt('invalid', true, fieldName);
       } catch (error) {
@@ -271,22 +265,22 @@ describe('transformToBigInt utility function', () => {
 
     it('should provide detailed error messages for different failure types', () => {
       const testCases = [
-        { 
-          input: null, 
+        {
+          input: null,
           field: 'testNull',
           expectedInMessage: ['required', 'null or undefined'] 
         },
-        { 
-          input: 'abc', 
+        {
+          input: 'abc',
           field: 'testString',
           expectedInMessage: ['Expected integer', 'non-numeric string'] 
         },
-        { 
-          input: 12.5, 
+        {
+          input: 12.5,
           field: 'testDecimal',
           expectedInMessage: ['Invalid ID format', 'decimal number'] 
         },
-        { 
+        {
           input: true, 
           field: 'testBoolean',
           expectedInMessage: ['Invalid ID type', 'boolean'] 
@@ -300,7 +294,7 @@ describe('transformToBigInt utility function', () => {
         } catch (error) {
           expect(error).toBeInstanceOf(IdTransformationError);
           const message = (error as IdTransformationError).message;
-          expectedInMessage.forEach(expectedText => {
+          expectedInMessage.forEach((expectedText) => {
             expect(message).toContain(expectedText);
           });
         }
@@ -331,7 +325,7 @@ describe('transformToBigInt utility function', () => {
 
     it('should reject strings with internal whitespace', () => {
       const internalWhitespace = ['1 23', '12\t3', '1\n23', '12 34'];
-      
+
       internalWhitespace.forEach((input) => {
         expect(() => {
           transformToBigInt(input, true, 'test');
@@ -356,11 +350,11 @@ describe('transformToBigInt utility function', () => {
     it('should handle the exact problematic case from the original bug', () => {
       // This is the specific case that caused precision loss
       const problematicId = '11060329315062111';
-      
+
       // Demonstrate the bug with parseInt
       const buggyResult = parseInt(problematicId, 10);
       expect(buggyResult).toBe(11060329315062112); // Shows precision loss
-      
+
       // Show our fix works correctly
       const correctResult = transformToBigInt(problematicId, true, 'Id');
       expect(correctResult).toBe(11060329315062111n);
@@ -370,13 +364,12 @@ describe('transformToBigInt utility function', () => {
     it('should maintain consistency across different input formats for same value', () => {
       const value = '123456789012345678';
       const bigintValue = BigInt(value);
-      const numberValue = parseInt(value, 10); // Will lose precision for very large numbers
-      
+
       // String and BigInt should give same result
       const fromString = transformToBigInt(value, true, 'test');
       const fromBigInt = transformToBigInt(bigintValue, true, 'test');
       const fromSerializedString = transformToBigInt(value + 'n', true, 'test');
-      
+
       expect(fromString).toBe(fromBigInt);
       expect(fromString).toBe(fromSerializedString);
       expect(fromString?.toString()).toBe(value);
@@ -385,11 +378,11 @@ describe('transformToBigInt utility function', () => {
     it('should handle boundary cases around number precision', () => {
       const maxSafeInteger = 9007199254740991;
       const maxSafeIntegerPlusOne = '9007199254740992';
-      
+
       // MAX_SAFE_INTEGER should work as number
       const safeResult = transformToBigInt(maxSafeInteger, true, 'test');
       expect(safeResult).toBe(BigInt(maxSafeInteger));
-      
+
       // MAX_SAFE_INTEGER + 1 should work as string
       const unsafeResult = transformToBigInt(maxSafeIntegerPlusOne, true, 'test');
       expect(unsafeResult).toBe(BigInt(maxSafeIntegerPlusOne));
