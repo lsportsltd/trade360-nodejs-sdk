@@ -1,7 +1,6 @@
 'use strict';
 
 import { IdTransformationError } from '@lsports/errors';
-import { ILogger } from '@logger';
 
 /**
  * Safely transforms a value to BigInt without logging to avoid BigInt serialization issues.
@@ -49,7 +48,7 @@ export function transformToBigInt(
     }
 
     let processedValue = value.trim();
-    
+
     // Handle BigInt serialized strings (those ending with 'n')
     if (processedValue.endsWith('n')) {
       processedValue = processedValue.slice(0, -1); // Remove the 'n' suffix
@@ -107,5 +106,3 @@ export function transformToBigInt(
   }
   return undefined;
 }
-
-
