@@ -98,9 +98,17 @@ export class BaseBet {
     // This preserves the 'n' suffix to indicate original BigInt values
     const result: Record<string, unknown> = {};
 
+    // Define allowed properties to prevent object injection
+    const allowedKeys = [
+      'id', 'name', 'line', 'baseLine', 'status', 'startPrice', 'price', 
+      'priceVolume', 'settlement', 'suspensionReason', 'lastUpdate', 
+      'priceIN', 'priceUS', 'priceUK', 'priceMA', 'priceHK', 'isChanged', 
+      'probability', 'participantId', 'playerName'
+    ];
+
     // Get all enumerable properties (class-transformer exposed properties)
     for (const [key, value] of Object.entries(this)) {
-      if (typeof key === 'string') {
+      if (typeof key === 'string' && allowedKeys.includes(key)) {
         result[key] = BigIntSerializationUtil.bigIntReplacer(key, value);
       }
     }

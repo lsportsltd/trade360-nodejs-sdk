@@ -12,7 +12,7 @@ export class ConsoleAdapter implements ILogger {
     // Validate log level to prevent object injection attacks
     const validLevels = ['log', 'debug', 'info', 'warn', 'error'] as const;
     const safeLevel = validLevels.includes(level as any) ? level : 'log';
-    
+
     if (meta.length > 0) {
       // Convert BigInt values to strings in metadata to prevent serialization errors
       const safeMeta = meta.map((item) => {
@@ -22,9 +22,15 @@ export class ConsoleAdapter implements ILogger {
           return item;
         }
       });
-      console[safeLevel](message, ...safeMeta);
+      // Additional validation before console call
+      if (validLevels.includes(safeLevel as any)) {
+        console[safeLevel](message, ...safeMeta);
+      }
     } else {
-      console[safeLevel](message);
+      // Additional validation before console call
+      if (validLevels.includes(safeLevel as any)) {
+        console[safeLevel](message);
+      }
     }
   }
 
