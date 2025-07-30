@@ -4,6 +4,7 @@ import { BaseBet } from '../../../../src/entities/core-entities/market/base-bet'
 import { BetStatus } from '../../../../src/entities/core-entities/enums/bet-status';
 import { SettlementType } from '../../../../src/entities/core-entities/enums/settlement-type';
 import { IdTransformationError } from '../../../../src/entities/errors/id-transformation.error';
+import { BigIntSerializationUtil } from '../../../../src/entities/utilities/bigint-serialization.util';
 
 /**
  * Custom number parser for lossless-json (same logic as in AxiosService)
@@ -575,8 +576,8 @@ describe('BaseBet Entity', () => {
     it('should provide appropriate error message for different invalid types', (): void => {
       const testCases = [
         { value: 'abc', expectedMessage: 'non-numeric string' },
-        { value: NaN, expectedMessage: 'decimal number' },
-        { value: Infinity, expectedMessage: 'decimal number' },
+        { value: NaN, expectedMessage: 'non-finite' },
+        { value: Infinity, expectedMessage: 'non-finite' },
         { value: 123.45, expectedMessage: 'decimal number' },
         { value: true, expectedMessage: 'Invalid ID type' },
         { value: {}, expectedMessage: 'Invalid ID type' },
@@ -701,6 +702,129 @@ describe('BaseBet Entity', () => {
       expect(baseBet.line).toBeUndefined();
       expect(baseBet.price).toBeUndefined();
       expect(baseBet.lastUpdate).toBeUndefined();
+    });
+  });
+
+  describe('toJSON method', () => {
+    it('should convert BigInt ID to string with n suffix', () => {
+      const plainData = {
+        Id: '11060329315062111', // The problematic precision-loss value as string
+        Name: 'Test Bet',
+        Status: BetStatus.Open,
+      };
+
+      const baseBet = plainToInstance(BaseBet, plainData, { excludeExtraneousValues: true });
+      const json = baseBet.toJSON();
+
+      // ID should be converted to string with 'n' suffix
+      expect(json.id).toBe('11060329315062111n');
+      expect(typeof json.id).toBe('string');
+      
+      // Other properties should remain unchanged
+      expect(json.name).toBe('Test Bet');
+      expect(json.status).toBe(BetStatus.Open);
+    });
+
+    it('should preserve precision for large BigInt values in JSON', () => {
+      const largeBigIntId = 999999999999999999999n;
+      const plainData = {
+        Id: largeBigIntId.toString(),
+        Name: 'Large ID Bet',
+      };
+
+      const baseBet = plainToInstance(BaseBet, plainData, { excludeExtraneousValues: true });
+      const json = baseBet.toJSON();
+
+      expect(json.id).toBe('999999999999999999999n');
+      
+      // Verify we can safely restore the BigInt value
+      const idString = (json.id as string).slice(0, -1); // Remove 'n'
+      expect(BigInt(idString)).toBe(largeBigIntId);
+    });
+
+    it('should handle JSON round-trip with BigIntSerializationUtil.safeParse', () => {
+      const plainData = {
+        Id: '11060329315062111', // Use string to avoid precision loss
+        Name: 'Round Trip Test',
+        ParticipantId: 123,
+      };
+
+      const baseBet = plainToInstance(BaseBet, plainData, { excludeExtraneousValues: true });
+      
+      // Serialize to JSON string
+      const jsonString = JSON.stringify(baseBet.toJSON());
+      
+      // Parse back using safeParse to restore BigInt
+      const parsed = BigIntSerializationUtil.safeParse(jsonString) as any;
+      
+      expect(parsed.id).toBe(11060329315062111n); // Should be BigInt again
+      expect(typeof parsed.id).toBe('bigint');
+      expect(parsed.name).toBe('Round Trip Test');
+      expect(parsed.participantId).toBe(123);
+    });
+
+    it('should not lose precision when compared to direct Number conversion', () => {
+      const problematicValueString = '11060329315062111'; // Use string to avoid precision loss
+      const problematicValueNumber = 11060329315062111; // The original problematic number
+      const plainData = { Id: problematicValueString };
+
+      const baseBet = plainToInstance(BaseBet, plainData, { excludeExtraneousValues: true });
+      const json = baseBet.toJSON();
+
+      // Extract the numeric part (without 'n')
+      const preservedValue = (json.id as string).slice(0, -1);
+      
+      // Direct Number conversion loses precision
+      expect(Number(problematicValueNumber).toString()).toBe('11060329315062112'); // ❌ Wrong
+      
+      // Our toJSON preserves it perfectly
+      expect(preservedValue).toBe('11060329315062111'); // ✅ Correct
+    });
+
+    it('should handle all property types correctly in toJSON', () => {
+      const plainData = {
+        Id: 123456789n,
+        Name: 'Full Test',
+        Line: '1.5',
+        Status: BetStatus.Open,
+        Price: '2.50',
+        IsChanged: 1,
+        ParticipantId: 999,
+        PlayerName: 'John Doe',
+      };
+
+      const baseBet = plainToInstance(BaseBet, plainData, { excludeExtraneousValues: true });
+      const json = baseBet.toJSON();
+
+      // BigInt converted to string with 'n'
+      expect(json.id).toBe('123456789n');
+      
+      // Other types preserved
+      expect(json.name).toBe('Full Test');
+      expect(json.line).toBe('1.5');
+      expect(json.status).toBe(BetStatus.Open);
+      expect(json.price).toBe('2.50');
+      expect(json.isChanged).toBe(1);
+      expect(json.participantId).toBe(999);
+      expect(json.playerName).toBe('John Doe');
+    });
+
+    it('should be serializable with JSON.stringify after toJSON', () => {
+      const plainData = {
+        Id: '11060329315062111', // Use string to avoid precision loss
+        Name: 'Stringify Test',
+      };
+
+      const baseBet = plainToInstance(BaseBet, plainData, { excludeExtraneousValues: true });
+      
+      // This should not throw "Do not know how to serialize a BigInt"
+      expect(() => {
+        JSON.stringify(baseBet.toJSON());
+      }).not.toThrow();
+
+      const jsonString = JSON.stringify(baseBet.toJSON());
+      expect(jsonString).toContain('"id":"11060329315062111n"');
+      expect(jsonString).toContain('"name":"Stringify Test"');
     });
   });
 });
