@@ -171,7 +171,6 @@ describe('WrappedMessage', () => {
           Type: 105,
           MsgGuid: 'normal-guid',
           ServerTimestamp: 111,
-
         },
         Body: {
           name: 'test',
@@ -200,7 +199,6 @@ describe('WrappedMessage', () => {
           Type: 106,
           MsgGuid: 'circular-guid',
           ServerTimestamp: 222,
-
         },
         Body: circularObj,
       };
@@ -217,7 +215,6 @@ describe('WrappedMessage', () => {
           Type: 107,
           MsgGuid: 'complex-guid',
           ServerTimestamp: 333,
-
         },
         Body: {
           name: 'test',
@@ -250,7 +247,6 @@ describe('WrappedMessage', () => {
           Type: 108,
           MsgGuid: 'unserializable-guid',
           ServerTimestamp: 444,
-
         },
         Body: unserializable,
       };
@@ -350,7 +346,6 @@ describe('WrappedMessage', () => {
           Type: 201,
           MsgGuid: 'empty-body-test',
           ServerTimestamp: 666,
-
         },
         Body: {},
       };
@@ -395,7 +390,6 @@ describe('WrappedMessage', () => {
           Type: 203,
           MsgGuid: 'large-object-test',
           ServerTimestamp: 888,
-
         },
         Body: largeBody,
       };

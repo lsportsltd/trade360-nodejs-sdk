@@ -719,7 +719,7 @@ describe('BaseBet Entity', () => {
       // ID should be converted to string with 'n' suffix
       expect(json.id).toBe('11060329315062111n');
       expect(typeof json.id).toBe('string');
-      
+
       // Other properties should remain unchanged
       expect(json.name).toBe('Test Bet');
       expect(json.status).toBe(BetStatus.Open);
@@ -736,7 +736,7 @@ describe('BaseBet Entity', () => {
       const json = baseBet.toJSON();
 
       expect(json.id).toBe('999999999999999999999n');
-      
+
       // Verify we can safely restore the BigInt value
       const idString = (json.id as string).slice(0, -1); // Remove 'n'
       expect(BigInt(idString)).toBe(largeBigIntId);
@@ -750,13 +750,13 @@ describe('BaseBet Entity', () => {
       };
 
       const baseBet = plainToInstance(BaseBet, plainData, { excludeExtraneousValues: true });
-      
+
       // Serialize to JSON string
       const jsonString = JSON.stringify(baseBet.toJSON());
-      
+
       // Parse back using safeParse to restore BigInt
       const parsed = BigIntSerializationUtil.safeParse(jsonString) as any;
-      
+
       expect(parsed.id).toBe(11060329315062111n); // Should be BigInt again
       expect(typeof parsed.id).toBe('bigint');
       expect(parsed.name).toBe('Round Trip Test');
@@ -773,10 +773,10 @@ describe('BaseBet Entity', () => {
 
       // Extract the numeric part (without 'n')
       const preservedValue = (json.id as string).slice(0, -1);
-      
+
       // Direct Number conversion loses precision
       expect(Number(problematicValueNumber).toString()).toBe('11060329315062112'); // ❌ Wrong
-      
+
       // Our toJSON preserves it perfectly
       expect(preservedValue).toBe('11060329315062111'); // ✅ Correct
     });
@@ -798,7 +798,7 @@ describe('BaseBet Entity', () => {
 
       // BigInt converted to string with 'n'
       expect(json.id).toBe('123456789n');
-      
+
       // Other types preserved
       expect(json.name).toBe('Full Test');
       expect(json.line).toBe('1.5');
@@ -816,7 +816,7 @@ describe('BaseBet Entity', () => {
       };
 
       const baseBet = plainToInstance(BaseBet, plainData, { excludeExtraneousValues: true });
-      
+
       // This should not throw "Do not know how to serialize a BigInt"
       expect(() => {
         JSON.stringify(baseBet.toJSON());

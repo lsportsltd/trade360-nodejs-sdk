@@ -149,7 +149,9 @@ describe('transformToBigInt utility function', () => {
         expect(error).toBeInstanceOf(IdTransformationError);
         expect((error as IdTransformationError).fieldName).toBe('requiredField');
         expect((error as IdTransformationError).originalValue).toBe(null);
-        expect((error as IdTransformationError).message).toContain('required but received null or undefined');
+        expect((error as IdTransformationError).message).toContain(
+          'required but received null or undefined',
+        );
       }
     });
 
@@ -167,7 +169,9 @@ describe('transformToBigInt utility function', () => {
       try {
         transformToBigInt('   ', true, 'requiredField');
       } catch (error) {
-        expect((error as IdTransformationError).message).toContain('required but received empty string');
+        expect((error as IdTransformationError).message).toContain(
+          'required but received empty string',
+        );
       }
     });
 
@@ -268,22 +272,22 @@ describe('transformToBigInt utility function', () => {
         {
           input: null,
           field: 'testNull',
-          expectedInMessage: ['required', 'null or undefined'] 
+          expectedInMessage: ['required', 'null or undefined'],
         },
         {
           input: 'abc',
           field: 'testString',
-          expectedInMessage: ['Expected integer', 'non-numeric string'] 
+          expectedInMessage: ['Expected integer', 'non-numeric string'],
         },
         {
           input: 12.5,
           field: 'testDecimal',
-          expectedInMessage: ['Invalid ID format', 'decimal number'] 
+          expectedInMessage: ['Invalid ID format', 'decimal number'],
         },
         {
-          input: true, 
+          input: true,
           field: 'testBoolean',
-          expectedInMessage: ['Invalid ID type', 'boolean'] 
+          expectedInMessage: ['Invalid ID type', 'boolean'],
         },
       ];
 
