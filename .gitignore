@@ -148,3 +148,6 @@ dist
 # JetBrains IDE project specific config and metadata
 .idea/*
 
+*.js
+*.map
+sample/feed-sample/src/handler/.DS_Store

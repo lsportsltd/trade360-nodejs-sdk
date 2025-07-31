@@ -2,6 +2,7 @@ import { Expose, Transform, Type } from 'class-transformer';
 
 import { BetStatus, SettlementType } from '@lsports/enums';
 import { transformToBigInt } from '../utilities/id-transformation';
+import { BigIntSerializationUtil } from '../../utilities/bigint-serialization.util';
 
 /**
  * Base betting entity with precision-safe ID handling.
@@ -81,4 +82,53 @@ export class BaseBet {
 
   @Expose({ name: 'PlayerName' })
   playerName?: string;
+
+  /**
+   * Custom JSON serialization to handle BigInt values safely.
+   * This prevents "Do not know how to serialize a BigInt" errors.
+   *
+   * ⚠️  IMPORTANT: BigInt values are converted to strings with 'n' suffix.
+   * If you need to restore BigInt values from this JSON, use:
+   * BigIntSerializationUtil.safeParse(JSON.stringify(obj.toJSON()))
+   *
+   * @returns Object with BigInt values converted to 'n' suffixed strings
+   */
+  toJSON(): Record<string, unknown> {
+    // Use the replacer directly instead of stringify->parse cycle
+    // This preserves the 'n' suffix to indicate original BigInt values
+    const result: Record<string, unknown> = {};
+
+    // Define allowed properties to prevent object injection
+    const allowedKeys = [
+      'id',
+      'name',
+      'line',
+      'baseLine',
+      'status',
+      'startPrice',
+      'price',
+      'priceVolume',
+      'settlement',
+      'suspensionReason',
+      'lastUpdate',
+      'priceIN',
+      'priceUS',
+      'priceUK',
+      'priceMA',
+      'priceHK',
+      'isChanged',
+      'probability',
+      'participantId',
+      'playerName',
+    ];
+
+    // Get all enumerable properties (class-transformer exposed properties)
+    for (const [key, value] of Object.entries(this)) {
+      if (typeof key === 'string' && allowedKeys.includes(key)) {
+        result[key] = BigIntSerializationUtil.bigIntReplacer(key, value);
+      }
+    }
+
+    return result;
+  }
 }

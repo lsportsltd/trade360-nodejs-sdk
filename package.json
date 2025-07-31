@@ -31,7 +31,7 @@
     "api"
   ],
   "author": "LSports",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "amqplib": "^0.10.4",
     "axios": "^1.8.2",

@@ -8,8 +8,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
   "dependencies": {
     "dotenv": "^16.4.5",
     "fs": "^0.0.1-security",
@@ -20,5 +19,6 @@
     "@types/lodash": "^4.17.6",
     "@types/node": "^20.14.9",
     "ts-node": "^10.9.2"
-  }
+  },
+  "description": ""
 }

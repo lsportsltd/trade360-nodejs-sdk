@@ -57,9 +57,6 @@ const initSample = async () => {
     const feedInPlay = new Feed(config.trade360.inPlayMQSettings!, logger);
     const feedPreMatch = new Feed(config.trade360.preMatchMQSettings!, logger); 
 
-    // feedInPlay.addEntityHandler((msg: any) => {
-    //   logger.log(`got new message:\n${JSON.stringify(msg)}\n`);
-    // });
 
     feedInPlay.addEntityHandler(new FixtureMetadataUpdateHandler(), FixtureMetadataUpdate);
 
@@ -98,7 +95,8 @@ const initSample = async () => {
     feedPreMatch.addEntityHandler(new OutrightLeagueMarketUpdateHandler(), OutrightLeagueMarketUpdate);
 
     process.on('exit' || 'SIGINT', async (err) => {
-      // await feedInPlay.stop();
+      await feedInPlay.stop();
+      await feedPreMatch.stop();
       process.exit(1);
     });
 
@@ -106,13 +104,15 @@ const initSample = async () => {
     await feedPreMatch.start(true);
 
 
-    // await new Promise<void>((resolve) => {
-    //   setTimeout(() => {
-    //     return resolve();
-    //   }, 5 * 1000);
-    // });
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        return resolve();
+      }, 60 * 1000);
+    });
 
-   // await feedInPlay.stop();
+   await feedPreMatch.stop();
+   await feedInPlay.stop();
+
   } catch (err: unknown) {
     if (err instanceof ValidationError) {
       logger.error(`feed sample got err from ValidationError instance: ${err}`);
