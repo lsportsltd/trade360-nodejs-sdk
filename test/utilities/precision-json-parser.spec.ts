@@ -9,7 +9,7 @@ describe('PrecisionJsonParser', () => {
   describe('parse() - Primary method', () => {
     it('should preserve large ID numbers as strings in flat objects', () => {
       const json = `{"id": ${LARGE_INTEGER}, "name": "test"}`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       expect(result.id).toBe(LARGE_INTEGER);
       expect(typeof result.id).toBe('string');
@@ -18,17 +18,19 @@ describe('PrecisionJsonParser', () => {
 
     it('should preserve large ID numbers in nested objects', () => {
       const json = `{"user": {"id": ${LARGE_INTEGER}, "profile": {"profileId": ${LARGE_INTEGER}}}}`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
+      const user = result.user as Record<string, unknown>;
+      const profile = user.profile as Record<string, unknown>;
 
-      expect(result.user.id).toBe(LARGE_INTEGER);
-      expect(result.user.profile.profileId).toBe(LARGE_INTEGER);
-      expect(typeof result.user.id).toBe('string');
-      expect(typeof result.user.profile.profileId).toBe('string');
+      expect(user.id).toBe(LARGE_INTEGER);
+      expect(profile.profileId).toBe(LARGE_INTEGER);
+      expect(typeof user.id).toBe('string');
+      expect(typeof profile.profileId).toBe('string');
     });
 
     it('should keep small ID numbers as numbers for type consistency', () => {
       const json = `{"id": ${SMALL_INTEGER}, "userId": 999}`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       expect(result.id).toBe(parseInt(SMALL_INTEGER));
       expect(result.userId).toBe(999);
@@ -38,7 +40,7 @@ describe('PrecisionJsonParser', () => {
 
     it('should handle medium-sized numbers correctly', () => {
       const json = `{"id": ${MEDIUM_INTEGER}}`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       // Should still be a number since it's within safe range
       expect(result.id).toBe(parseInt(MEDIUM_INTEGER));
@@ -47,7 +49,7 @@ describe('PrecisionJsonParser', () => {
 
     it('should handle numbers exactly at MAX_SAFE_INTEGER boundary', () => {
       const json = `{"id": ${SAFE_INTEGER}}`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       expect(result.id).toBe(SAFE_INTEGER);
       expect(typeof result.id).toBe('number');
@@ -56,7 +58,7 @@ describe('PrecisionJsonParser', () => {
     it('should handle numbers just above MAX_SAFE_INTEGER', () => {
       const boundaryNumber = (SAFE_INTEGER + 1).toString();
       const json = `{"id": ${boundaryNumber}}`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       expect(result.id).toBe(boundaryNumber);
       expect(typeof result.id).toBe('string');
@@ -71,7 +73,7 @@ describe('PrecisionJsonParser', () => {
         "betID": ${LARGE_INTEGER},
         "ID": ${LARGE_INTEGER}
       }`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       expect(result.id).toBe(LARGE_INTEGER);
       expect(result.userId).toBe(LARGE_INTEGER);
@@ -96,7 +98,7 @@ describe('PrecisionJsonParser', () => {
         "timestamp": ${LARGE_INTEGER},
         "value": ${LARGE_INTEGER}
       }`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       expect(typeof result.id).toBe('string'); // Should be converted
       expect(typeof result.amount).toBe('number'); // Should NOT be converted
@@ -109,7 +111,7 @@ describe('PrecisionJsonParser', () => {
         {"id": ${LARGE_INTEGER}, "name": "first"},
         {"id": ${LARGE_INTEGER}, "name": "second"}
       ]`;
-      const result = PrecisionJsonParser.parse(json) as any[];
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>[];
 
       expect(result[0].id).toBe(LARGE_INTEGER);
       expect(result[1].id).toBe(LARGE_INTEGER);
@@ -119,7 +121,7 @@ describe('PrecisionJsonParser', () => {
 
     it('should preserve already quoted strings that look like numbers', () => {
       const json = `{"id": "${LARGE_INTEGER}", "userId": "12345"}`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       expect(result.id).toBe(LARGE_INTEGER);
       expect(result.userId).toBe('12345');
@@ -144,18 +146,23 @@ describe('PrecisionJsonParser', () => {
           "requestId": ${LARGE_INTEGER}
         }
       }`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
+      const users = result.users as Record<string, unknown>[];
+      const firstUser = users[0];
+      const profile = firstUser.profile as Record<string, unknown>;
+      const settings = profile.settings as Record<string, unknown>;
+      const metadata = result.metadata as Record<string, unknown>;
 
-      expect(result.users[0].id).toBe(LARGE_INTEGER);
-      expect(result.users[0].profile.profileId).toBe(LARGE_INTEGER);
-      expect(result.users[0].profile.settings.preferenceId).toBe(LARGE_INTEGER);
-      expect(result.metadata.requestId).toBe(LARGE_INTEGER);
+      expect(firstUser.id).toBe(LARGE_INTEGER);
+      expect(profile.profileId).toBe(LARGE_INTEGER);
+      expect(settings.preferenceId).toBe(LARGE_INTEGER);
+      expect(metadata.requestId).toBe(LARGE_INTEGER);
 
       // All should be strings
-      expect(typeof result.users[0].id).toBe('string');
-      expect(typeof result.users[0].profile.profileId).toBe('string');
-      expect(typeof result.users[0].profile.settings.preferenceId).toBe('string');
-      expect(typeof result.metadata.requestId).toBe('string');
+      expect(typeof firstUser.id).toBe('string');
+      expect(typeof profile.profileId).toBe('string');
+      expect(typeof settings.preferenceId).toBe('string');
+      expect(typeof metadata.requestId).toBe('string');
     });
   });
 
@@ -166,7 +173,7 @@ describe('PrecisionJsonParser', () => {
         "userId": ${MEDIUM_INTEGER},
         "memberId": ${LARGE_INTEGER}
       }`;
-      const result = PrecisionJsonParser.parseAllIdFieldsAsStrings(json) as any;
+      const result = PrecisionJsonParser.parseAllIdFieldsAsStrings(json) as Record<string, unknown>;
 
       expect(result.id).toBe(SMALL_INTEGER);
       expect(result.userId).toBe(MEDIUM_INTEGER);
@@ -184,7 +191,7 @@ describe('PrecisionJsonParser', () => {
       // Note: This test may fail for very large numbers due to precision loss
       const smallLargeNumber = (SAFE_INTEGER + 100).toString();
       const json = `{"id": ${smallLargeNumber}}`;
-      const result = PrecisionJsonParser.parseWithReviver(json) as any;
+      const result = PrecisionJsonParser.parseWithReviver(json) as Record<string, unknown>;
 
       // This might not work perfectly due to precision loss during initial parsing
       expect(typeof result.id).toBe('string');
@@ -192,7 +199,7 @@ describe('PrecisionJsonParser', () => {
 
     it('should keep safe numbers as numbers', () => {
       const json = `{"id": ${MEDIUM_INTEGER}}`;
-      const result = PrecisionJsonParser.parseWithReviver(json) as any;
+      const result = PrecisionJsonParser.parseWithReviver(json) as Record<string, unknown>;
 
       expect(result.id).toBe(parseInt(MEDIUM_INTEGER));
       expect(typeof result.id).toBe('number');
@@ -216,7 +223,7 @@ describe('PrecisionJsonParser', () => {
 
     it('should handle null and undefined values', () => {
       const json = '{"id": null, "userId": 123}';
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       expect(result.id).toBeNull();
       expect(result.userId).toBe(123);
@@ -232,7 +239,7 @@ describe('PrecisionJsonParser', () => {
 
     it('should handle zero and negative numbers', () => {
       const json = `{"id": 0, "userId": -123}`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       expect(result.id).toBe(0);
       expect(result.userId).toBe(-123);
@@ -242,7 +249,7 @@ describe('PrecisionJsonParser', () => {
 
     it('should handle decimal numbers in ID fields', () => {
       const json = '{"id": 123.456}';
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       expect(result.id).toBe(123.456);
       expect(typeof result.id).toBe('number');
@@ -253,7 +260,7 @@ describe('PrecisionJsonParser', () => {
         "id"    :    ${LARGE_INTEGER}   ,
         "userId":${LARGE_INTEGER}
       }`;
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
 
       expect(result.id).toBe(LARGE_INTEGER);
       expect(result.userId).toBe(LARGE_INTEGER);
@@ -285,23 +292,27 @@ describe('PrecisionJsonParser', () => {
         }
       }`;
 
-      const result = PrecisionJsonParser.parse(json) as any;
+      const result = PrecisionJsonParser.parse(json) as Record<string, unknown>;
+      const data = result.data as Record<string, unknown>;
+      const items = data.items as Record<string, unknown>[];
+      const firstItem = items[0];
+      const metadata = result.metadata as Record<string, unknown>;
 
       // Large ID fields should be strings
-      expect(typeof result.data.id).toBe('string');
-      expect(typeof result.data.userId).toBe('string');
-      expect(typeof result.data.items[0].itemId).toBe('string');
+      expect(typeof data.id).toBe('string');
+      expect(typeof data.userId).toBe('string');
+      expect(typeof firstItem.itemId).toBe('string');
 
       // Non-ID numbers should remain numbers
-      expect(typeof result.data.amount).toBe('number');
-      expect(typeof result.data.timestamp).toBe('number');
-      expect(typeof result.data.items[0].quantity).toBe('number');
-      expect(typeof result.data.items[0].price).toBe('number');
-      expect(typeof result.metadata.processingTime).toBe('number');
+      expect(typeof data.amount).toBe('number');
+      expect(typeof data.timestamp).toBe('number');
+      expect(typeof firstItem.quantity).toBe('number');
+      expect(typeof firstItem.price).toBe('number');
+      expect(typeof metadata.processingTime).toBe('number');
 
       // Already quoted strings should remain strings
-      expect(typeof result.metadata.requestId).toBe('string');
-      expect(result.metadata.requestId).toBe(LARGE_INTEGER);
+      expect(typeof metadata.requestId).toBe('string');
+      expect(metadata.requestId).toBe(LARGE_INTEGER);
     });
   });
 });
