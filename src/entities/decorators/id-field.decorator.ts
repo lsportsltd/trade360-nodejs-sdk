@@ -22,10 +22,7 @@ import { IdTransformerUtil } from '../../utilities/id-transformer.util';
  */
 export function IdField(exposeName: string = 'Id', fieldName: string = 'Id') {
   return function (target: any, propertyKey: string) {
-    // Apply @Expose decorator
     Expose({ name: exposeName })(target, propertyKey);
-    
-    // Apply @Transform decorator with ID transformation logic
     Transform(IdTransformerUtil.createIdTransform(fieldName))(target, propertyKey);
   };
 }

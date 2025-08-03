@@ -10,7 +10,7 @@
 export class PrecisionJsonParser {
   private static readonly LARGE_ID_FIELD_REGEX = /"(\w*[iI][dD])"\s*:\s*(\d+)/g;
 
-  private static readonly SAFE_INTEGER_DIGIT_THRESHOLD = 15; // Number.MAX_SAFE_INTEGER has 16 digits
+  private static readonly SAFE_INTEGER_DIGIT_THRESHOLD = 15;
 
   /**
    * Primary parser method that preserves large numbers as strings for ID fields.
@@ -35,13 +35,10 @@ export class PrecisionJsonParser {
   public static parsePreservingLargeIds(jsonString: string): unknown {
     let processedJson = jsonString;
 
-    // Replace large numbers in ID fields with quoted versions
     processedJson = processedJson.replace(this.LARGE_ID_FIELD_REGEX, (match, fieldName, number) => {
-      // Check if the number is potentially unsafe using string length and BigInt comparison
       if (this.isLargeNumber(number)) {
         return `"${fieldName}":"${number}"`;
       }
-      // Keep small numbers as numbers for better type consistency
       return match;
     });
 
@@ -59,7 +56,6 @@ export class PrecisionJsonParser {
   public static parseAllIdFieldsAsStrings(jsonString: string): unknown {
     let processedJson = jsonString;
 
-    // Replace all numbers in ID fields with quoted versions for consistency
     processedJson = processedJson.replace(this.LARGE_ID_FIELD_REGEX, (match, fieldName, number) => {
       return `"${fieldName}":"${number}"`;
     });
@@ -79,10 +75,7 @@ export class PrecisionJsonParser {
    */
   public static parseWithReviver(jsonString: string): unknown {
     return JSON.parse(jsonString, (key: string, value: unknown) => {
-      // Check if the key looks like an ID field and the value is a large number
       if (this.isIdField(key) && typeof value === 'number' && value > Number.MAX_SAFE_INTEGER) {
-        // Convert back to string to preserve original precision
-        // Note: This approach has limitations as precision is already lost
         return value.toString();
       }
       return value;
@@ -111,24 +104,19 @@ export class PrecisionJsonParser {
    * @returns True if the number could lose precision
    */
   private static isLargeNumber(numberString: string): boolean {
-    // Quick check: if it has more than 16 digits, it's definitely too large
     if (numberString.length > 16) {
       return true;
     }
 
-    // For numbers with 15-16 digits, use BigInt comparison to be safe
-    // Only convert numbers that are GREATER than MAX_SAFE_INTEGER
     if (numberString.length >= this.SAFE_INTEGER_DIGIT_THRESHOLD) {
       try {
         const bigIntValue = BigInt(numberString);
         return bigIntValue > BigInt(Number.MAX_SAFE_INTEGER);
       } catch {
-        // If BigInt parsing fails, treat as unsafe
         return true;
       }
     }
 
-    // Numbers with fewer than 15 digits are always safe
     return false;
   }
 }

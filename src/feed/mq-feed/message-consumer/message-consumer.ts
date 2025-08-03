@@ -23,7 +23,6 @@ import { IBodyHandler, IConsumptionLatency } from './interfaces';
  */
 function ConvertJsonToMessage(rawJson: string): WrappedMessage {
   try {
-    // Use custom JSON parser to preserve large ID numbers as strings
     const parsedData = PrecisionJsonParser.parsePreservingLargeIds(rawJson);
     const message: WrappedMessage = TransformerUtil.transform(
       parsedData as BaseEntity,
@@ -101,10 +100,7 @@ export class MessageConsumer {
 
       const bodyHandler = this.bodyHandlers.get(entityType);
 
-      if (entityType == 3) {
-        this.logger?.info('Entity Type', { entityType });
-        this.logger?.info('RawMsg', { rawMessage });
-      }
+
 
       if (!isNil(bodyHandler)) {
         await bodyHandler.processAsync({ header, body });

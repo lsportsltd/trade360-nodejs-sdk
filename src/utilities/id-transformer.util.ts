@@ -14,7 +14,6 @@ export class IdTransformerUtil {
    * @throws IdTransformationError if the value is invalid
    */
   public static transformId(value: unknown, fieldName: string = 'Id'): string {
-    // Handle null/undefined - this should throw an error as ID is required
     if (value === null || value === undefined) {
       throw new IdTransformationError(
         fieldName,
@@ -23,7 +22,6 @@ export class IdTransformerUtil {
       );
     }
 
-    // Convert numbers to strings (including large numbers)
     if (typeof value === 'number') {
       if (!Number.isFinite(value)) {
         throw new IdTransformationError(fieldName, value, 'Invalid number value (NaN or Infinity)');
@@ -31,12 +29,10 @@ export class IdTransformerUtil {
       return value.toString();
     }
 
-    // Convert BigInt to strings
     if (typeof value === 'bigint') {
       return value.toString();
     }
 
-    // Keep strings as they are (but validate they're not empty)
     if (typeof value === 'string') {
       if (value.trim() === '') {
         throw new IdTransformationError(fieldName, value, 'String value cannot be empty');
@@ -44,7 +40,6 @@ export class IdTransformerUtil {
       return value;
     }
 
-    // Reject any other types
     throw new IdTransformationError(fieldName, value, `Unsupported type: ${typeof value}`);
   }
 
