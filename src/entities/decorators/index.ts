@@ -7,3 +7,5 @@ export function EntityKey(value: number) {
     knownEntityKeys.set(value, constructor.name);
   };
 }
+
+export * from './id-field.decorator';
