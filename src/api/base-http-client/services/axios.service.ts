@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { BaseEntity } from '@entities';
-import { PrecisionJsonParser } from '@utilities';
+import { IdSafeJsonParser } from '@utilities';
 
 import { IHttpService } from '../interfaces';
 
@@ -28,7 +28,7 @@ export class AxiosService<TRequest extends BaseEntity> implements IHttpService<T
       function (data: unknown): unknown {
         if (typeof data === 'string') {
           try {
-            return PrecisionJsonParser.parsePreservingLargeIds(data);
+            return IdSafeJsonParser.parsePreservingLargeIds(data);
           } catch (e) {
             return data;
           }
