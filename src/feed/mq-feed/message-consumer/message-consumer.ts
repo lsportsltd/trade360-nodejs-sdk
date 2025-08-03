@@ -1,5 +1,4 @@
 import { isNil } from 'lodash';
-import { parse } from 'lossless-json';
 
 import {
   BaseEntity,
@@ -14,6 +13,7 @@ import { ILogger } from '@logger';
 
 import { BodyHandler } from './handler';
 import { IBodyHandler, IConsumptionLatency } from './interfaces';
+import { parse } from 'lossless-json';
 
 /**
  * Convert json string to WrappedMessage instance
@@ -24,8 +24,9 @@ import { IBodyHandler, IConsumptionLatency } from './interfaces';
  */
 function ConvertJsonToMessage(rawJson: string): WrappedMessage {
   try {
+    const payload = parse(rawJson, undefined, BigIntSerializationUtil.customNumberParser);
     const message: WrappedMessage = TransformerUtil.transform(
-      parse(rawJson, undefined, BigIntSerializationUtil.customNumberParser) as BaseEntity,
+      payload as BaseEntity,
       WrappedMessage,
     );
 
@@ -84,6 +85,7 @@ export class MessageConsumer {
       }
 
       const rawMessage = messageContent.toString();
+      this.logger?.debug(`rawMessage: ${rawMessage}`);
 
       const { header, body } = ConvertJsonToMessage(rawMessage);
 

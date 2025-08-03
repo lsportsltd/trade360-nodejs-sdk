@@ -1,4 +1,4 @@
-import { BigIntSerializationUtil } from '../../src/entities/utilities/bigint-serialization.util';
+import { BigIntSerializationUtil } from '../../src/utilities/bigint-serialization.util';
 
 describe('BigIntSerializationUtil', () => {
   describe('bigIntReplacer', () => {

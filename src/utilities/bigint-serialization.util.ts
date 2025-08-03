@@ -24,6 +24,44 @@ export class BigIntSerializationUtil {
   }
 
   /**
+   * Reviver function that converts 'n' suffixed strings back to BigInt values.
+   * Use this when parsing JSON that was stringified with bigIntReplacer.
+   *
+   * @param key - The key of the property being parsed
+   * @param value - The value being parsed
+   * @returns The value with 'n' suffixed strings converted back to BigInt
+   */
+  public static bigIntReviver(key: string, value: unknown): unknown {
+    if (typeof value === 'string' && value.endsWith('n') && value.length > 1) {
+      const numPart = value.slice(0, -1);
+      // Check if it's a valid integer string
+      if (/^-?\d+$/.test(numPart)) {
+        try {
+          return BigInt(numPart);
+        } catch {
+          // If BigInt conversion fails, return original string
+          return value;
+        }
+      }
+    }
+    return value;
+  }
+
+  /**
+   * Safely parse JSON string that may contain BigInt values with 'n' suffix.
+   *
+   * @param jsonString - The JSON string to parse
+   * @returns Parsed object with BigInt values restored
+   */
+  public static safeParse(jsonString: string): unknown {
+    try {
+      return JSON.parse(jsonString, BigIntSerializationUtil.bigIntReviver);
+    } catch (error) {
+      throw new Error(`Failed to parse JSON with BigInt values: ${error}`);
+    }
+  }
+
+  /**
    * Custom number parser for lossless-json that converts large positive integers to BigInt
    * and other numeric values to regular numbers. Since ID values are always positive,
    * we only need to handle large positive integers to prevent precision loss.
@@ -43,7 +81,6 @@ export class BigIntSerializationUtil {
         if (value.length === 16) {
           const maxSafeIntegerStr = '9007199254740991';
           if (value > maxSafeIntegerStr) {
-            console.log('customNumberParser', value);
             return BigInt(value);
           }
         }

@@ -4,7 +4,7 @@ import { BaseBet } from '../../../../src/entities/core-entities/market/base-bet'
 import { BetStatus } from '../../../../src/entities/core-entities/enums/bet-status';
 import { SettlementType } from '../../../../src/entities/core-entities/enums/settlement-type';
 import { IdTransformationError } from '../../../../src/entities/errors/id-transformation.error';
-import { BigIntSerializationUtil } from '../../../../src/entities/utilities/bigint-serialization.util';
+import { BigIntSerializationUtil } from '../../../../src/utilities/bigint-serialization.util';
 
 /**
  * Custom number parser for lossless-json (same logic as in AxiosService)

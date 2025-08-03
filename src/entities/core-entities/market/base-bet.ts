@@ -2,7 +2,7 @@ import { Expose, Transform, Type } from 'class-transformer';
 
 import { BetStatus, SettlementType } from '@lsports/enums';
 import { transformToBigInt } from '../utilities/id-transformation';
-import { BigIntSerializationUtil } from '../../utilities/bigint-serialization.util';
+import { BigIntSerializationUtil } from '../../../utilities/bigint-serialization.util';
 
 /**
  * Base betting entity with precision-safe ID handling.

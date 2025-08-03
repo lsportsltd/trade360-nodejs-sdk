@@ -28,14 +28,11 @@ export function transformToBigInt(
     return undefined;
   }
 
-  // If the value is already a BigInt (from lossless-json), return it as is
   if (typeof value === 'bigint') {
     return value;
   }
 
-  // Handle string values
   if (typeof value === 'string') {
-    // Check if string is empty or whitespace only
     if (value.trim() === '') {
       if (isRequired) {
         throw new IdTransformationError(
@@ -49,12 +46,10 @@ export function transformToBigInt(
 
     let processedValue = value.trim();
 
-    // Handle BigInt serialized strings (those ending with 'n')
     if (processedValue.endsWith('n')) {
       processedValue = processedValue.slice(0, -1); // Remove the 'n' suffix
     }
 
-    // Check if string contains only digits (and optional leading minus)
     if (!/^-?\d+$/.test(processedValue)) {
       const details = `Expected integer, got non-numeric string: '${value}'`;
       if (isRequired) {
@@ -74,9 +69,7 @@ export function transformToBigInt(
     }
   }
 
-  // Handle number values
   if (typeof value === 'number') {
-    // Check for NaN, Infinity, or decimal numbers
     if (!Number.isFinite(value) || !Number.isInteger(value)) {
       const details = `Invalid ID format received: ${value}. Expected integer, got ${
         !Number.isFinite(value) ? 'non-finite' : 'decimal'
@@ -99,7 +92,6 @@ export function transformToBigInt(
     }
   }
 
-  // Unexpected type
   const details = `Invalid ID type received: ${typeof value}. Expected string, number, or bigint.`;
   if (isRequired) {
     throw new IdTransformationError(fieldName, value, details);

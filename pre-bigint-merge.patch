@@ -1,0 +1,362 @@
+diff --cc sample/feed-sample/src/index.ts
+index 9e5ceb4,c4f8049..0000000
+--- a/sample/feed-sample/src/index.ts
++++ b/sample/feed-sample/src/index.ts
+@@@ -57,44 -57,44 +57,26 @@@ const initSample = async () => 
+      const feedInPlay = new Feed(config.trade360.inPlayMQSettings!, logger);
+      const feedPreMatch = new Feed(config.trade360.preMatchMQSettings!, logger); 
+  
+- 
+      feedInPlay.addEntityHandler(new FixtureMetadataUpdateHandler(), FixtureMetadataUpdate);
+--
+      feedInPlay.addEntityHandler(new LivescoreUpdateHandler(), LivescoreUpdate);
+--
+      feedInPlay.addEntityHandler(new MarketUpdateHandler(), MarketUpdate);
+--
+      feedInPlay.addEntityHandler(new SettlementUpdateHandler(), SettlementUpdate);
+--
+      feedInPlay.addEntityHandler(new HeartbeatUpdateHandler(), HeartbeatUpdate);
+--
+      feedInPlay.addEntityHandler(new KeepAliveUpdateHandler(), KeepAliveUpdate);
+--
+--
+--
+++    
+      feedPreMatch.addEntityHandler(new FixtureMetadataUpdateHandler(), FixtureMetadataUpdate);
+--
+      feedPreMatch.addEntityHandler(new LivescoreUpdateHandler(), LivescoreUpdate);
+--
+      feedPreMatch.addEntityHandler(new MarketUpdateHandler(), MarketUpdate);
+--
+      feedPreMatch.addEntityHandler(new SettlementUpdateHandler(), SettlementUpdate);
+--
+      feedPreMatch.addEntityHandler(new OutrightFixtureUpdateHandler(), OutrightFixtureUpdate);
+--
+      feedPreMatch.addEntityHandler(new OutrightScoreUpdateHandler(), OutrightScoreUpdate);
+--
+      feedPreMatch.addEntityHandler(new OutrightFixtureMarketUpdateHandler(),OutrightFixtureMarketUpdate);
+--
+      feedPreMatch.addEntityHandler(new OutrightSettlementsUpdateHandler(), OutrightSettlementsUpdate);
+--
+      feedPreMatch.addEntityHandler(new HeartbeatUpdateHandler(), HeartbeatUpdate);
+--
+      feedPreMatch.addEntityHandler(new OutrightLeagueFixtureUpdateHandler(),OutrightLeagueFixtureUpdate);
+--
+      feedPreMatch.addEntityHandler(new OutrightLeagueMarketUpdateHandler(), OutrightLeagueMarketUpdate);
+  
+-     process.on('exit' || 'SIGINT', async (err) => {
+ -    // Properly handle both 'exit' and 'SIGINT' events
++     const shutdown = async () => {
+        await feedInPlay.stop();
+        await feedPreMatch.stop();
+        process.exit(1);
+@@@ -103,16 -106,16 +88,14 @@@
+      await feedInPlay.start(true);
+      await feedPreMatch.start(true);
+  
+--
+      await new Promise<void>((resolve) => {
+        setTimeout(() => {
+          return resolve();
+-       }, 60 * 1000);
+ -      }, 10 * 1000);
+++      }, 3 * 1000);
+      });
+  
+ -    await feedPreMatch.stop();
+ -    await feedInPlay.stop();
+ -
+ +   await feedPreMatch.stop();
+ +   await feedInPlay.stop();
+- 
+    } catch (err: unknown) {
+      if (err instanceof ValidationError) {
+        logger.error(`feed sample got err from ValidationError instance: ${err}`);
+diff --cc src/entities/message-wrappers/wrapped-message.ts
+index 0776eed,e69ef5f..0000000
+--- a/src/entities/message-wrappers/wrapped-message.ts
++++ b/src/entities/message-wrappers/wrapped-message.ts
+@@@ -2,7 -2,6 +2,7 @@@ import { Expose, Type } from 'class-tra
+  
+  import { MessageHeader } from './message-header';
+  import { BaseEntity } from '../message-types';
+- import { BigIntSerializationUtil } from '../utilities';
+++// import { BigIntSerializationUtil } from '../utilities';
+  
+  export class WrappedMessage implements BaseEntity {
+    [key: string]: unknown;
+@@@ -12,16 -11,5 +12,17 @@@
+    public header!: MessageHeader;
+  
+    @Expose({ name: 'Body' })
+-   @Transform(({ obj }) => {
+-     try {
+-       return BigIntSerializationUtil.stringify(obj.Body);
+-     } catch (error) {
+-       // Handle circular references and other transform errors
+-       return BigIntSerializationUtil.stringify({
+-         error: 'Body transformation failed',
+-         originalError: String(error),
+-       });
+-     }
+-   })
+-   public body?: string;
+++  // @Transform(({ obj }) => {
+++  //   try {
+++  //     return BigIntSerializationUtil.stringify(obj.Body);
+++  //   } catch (error) {
+++  //     // Handle circular references and other transform errors
+++  //     return BigIntSerializationUtil.stringify({
+++  //       error: 'Body transformation failed',
+++  //       originalError: String(error),
+++  //     });
+++  //   }
+++  // })
+++  // public body?: string;
++   public body?: BaseEntity;
+  }
+diff --cc src/feed/mq-feed/message-consumer/handler/body-handler.ts
+index d010d80,b16f499..0000000
+--- a/src/feed/mq-feed/message-consumer/handler/body-handler.ts
++++ b/src/feed/mq-feed/message-consumer/handler/body-handler.ts
+@@@ -58,19 -57,16 +57,24 @@@ export class BodyHandler<TEntity extend
+     */
+    async processAsync({ header, body }: IMessageStructure<BaseEntity>): Promise<void> {
+      try {
++       // Body is already a parsed BaseEntity object, no need for JSON.parse
+++      // ? TransformerUtil.transform(
+++      //     parse(body, undefined, BigIntSerializationUtil.customNumberParser) as BaseEntity,
+++      //     this.entityConstructor,
+++      //   )
+        const entity = !isNil(body)
+-         ? TransformerUtil.transform(
+-             parse(body, undefined, BigIntSerializationUtil.customNumberParser) as BaseEntity,
+-             this.entityConstructor,
+-           )
+ -        ? TransformerUtil.transform(body, this.entityConstructor)
+++        ? TransformerUtil.transform(body as BaseEntity, this.entityConstructor)
+          : undefined;
+  
+        return await this.entityHandler.processAsync({ header, entity });
+      } catch (err) {
+ +      const errorInfo = BigIntSerializationUtil.extractErrorInfo(err);
+ +      this.logger?.warn(`Failed to deserialize ${this.entityConstructor.name} entity`, {
+ +        error: errorInfo,
+ +      });
++       this.logger?.warn(
++         `Failed to deserialize ${this.entityConstructor.name} entity, Due to: ${err}`,
++       );
+      }
+    }
+  }
+diff --cc src/feed/mq-feed/message-consumer/message-consumer.ts
+index 6e16e41,89efb80..0000000
+--- a/src/feed/mq-feed/message-consumer/message-consumer.ts
++++ b/src/feed/mq-feed/message-consumer/message-consumer.ts
+@@@ -1,5 -1,4 +1,4 @@@
+ -import { isInteger, isNil } from 'lodash';
+ +import { isNil } from 'lodash';
+- import { parse } from 'lossless-json';
+  
+  import {
+    BaseEntity,
+@@@ -14,6 -13,7 +13,7 @@@ import { ILogger } from '@logger'
+  
+  import { BodyHandler } from './handler';
+  import { IBodyHandler, IConsumptionLatency } from './interfaces';
+ -import { parse, isSafeNumber } from 'lossless-json';
+++import { parse } from 'lossless-json';
+  
+  /**
+   * Convert json string to WrappedMessage instance
+@@@ -24,8 -24,10 +24,9 @@@
+   */
+  function ConvertJsonToMessage(rawJson: string): WrappedMessage {
+    try {
++     const payload = parse(rawJson, undefined, BigIntSerializationUtil.customNumberParser);
+ -    );
+      const message: WrappedMessage = TransformerUtil.transform(
+-       parse(rawJson, undefined, BigIntSerializationUtil.customNumberParser) as BaseEntity,
++       payload as BaseEntity,
+        WrappedMessage,
+      );
+  
+diff --git a/test/entities/message-wrappers/wrapped-message.spec.ts b/test/entities/message-wrappers/wrapped-message.spec.ts
+index 2f9cf2f..366e953 100644
+--- a/test/entities/message-wrappers/wrapped-message.spec.ts
++++ b/test/entities/message-wrappers/wrapped-message.spec.ts
+@@ -1,6 +1,7 @@
+ import { plainToInstance } from 'class-transformer';
+ import { WrappedMessage } from '../../../src/entities/message-wrappers/wrapped-message';
+ import { MessageHeader } from '../../../src/entities/message-wrappers/message-header';
++import { BigIntSerializationUtil } from '../../../src/utilities/bigint-serialization.util';
+ 
+ describe('WrappedMessage', () => {
+   describe('Basic functionality', () => {
+@@ -23,7 +24,8 @@ describe('WrappedMessage', () => {
+       expect(wrapped.header).toBeInstanceOf(MessageHeader);
+       expect(wrapped.header.type).toBe(101);
+       expect(wrapped.header.msgGuid).toBe('test-guid');
+-      expect(wrapped.body).toBe('{"id":123,"name":"test"}');
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      expect(stringifiedBody).toBe('{"id":123,"name":"test"}');
+     });
+ 
+     it('should handle missing header', () => {
+@@ -33,7 +35,8 @@ describe('WrappedMessage', () => {
+ 
+       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
+       expect(wrapped.header).toBeUndefined(); // Header should be undefined when missing
+-      expect(wrapped.body).toBe('{"id":123}');
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      expect(stringifiedBody).toBe('{"id":123}');
+     });
+ 
+     it('should handle missing body', () => {
+@@ -70,7 +73,8 @@ describe('WrappedMessage', () => {
+ 
+       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
+ 
+-      expect(wrapped.body).toBe(
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      expect(stringifiedBody).toBe(
+         '{"id":"123n","userId":"999999999999999999n","name":"test","count":456}',
+       );
+     });
+@@ -102,7 +106,8 @@ describe('WrappedMessage', () => {
+ 
+       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
+ 
+-      const parsedBody = JSON.parse(wrapped.body!);
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      const parsedBody = JSON.parse(stringifiedBody);
+       expect(parsedBody.user.id).toBe('123n');
+       expect(parsedBody.user.profile.score).toBe('1000n');
+       expect(parsedBody.items[0].id).toBe('1n');
+@@ -129,7 +134,8 @@ describe('WrappedMessage', () => {
+ 
+       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
+ 
+-      const parsedBody = JSON.parse(wrapped.body!);
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      const parsedBody = JSON.parse(stringifiedBody);
+       expect(parsedBody.ids).toEqual(['123n', '456n', '789n']);
+       expect(parsedBody.mixedArray).toEqual(['1n', 'text', 2, true, { nested: '3n' }]);
+       expect(parsedBody.data.values).toEqual(['100n', '200n', '300n']);
+@@ -156,7 +162,8 @@ describe('WrappedMessage', () => {
+ 
+       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
+ 
+-      const parsedBody = JSON.parse(wrapped.body!);
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      const parsedBody = JSON.parse(stringifiedBody);
+       expect(parsedBody.zero).toBe('0n');
+       expect(parsedBody.negative).toBe('-123n');
+       expect(parsedBody.large).toBe('999999999999999999999999n');
+@@ -183,7 +190,8 @@ describe('WrappedMessage', () => {
+ 
+       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
+ 
+-      expect(wrapped.body).toBe(
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      expect(stringifiedBody).toBe(
+         '{"name":"test","count":123,"active":true,"data":null,"items":["a","b","c"]}',
+       );
+     });
+@@ -191,7 +199,7 @@ describe('WrappedMessage', () => {
+ 
+   describe('Error handling in body transform', () => {
+     it('should handle circular references in body gracefully', () => {
+-      const circularObj: any = { name: 'test' };
++      const circularObj: Record<string, unknown> = { name: 'test' };
+       circularObj.self = circularObj;
+ 
+       const plain = {
+@@ -218,7 +226,7 @@ describe('WrappedMessage', () => {
+         },
+         Body: {
+           name: 'test',
+-          func: () => {},
++          func: (): void => {},
+           symbol: Symbol('test'),
+           bigint: 123n,
+         },
+@@ -229,15 +237,15 @@ describe('WrappedMessage', () => {
+       }).not.toThrow();
+ 
+       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
+-      expect(typeof wrapped.body).toBe('string');
++      expect(typeof wrapped.body).toBe('object');
+       expect(wrapped.body).toBeDefined();
+     });
+ 
+     it('should handle completely unserializable body', () => {
+-      const unserializable = (() => {
+-        const obj: any = {};
++      const unserializable = ((): Record<string, unknown> => {
++        const obj: Record<string, unknown> = {};
+         obj.circular = obj;
+-        obj.func = () => {};
++        obj.func = (): void => {};
+         obj.symbol = Symbol('test');
+         return obj;
+       })();
+@@ -304,7 +312,8 @@ describe('WrappedMessage', () => {
+ 
+       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
+ 
+-      const parsedBody = JSON.parse(wrapped.body!);
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      const parsedBody = JSON.parse(stringifiedBody);
+       expect(parsedBody.Fixture.Id).toBe('11060329315062111n');
+       expect(parsedBody.Fixture.Sport.Id).toBe('6046n');
+       expect(parsedBody.Fixture.League.Id).toBe('132n');
+@@ -334,9 +343,10 @@ describe('WrappedMessage', () => {
+       expect(wrapped.header.type).toBe(200);
+       expect(wrapped.header.msgGuid).toBe('preservation-test');
+       expect(wrapped.header.serverTimestamp).toBe(555);
+-      expect((wrapped.header as any).customField).toBeUndefined(); // Filtered out by excludeExtraneousValues
+-      expect(wrapped.body).toBe('{"id":"123n","data":"test"}');
+-      expect((wrapped as any).extraField).toBeUndefined();
++      expect((wrapped.header as unknown as Record<string, unknown>).customField).toBeUndefined(); // Filtered out by excludeExtraneousValues
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      expect(stringifiedBody).toBe('{"id":"123n","data":"test"}');
++      expect((wrapped as Record<string, unknown>).extraField).toBeUndefined();
+     });
+ 
+     it('should handle empty body object', () => {
+@@ -351,7 +361,8 @@ describe('WrappedMessage', () => {
+ 
+       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
+ 
+-      expect(wrapped.body).toBe('{}');
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      expect(stringifiedBody).toBe('{}');
+     });
+ 
+     it('should handle null body', () => {
+@@ -366,7 +377,8 @@ describe('WrappedMessage', () => {
+ 
+       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
+ 
+-      expect(wrapped.body).toBe('null');
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      expect(stringifiedBody).toBe('null');
+     });
+   });
+ 
+@@ -395,10 +407,11 @@ describe('WrappedMessage', () => {
+ 
+       const wrapped = plainToInstance(WrappedMessage, plain, { excludeExtraneousValues: true });
+ 
+-      expect(typeof wrapped.body).toBe('string');
+-      expect(wrapped.body!.length).toBeGreaterThan(0);
++      expect(typeof wrapped.body).toBe('object');
++      expect(wrapped.body).toBeDefined();
+ 
+-      const parsedBody = JSON.parse(wrapped.body!);
++      const stringifiedBody = BigIntSerializationUtil.stringify(wrapped.body);
++      const parsedBody = JSON.parse(stringifiedBody);
+       expect(parsedBody.users).toHaveLength(100);
+       expect(parsedBody.users[0].id).toBe('1000000000000000000n');
+       expect(parsedBody.metadata.totalCount).toBe('100n');
