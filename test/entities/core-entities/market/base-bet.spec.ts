@@ -206,7 +206,7 @@ describe('BaseBet Entity', () => {
   it('should handle default values correctly', (): void => {
     const plain = { Id: '123' };
     const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
-    
+
     expect(baseBet.id).toBe('123');
     expect(typeof baseBet.id).toBe('string');
     // isChanged has a default value in the class, but plainToInstance doesn't set it unless provided
@@ -245,16 +245,16 @@ describe('BaseBet Entity', () => {
     ];
 
     const baseBets = arrayData.map((data) =>
-      plainToInstance(BaseBet, data, { excludeExtraneousValues: true })
+      plainToInstance(BaseBet, data, { excludeExtraneousValues: true }),
     );
 
     expect(baseBets).toHaveLength(3);
     expect(baseBets[0].id).toBe('1');
     expect(baseBets[1].id).toBe('11060329315062111');
     expect(baseBets[2].id).toBe('123');
-    
+
     // Verify all IDs are strings
-    baseBets.forEach(bet => {
+    baseBets.forEach((bet) => {
       expect(typeof bet.id).toBe('string');
     });
   });
