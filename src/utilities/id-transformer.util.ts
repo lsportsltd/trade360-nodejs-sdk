@@ -54,7 +54,7 @@ export class IdTransformerUtil {
    * @param fieldName - The name of the field being transformed (for error reporting)
    * @returns A transform function that can be used with @Transform decorator
    */
-  public static createIdTransform(fieldName: string = 'Id') {
+  public static createIdTransform(fieldName: string = 'Id'): (obj: { value: unknown }) => string {
     return ({ value }: { value: unknown }) => this.transformId(value, fieldName);
   }
 }

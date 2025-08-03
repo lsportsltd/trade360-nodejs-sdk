@@ -3,46 +3,79 @@
  *
  * This parser specifically handles ID fields that might contain large numbers
  * exceeding JavaScript's Number.MAX_SAFE_INTEGER (9,007,199,254,740,991).
+ *
+ * Recommended usage: Use `parse()` method for most cases, which automatically
+ * detects and preserves large numbers in ID fields.
  */
 export class PrecisionJsonParser {
-  private static readonly ID_FIELD_PATTERNS = [
-    /^"Id"\s*:\s*(\d{16,})/g,
-    /^"id"\s*:\s*(\d{16,})/g,
-    /^"ID"\s*:\s*(\d{16,})/g,
-  ];
+  private static readonly LARGE_ID_FIELD_REGEX = /"(\w*[iI][dD])"\s*:\s*(\d+)/g;
+
+  private static readonly SAFE_INTEGER_DIGIT_THRESHOLD = 15; // Number.MAX_SAFE_INTEGER has 16 digits
 
   /**
-   * Parses JSON string while preserving large numbers as strings for ID fields.
-   * This prevents precision loss when dealing with large integers.
+   * Primary parser method that preserves large numbers as strings for ID fields.
+   * This method uses regex preprocessing to identify and quote large numbers
+   * before JSON parsing occurs, preventing precision loss.
    *
    * @param jsonString The JSON string to parse
    * @returns Parsed object with large ID numbers preserved as strings
    */
   public static parse(jsonString: string): unknown {
-    // Pre-process the JSON string to wrap large ID numbers in quotes
+    return this.parsePreservingLargeIds(jsonString);
+  }
+
+  /**
+   * Enhanced parser that uses regex to identify and preserve large numbers
+   * in ID fields before JSON parsing occurs. This method converts numbers
+   * to strings only when they exceed the safe integer threshold.
+   *
+   * @param jsonString The JSON string to parse
+   * @returns Parsed object with large ID numbers preserved as strings
+   */
+  public static parsePreservingLargeIds(jsonString: string): unknown {
     let processedJson = jsonString;
 
-    // Find and quote large ID numbers
-    this.ID_FIELD_PATTERNS.forEach((pattern) => {
-      processedJson = processedJson.replace(pattern, (match, number) => {
-        // If the number is larger than JavaScript's safe integer range, wrap in quotes
-        if (parseInt(number) > Number.MAX_SAFE_INTEGER) {
-          return match.replace(number, `"${number}"`);
-        }
-        return match;
-      });
+    // Replace large numbers in ID fields with quoted versions
+    processedJson = processedJson.replace(this.LARGE_ID_FIELD_REGEX, (match, fieldName, number) => {
+      // Check if the number is potentially unsafe using string length and BigInt comparison
+      if (this.isLargeNumber(number)) {
+        return `"${fieldName}":"${number}"`;
+      }
+      // Keep small numbers as numbers for better type consistency
+      return match;
     });
 
-    // Use standard JSON.parse on the processed string
     return JSON.parse(processedJson);
   }
 
   /**
-   * Alternative parser using a reviver function approach.
-   * This approach processes all numeric values during parsing.
+   * Alternative parser that preserves ALL numbers in ID fields as strings,
+   * regardless of size. Use this for maximum consistency when you want
+   * all ID fields to be strings.
+   *
+   * @param jsonString The JSON string to parse
+   * @returns Parsed object with all ID numbers as strings
+   */
+  public static parseAllIdFieldsAsStrings(jsonString: string): unknown {
+    let processedJson = jsonString;
+
+    // Replace all numbers in ID fields with quoted versions for consistency
+    processedJson = processedJson.replace(this.LARGE_ID_FIELD_REGEX, (match, fieldName, number) => {
+      return `"${fieldName}":"${number}"`;
+    });
+
+    return JSON.parse(processedJson);
+  }
+
+  /**
+   * Legacy parser using a reviver function approach.
+   *
+   * ⚠️  WARNING: This approach has limitations as precision may already be lost
+   * during the initial JSON.parse phase. Use `parse()` method instead.
    *
    * @param jsonString The JSON string to parse
    * @returns Parsed object with large numbers converted to strings
+   * @deprecated Use `parse()` method instead for better precision preservation
    */
   public static parseWithReviver(jsonString: string): unknown {
     return JSON.parse(jsonString, (key: string, value: unknown) => {
@@ -58,6 +91,7 @@ export class PrecisionJsonParser {
 
   /**
    * Determines if a field name represents an ID field.
+   * Matches fields that are exactly 'id' (case-insensitive) or end with 'id'/'Id'/'ID'.
    *
    * @param fieldName The field name to check
    * @returns True if the field appears to be an ID field
@@ -70,25 +104,31 @@ export class PrecisionJsonParser {
   }
 
   /**
-   * Enhanced parser that uses regex to identify and preserve large numbers
-   * in ID fields before JSON parsing occurs.
+   * Safely determines if a numeric string represents a large number
+   * that could lose precision when parsed as a JavaScript number.
    *
-   * @param jsonString The JSON string to parse
-   * @returns Parsed object with large ID numbers preserved as strings
+   * @param numberString The numeric string to check
+   * @returns True if the number could lose precision
    */
-  public static parsePreservingLargeIds(jsonString: string): unknown {
-    // Enhanced regex to find ID fields with any numbers
-    // This matches field names that are exactly 'id', 'Id', 'ID' or end with 'id', 'Id', 'ID'
-    const idFieldRegex = /"([iI][dD]|\w+[iI][dD]|\w*ID)"\s*:\s*(\d+)/g;
+  private static isLargeNumber(numberString: string): boolean {
+    // Quick check: if it has more than 16 digits, it's definitely too large
+    if (numberString.length > 16) {
+      return true;
+    }
 
-    let processedJson = jsonString;
+    // For numbers with 15-16 digits, use BigInt comparison to be safe
+    // Only convert numbers that are GREATER than MAX_SAFE_INTEGER
+    if (numberString.length >= this.SAFE_INTEGER_DIGIT_THRESHOLD) {
+      try {
+        const bigIntValue = BigInt(numberString);
+        return bigIntValue > BigInt(Number.MAX_SAFE_INTEGER);
+      } catch {
+        // If BigInt parsing fails, treat as unsafe
+        return true;
+      }
+    }
 
-    // Replace all numbers in ID fields with quoted versions for consistency
-    processedJson = processedJson.replace(idFieldRegex, (match, fieldName, number) => {
-      // Convert all ID field numbers to strings for consistency
-      return `"${fieldName}":"${number}"`;
-    });
-
-    return JSON.parse(processedJson);
+    // Numbers with fewer than 15 digits are always safe
+    return false;
   }
 }
