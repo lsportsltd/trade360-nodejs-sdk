@@ -96,6 +96,11 @@ export class MessageConsumer {
 
       const bodyHandler = this.bodyHandlers.get(entityType);
 
+      if (entityType == 3) {
+        this.logger?.info('Entity Type', { entityType });
+        this.logger?.info('RawMsg', { rawMessage });
+      }
+
       if (!isNil(bodyHandler)) {
         await bodyHandler.processAsync({ header, body });
 

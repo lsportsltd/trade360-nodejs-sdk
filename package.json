@@ -40,7 +40,6 @@
     "class-transformer": "^0.5.1",
     "express": "^5.1.0",
     "lodash": "^4.17.21",
-    "lossless-json": "^4.1.0",
     "module-alias": "^2.2.3",
     "moment": "^2.30.1",
     "pino": "^9.4.0",
@@ -69,29 +68,31 @@
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.8"
   },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lsportsltd/trade360-nodejs-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lsportsltd/trade360-nodejs-sdk/issues"
+  },
+  "homepage": "https://github.com/lsportsltd/trade360-nodejs-sdk#readme",
   "_moduleAliases": {
     "@feed": "dist/src/feed",
-    "@feed/*": "dist/src/feed/*",
-    "@entities": "dist/src/entities",
-    "@lsports/entities": "dist/src/entities/core-entities",
-    "@lsports/entities/*": "dist/src/entities/core-entities/*",
+    "@entities": "dist/src/entities/core-entities/index.js",
+    "@lsports/entities": "dist/src/entities/core-entities/index.js",
+    "@lsports/entities/common": "dist/src/entities/core-entities/common/index.js",
     "@lsports/enums": "dist/src/entities/core-entities/enums",
     "@lsports/decorators": "dist/src/entities/decorators",
     "@lsports/errors": "dist/src/entities/errors",
     "@api": "dist/src/api",
-    "@api/*": "dist/src/api/*",
     "@customers-api": "dist/src/api/customers-api",
-    "@customers-api/*": "dist/src/api/customers-api/*",
     "@metadata-api": "dist/src/api/common/metadata",
-    "@metadata-api/*": "dist/src/api/common/metadata/*",
     "@subscription-api": "dist/src/api/common/subscription",
-    "@subscription-api/*": "dist/src/api/common/subscription/*",
-    "@httpClient": "dist/src/api/base-http-client",
-    "@httpClient/*": "dist/src/api/base-http-client/*",
+    "@httpClient": "dist/src/api/base-http-client/index.js",
     "@utilities": "dist/src/utilities",
-    "@logger": "dist/src/logger",
-    "@api/common/snapshot": "dist/src/api/common/snapshot",
-    "@api/snapshot-api/snapshot-api": "dist/src/api/snapshot-api/snapshot-api",
-    "@api/snapshot-api/interfaces": "dist/src/api/snapshot-api/interfaces"
+    "@logger": "dist/src/logger"
   }
 }
