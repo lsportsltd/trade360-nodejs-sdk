@@ -12,7 +12,7 @@ describe('ProviderBet Entity', () => {
     const providerBet = plainToInstance(ProviderBet, plain, { excludeExtraneousValues: true });
     expect(providerBet).toBeInstanceOf(ProviderBet);
     expect(providerBet).toBeInstanceOf(BaseBet);
-    expect(providerBet.id).toBe(1n);
+    expect(providerBet.id).toBe('1');
     expect(providerBet.name).toBe('Provider Bet');
   });
 
@@ -35,7 +35,7 @@ describe('ProviderBet Entity', () => {
   it('should handle missing optional properties with valid Id', (): void => {
     const plain = { Id: 123 };
     const providerBet = plainToInstance(ProviderBet, plain, { excludeExtraneousValues: true });
-    expect(providerBet.id).toBe(123n);
+    expect(providerBet.id).toBe('123');
     expect(providerBet.name).toBeUndefined();
   });
 

@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { BaseEntity } from '@entities';
+import { PrecisionJsonParser } from '@utilities';
 
 import { IHttpService } from '../interfaces';
 
@@ -32,6 +33,19 @@ export class AxiosService<TRequest extends BaseEntity> implements IHttpService<T
       headers: {
         'Content-Type': 'application/json',
       },
+      // Use custom JSON parser to preserve large ID numbers as strings
+      transformResponse: [
+        function (data) {
+          if (typeof data === 'string') {
+            try {
+              return PrecisionJsonParser.parsePreservingLargeIds(data);
+            } catch (e) {
+              return data;
+            }
+          }
+          return data;
+        },
+      ],
     });
   }
 

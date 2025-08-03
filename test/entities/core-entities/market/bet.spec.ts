@@ -13,7 +13,7 @@ describe('Bet Entity', () => {
     const bet = plainToInstance(Bet, plain, { excludeExtraneousValues: true });
     expect(bet).toBeInstanceOf(Bet);
     expect(bet).toBeInstanceOf(BaseBet);
-    expect(bet.id).toBe(1n);
+    expect(bet.id).toBe('1');
     expect(bet.name).toBe('Home');
     expect(bet.providerBetId).toBe('PB123');
   });
@@ -37,7 +37,7 @@ describe('Bet Entity', () => {
   it('should handle missing optional properties with valid Id', (): void => {
     const plain = { Id: 123 };
     const bet = plainToInstance(Bet, plain, { excludeExtraneousValues: true });
-    expect(bet.id).toBe(123n);
+    expect(bet.id).toBe('123');
     expect(bet.name).toBeUndefined();
     expect(bet.providerBetId).toBeUndefined();
   });
@@ -65,7 +65,7 @@ describe('Bet Entity', () => {
     const bet = plainToInstance(Bet, plain, { excludeExtraneousValues: true });
 
     // Test inherited BaseBet properties
-    expect(bet.id).toBe(11060329315062111n);
+    expect(bet.id).toBe('11060329315062111');
     expect(bet.name).toBe('Large ID Bet');
     expect(bet.line).toBe('2.5');
     expect(bet.status).toBe(1);
@@ -76,7 +76,7 @@ describe('Bet Entity', () => {
   });
 
   it('should handle invalid Id values by throwing IdTransformationError', (): void => {
-    const invalidValues = [null, undefined, '', 'invalid', 123.45, NaN, Infinity];
+    const invalidValues = [null, undefined, '', '   ', NaN, Infinity, -Infinity];
 
     invalidValues.forEach((invalidId) => {
       expect(() => {

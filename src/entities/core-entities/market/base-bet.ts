@@ -1,6 +1,7 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Type, Transform } from 'class-transformer';
 
 import { BetStatus, SettlementType } from '@lsports/enums';
+import { IdTransformationError } from '../../errors/id-transformation.error';
 
 /**
  * Base betting entity with string-based ID handling for JSON compatibility.
@@ -15,6 +16,36 @@ export class BaseBet {
    * Handles large numbers without precision loss and maintains simplicity.
    */
   @Expose({ name: 'Id' })
+  @Transform(({ value }) => {
+    // Handle null/undefined - this should throw an error as ID is required
+    if (value === null || value === undefined) {
+      throw new IdTransformationError('Id', value, 'Field is required but received null or undefined');
+    }
+
+    // Convert numbers to strings (including large numbers)
+    if (typeof value === 'number') {
+      if (!Number.isFinite(value)) {
+        throw new IdTransformationError('Id', value, 'Invalid number value (NaN or Infinity)');
+      }
+      return value.toString();
+    }
+
+    // Convert BigInt to strings
+    if (typeof value === 'bigint') {
+      return value.toString();
+    }
+
+    // Keep strings as they are (but validate they're not empty)
+    if (typeof value === 'string') {
+      if (value.trim() === '') {
+        throw new IdTransformationError('Id', value, 'String value cannot be empty');
+      }
+      return value;
+    }
+
+    // Reject any other types
+    throw new IdTransformationError('Id', value, `Unsupported type: ${typeof value}`);
+  })
   id!: string;
 
   @Expose({ name: 'Name' })
