@@ -24,7 +24,18 @@ export class AxiosService<TRequest extends BaseEntity> implements IHttpService<T
       return status >= 200 && status < 300; // Resolve only if the status
       // code is above then 200 and less then 300
     },
-    // Use standard JSON parsing since IDs are now strings (no precision issues)
+    transformResponse: [
+      function (data: unknown): unknown {
+        if (typeof data === 'string') {
+          try {
+            return PrecisionJsonParser.parsePreservingLargeIds(data);
+          } catch (e) {
+            return data;
+          }
+        }
+        return data;
+      },
+    ],
   };
 
   constructor(baseURL: string) {
@@ -33,19 +44,6 @@ export class AxiosService<TRequest extends BaseEntity> implements IHttpService<T
       headers: {
         'Content-Type': 'application/json',
       },
-      // Use custom JSON parser to preserve large ID numbers as strings
-      transformResponse: [
-        function (data) {
-          if (typeof data === 'string') {
-            try {
-              return PrecisionJsonParser.parsePreservingLargeIds(data);
-            } catch (e) {
-              return data;
-            }
-          }
-          return data;
-        },
-      ],
     });
   }
 

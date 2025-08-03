@@ -91,7 +91,7 @@
     "@customers-api": "dist/src/api/customers-api",
     "@metadata-api": "dist/src/api/common/metadata",
     "@subscription-api": "dist/src/api/common/subscription",
-    "@httpClient": "dist/src/api/base-http-client/index.js",
+    "@httpClient": "dist/src/api/base-http-client",
     "@utilities": "dist/src/utilities",
     "@logger": "dist/src/logger"
   }
