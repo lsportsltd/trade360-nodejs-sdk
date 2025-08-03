@@ -3,7 +3,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { BaseEntity } from '@entities';
 import { IdSafeJsonParser } from '@utilities';
 
-import { IHttpService } from '../interfaces';
+import { IHttpService } from '@httpClient/interfaces';
 
 /**
  * Axios service instance for different API endpoints with
