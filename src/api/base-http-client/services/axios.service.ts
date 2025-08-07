@@ -28,7 +28,7 @@ export class AxiosService<TRequest extends BaseEntity> implements IHttpService<T
       function (data: unknown): unknown {
         if (typeof data === 'string') {
           try {
-            return IdSafeJsonParser.parse(data);
+            return IdSafeJsonParser.parse<TRequest>(data);
           } catch (e) {
             return data;
           }
