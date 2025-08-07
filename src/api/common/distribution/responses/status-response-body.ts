@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 
 /**
  * StatusResponseBody class is responsible for

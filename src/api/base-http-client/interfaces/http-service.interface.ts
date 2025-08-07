@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 
 /**
  * Interface for HttpService

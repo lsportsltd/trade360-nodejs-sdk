@@ -3,7 +3,7 @@ import { forEach, isArray, isNil, map } from 'lodash';
 
 import { HttpRequestDto, IHttpServiceConfig } from '@api/common';
 import { HttpResponsePayloadDto } from '@api/common/dtos/http-response.dto';
-import { BaseEntity, Constructor } from '@entities';
+import { BaseEntity, Constructor } from '@lsports/entities';
 import { HttpResponseError } from '@lsports/errors';
 import { AxiosService } from '@httpClient/services';
 import { RequestSettingsValidator } from '@httpClient/validators';

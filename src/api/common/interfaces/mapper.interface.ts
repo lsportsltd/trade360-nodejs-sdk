@@ -1,4 +1,4 @@
-import { BaseEntity, Constructor } from '@entities';
+import { BaseEntity, Constructor } from '@lsports/entities';
 
 /**
  * Interface for mapping between different types of objects

@@ -16,7 +16,6 @@
     "paths": {
       "@feed": ["src/feed"],
       "@feed/*": ["src/feed/*"],
-      "@entities": ["src/entities/core-entities/index.ts"],
       "@lsports/entities": ["src/entities/core-entities/index.ts"],
       "@lsports/entities/common": ["src/entities/core-entities/common/index.ts"],
       "@lsports/entities/*": ["src/entities/core-entities/*"],
@@ -31,7 +30,7 @@
       "@metadata-api/*": ["src/api/common/metadata/*"],
       "@subscription-api": ["src/api/common/subscription"],
       "@subscription-api/*": ["src/api/common/subscription/*"],
-      "@httpClient": ["src/api/base-http-client/index.ts"],
+      "@httpClient": ["src/api/base-http-client"],
       "@httpClient/*": ["src/api/base-http-client/*"],
       "@utilities": ["src/utilities"],
       "@logger": ["src/logger"]

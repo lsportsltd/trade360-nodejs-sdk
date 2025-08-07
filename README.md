@@ -47,6 +47,7 @@ A step-by-step series of instructions to set up your development environment.
     ```bash
     git clone https://github.com/lsportsltd/trade360-nodejs-sdk.git
     cd trade360-nodejs-sdk/sample
+    ```
 
 2. **Install the SDK using npm:**
 
@@ -320,4 +321,3 @@ if (err instanceof ValidationError) {
 ## License <a name = "license"></a>
 
 This SDK is licensed under MIT.
-
