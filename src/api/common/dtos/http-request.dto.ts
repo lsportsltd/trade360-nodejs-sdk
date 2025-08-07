@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 
 /**
  * HTTP request DTO. basic structure for sending

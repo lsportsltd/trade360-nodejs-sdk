@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 import { IdSafeJsonParser } from '@utilities';
 
 import { IHttpService } from '@httpClient/interfaces';
