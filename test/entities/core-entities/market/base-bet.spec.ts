@@ -118,12 +118,12 @@ describe('BaseBet Entity', () => {
     expect(typeof baseBet.id).toBe('string');
   });
 
-  it('should handle BigInt inputs by converting to string automatically', (): void => {
-    // class-transformer automatically converts BigInt to strings when the target field is string
+  it('should reject BigInt inputs with appropriate error', (): void => {
+    // BigInt is no longer supported - should throw error
     const plain = { Id: 11060329315062111n };
-    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
-    expect(baseBet.id).toBe('11060329315062111');
-    expect(typeof baseBet.id).toBe('string');
+    expect(() => {
+      plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    }).toThrow('Unsupported type: bigint');
   });
 
   it('should handle zero values correctly', (): void => {
@@ -265,7 +265,6 @@ describe('BaseBet Entity', () => {
       { input: 2, expected: '2' },
       { input: 9007199254740991, expected: '9007199254740991' },
       { input: '9007199254740992', expected: '9007199254740992' },
-      { input: 123n, expected: '123' },
     ];
 
     testCases.forEach(({ input, expected }) => {

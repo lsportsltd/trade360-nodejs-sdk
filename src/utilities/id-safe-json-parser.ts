@@ -1,3 +1,4 @@
+import { BaseEntity } from '@entities';
 import { z } from 'zod';
 
 /**
@@ -5,7 +6,6 @@ import { z } from 'zod';
  *
  * Specifically targets field names that are exactly "id" (case-insensitive) and converts
  * large numbers that exceed JavaScript's safe integer range to strings.
- * Optimized with Zod v4 for enhanced performance, validation, and error handling.
  */
 export class IdSafeJsonParser {
   private static readonly ID_FIELD_REGEX = /"([iI][dD])"\s*:\s*(\d+)/g;
@@ -22,7 +22,7 @@ export class IdSafeJsonParser {
         return numericValue > Number.MAX_SAFE_INTEGER;
       }
       return false;
-    }, 'Number is within safe integer range');
+    });
 
   /**
    * Core parsing logic that validates input, transforms large IDs, and parses JSON.
@@ -31,7 +31,7 @@ export class IdSafeJsonParser {
    * @returns Parsed object with large ID numbers preserved as strings
    * @throws Error if input validation or JSON parsing fails
    */
-  private static parseInternal(jsonString: string): unknown {
+  private static parseInternal<T extends BaseEntity>(jsonString: string): T {
     const processedJson = jsonString.replace(this.ID_FIELD_REGEX, (match, fieldName, number) => {
       const isLarge = this.isLargeNumberSchema.safeParse(number).success;
       if (isLarge) {
@@ -41,7 +41,7 @@ export class IdSafeJsonParser {
     });
 
     try {
-      return JSON.parse(processedJson);
+      return JSON.parse(processedJson) as T;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Invalid JSON format';
       throw new Error(`JSON parsing failed: ${message}`);
@@ -55,7 +55,7 @@ export class IdSafeJsonParser {
    * @returns Parsed object with large ID numbers preserved as strings
    * @throws Error with detailed error information if validation fails
    */
-  public static parse(jsonString: string): unknown {
+  public static parse<T extends BaseEntity>(jsonString: string): T {
     try {
       return this.parseInternal(jsonString);
     } catch (error) {
@@ -64,75 +64,6 @@ export class IdSafeJsonParser {
         throw new Error(`JSON parsing failed: ${prettyError}`);
       }
       throw error;
-    }
-  }
-
-  /**
-   * Non-throwing parser that returns a result object.
-   *
-   * @note This method is primarily used for testing purposes.
-   *
-   * @param jsonString The JSON string to parse
-   * @returns Success result with data or error result with detailed error information
-   */
-  public static safeParse(
-    jsonString: string,
-  ): { success: true; data: unknown } | { success: false; error: string } {
-    try {
-      const parsedData = this.parseInternal(jsonString);
-      return { success: true, data: parsedData };
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const errorMessage = this.formatZodError(error);
-        return { success: false, error: `JSON parsing failed: ${errorMessage}` };
-      }
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      return { success: false, error: errorMessage };
-    }
-  }
-
-  /**
-   * Alias for parse() method for backward compatibility.
-   *
-   * @param jsonString The JSON string to parse
-   * @returns Parsed object with large ID numbers preserved as strings
-   */
-  public static parsePreservingLargeIds(jsonString: string): unknown {
-    return this.parse(jsonString);
-  }
-
-  /**
-   * Checks if a number string could lose precision when parsed as JavaScript number.
-   *
-   * @note This method is primarily used for testing purposes.
-   *
-   * @param numberString The numeric string to check
-   * @returns True if the number could lose precision
-   */
-  public static isLargeNumber(numberString: string): boolean {
-    return this.isLargeNumberSchema.safeParse(numberString).success;
-  }
-
-  /**
-   * Validates JSON string structure before parsing.
-   *
-   * @note This method is primarily used for testing purposes.
-   *
-   * @param jsonString The JSON string to validate
-   * @returns Validation result with error information if invalid
-   */
-  public static validateJsonString(
-    jsonString: string,
-  ): { valid: true } | { valid: false; error: string } {
-    if (typeof jsonString !== 'string' || jsonString.length === 0) {
-      return { valid: false, error: 'JSON string cannot be empty' };
-    }
-
-    try {
-      JSON.parse(jsonString);
-      return { valid: true };
-    } catch {
-      return { valid: false, error: 'Must be valid JSON string' };
     }
   }
 

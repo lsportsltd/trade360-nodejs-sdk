@@ -137,7 +137,9 @@ dist
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
+*.js
+*.js.map
+*.DS_Store
 
 #Ignore cursor AI rules
 .cursor/*
