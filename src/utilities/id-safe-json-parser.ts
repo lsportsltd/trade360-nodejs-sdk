@@ -57,7 +57,7 @@ export class IdSafeJsonParser {
    */
   public static parse<T extends BaseEntity>(jsonString: string): T {
     try {
-      return this.parseInternal(jsonString);
+      return this.parseInternal<T>(jsonString);
     } catch (error) {
       if (error instanceof z.ZodError) {
         const prettyError = this.formatZodError(error);

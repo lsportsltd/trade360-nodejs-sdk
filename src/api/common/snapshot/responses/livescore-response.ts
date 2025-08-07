@@ -1,5 +1,4 @@
-import { LivescoreEvent } from '../../../../entities/core-entities/livescore/livescore-event';
-import { BaseEntity } from '@entities';
+import { BaseEntity, LivescoreEvent } from '@entities';
 /**
  * GetLivescoreResultElement class is responsible
  * for deserializing the response from the snapshot
