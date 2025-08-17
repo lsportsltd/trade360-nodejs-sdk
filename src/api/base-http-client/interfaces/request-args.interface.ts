@@ -1,4 +1,4 @@
-import { BaseEntity, Constructor } from '@lsports/entities';
+import { BaseEntity, Constructor } from '@lsports/messages/types';
 import { HttpRequestDto } from '@api/common';
 import {
   DistributionRoutesPrefixUrl,

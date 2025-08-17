@@ -1,6 +1,7 @@
 import { Expose, Type, Transform } from 'class-transformer';
 
 import { BetStatus, SettlementType } from '@lsports/enums';
+
 import { IdTransformerUtil } from '@utilities';
 
 /**
