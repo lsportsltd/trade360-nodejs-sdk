@@ -4,9 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Version 2.0.0] - Introduced Breaking Changes
 
-- **`BaseBet.id` Type Change: `number` to `string`**
+- **`BaseBet.id` Type Change: `BigInt` to `string`**
 
-  To improve compatibility with JSON serialization and prevent precision loss with large numbers, the `id` field in the `BaseBet` entity has been changed from a `number` to a `string`.
+  To improve compatibility with JSON serialization and prevent precision loss with large numbers, the `id` field in the `BaseBet` entity has been changed from a `BigInt` to a `string`.
 
   **Reason for change:**
   - **JSON Compatibility:** Ensures that large numeric IDs are not misinterpreted or lose precision when serialized to JSON.
