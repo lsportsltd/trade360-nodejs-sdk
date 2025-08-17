@@ -2,7 +2,7 @@ import { BaseHttpClient } from '@httpClient';
 import { IPackageDistributionHttpClient } from '@customers-api/interfaces';
 import { DistributionRoutesPrefixUrl } from '@customers-api/enums';
 import { IHttpServiceConfig } from '@api/common';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 
 const { STATUS_PREFIX_URL, START_PREFIX_URL, STOP_PREFIX_URL } = DistributionRoutesPrefixUrl;
 

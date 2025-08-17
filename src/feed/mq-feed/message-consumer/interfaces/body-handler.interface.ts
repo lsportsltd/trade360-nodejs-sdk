@@ -1,4 +1,4 @@
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 
 import { IMessageStructure } from './message-structure.interface';
 

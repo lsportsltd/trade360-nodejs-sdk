@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 /**
  * GetSnapshotRequestDto class for sending request
  * to get snapshot from the API.

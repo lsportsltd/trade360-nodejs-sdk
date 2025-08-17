@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 /**
  * GetFixtureRequestDto class for sending request
  * to get fixture from the API.

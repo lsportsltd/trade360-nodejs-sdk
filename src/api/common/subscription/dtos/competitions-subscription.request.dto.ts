@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 
 import { CompetitionsSubscriptionRequestBodyStructure } from '@api/common/body-entities';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 
 /**
  * CompetitionsSubscriptionRequestDto class for sending

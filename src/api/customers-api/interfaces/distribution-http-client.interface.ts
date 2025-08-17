@@ -1,4 +1,4 @@
-import { BaseEntity, Constructor } from '@entities';
+import { BaseEntity, Constructor } from '@lsports/entities';
 
 /**
  * IPackageDistributionHttpClient interface is responsible

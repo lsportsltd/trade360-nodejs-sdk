@@ -1,7 +1,7 @@
 import { isNil } from 'lodash';
 
 import { IEntityHandler } from '@feed';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 import { TransformerUtil } from '@utilities';
 import { ILogger } from '@logger';
 

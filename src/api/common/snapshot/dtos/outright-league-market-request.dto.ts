@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 /**
  * GetOutrightLeagueMarketRequestDto class for sending request
  * to get outright league market from the API.

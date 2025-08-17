@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 import { OutrightScoreEventBodyStructure } from '@api/common/body-entities/responses/outright-score-event-body-structure';
 /**
  * GetOutrightScoresResultElement class is responsible

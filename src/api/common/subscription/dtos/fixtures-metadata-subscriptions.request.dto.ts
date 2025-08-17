@@ -1,7 +1,7 @@
 import { Expose, Transform } from 'class-transformer';
 import moment, { Moment } from 'moment';
 
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 
 /**
  * FixturesMetadataSubscriptionsRequestDto class

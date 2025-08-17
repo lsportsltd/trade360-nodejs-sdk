@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 import { FixturesMetadataSubscriptionsBodyStructure } from '@api/common/body-entities';
 
 /**

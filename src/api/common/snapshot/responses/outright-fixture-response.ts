@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 import { OutrightFixtureEventBodyStructure } from '@api/common/body-entities/responses/outright-fixture-event-body-structure';
 /**
  * GetOutrightFixtureResultElement class is responsible

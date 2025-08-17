@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 // import { HttpRequestDto } from '@api/common';
 import { HttpRequestDto } from '@api/common/dtos/http-request.dto';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 
 /**
  * Filter structure for the incidents request

@@ -1,7 +1,7 @@
 import { Options } from 'amqplib';
 
 import { MQSettings } from '@feed/validators';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 
 /**
  * Application configuration interface for

@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 
 import { FixturesScheduleBodyStructure } from '@api/common/body-entities';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 
 /**
  * Fixture Schedule Collection Response class

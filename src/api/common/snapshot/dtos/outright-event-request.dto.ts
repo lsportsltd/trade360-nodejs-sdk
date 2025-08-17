@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '@lsports/entities';
 /**
  * GetOutrightEventRequestDto class for sending request
  * to get outright event from the API.

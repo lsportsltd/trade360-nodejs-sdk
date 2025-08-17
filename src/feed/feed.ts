@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 
-import { BaseEntity, Constructor } from '@entities';
+import { BaseEntity, Constructor } from '@lsports/entities';
 import { IEntityHandler, IFeed, MQSettingsOptions } from '@feed';
 import { ConsoleAdapter, ILogger } from '@logger';
 import { DistributionUtil, withRetry } from '@utilities';
