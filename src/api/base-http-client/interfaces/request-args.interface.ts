@@ -15,11 +15,11 @@ import {
  */
 export interface IRequestArgs<TResponse extends BaseEntity> {
   route:
-  | SubscriptionRoutesPrefixUrl
-  | MetadataRoutesPrefixUrl
-  | DistributionRoutesPrefixUrl
-  | InplaySnapshotApiClientPrefixUrl
-  | PrematchSnapshotApiClientPrefixUrl;
+    | SubscriptionRoutesPrefixUrl
+    | MetadataRoutesPrefixUrl
+    | DistributionRoutesPrefixUrl
+    | InplaySnapshotApiClientPrefixUrl
+    | PrematchSnapshotApiClientPrefixUrl;
   responseBodyType: Constructor<TResponse>;
   requestBody?: HttpRequestDto;
 }
