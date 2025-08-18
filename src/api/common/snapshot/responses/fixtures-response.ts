@@ -1,4 +1,5 @@
-import { BaseEntity, FixtureEvent } from '@entities';
+import { FixtureEvent } from '../../../../entities/core-entities/fixture/fixture-event';
+import { BaseEntity } from '@entities';
 /**
  * GetFixtureMarketsResultElement class is responsible
  * for deserializing the response from the snapshot
