@@ -1,6 +1,6 @@
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 
-import { BaseEntity, ConversionError } from '@lsports/entities';
+import { BaseEntity, ConversionError } from '@entities';
 
 export class TransformerUtil {
   /**

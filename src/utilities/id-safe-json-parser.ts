@@ -1,4 +1,4 @@
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 import { z } from 'zod';
 
 /**
