@@ -1,4 +1,4 @@
-import { BaseEntity, Constructor } from '@lsports/entities';
+import { BaseEntity, Constructor } from '@entities';
 
 import { IEntityHandler } from './entity-handler.interface';
 

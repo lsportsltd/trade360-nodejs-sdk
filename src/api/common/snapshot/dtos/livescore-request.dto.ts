@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 /**
  * GetLiveScoreRequestDto class for sending request
  * to get livescore from the API.

@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 
 import { ManualSuspensionsRequestBodyStructure } from '@api/common/body-entities';
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 
 /**
  * ChangeManualSuspensionRequestDto class for sending

@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 import { OutrightCompetitionsResultBodyStructure } from '@api/common/body-entities/responses/outright-competitions-result-body-structure';
 
 /**

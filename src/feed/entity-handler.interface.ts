@@ -1,4 +1,4 @@
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 
 import { IMessageStructure } from '@feed/mq-feed';
 

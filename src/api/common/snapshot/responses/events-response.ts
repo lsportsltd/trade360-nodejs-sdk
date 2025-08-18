@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { BaseEntity, Fixture, Livescore, Market } from '@lsports/entities';
+import { BaseEntity, Fixture, Livescore, Market } from '@entities';
 /**
  * GetEventsResultElement class is responsible
  * for deserializing the response from the snapshot

@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 import { OutrightFixtureMarketsBodyStructure } from '@api/common/body-entities/responses/outright-fixture-market-body-structure';
 
 /**

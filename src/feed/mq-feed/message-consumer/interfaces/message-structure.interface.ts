@@ -1,4 +1,4 @@
-import { BaseEntity, MessageHeader } from '@lsports/entities';
+import { BaseEntity, MessageHeader } from '@entities';
 
 /**
  * Interface for message structure object to

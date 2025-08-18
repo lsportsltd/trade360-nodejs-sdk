@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 
 /**
  * Package Quota Response class

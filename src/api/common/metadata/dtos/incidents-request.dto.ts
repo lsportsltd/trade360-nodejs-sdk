@@ -1,5 +1,5 @@
 import { Expose, Transform, Type, TransformationType, TransformFnParams } from 'class-transformer';
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 import moment, { isMoment, Moment as MomentType, ISO_8601 } from 'moment';
 
 /**

@@ -1,7 +1,7 @@
 import { Channel, Connection, MessageProperties, connect } from 'amqplib';
 import { isNil } from 'lodash';
 
-import { BaseEntity, Constructor } from '@lsports/entities';
+import { BaseEntity, Constructor } from '@entities';
 import { IEntityHandler, IFeed, MQSettingsOptions } from '@feed';
 import { ConsoleAdapter } from '../../logger/adapters';
 import { ILogger } from '@logger';

@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 
 import { OutrightFixture } from './outright-fixture';
 

@@ -1,7 +1,7 @@
 import { isEmpty, isNil } from 'lodash';
 
 import { GetTranslationsRequest } from '@api/common';
-import { TranslationsValidationError } from '@lsports/entities';
+import { TranslationsValidationError } from '@entities';
 
 /**
  * GetTranslationsRequestValidator class

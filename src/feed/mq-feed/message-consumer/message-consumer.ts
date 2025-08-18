@@ -6,7 +6,7 @@ import {
   ConversionError,
   WrappedMessage,
   knownEntityKeys,
-} from '@lsports/entities';
+} from '@entities';
 import { IEntityHandler } from '@feed';
 import { TransformerUtil, IdSafeJsonParser } from '@utilities';
 import { ILogger } from '@logger';

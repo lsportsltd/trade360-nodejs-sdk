@@ -1,4 +1,4 @@
-import { BaseEntity, FixtureEvent } from '@lsports/entities';
+import { BaseEntity, FixtureEvent } from '@entities';
 /**
  * GetFixtureMarketsResultElement class is responsible
  * for deserializing the response from the snapshot

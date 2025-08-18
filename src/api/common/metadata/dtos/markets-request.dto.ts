@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { BaseEntity, MarketType } from '@lsports/entities';
+import { BaseEntity, MarketType } from '@entities';
 
 /**
  * GetMarketsRequestDto class for sending request
