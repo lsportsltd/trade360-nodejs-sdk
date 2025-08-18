@@ -23,8 +23,11 @@ import { IBodyHandler, IConsumptionLatency } from './interfaces';
  */
 function ConvertJsonToMessage(rawJson: string): WrappedMessage {
   try {
-    const parsedData = IdSafeJsonParser.parse<BaseEntity>(rawJson);
-    const message: WrappedMessage = TransformerUtil.transform(parsedData, WrappedMessage);
+    const parsedData = IdSafeJsonParser.parse(rawJson);
+    const message: WrappedMessage = TransformerUtil.transform(
+      parsedData as BaseEntity,
+      WrappedMessage,
+    );
 
     return message;
   } catch (err) {
