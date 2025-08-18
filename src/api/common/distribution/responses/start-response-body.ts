@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 
 import { StartMessage } from '@api/common';
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 
 /**
  * StartResponseBody class is responsible for

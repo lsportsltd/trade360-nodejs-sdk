@@ -1,13 +1,14 @@
 import { isNil } from 'lodash';
 import { Moment } from 'moment';
 
+import { BaseEntity, Constructor, InvalidDateInRequestError, PackageCredentials } from '@entities';
 import {
   GetCompetitionsRequestDto,
   GetLeaguesRequestDto,
+  GetMarketsRequestDto,
   GetTranslationsRequestDto,
   GetIncidentsRequestDto,
   IncidentsFilterDto,
-  GetMarketsRequestDto,
 } from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
@@ -62,12 +63,6 @@ import {
   GetOutrightMarketRequest,
   GetOutrightMarketRequestDto,
 } from './snapshot';
-import {
-  BaseEntity,
-  Constructor,
-  InvalidDateInRequestError,
-  PackageCredentials,
-} from '@lsports/entities';
 
 /**
  * Mapper class for mapping between different types

@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 
 import { StopMessage } from '@api/common';
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 
 /**
  * StopResponseBody class is responsible for

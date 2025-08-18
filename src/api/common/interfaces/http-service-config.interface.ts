@@ -1,4 +1,4 @@
-import { PackageCredentials } from '@lsports/entities';
+import { PackageCredentials } from '@entities';
 import { ILogger } from '@logger';
 
 /**

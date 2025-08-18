@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { BaseEntity, FixtureStatus } from '@lsports/entities';
+import { BaseEntity, FixtureStatus } from '@entities';
 import { Participant } from './participant';
 
 /**

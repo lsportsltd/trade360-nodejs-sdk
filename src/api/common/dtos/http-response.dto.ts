@@ -1,6 +1,6 @@
 import { ClassConstructor, Expose, Transform, Type } from 'class-transformer';
 
-import { BaseEntity } from '@lsports/entities';
+import { BaseEntity } from '@entities';
 import { TransformerUtil } from '@utilities';
 
 import { HeaderContent } from './http-response-header';
