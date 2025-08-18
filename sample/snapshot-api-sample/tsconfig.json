@@ -8,7 +8,30 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "../..",
+    "paths": {
+      "@feed": ["src/feed"],
+      "@feed/*": ["src/feed/*"],
+      "@entities": ["src/entities"],
+      "@lsports/entities": ["src/entities/core-entities"],
+      "@lsports/entities/*": ["src/entities/core-entities/*"],
+      "@lsports/enums": ["src/entities/core-entities/enums"],
+      "@lsports/decorators": ["src/entities/decorators"],
+      "@lsports/errors": ["src/entities/errors"],
+      "@api": ["src/api"],
+      "@api/*": ["src/api/*"],
+      "@customers-api": ["src/api/customers-api"],
+      "@customers-api/*": ["src/api/customers-api/*"],
+      "@metadata-api": ["src/api/common/metadata"],
+      "@metadata-api/*": ["src/api/common/metadata/*"],
+      "@subscription-api": ["src/api/common/subscription"],
+      "@subscription-api/*": ["src/api/common/subscription/*"],
+      "@httpClient": ["src/api/base-http-client"],
+      "@httpClient/*": ["src/api/base-http-client/*"],
+      "@utilities": ["src/utilities"],
+      "@logger": ["src/logger"]
+    }
   },
   "include": ["src/**/*", "../../src/**/*"],
   "exclude": ["node_modules", "dist"]

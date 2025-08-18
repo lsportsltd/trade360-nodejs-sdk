@@ -1,6 +1,13 @@
 import { Expose, Type } from 'class-transformer';
 
-import { BaseEntity, SubscriptionState } from '@lsports/entities';
+import { SubscriptionState } from '@lsports/entities';
+
+/**
+ * Base interface for all entities that can be mapped
+ */
+interface BaseEntity {
+  [key: string]: unknown;
+}
 
 /**
  * GetCompetitionsRequestDto class for sending request
