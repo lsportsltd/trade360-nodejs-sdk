@@ -16,7 +16,7 @@ export class BaseBet {
    * Handles large numbers without precision loss and maintains simplicity.
    */
   @Expose({ name: 'Id' })
-  @Transform(({ value }) => IdTransformerUtil.createIdTransform(value))
+  @Transform(({ value }) => IdTransformerUtil.transformId(value, 'Id'))
   id!: string;
 
   @Expose({ name: 'Name' })
