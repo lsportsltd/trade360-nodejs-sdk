@@ -54,7 +54,7 @@ export class TransportMessageHeaders {
     if (!this.ALLOWED_KEYS.has(key)) {
       throw new Error(`Invalid property key: '${key}'. Only predefined header keys are allowed.`);
     }
-    
+
     const value = properties[key];
 
     if (value === null || value === undefined) {
