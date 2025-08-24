@@ -1,6 +1,7 @@
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 
-import { BaseEntity, ConversionError } from '@entities';
+import { BaseEntity } from '../entities/message-types';
+import { ConversionError } from '../entities/errors/conversion.error';
 
 export class TransformerUtil {
   /**

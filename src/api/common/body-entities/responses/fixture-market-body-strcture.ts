@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { Bet } from '@lsports/entities/market/bet';
+import { Bet } from '@lsports/entities';
 
 /**
  * Fixture Market Element Structure class is responsible for

@@ -1,4 +1,4 @@
-import { Expose, Transform, Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import { MessageHeader } from './message-header';
 import { BaseEntity } from '../message-types';
@@ -11,6 +11,5 @@ export class WrappedMessage implements BaseEntity {
   public header!: MessageHeader;
 
   @Expose({ name: 'Body' })
-  @Transform(({ obj }) => JSON.stringify(obj.Body))
-  public body?: string;
+  public body?: BaseEntity;
 }

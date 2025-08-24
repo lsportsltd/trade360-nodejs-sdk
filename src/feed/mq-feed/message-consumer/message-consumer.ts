@@ -8,7 +8,7 @@ import {
   knownEntityKeys,
 } from '@entities';
 import { IEntityHandler } from '@feed';
-import { TransformerUtil } from '@utilities';
+import { TransformerUtil, IdSafeJsonParser } from '@utilities';
 import { ILogger } from '@logger';
 
 import { BodyHandler } from './handler';
@@ -23,7 +23,11 @@ import { IBodyHandler, IConsumptionLatency } from './interfaces';
  */
 function ConvertJsonToMessage(rawJson: string): WrappedMessage {
   try {
-    const message: WrappedMessage = TransformerUtil.transform(JSON.parse(rawJson), WrappedMessage);
+    const parsedData = IdSafeJsonParser.parse(rawJson);
+    const message: WrappedMessage = TransformerUtil.transform(
+      parsedData as BaseEntity,
+      WrappedMessage,
+    );
 
     return message;
   } catch (err) {
