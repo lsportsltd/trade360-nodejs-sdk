@@ -55,7 +55,11 @@ export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
    * structure with header and body to be processed by the body
    * handler class to handle
    */
-  async processAsync({ header, body, transportHeaders }: IMessageStructure<BaseEntity>): Promise<void> {
+  async processAsync({
+    header,
+    body,
+    transportHeaders,
+  }: IMessageStructure<BaseEntity>): Promise<void> {
     try {
       const entity = !isNil(body)
         ? TransformerUtil.transform(body as BaseEntity, this.entityConstructor)
