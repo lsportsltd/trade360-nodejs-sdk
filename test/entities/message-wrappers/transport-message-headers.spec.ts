@@ -194,5 +194,20 @@ describe('TransportMessageHeaders', () => {
       expect(headers.messageSequence).toBe('');
       expect(headers.fixtureId).toBe('fixture-789');
     });
+
+    it('should throw error when attempting to access invalid property key', () => {
+      const properties = {
+        MessageGuid: 'test-guid-123',
+        MessageType: 'MarketUpdate',
+        timestamp_in_ms: '1640995200000',
+      };
+
+      // This test simulates what would happen if someone tried to inject an invalid key
+      // In practice, this would only happen if the internal code was modified incorrectly
+      expect(() => {
+        // Using any to bypass TypeScript checking for this security test
+        (TransportMessageHeaders as any).getRequiredProperty(properties, 'maliciousKey', true);
+      }).toThrow("Invalid property key: 'maliciousKey'. Only predefined header keys are allowed.");
+    });
   });
 });
