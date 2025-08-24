@@ -1,7 +1,7 @@
 import { Expose, Type, Transform } from 'class-transformer';
 
 import { BetStatus, SettlementType } from '@lsports/enums';
-import { IdTransformerUtil } from '@utilities';
+import { IdTransformerUtil } from '../../../utilities/id-transformer-util';
 
 /**
  * Base betting entity with string-based ID handling for JSON compatibility.

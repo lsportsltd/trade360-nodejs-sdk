@@ -9,7 +9,6 @@ import {
   StopResponseBody,
 } from '@api/common';
 import { CustomersApiFactory, IPackageDistributionHttpClient } from '@api/customers-api';
-
 import { TransformerUtil } from './transformer-util';
 
 /**
