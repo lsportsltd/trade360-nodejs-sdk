@@ -1,7 +1,7 @@
 import { Channel, Connection, MessageProperties, connect } from 'amqplib';
 import { isNil } from 'lodash';
 
-import { BaseEntity, Constructor } from '@entities';
+import { BaseEntity, Constructor, TransportMessageHeaders } from '@entities';
 import { IEntityHandler, IFeed, MQSettingsOptions } from '@feed';
 import { ConsoleAdapter } from '../../logger/adapters';
 import { ILogger } from '@logger';
@@ -77,10 +77,22 @@ class RabbitMQFeed implements IFeed {
         if (!isNil(msg) && !isNil(msg.content)) {
           try {
             const { content, properties } = msg;
+            
+            // Create transport headers from message properties - this will throw if required headers are missing
+            let transportHeaders: TransportMessageHeaders;
+            try {
+              transportHeaders = TransportMessageHeaders.createFromProperties(properties.headers || {});
+            } catch (headerError) {
+              this.logger?.error(`Failed to create transport headers: ${headerError}`);
+              // Reject the message without requeue since it's malformed
+              if (!isAutoAck) await this.channel.nack(msg, false, false);
+              return;
+            }
+
             await this.consumer.handleBasicMessage(content, {
               messageMqTimestamp: this.getMessageMqTimestamp(properties),
               consumptionLatencyThreshold,
-            });
+            }, transportHeaders);
 
             // Manually acknowledge the processed message
             if (!isAutoAck) await this.channel.ack(msg);

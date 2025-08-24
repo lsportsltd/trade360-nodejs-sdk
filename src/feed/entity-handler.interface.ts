@@ -10,5 +10,5 @@ import { IMessageStructure } from '@feed/mq-feed';
  * type entity type
  */
 export interface IEntityHandler<TEntity extends BaseEntity> {
-  processAsync: ({ header, entity }: IMessageStructure<TEntity>) => Promise<void>;
+  processAsync: ({ header, entity, transportHeaders }: IMessageStructure<TEntity>) => Promise<void>;
 }

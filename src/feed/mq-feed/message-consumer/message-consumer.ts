@@ -6,6 +6,7 @@ import {
   ConversionError,
   WrappedMessage,
   knownEntityKeys,
+  TransportMessageHeaders,
 } from '@entities';
 import { IEntityHandler } from '@feed';
 import { TransformerUtil, IdSafeJsonParser } from '@utilities';
@@ -74,6 +75,7 @@ export class MessageConsumer {
   public async handleBasicMessage(
     messageContent: Uint8Array,
     { messageMqTimestamp, consumptionLatencyThreshold }: IConsumptionLatency,
+    transportHeaders: TransportMessageHeaders,
   ): Promise<void> {
     try {
       if (this.bodyHandlers.size == 0) {
@@ -101,7 +103,7 @@ export class MessageConsumer {
       const bodyHandler = this.bodyHandlers.get(entityType);
 
       if (!isNil(bodyHandler)) {
-        await bodyHandler.processAsync({ header, body });
+        await bodyHandler.processAsync({ header, body, transportHeaders });
 
         this.checkConsumptionLatency({
           messageMqTimestamp,

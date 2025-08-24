@@ -4,8 +4,15 @@ export class OutrightSettlementsUpdateHandler implements IEntityHandler<Outright
   public processAsync = async ({
     header,
     entity,
+    transportHeaders
   }: IMessageStructure<OutrightSettlementsUpdate>) => {
     console.log('OutrightSettlementsUpdate received!');
+    console.log('Transport Headers:', {
+      messageGuid: transportHeaders.messageGuid,
+      messageType: transportHeaders.messageType,
+      fixtureId: transportHeaders.fixtureId,
+      timestampInMs: transportHeaders.timestampInMs
+    });
     console.log(entity);
     return;
   };

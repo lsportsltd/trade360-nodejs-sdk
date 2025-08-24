@@ -1,4 +1,4 @@
-import { BaseEntity, MessageHeader } from '@entities';
+import { BaseEntity, MessageHeader, TransportMessageHeaders } from '@entities';
 
 /**
  * Interface for message structure object to
@@ -10,6 +10,7 @@ import { BaseEntity, MessageHeader } from '@entities';
  */
 export interface IMessageStructure<TEntity extends BaseEntity> {
   header: MessageHeader;
+  transportHeaders: TransportMessageHeaders;
   body?: BaseEntity;
   entity?: TEntity;
 }
