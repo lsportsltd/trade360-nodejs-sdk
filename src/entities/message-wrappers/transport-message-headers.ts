@@ -9,6 +9,14 @@ export class TransportMessageHeaders {
 
   private static readonly FIXTURE_ID_KEY = 'FixtureId';
 
+  private static readonly ALLOWED_KEYS = new Set([
+    TransportMessageHeaders.MESSAGE_GUID_KEY,
+    TransportMessageHeaders.MESSAGE_TYPE_KEY,
+    TransportMessageHeaders.TIMESTAMP_IN_MS_KEY,
+    TransportMessageHeaders.MESSAGE_SEQUENCE_KEY,
+    TransportMessageHeaders.FIXTURE_ID_KEY,
+  ]);
+
   public messageType!: string;
 
   public messageSequence!: string;
@@ -43,6 +51,10 @@ export class TransportMessageHeaders {
     key: string,
     required: boolean = true,
   ): string {
+    if (!this.ALLOWED_KEYS.has(key)) {
+      throw new Error(`Invalid property key: '${key}'. Only predefined header keys are allowed.`);
+    }
+    
     const value = properties[key];
 
     if (value === null || value === undefined) {
