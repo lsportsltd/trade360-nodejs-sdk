@@ -77,11 +77,13 @@ class RabbitMQFeed implements IFeed {
         if (!isNil(msg) && !isNil(msg.content)) {
           try {
             const { content, properties } = msg;
-            
+
             // Create transport headers from message properties - this will throw if required headers are missing
             let transportHeaders: TransportMessageHeaders;
             try {
-              transportHeaders = TransportMessageHeaders.createFromProperties(properties.headers || {});
+              transportHeaders = TransportMessageHeaders.createFromProperties(
+                properties.headers || {},
+              );
             } catch (headerError) {
               this.logger?.error(`Failed to create transport headers: ${headerError}`);
               // Reject the message without requeue since it's malformed
@@ -89,10 +91,14 @@ class RabbitMQFeed implements IFeed {
               return;
             }
 
-            await this.consumer.handleBasicMessage(content, {
-              messageMqTimestamp: this.getMessageMqTimestamp(properties),
-              consumptionLatencyThreshold,
-            }, transportHeaders);
+            await this.consumer.handleBasicMessage(
+              content,
+              {
+                messageMqTimestamp: this.getMessageMqTimestamp(properties),
+                consumptionLatencyThreshold,
+              },
+              transportHeaders,
+            );
 
             // Manually acknowledge the processed message
             if (!isAutoAck) await this.channel.ack(msg);
