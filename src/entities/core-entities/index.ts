@@ -15,4 +15,4 @@ export * from '../errors';
 // Export shared types for consumers using @entities
 export { BaseEntity, Constructor, knownEntityKeys } from '../message-types';
 export { PackageCredentials } from '../http-config/package-credentials';
-export { MessageHeader, WrappedMessage } from '../message-wrappers';
+export { MessageHeader, WrappedMessage, TransportMessageHeaders } from '../message-wrappers';
