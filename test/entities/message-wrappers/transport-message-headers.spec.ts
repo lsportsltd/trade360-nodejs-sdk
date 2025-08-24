@@ -8,7 +8,7 @@ describe('TransportMessageHeaders', () => {
         MessageType: 'MarketUpdate',
         timestamp_in_ms: '1640995200000',
         MessageSequence: 'seq-456',
-        FixtureId: 'fixture-789'
+        FixtureId: 'fixture-789',
       };
 
       const headers = TransportMessageHeaders.createFromProperties(properties);
@@ -24,7 +24,7 @@ describe('TransportMessageHeaders', () => {
       const properties = {
         MessageGuid: 'test-guid-123',
         MessageType: 'HeartbeatUpdate',
-        timestamp_in_ms: '1640995200000'
+        timestamp_in_ms: '1640995200000',
       };
 
       const headers = TransportMessageHeaders.createFromProperties(properties);
@@ -40,7 +40,7 @@ describe('TransportMessageHeaders', () => {
       const properties = {
         MessageGuid: Buffer.from('test-guid-buffer', 'utf8'),
         MessageType: Buffer.from('MarketUpdate', 'utf8'),
-        timestamp_in_ms: Buffer.from('1640995200000', 'utf8')
+        timestamp_in_ms: Buffer.from('1640995200000', 'utf8'),
       };
 
       const headers = TransportMessageHeaders.createFromProperties(properties);
@@ -54,7 +54,7 @@ describe('TransportMessageHeaders', () => {
       const properties = {
         MessageGuid: 12345,
         MessageType: true,
-        timestamp_in_ms: 1640995200000
+        timestamp_in_ms: 1640995200000,
       };
 
       const headers = TransportMessageHeaders.createFromProperties(properties);
@@ -79,7 +79,7 @@ describe('TransportMessageHeaders', () => {
     it('should throw error when required MessageGuid is missing', () => {
       const properties = {
         MessageType: 'MarketUpdate',
-        timestamp_in_ms: '1640995200000'
+        timestamp_in_ms: '1640995200000',
       };
 
       expect(() => {
@@ -90,7 +90,7 @@ describe('TransportMessageHeaders', () => {
     it('should throw error when required MessageType is missing', () => {
       const properties = {
         MessageGuid: 'test-guid-123',
-        timestamp_in_ms: '1640995200000'
+        timestamp_in_ms: '1640995200000',
       };
 
       expect(() => {
@@ -101,19 +101,21 @@ describe('TransportMessageHeaders', () => {
     it('should throw error when required timestamp_in_ms is missing', () => {
       const properties = {
         MessageGuid: 'test-guid-123',
-        MessageType: 'MarketUpdate'
+        MessageType: 'MarketUpdate',
       };
 
       expect(() => {
         TransportMessageHeaders.createFromProperties(properties);
-      }).toThrow("Header 'timestamp_in_ms' is missing, null, or empty in message properties object.");
+      }).toThrow(
+        "Header 'timestamp_in_ms' is missing, null, or empty in message properties object.",
+      );
     });
 
     it('should throw error when required property is null', () => {
       const properties = {
         MessageGuid: null,
         MessageType: 'MarketUpdate',
-        timestamp_in_ms: '1640995200000'
+        timestamp_in_ms: '1640995200000',
       };
 
       expect(() => {
@@ -125,7 +127,7 @@ describe('TransportMessageHeaders', () => {
       const properties = {
         MessageGuid: '',
         MessageType: 'MarketUpdate',
-        timestamp_in_ms: '1640995200000'
+        timestamp_in_ms: '1640995200000',
       };
 
       expect(() => {
@@ -137,7 +139,7 @@ describe('TransportMessageHeaders', () => {
       const properties = {
         MessageGuid: '   ',
         MessageType: 'MarketUpdate',
-        timestamp_in_ms: '1640995200000'
+        timestamp_in_ms: '1640995200000',
       };
 
       expect(() => {
@@ -151,7 +153,7 @@ describe('TransportMessageHeaders', () => {
         MessageType: 'MarketUpdate',
         timestamp_in_ms: '1640995200000',
         MessageSequence: null,
-        FixtureId: undefined
+        FixtureId: undefined,
       };
 
       const headers = TransportMessageHeaders.createFromProperties(properties);
@@ -166,7 +168,7 @@ describe('TransportMessageHeaders', () => {
         MessageType: 'MarketUpdate',
         timestamp_in_ms: '1640995200000',
         MessageSequence: '',
-        FixtureId: '   '
+        FixtureId: '   ',
       };
 
       const headers = TransportMessageHeaders.createFromProperties(properties);
@@ -181,7 +183,7 @@ describe('TransportMessageHeaders', () => {
         MessageType: Buffer.from('MarketUpdate', 'utf8'),
         timestamp_in_ms: 1640995200000,
         MessageSequence: null,
-        FixtureId: Buffer.from('fixture-789', 'utf8')
+        FixtureId: Buffer.from('fixture-789', 'utf8'),
       };
 
       const headers = TransportMessageHeaders.createFromProperties(properties);
