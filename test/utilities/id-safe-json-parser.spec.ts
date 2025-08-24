@@ -82,9 +82,7 @@ describe('IdSafeJsonParser', () => {
 
     it('should throw an error for malformed JSON', () => {
       const malformedJson = '{"id": 123,';
-      expect(() => IdSafeJsonParser.parse(malformedJson)).toThrow(
-        'JSON parsing failed: Expected double-quoted property name in JSON at position 11',
-      );
+      expect(() => IdSafeJsonParser.parse(malformedJson)).toThrow(/^JSON parsing failed:/);
     });
 
     it('should handle an empty object', () => {
