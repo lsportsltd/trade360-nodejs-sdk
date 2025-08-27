@@ -55,11 +55,10 @@ export class TransportMessageHeaders {
       throw new Error(`Invalid property key: '${key}'. Only predefined header keys are allowed.`);
     }
 
-    const value = Object.prototype.hasOwnProperty.call(properties, key)
-      ? typeof properties[key] === 'string'
-        ? properties[key]
-        : undefined
-      : undefined;
+    const value =
+      Object.prototype.hasOwnProperty.call(properties, key) && typeof properties[key] === 'string'
+        ? (properties[key] as string)
+        : undefined;
 
     if (value === null || value === undefined) {
       if (required) {
