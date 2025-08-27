@@ -7,7 +7,8 @@ export class FixtureMetadataUpdateHandler implements IEntityHandler<FixtureMetad
       messageGuid: transportHeaders.messageGuid,
       messageType: transportHeaders.messageType,
       fixtureId: transportHeaders.fixtureId,
-      timestampInMs: transportHeaders.timestampInMs
+      timestampInMs: transportHeaders.timestampInMs,
+      messageSequence: transportHeaders.messageSequence,
     });
     console.log(entity);
     return;

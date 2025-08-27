@@ -6,7 +6,8 @@ export class KeepAliveUpdateHandler implements IEntityHandler<KeepAliveUpdate> {
     console.log('Transport Headers:', {
       messageGuid: transportHeaders.messageGuid,
       messageType: transportHeaders.messageType,
-      timestampInMs: transportHeaders.timestampInMs
+      timestampInMs: transportHeaders.timestampInMs,
+      messageSequence: transportHeaders.messageSequence,
     });
     console.log(entity);
     return;

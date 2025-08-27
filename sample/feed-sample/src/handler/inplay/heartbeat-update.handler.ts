@@ -6,7 +6,8 @@ export class HeartbeatUpdateHandler implements IEntityHandler<HeartbeatUpdate> {
     console.log('Transport Headers:', {
       messageGuid: transportHeaders.messageGuid,
       messageType: transportHeaders.messageType,
-      timestampInMs: transportHeaders.timestampInMs
+      timestampInMs: transportHeaders.timestampInMs,
+      messageSequence: transportHeaders.messageSequence,
     });
     console.log(entity);
     return;
