@@ -57,10 +57,27 @@ export class TransportMessageHeaders {
       return this.handleMissingProperty(key, required);
     }
 
-    const value = this.extractValidValue(properties[key]);
+    // Security: Safe property access with additional validation
+    const value = this.safePropertyAccess(properties, key);
     const stringValue = this.convertToString(value, key);
 
     return this.validateFinalValue(stringValue, key, required);
+  }
+
+  private static safePropertyAccess(properties: Record<string, unknown>, key: string): unknown {
+    // Additional security check: Verify property descriptor is safe
+    const descriptor = Object.getOwnPropertyDescriptor(properties, key);
+    if (!descriptor) {
+      return undefined;
+    }
+
+    // Ensure the property is enumerable and has a simple value (not a getter)
+    if (!descriptor.enumerable || typeof descriptor.get === 'function') {
+      throw new Error(`Header '${key}' has unsafe property descriptor`);
+    }
+
+    // Safe access: we've validated the key and property descriptor
+    return descriptor.value;
   }
 
   private static validateKey(key: string): void {
@@ -77,8 +94,9 @@ export class TransportMessageHeaders {
   }
 
   private static extractValidValue(value: unknown): unknown {
+    // Handle null and undefined - these are valid for optional properties
     if (value === null || value === undefined) {
-      return undefined;
+      return value; // Return as-is for proper handling in validation
     }
 
     const isValidType =
@@ -88,18 +106,25 @@ export class TransportMessageHeaders {
       typeof value === 'boolean';
 
     if (!isValidType) {
-      return null; // Signal invalid type for error handling
+      return Symbol('invalid'); // Use unique symbol to signal invalid type
     }
 
     return value;
   }
 
   private static convertToString(value: unknown, key: string): string {
+    // Handle undefined (missing property)
     if (value === undefined) {
       return '';
     }
 
+    // Handle null values - these should be treated as missing for validation
     if (value === null) {
+      return '';
+    }
+
+    // Handle invalid type marker
+    if (typeof value === 'symbol') {
       throw new Error(
         `Header '${key}' contains invalid data type. Only primitive values are allowed.`,
       );
