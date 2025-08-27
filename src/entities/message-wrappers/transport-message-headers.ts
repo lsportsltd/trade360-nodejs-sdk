@@ -55,10 +55,15 @@ export class TransportMessageHeaders {
       throw new Error(`Invalid property key: '${key}'. Only predefined header keys are allowed.`);
     }
 
-    const value =
-      Object.prototype.hasOwnProperty.call(properties, key) && typeof properties[key] === 'string'
-        ? (properties[key] as string)
-        : undefined;
+    // Security fix: Use hasOwnProperty to prevent prototype pollution and only access own properties
+    if (!Object.prototype.hasOwnProperty.call(properties, key)) {
+      if (required) {
+        throw new Error(`Header '${key}' is missing, null, or empty in message properties object.`);
+      }
+      return '';
+    }
+
+    const value = properties[key];
 
     if (value === null || value === undefined) {
       if (required) {
@@ -70,8 +75,18 @@ export class TransportMessageHeaders {
     let stringValue: string;
     if (Buffer.isBuffer(value)) {
       stringValue = value.toString('utf8');
-    } else {
+    } else if (
+      typeof value === 'string' ||
+      typeof value === 'number' ||
+      typeof value === 'boolean'
+    ) {
+      // Security fix: Only allow safe primitive types for conversion
       stringValue = String(value);
+    } else {
+      // Security fix: Reject objects, functions, and other complex types to prevent injection
+      throw new Error(
+        `Header '${key}' contains invalid data type. Only primitive values are allowed.`,
+      );
     }
 
     if (required && (!stringValue || stringValue.trim() === '')) {
