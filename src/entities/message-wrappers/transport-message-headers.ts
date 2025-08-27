@@ -56,7 +56,9 @@ export class TransportMessageHeaders {
     }
 
     const value = Object.prototype.hasOwnProperty.call(properties, key)
-      ? (properties[key] as string)
+      ? typeof properties[key] === 'string'
+        ? properties[key]
+        : undefined
       : undefined;
 
     if (value === null || value === undefined) {
