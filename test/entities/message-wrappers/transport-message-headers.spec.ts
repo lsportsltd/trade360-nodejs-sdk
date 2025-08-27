@@ -224,7 +224,9 @@ describe('TransportMessageHeaders', () => {
 
       expect(() => {
         TransportMessageHeaders.createFromProperties(properties);
-      }).toThrow("Header 'MessageGuid' contains invalid data type. Only primitive values are allowed.");
+      }).toThrow(
+        "Header 'MessageGuid' contains invalid data type. Only primitive values are allowed.",
+      );
     });
 
     it('should reject function values to prevent code injection', () => {
@@ -238,7 +240,9 @@ describe('TransportMessageHeaders', () => {
 
       expect(() => {
         TransportMessageHeaders.createFromProperties(properties);
-      }).toThrow("Header 'MessageType' contains invalid data type. Only primitive values are allowed.");
+      }).toThrow(
+        "Header 'MessageType' contains invalid data type. Only primitive values are allowed.",
+      );
     });
 
     it('should reject array values to prevent injection attacks', () => {
@@ -252,7 +256,9 @@ describe('TransportMessageHeaders', () => {
 
       expect(() => {
         TransportMessageHeaders.createFromProperties(properties);
-      }).toThrow("Header 'timestamp_in_ms' contains invalid data type. Only primitive values are allowed.");
+      }).toThrow(
+        "Header 'timestamp_in_ms' contains invalid data type. Only primitive values are allowed.",
+      );
     });
 
     it('should prevent prototype pollution attacks', () => {
@@ -261,10 +267,10 @@ describe('TransportMessageHeaders', () => {
       maliciousProperties.MessageGuid = 'test-guid-123';
       maliciousProperties.MessageType = 'MarketUpdate';
       maliciousProperties.timestamp_in_ms = '1640995200000';
-      
+
       // Add a property that would exist on prototype but not own property
       Object.setPrototypeOf(maliciousProperties, {
-        MessageGuid: 'prototype-pollution-attempt'
+        MessageGuid: 'prototype-pollution-attempt',
       });
 
       // Should work fine since we use hasOwnProperty check
