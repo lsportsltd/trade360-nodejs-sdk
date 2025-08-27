@@ -63,7 +63,12 @@ export class TransportMessageHeaders {
       return '';
     }
 
-    const value = properties[key];
+    const value =
+      typeof properties[key] === 'string' ||
+      Buffer.isBuffer(properties[key]) ||
+      typeof properties[key] === 'number'
+        ? properties[key]
+        : undefined;
 
     if (value === null || value === undefined) {
       if (required) {
