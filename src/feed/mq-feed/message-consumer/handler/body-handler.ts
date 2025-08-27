@@ -55,13 +55,17 @@ export class BodyHandler<TEntity extends BaseEntity> implements IBodyHandler {
    * structure with header and body to be processed by the body
    * handler class to handle
    */
-  async processAsync({ header, body }: IMessageStructure<BaseEntity>): Promise<void> {
+  async processAsync({
+    header,
+    body,
+    transportHeaders,
+  }: IMessageStructure<BaseEntity>): Promise<void> {
     try {
       const entity = !isNil(body)
         ? TransformerUtil.transform(body as BaseEntity, this.entityConstructor)
         : undefined;
 
-      return await this.entityHandler.processAsync({ header, entity });
+      return await this.entityHandler.processAsync({ header, entity, transportHeaders });
     } catch (err) {
       this.logger?.warn(
         `Failed to deserialize ${typeof this.entityConstructor} entity, Due to: ${err}`,
