@@ -209,5 +209,67 @@ describe('TransportMessageHeaders', () => {
         (TransportMessageHeaders as any).getRequiredProperty(properties, 'maliciousKey', true);
       }).toThrow("Invalid property key: 'maliciousKey'. Only predefined header keys are allowed.");
     });
+
+    it('should reject object values to prevent injection attacks', () => {
+      const maliciousObject = {
+        toString: () => 'malicious-payload',
+        valueOf: () => 'another-payload',
+      };
+
+      const properties = {
+        MessageGuid: maliciousObject,
+        MessageType: 'MarketUpdate',
+        timestamp_in_ms: '1640995200000',
+      };
+
+      expect(() => {
+        TransportMessageHeaders.createFromProperties(properties);
+      }).toThrow("Header 'MessageGuid' contains invalid data type. Only primitive values are allowed.");
+    });
+
+    it('should reject function values to prevent code injection', () => {
+      const maliciousFunction = () => 'malicious-code';
+
+      const properties = {
+        MessageGuid: 'test-guid-123',
+        MessageType: maliciousFunction,
+        timestamp_in_ms: '1640995200000',
+      };
+
+      expect(() => {
+        TransportMessageHeaders.createFromProperties(properties);
+      }).toThrow("Header 'MessageType' contains invalid data type. Only primitive values are allowed.");
+    });
+
+    it('should reject array values to prevent injection attacks', () => {
+      const maliciousArray = ['payload1', 'payload2'];
+
+      const properties = {
+        MessageGuid: 'test-guid-123',
+        MessageType: 'MarketUpdate',
+        timestamp_in_ms: maliciousArray,
+      };
+
+      expect(() => {
+        TransportMessageHeaders.createFromProperties(properties);
+      }).toThrow("Header 'timestamp_in_ms' contains invalid data type. Only primitive values are allowed.");
+    });
+
+    it('should prevent prototype pollution attacks', () => {
+      // Create an object that doesn't inherit from Object.prototype
+      const maliciousProperties = Object.create(null);
+      maliciousProperties.MessageGuid = 'test-guid-123';
+      maliciousProperties.MessageType = 'MarketUpdate';
+      maliciousProperties.timestamp_in_ms = '1640995200000';
+      
+      // Add a property that would exist on prototype but not own property
+      Object.setPrototypeOf(maliciousProperties, {
+        MessageGuid: 'prototype-pollution-attempt'
+      });
+
+      // Should work fine since we use hasOwnProperty check
+      const headers = TransportMessageHeaders.createFromProperties(maliciousProperties);
+      expect(headers.messageGuid).toBe('test-guid-123');
+    });
   });
 });
