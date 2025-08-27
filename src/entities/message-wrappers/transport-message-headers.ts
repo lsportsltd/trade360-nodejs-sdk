@@ -51,49 +51,74 @@ export class TransportMessageHeaders {
     key: string,
     required: boolean = true,
   ): string {
+    this.validateKey(key);
+
+    if (!Object.prototype.hasOwnProperty.call(properties, key)) {
+      return this.handleMissingProperty(key, required);
+    }
+
+    const value = this.extractValidValue(properties[key]);
+    const stringValue = this.convertToString(value, key);
+
+    return this.validateFinalValue(stringValue, key, required);
+  }
+
+  private static validateKey(key: string): void {
     if (!this.ALLOWED_KEYS.has(key)) {
       throw new Error(`Invalid property key: '${key}'. Only predefined header keys are allowed.`);
     }
+  }
 
-    // Security fix: Use hasOwnProperty to prevent prototype pollution and only access own properties
-    if (!Object.prototype.hasOwnProperty.call(properties, key)) {
-      if (required) {
-        throw new Error(`Header '${key}' is missing, null, or empty in message properties object.`);
-      }
-      return '';
+  private static handleMissingProperty(key: string, required: boolean): string {
+    if (required) {
+      throw new Error(`Header '${key}' is missing, null, or empty in message properties object.`);
     }
+    return '';
+  }
 
-    const value =
-      typeof properties[key] === 'string' ||
-      Buffer.isBuffer(properties[key]) ||
-      typeof properties[key] === 'number'
-        ? properties[key]
-        : undefined;
-
+  private static extractValidValue(value: unknown): unknown {
     if (value === null || value === undefined) {
-      if (required) {
-        throw new Error(`Header '${key}' is missing, null, or empty in message properties object.`);
-      }
+      return undefined;
+    }
+
+    const isValidType =
+      typeof value === 'string' ||
+      Buffer.isBuffer(value) ||
+      typeof value === 'number' ||
+      typeof value === 'boolean';
+
+    if (!isValidType) {
+      return null; // Signal invalid type for error handling
+    }
+
+    return value;
+  }
+
+  private static convertToString(value: unknown, key: string): string {
+    if (value === undefined) {
       return '';
     }
 
-    let stringValue: string;
-    if (Buffer.isBuffer(value)) {
-      stringValue = value.toString('utf8');
-    } else if (
-      typeof value === 'string' ||
-      typeof value === 'number' ||
-      typeof value === 'boolean'
-    ) {
-      // Security fix: Only allow safe primitive types for conversion
-      stringValue = String(value);
-    } else {
-      // Security fix: Reject objects, functions, and other complex types to prevent injection
+    if (value === null) {
       throw new Error(
         `Header '${key}' contains invalid data type. Only primitive values are allowed.`,
       );
     }
 
+    if (Buffer.isBuffer(value)) {
+      return value.toString('utf8');
+    }
+
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+      return String(value);
+    }
+
+    throw new Error(
+      `Header '${key}' contains invalid data type. Only primitive values are allowed.`,
+    );
+  }
+
+  private static validateFinalValue(stringValue: string, key: string, required: boolean): string {
     if (required && (!stringValue || stringValue.trim() === '')) {
       throw new Error(`Header '${key}' is missing, null, or empty in message properties object.`);
     }
