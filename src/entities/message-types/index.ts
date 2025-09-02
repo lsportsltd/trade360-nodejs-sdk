@@ -36,3 +36,4 @@ export * from './keep-alive-update';
 
 export * from './outright-league-fixture-update';
 export * from './outright-league-market-update';
+export * from './outright-league-settlement-update';
