@@ -47,13 +47,13 @@ describe('OutrightLeagueSettlementUpdate Entity', () => {
 
   it('should implement BaseEntity interface with dynamic properties', () => {
     const update = new OutrightLeagueSettlementUpdate();
-    
+
     // Test dynamic property assignment (BaseEntity interface requirement)
-    update['customProperty'] = 'test value';
-    expect(update['customProperty']).toBe('test value');
-    
+    update.customProperty = 'test value';
+    expect(update.customProperty).toBe('test value');
+
     // Test that it has the required index signature
-    expect(typeof update['someKey']).toBeDefined();
+    expect(typeof update.someKey).toBeDefined();
   });
 
   it('should deserialize with nested OutrightLeagueCompetition containing MarketEvent array', () => {
