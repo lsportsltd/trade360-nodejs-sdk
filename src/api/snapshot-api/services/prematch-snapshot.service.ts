@@ -11,6 +11,7 @@ import {
   GetOutrightFixtureMarketsResultElement,
   GetOutrightFixtureResultElement,
   GetOutrightLeagueMarketsResultElement,
+  GetOutrightLeagueEventsResultElement,
   GetOutrightLeaguesResultElement,
   GetOutrightScoresResultElement,
 } from '@api/common/snapshot/responses';
@@ -22,6 +23,7 @@ import {
   GetOutrightEventRequest,
   GetOutrightFixtureRequest,
   GetOutrightLeagueMarketRequest,
+  GetOutrightLeagueEventsRequest,
   GetOutrightLeaguesRequest,
   GetOutrightLivescoreRequest,
   GetOutrightMarketRequest,
@@ -34,6 +36,7 @@ import {
   GetOutrightEventRequestDto,
   GetOutrightFixtureRequestDto,
   GetOutrightLeagueMarketRequestDto,
+  GetOutrightLeagueEventsRequestDto,
   GetOutrightLeaguesRequestDto,
   GetOutrightLivescoreRequestDto,
   GetOutrightMarketRequestDto,
@@ -48,6 +51,7 @@ const {
   GET_OUTRIGHT_FIXTURE_MARKETS_PREFIX_URL,
   GET_OUTRIGHT_FIXTURE_PREFIX_URL,
   GET_OUTRIGHT_LEAGUES_MARKETS_PREFIX_URL,
+  GET_OUTRIGHT_LEAGUE_EVENTS_PREFIX_URL,
   GET_OUTRIGHT_LEAGUES_PREFIX_URL,
   GET_OUTRIGHT_SCORES_PREFIX_URL,
 } = PrematchSnapshotApiClientPrefixUrl;
@@ -303,5 +307,27 @@ export class PreMatchSnapshotApiClientImplementation
       requestBody: request,
     });
     return leagueMarketsCollection;
+  }
+
+  /**
+   * Sends a request to the snapshot API to get outright league events.
+   * @param requestDto The request DTO for getting outright league events.
+   * @returns A promise that resolves to an array of
+   * GetOutrightLeagueEventsResultElement objects containing the outright league events information.
+   */
+  public async getOutrightLeagueEvents(
+    requestDto: GetOutrightLeagueEventsRequestDto,
+  ): Promise<GetOutrightLeagueEventsResultElement | undefined> {
+    const request = this.mapper.map<
+      GetOutrightLeagueEventsRequestDto,
+      GetOutrightLeagueEventsRequest
+    >(requestDto, GetOutrightLeagueEventsRequest);
+
+    const leagueEventsCollection = await this.postRequest<GetOutrightLeagueEventsResultElement>({
+      route: GET_OUTRIGHT_LEAGUE_EVENTS_PREFIX_URL,
+      responseBodyType: GetOutrightLeagueEventsResultElement,
+      requestBody: request,
+    });
+    return leagueEventsCollection;
   }
 }

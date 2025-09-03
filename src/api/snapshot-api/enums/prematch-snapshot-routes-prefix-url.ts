@@ -10,6 +10,7 @@ export enum PrematchSnapshotApiClientPrefixUrl {
   GET_OUTRIGHT_FIXTURE_PREFIX_URL = '/Prematch/GetOutrightFixture',
   GET_OUTRIGHT_LEAGUES_PREFIX_URL = '/Prematch/GetOutrightLeagues',
   GET_OUTRIGHT_LEAGUES_MARKETS_PREFIX_URL = '/Prematch/GetOutrightLeagueMarkets',
+  GET_OUTRIGHT_LEAGUE_EVENTS_PREFIX_URL = '/Prematch/GetOutrightLeagueEvents',
   GET_OUTRIGHT_FIXTURE_MARKETS_PREFIX_URL = '/Prematch/GetOutrightFixtureMarkets',
   GET_OUTRIGHT_SCORES_PREFIX_URL = '/Prematch/GetOutrightScores',
 }

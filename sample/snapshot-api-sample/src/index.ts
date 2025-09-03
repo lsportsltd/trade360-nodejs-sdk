@@ -9,7 +9,8 @@ import {
   GetEventRequestDto,
   GetOutrightEventRequestDto, 
   GetOutrightFixtureRequestDto, 
-  GetOutrightLeagueMarketRequestDto, 
+  GetOutrightLeagueMarketRequestDto,
+  GetOutrightLeagueEventsRequestDto,
   GetOutrightLeaguesRequestDto, 
   GetOutrightLivescoreRequestDto, 
   GetOutrightMarketRequestDto,
@@ -76,6 +77,7 @@ const initApiSample = async () => {
       console.log('12. Get Outright Fixture Markets');
       console.log('13. Get Outright Leagues');
       console.log('14. Get Outright League Markets');
+      console.log('15. Get Outright League Events');
       console.log('0. Exit');
       console.log('==============================');
     };
@@ -123,6 +125,9 @@ const initApiSample = async () => {
           break;
         case '14':
           await getOutrightLeagueMarkets(preMatchSnapshotHttpClient);
+          break;
+        case '15':
+          await getOutrightLeagueEvents(preMatchSnapshotHttpClient);
           break;
         case '0':
           console.log('Exiting...');
@@ -319,6 +324,16 @@ const getOutrightLeagueMarkets = async (prematchSnapshotHttpClient: PreMatchSnap
   const response = await prematchSnapshotHttpClient.getOutrightLeagueMarkets(request);
 
   logger.log(`${response?.length} Outright League Markets retrieved.`);
+};
+
+const getOutrightLeagueEvents = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
+  const request = new GetOutrightLeagueEventsRequestDto({
+    sports: [6046]
+  });
+
+  const response = await prematchSnapshotHttpClient.getOutrightLeagueEvents(request);
+
+  logger.log(`${response?.length} Outright League Events retrieved.`);
 };
 
 initApiSample();
