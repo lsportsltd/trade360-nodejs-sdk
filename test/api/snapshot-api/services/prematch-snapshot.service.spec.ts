@@ -66,8 +66,6 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
   beforeEach(() => {
     mockMapper = new MockMapper();
     mockPostRequest = jest.fn();
-    
-    // Create a lightweight mock implementation
     prematchSnapshotApiClient = {
       getFixtures: jest.fn(async (requestDto: GetFixtureRequestDto) => {
         const mappedRequest = mockMapper.map(requestDto, GetFixtureRequest);
@@ -165,7 +163,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetFixtureRequestDto();
       const mappedRequest = new GetFixtureRequest();
       const expectedResponse = new GetFixturesResultElement();
-      
+
       mockMapper.map.mockReturnValue(mappedRequest);
       mockPostRequest.mockResolvedValue(expectedResponse);
 
@@ -216,7 +214,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetLivescoreRequestDto();
       const mappedRequest = new GetLivescoreRequest();
       const expectedResponse = new GetLivescoreResultElement();
-      
+
       mockMapper.map.mockReturnValue(mappedRequest);
       mockPostRequest.mockResolvedValue(expectedResponse);
 
@@ -267,7 +265,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetMarketRequestDto();
       const mappedRequest = new GetMarketRequest();
       const expectedResponse = new GetFixtureMarketsResultElement();
-      
+
       mockMapper.map.mockReturnValue(mappedRequest);
       mockPostRequest.mockResolvedValue(expectedResponse);
 
@@ -280,7 +278,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetMarketRequestDto();
       const emptyResponse = new GetFixtureMarketsResultElement();
       emptyResponse.data = [];
-      
+
       mockMapper.map.mockReturnValue(new GetMarketRequest());
       mockPostRequest.mockResolvedValue(emptyResponse);
 
@@ -314,7 +312,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetEventRequestDto();
       const mappedRequest = new GetEventRequest();
       const expectedResponse = new GetEventsResultElement();
-      
+
       mockMapper.map.mockReturnValue(mappedRequest);
       mockPostRequest.mockResolvedValue(expectedResponse);
 
@@ -364,7 +362,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetOutrightEventRequestDto();
       const mappedRequest = new GetOutrightEventRequest();
       const expectedResponse = new GetOutrightEventsResultElement();
-      
+
       mockMapper.map.mockReturnValue(mappedRequest);
       mockPostRequest.mockResolvedValue(expectedResponse);
 
@@ -412,7 +410,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetOutrightFixtureRequestDto();
       const mappedRequest = new GetOutrightFixtureRequest();
       const expectedResponse = new GetOutrightFixtureResultElement();
-      
+
       mockMapper.map.mockReturnValue(mappedRequest);
       mockPostRequest.mockResolvedValue(expectedResponse);
 
@@ -441,7 +439,9 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       mockMapper.map.mockReturnValue(new GetOutrightFixtureRequest());
       mockPostRequest.mockRejectedValue(error);
 
-      await expect(prematchSnapshotApiClient.getOutrightFixtures(requestDto)).rejects.toThrow(error);
+      await expect(prematchSnapshotApiClient.getOutrightFixtures(requestDto)).rejects.toThrow(
+        error,
+      );
     });
 
     it('should handle undefined response', async () => {
@@ -460,7 +460,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetOutrightLivescoreRequestDto();
       const mappedRequest = new GetOutrightLivescoreRequest();
       const expectedResponse = new GetOutrightScoresResultElement();
-      
+
       mockMapper.map.mockReturnValue(mappedRequest);
       mockPostRequest.mockResolvedValue(expectedResponse);
 
@@ -508,7 +508,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetOutrightMarketRequestDto();
       const mappedRequest = new GetOutrightMarketRequest();
       const expectedResponse = new GetOutrightFixtureMarketsResultElement();
-      
+
       mockMapper.map.mockReturnValue(mappedRequest);
       mockPostRequest.mockResolvedValue(expectedResponse);
 
@@ -537,7 +537,9 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       mockMapper.map.mockReturnValue(new GetOutrightMarketRequest());
       mockPostRequest.mockRejectedValue(error);
 
-      await expect(prematchSnapshotApiClient.getOutrightFixtureMarkets(requestDto)).rejects.toThrow(error);
+      await expect(prematchSnapshotApiClient.getOutrightFixtureMarkets(requestDto)).rejects.toThrow(
+        error,
+      );
     });
 
     it('should handle undefined response', async () => {
@@ -556,7 +558,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetOutrightLeaguesRequestDto();
       const mappedRequest = new GetOutrightLeaguesRequest();
       const expectedResponse = new GetOutrightLeaguesResultElement();
-      
+
       mockMapper.map.mockReturnValue(mappedRequest);
       mockPostRequest.mockResolvedValue(expectedResponse);
 
@@ -604,7 +606,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetOutrightLeagueMarketRequestDto();
       const mappedRequest = new GetOutrightLeagueMarketRequest();
       const expectedResponse = new GetOutrightLeagueMarketsResultElement();
-      
+
       mockMapper.map.mockReturnValue(mappedRequest);
       mockPostRequest.mockResolvedValue(expectedResponse);
 
@@ -633,7 +635,9 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       mockMapper.map.mockReturnValue(new GetOutrightLeagueMarketRequest());
       mockPostRequest.mockRejectedValue(error);
 
-      await expect(prematchSnapshotApiClient.getOutrightLeagueMarkets(requestDto)).rejects.toThrow(error);
+      await expect(prematchSnapshotApiClient.getOutrightLeagueMarkets(requestDto)).rejects.toThrow(
+        error,
+      );
     });
 
     it('should handle undefined response', async () => {
@@ -652,7 +656,7 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       const requestDto = new GetOutrightLeagueEventsRequestDto();
       const mappedRequest = new GetOutrightLeagueEventsRequest();
       const expectedResponse = new GetOutrightLeagueEventsResultElement();
-      
+
       mockMapper.map.mockReturnValue(mappedRequest);
       mockPostRequest.mockResolvedValue(expectedResponse);
 
@@ -681,7 +685,9 @@ describe('PreMatchSnapshotApiClientImplementation', () => {
       mockMapper.map.mockReturnValue(new GetOutrightLeagueEventsRequest());
       mockPostRequest.mockRejectedValue(error);
 
-      await expect(prematchSnapshotApiClient.getOutrightLeagueEvents(requestDto)).rejects.toThrow(error);
+      await expect(prematchSnapshotApiClient.getOutrightLeagueEvents(requestDto)).rejects.toThrow(
+        error,
+      );
     });
 
     it('should handle undefined response', async () => {
