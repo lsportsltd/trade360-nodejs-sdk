@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 import { Expose, Type } from 'class-transformer';
 
