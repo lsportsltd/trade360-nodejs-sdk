@@ -47,7 +47,7 @@ const {
   GET_FIXTURE_MARKETS_PREFIX_URL,
   GET_FIXTURES_PREFIX_URL,
   GET_SCORES_PREFIX_URL,
-  GET_OUTRGIHT_EVENT_PREFIX_URL,
+  GET_OUTRIGHT_EVENT_PREFIX_URL,
   GET_OUTRIGHT_FIXTURE_MARKETS_PREFIX_URL,
   GET_OUTRIGHT_FIXTURE_PREFIX_URL,
   GET_OUTRIGHT_LEAGUES_MARKETS_PREFIX_URL,
@@ -192,7 +192,7 @@ export class PreMatchSnapshotApiClientImplementation
     );
 
     const eventsCollection = await this.postRequest<GetOutrightEventsResultElement>({
-      route: GET_OUTRGIHT_EVENT_PREFIX_URL,
+      route: GET_OUTRIGHT_EVENT_PREFIX_URL,
       responseBodyType: GetOutrightEventsResultElement,
       requestBody: request,
     });
