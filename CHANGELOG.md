@@ -5,10 +5,40 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.1.0 - 2025-01-XX](#version-310---2025-01-xx)
 - [Version 3.0.0 - 2025-09-01](#version-300---2025-09-01)
 - [Version 2.0.1 - 2025-08-24](#version-201---2025-08-24)
 
 ---
+
+## Version 3.1.0 - 2025-01-XX
+
+Enhances outright league support by adding settlement update handling and outright league events API functionality.
+
+### New Features
+
+- **Outright League Settlement Support**
+  - `OutrightLeagueSettlementUpdate` - New message type for outright league settlement updates (EntityKey 43)
+  - Enhanced feed to process outright league settlement events
+
+- **Outright League Events API**
+  - `getOutrightLeagueEvents()` - New endpoint to fetch events for outright leagues
+  - `GetOutrightLeagueEventsRequestDto` - Request DTO for outright league events
+  - `GetOutrightLeagueEventsResultElement` - Response structure for outright league events
+  - `OutrightLeagueEventBodyStructure` - Body structure for outright league event data
+  - `OutrightLeagueEventsCompetition` - Competition structure for outright league events
+
+- **Enhanced Sample Projects**
+  - **feed-sample (v2.1.0)**: Added `OutrightLeagueSettlementUpdateHandler` for prematch feed processing
+  - **snapshot-api-sample (v1.1.0)**: Added menu option and example for outright league events API
+
+### API Routes
+
+- Added `/Prematch/GetOutrightLeagueEvents` endpoint to prematch snapshot API
+
+### Backward Compatibility
+
+All changes are backward compatible. Existing code will continue to work without modification.
 
 ## Version 3.0.0 - 2025-09-01
 
