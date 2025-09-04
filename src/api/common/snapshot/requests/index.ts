@@ -6,6 +6,7 @@ export * from './market-request';
 export * from './outright-event-request';
 export * from './outright-fixture-request';
 export * from './outright-league-market-request';
+export * from './outright-league-events-request';
 export * from './outright-leagues-request';
 export * from './outright-livescore-request';
 export * from './outright-market-request';

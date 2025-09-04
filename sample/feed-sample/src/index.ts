@@ -13,6 +13,7 @@ import {
   OutrightFixtureUpdate,
   OutrightLeagueFixtureUpdate,
   OutrightLeagueMarketUpdate,
+  OutrightLeagueSettlementUpdate,
   OutrightScoreUpdate,
   OutrightSettlementsUpdate,
   RetryError,
@@ -33,9 +34,10 @@ import {
   OutrightLeagueMarketUpdateHandler,
   OutrightScoreUpdateHandler,
   OutrightSettlementsUpdateHandler,
-  SettlementUpdateHandler,
+  SettlementUpdateHandler
 } from './handler';
 import { BunyanAdapter, ConsoleAdapter, PinoAdapter, WinstonAdapter } from './logger';
+import { OutrightLeagueSettlementUpdateHandler } from './handler/prematch/outright-league-settlement-update.handler';
 
 // Load configuration from appConfig file
 const config = getConfig();
@@ -75,6 +77,7 @@ const initSample = async () => {
     feedPreMatch.addEntityHandler(new HeartbeatUpdateHandler(), HeartbeatUpdate);
     feedPreMatch.addEntityHandler(new OutrightLeagueFixtureUpdateHandler(),OutrightLeagueFixtureUpdate);
     feedPreMatch.addEntityHandler(new OutrightLeagueMarketUpdateHandler(), OutrightLeagueMarketUpdate);
+    feedPreMatch.addEntityHandler(new OutrightLeagueSettlementUpdateHandler(), OutrightLeagueSettlementUpdate);
 
   
     const shutdown = async () => {

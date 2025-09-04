@@ -6,6 +6,7 @@ import {
   GetOutrightEventRequestDto,
   GetOutrightFixtureRequestDto,
   GetOutrightLeagueMarketRequestDto,
+  GetOutrightLeagueEventsRequestDto,
   GetOutrightLeaguesRequestDto,
   GetOutrightLivescoreRequestDto,
   GetOutrightMarketRequestDto,
@@ -19,6 +20,7 @@ import {
   GetOutrightFixtureMarketsResultElement,
   GetOutrightFixtureResultElement,
   GetOutrightLeagueMarketsResultElement,
+  GetOutrightLeagueEventsResultElement,
   GetOutrightLeaguesResultElement,
   GetOutrightScoresResultElement,
 } from '@api/common/snapshot';
@@ -54,4 +56,7 @@ export interface PreMatchSnapshotApiClient {
   getOutrightLeagueMarkets(
     _requestDto: GetOutrightLeagueMarketRequestDto,
   ): Promise<GetOutrightLeagueMarketsResultElement | undefined>;
+  getOutrightLeagueEvents(
+    _requestDto: GetOutrightLeagueEventsRequestDto,
+  ): Promise<GetOutrightLeagueEventsResultElement | undefined>;
 }
