@@ -5,13 +5,13 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
-- [Version 3.1.0 - 2025-01-XX](#version-310---2025-01-xx)
-- [Version 3.0.0 - 2025-09-01](#version-300---2025-09-01)
-- [Version 2.0.1 - 2025-08-24](#version-201---2025-08-24)
+- [Version 3.1.0](#version-310)
+- [Version 3.0.0](#version-300)
+- [Version 2.0.1](#version-201)
 
 ---
 
-## Version 3.1.0 - 2025-01-XX
+## Version 3.1.0
 
 Enhances outright league support by adding settlement update handling and outright league events API functionality.
 
@@ -40,7 +40,7 @@ Enhances outright league support by adding settlement update handling and outrig
 
 All changes are backward compatible. Existing code will continue to work without modification.
 
-## Version 3.0.0 - 2025-09-01
+## Version 3.0.0
 
 Enhances message structure by introducing `TransportMessageHeaders` for improved transport-level visibility and debugging.
 
@@ -76,7 +76,7 @@ Enhances message structure by introducing `TransportMessageHeaders` for improved
 const headers = TransportMessageHeaders.createFromProperties(rabbitMqProperties);
 ```
 
-## Version 2.0.1 - 2025-08-24  
+## Version 2.0.1  
 
 Introduced a breaking change to improve JSON serialization compatibility for entity identifiers.
 
