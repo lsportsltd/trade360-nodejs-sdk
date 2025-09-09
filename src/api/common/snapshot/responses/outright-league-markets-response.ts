@@ -2,13 +2,15 @@ import { Expose, Type } from 'class-transformer';
 import { BaseEntity } from '@entities';
 import { OutrightLeagueMarketsCompetition } from '@api/common/body-entities/responses/outright-league-market-competition';
 
+
 /**
- * GetOutrightLeagueMarketsResultElement class is responsible
- * for deserializing the response from the snapshot
- * API to get outright league markets
+ * OutrightLeagueEventsCompetitionElement class is responsible
+ * for deserializing the competition part of the response from the snapshot
+ * API to get outright league events
  */
-export class GetOutrightLeagueMarketsResultElement implements BaseEntity {
+export class OutrightLeagueMarketsCompetitionElement implements BaseEntity {
   [key: string]: unknown;
+
 
   @Expose({ name: 'Id' })
   @Type(() => Number)
@@ -25,4 +27,17 @@ export class GetOutrightLeagueMarketsResultElement implements BaseEntity {
   @Expose({ name: 'Competitions' })
   @Type(() => OutrightLeagueMarketsCompetition)
   competitions?: OutrightLeagueMarketsCompetition[];
+}
+
+/**
+ * GetOutrightLeagueEventsResultElement class is responsible
+ * for deserializing the response from the snapshot
+ * API to get outright league events
+ */
+export class GetOutrightLeagueMarketsResultElement implements BaseEntity {
+  [key: string]: unknown;
+
+  @Expose({ name: 'Competition' })
+  @Type(() => OutrightLeagueMarketsCompetitionElement)
+  competition?: OutrightLeagueMarketsCompetitionElement[];
 }
