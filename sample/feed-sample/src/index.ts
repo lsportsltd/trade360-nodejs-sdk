@@ -89,8 +89,8 @@ const initSample = async () => {
     process.on('SIGINT', shutdown);
     process.on('exit', shutdown);
 
-    await feedInPlay.start(false);
-    await feedPreMatch.start(false);
+    await feedInPlay.start(true);
+    await feedPreMatch.start(true);
 
     await new Promise<void>((resolve) => {
       setTimeout(() => {
