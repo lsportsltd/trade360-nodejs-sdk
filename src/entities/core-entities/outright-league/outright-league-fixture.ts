@@ -27,4 +27,8 @@ export class OutrightLeagueFixture {
   @Expose({ name: 'ExtraData' })
   @Type(() => NameValueRecord)
   extraData?: NameValueRecord[];
+
+  @Expose({ name: 'EndDate' })
+  @Type(() => Date)
+  endDate?: Date;
 }
