@@ -1,6 +1,6 @@
 {
   "name": "feed-sample",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
