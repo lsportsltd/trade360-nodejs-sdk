@@ -1,6 +1,9 @@
+import { Expose } from 'class-transformer';
+
 export class IdNNameRecord {
-  constructor(
-    protected id: number,
-    protected name: string,
-  ) {}
+  @Expose({ name: 'Id' })
+  public id?: number;
+
+  @Expose({ name: 'Name' })
+  public name?: string;
 }
