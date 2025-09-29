@@ -243,24 +243,8 @@ export class Mapper implements IMapper {
     this.registerMapping<GetIncidentsRequestDto, GetIncidentsRequest>(
       GetIncidentsRequestDto as Constructor<GetIncidentsRequestDto>,
       GetIncidentsRequest,
-      (sourceDtoUntyped: BaseEntity) => {
-        const sourceDto = sourceDtoUntyped as GetIncidentsRequestDto;
-        const request = new GetIncidentsRequest();
-
-        if (packageCredentials) {
-          request.userName = packageCredentials.username;
-          request.password = packageCredentials.password;
-          request.packageId = packageCredentials.packageId;
-        }
-
-        if (sourceDto.filter) {
-          // Ensure sourceDto.filter is an instance of IncidentsFilterDto before mapping
-          // This should be guaranteed by the GetIncidentsRequestDto constructor change
-          request.filter = this.map(sourceDto.filter, IncidentsFilter);
-        }
-
-        return request;
-      },
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetIncidentsRequest),
     );
 
     this.registerMapping<GetVenuesRequestDto, GetVenuesRequest>(
