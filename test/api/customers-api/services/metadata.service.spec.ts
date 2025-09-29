@@ -50,6 +50,9 @@ describe('MetadataHttpClient - getIncidents', () => {
       getTranslations: jest.fn(),
       getSports: jest.fn(),
       getLocations: jest.fn(),
+      getVenues: jest.fn(),
+      getCities: jest.fn(),
+      getStates: jest.fn(),
     };
   });
 

@@ -9,6 +9,9 @@ import {
   GetTranslationsRequestDto,
   GetIncidentsRequestDto,
   IncidentsFilterDto,
+  GetVenuesRequestDto,
+  GetCitiesRequestDto,
+  GetStatesRequestDto,
 } from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
@@ -17,6 +20,9 @@ import {
   GetTranslationsRequest,
   GetIncidentsRequest,
   IncidentsFilter,
+  GetVenuesRequest,
+  GetCitiesRequest,
+  GetStatesRequest,
 } from '@metadata-api/requests';
 import {
   ChangeManualSuspensionsRequestDto,
@@ -255,6 +261,24 @@ export class Mapper implements IMapper {
 
         return request;
       },
+    );
+
+    this.registerMapping<GetVenuesRequestDto, GetVenuesRequest>(
+      GetVenuesRequestDto as Constructor<GetVenuesRequestDto>,
+      GetVenuesRequest,
+      (source) => TransformerUtil.transform({ ...packageCredentials, ...source }, GetVenuesRequest),
+    );
+
+    this.registerMapping<GetCitiesRequestDto, GetCitiesRequest>(
+      GetCitiesRequestDto as Constructor<GetCitiesRequestDto>,
+      GetCitiesRequest,
+      (source) => TransformerUtil.transform({ ...packageCredentials, ...source }, GetCitiesRequest),
+    );
+
+    this.registerMapping<GetStatesRequestDto, GetStatesRequest>(
+      GetStatesRequestDto as Constructor<GetStatesRequestDto>,
+      GetStatesRequest,
+      (source) => TransformerUtil.transform({ ...packageCredentials, ...source }, GetStatesRequest),
     );
 
     this.registerMapping<GetMarketsRequestDto, GetMarketsRequest>(

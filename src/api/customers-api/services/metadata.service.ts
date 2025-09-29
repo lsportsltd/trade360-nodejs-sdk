@@ -15,6 +15,9 @@ import {
   GetMarketsRequestDto,
   GetTranslationsRequestDto,
   GetIncidentsRequestDto,
+  GetVenuesRequestDto,
+  GetCitiesRequestDto,
+  GetStatesRequestDto,
 } from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
@@ -22,6 +25,9 @@ import {
   GetMarketsRequest,
   GetTranslationsRequest,
   GetIncidentsRequest,
+  GetVenuesRequest,
+  GetCitiesRequest,
+  GetStatesRequest,
 } from '@metadata-api/requests';
 import {
   CompetitionCollectionResponse,
@@ -31,6 +37,9 @@ import {
   SportsCollectionResponse,
   TranslationsCollectionResponse,
   IncidentsCollectionResponse,
+  VenuesCollectionResponse,
+  CitiesCollectionResponse,
+  StatesCollectionResponse,
 } from '@metadata-api/responses';
 
 const {
@@ -41,6 +50,9 @@ const {
   GET_SPORTS_PREFIX_URL,
   GET_TRANSLATION_PREFIX_URL,
   GET_INCIDENT_PREFIX_URL,
+  GET_VENUES_PREFIX_URL,
+  GET_CITIES_PREFIX_URL,
+  GET_STATES_PREFIX_URL,
 } = MetadataRoutesPrefixUrl;
 
 /**
@@ -269,6 +281,90 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     const response = await this.postRequest<IncidentsCollectionResponse>({
       route: GET_INCIDENT_PREFIX_URL,
       responseBodyType: IncidentsCollectionResponse,
+      requestBody: request,
+    });
+
+    return response;
+  }
+
+  /**
+   * getVenues method is responsible for sending a request
+   * to the metadata API to get the venues.
+   * It sends a POST request to the metadata API with the
+   * GET_VENUES_PREFIX_URL and VenuesCollectionResponse
+   * as the response type.
+   * @param requestDto The request DTO for getting venues
+   * from the metadata API.
+   * @returns A promise that contains the venues data and total count.
+   * @throws Error if the request is invalid or incorrect.
+   */
+  public async getVenues(
+    requestDto: GetVenuesRequestDto,
+  ): Promise<VenuesCollectionResponse | undefined> {
+    const request = this.mapper.map<GetVenuesRequestDto, GetVenuesRequest>(
+      requestDto,
+      GetVenuesRequest,
+    );
+
+    const response = await this.postRequest<VenuesCollectionResponse>({
+      route: GET_VENUES_PREFIX_URL,
+      responseBodyType: VenuesCollectionResponse,
+      requestBody: request,
+    });
+
+    return response;
+  }
+
+  /**
+   * getCities method is responsible for sending a request
+   * to the metadata API to get the cities.
+   * It sends a POST request to the metadata API with the
+   * GET_CITIES_PREFIX_URL and CitiesCollectionResponse
+   * as the response type.
+   * @param requestDto The request DTO for getting cities
+   * from the metadata API.
+   * @returns A promise that contains the cities data and total count.
+   * @throws Error if the request is invalid or incorrect.
+   */
+  public async getCities(
+    requestDto: GetCitiesRequestDto,
+  ): Promise<CitiesCollectionResponse | undefined> {
+    const request = this.mapper.map<GetCitiesRequestDto, GetCitiesRequest>(
+      requestDto,
+      GetCitiesRequest,
+    );
+
+    const response = await this.postRequest<CitiesCollectionResponse>({
+      route: GET_CITIES_PREFIX_URL,
+      responseBodyType: CitiesCollectionResponse,
+      requestBody: request,
+    });
+
+    return response;
+  }
+
+  /**
+   * getStates method is responsible for sending a request
+   * to the metadata API to get the states.
+   * It sends a POST request to the metadata API with the
+   * GET_STATES_PREFIX_URL and StatesCollectionResponse
+   * as the response type.
+   * @param requestDto The request DTO for getting states
+   * from the metadata API.
+   * @returns A promise that contains the states data and total count.
+   * @throws Error if the request is invalid or incorrect.
+   */
+  public async getStates(
+    requestDto: GetStatesRequestDto,
+  ): Promise<StatesCollectionResponse | undefined> {
+    const request = this.mapper.map<GetStatesRequestDto, GetStatesRequest>(
+      requestDto,
+      GetStatesRequest,
+    );
+
+    const response = await this.postRequest<StatesCollectionResponse>({
+      route: GET_STATES_PREFIX_URL,
+      responseBodyType: StatesCollectionResponse,
       requestBody: request,
     });
 

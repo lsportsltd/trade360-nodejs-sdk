@@ -39,6 +39,12 @@ import {
   SubscriptionsCollectionResponse,
   GetIncidentsRequestDto,
   IncidentsFilterDto,
+  GetVenuesRequestDto,
+  VenueFilterDto,
+  GetCitiesRequestDto,
+  CityFilterDto,
+  GetStatesRequestDto,
+  StateFilterDto,
 } from 'trade360-nodejs-sdk';
 
 import { getConfig } from './config';
@@ -97,6 +103,9 @@ const initApiSample = async () => {
       { label: 'Metadata API - Get Translations', handler: async () => await getTranslations(metadataPrematchHttpClient) },
       { label: 'Metadata API - Get Competitions', handler: async () => await getCompetitions(metadataPrematchHttpClient) },
       { label: 'Metadata API - Get Incidents', handler: async () => await getIncidents(metadataPrematchHttpClient) },
+      { label: 'Metadata API - Get Venues', handler: async () => await getVenues(metadataPrematchHttpClient) },
+      { label: 'Metadata API - Get Cities', handler: async () => await getCities(metadataPrematchHttpClient) },
+      { label: 'Metadata API - Get States', handler: async () => await getStates(metadataPrematchHttpClient) },
       { label: 'Subscription API - Get Package Quota', handler: async () => await getPackageQuota(subscriptionInplayHttpClient) },
       { label: 'Subscription API - Get Fixture Schedule', handler: async () => await getFixtureSchedule(subscriptionInplayHttpClient) },
       { label: 'Subscription API - Subscribe by Fixtures', handler: async () => await subscribeByFixtures(subscriptionInplayHttpClient) },
@@ -535,6 +544,96 @@ const getIncidents = async (metadataHttpClient: IMetadataHttpClient): Promise<vo
     logger.info(`Successfully retrieved ${response?.data?.length} incidents, total count: ${response?.totalItems}`);
   } catch (error) {
     logger.error(`Error getting incidents: ${error}`);
+    if (error instanceof HttpResponseError && error.context) {
+      logger.error(`Error context: ${JSON.stringify(error.context)}`);
+    }
+  }
+};
+
+const getVenues = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  logger.info('Getting venues...');
+
+  const venuesFilter = new VenueFilterDto({
+    // countryIds: [1],
+    // venueIds: [123, 456],
+    // stateIds: [10],
+    // cityIds: [100],
+  });
+
+  const request = new GetVenuesRequestDto({
+    filter: venuesFilter,
+  });
+
+  const requestPayload = instanceToPlain(request);
+  logger.info('Request Payload being sent (should have PascalCase, e.g., Filter.CountryIds):');
+  logger.info(JSON.stringify(requestPayload, null, 2));
+
+  try {
+    const response = await metadataHttpClient.getVenues(request);
+    logger.info('Raw response from API:');
+    logger.info(JSON.stringify(response, null, 2));
+    logger.info(`Successfully retrieved ${response?.data?.length} venues`);
+  } catch (error) {
+    logger.error(`Error getting venues: ${error}`);
+    if (error instanceof HttpResponseError && error.context) {
+      logger.error(`Error context: ${JSON.stringify(error.context)}`);
+    }
+  }
+};
+
+const getCities = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  logger.info('Getting cities...');
+
+  const citiesFilter = new CityFilterDto({
+    countryIds: [1], // Example: Filter by country ID
+    // stateIds: [10],
+    // cityIds: [100, 200],
+  });
+
+  const request = new GetCitiesRequestDto({
+    filter: citiesFilter,
+  });
+
+  const requestPayload = instanceToPlain(request);
+  logger.info('Request Payload being sent (should have PascalCase, e.g., Filter.CountryIds):');
+  logger.info(JSON.stringify(requestPayload, null, 2));
+
+  try {
+    const response = await metadataHttpClient.getCities(request);
+    logger.info('Raw response from API:');
+    logger.info(JSON.stringify(response, null, 2));
+    logger.info(`Successfully retrieved ${response?.data?.length} cities`);
+  } catch (error) {
+    logger.error(`Error getting cities: ${error}`);
+    if (error instanceof HttpResponseError && error.context) {
+      logger.error(`Error context: ${JSON.stringify(error.context)}`);
+    }
+  }
+};
+
+const getStates = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  logger.info('Getting states...');
+
+  const statesFilter = new StateFilterDto({
+    countryIds: [1], // Example: Filter by country ID
+    // stateIds: [10, 20],
+  });
+
+  const request = new GetStatesRequestDto({
+    filter: statesFilter,
+  });
+
+  const requestPayload = instanceToPlain(request);
+  logger.info('Request Payload being sent (should have PascalCase, e.g., Filter.CountryIds):');
+  logger.info(JSON.stringify(requestPayload, null, 2));
+
+  try {
+    const response = await metadataHttpClient.getStates(request);
+    logger.info('Raw response from API:');
+    logger.info(JSON.stringify(response, null, 2));
+    logger.info(`Successfully retrieved ${response?.data?.length} states`);
+  } catch (error) {
+    logger.error(`Error getting states: ${error}`);
     if (error instanceof HttpResponseError && error.context) {
       logger.error(`Error context: ${JSON.stringify(error.context)}`);
     }
