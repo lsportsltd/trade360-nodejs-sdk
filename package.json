@@ -1,6 +1,6 @@
 {
   "name": "trade360-nodejs-sdk",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "LSports Trade360 SDK for Node.js",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
