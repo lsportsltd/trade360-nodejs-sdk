@@ -13,3 +13,4 @@ export * from './subscription-state';
 export * from './danger-indicator-status';
 export * from './danger-indicator-type';
 export * from './clock-status';
+export * from './incident-confirmation';

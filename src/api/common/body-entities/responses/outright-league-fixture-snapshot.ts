@@ -23,6 +23,7 @@ export class OutrightLeagueFixtureSnapshot {
   location!: LocationsBodyStructure;
 
   @Expose({ name: 'LastUpdate' })
+  @Type(() => Date)
   lastUpdate!: Date;
 
   @Expose({ name: 'Status' })
@@ -31,4 +32,8 @@ export class OutrightLeagueFixtureSnapshot {
   @Expose({ name: 'ExtraData' })
   @Type(() => NameValueRecord)
   public extraData?: NameValueRecord[];
+
+  @Expose({ name: 'EndDate' })
+  @Type(() => Date)
+  endDate?: Date;
 }

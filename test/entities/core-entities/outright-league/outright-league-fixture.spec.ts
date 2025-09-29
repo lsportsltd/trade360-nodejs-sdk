@@ -12,6 +12,7 @@ describe('OutrightLeagueFixture', () => {
       LastUpdate: '2024-06-01T12:00:00Z',
       Status: 1,
       ExtraData: [{ Name: 'foo', Value: 'bar' }],
+      EndDate: '2030-06-01T13:00:00Z',
     };
     const fixture = plainToInstance(OutrightLeagueFixture, plain, {
       excludeExtraneousValues: true,
@@ -25,6 +26,8 @@ describe('OutrightLeagueFixture', () => {
     expect(Array.isArray(fixture.extraData)).toBe(true);
     expect(fixture.extraData?.[0]).toBeInstanceOf(NameValueRecord);
     expect(fixture.status).toBe(1);
+    expect(fixture.endDate).toBeInstanceOf(Date);
+    expect(fixture.endDate?.toISOString()).toBe('2030-06-01T13:00:00.000Z');
   });
 
   it('should handle missing properties', (): void => {
@@ -38,6 +41,7 @@ describe('OutrightLeagueFixture', () => {
     expect(fixture.lastUpdate).toBeUndefined();
     expect(fixture.status).toBeUndefined();
     expect(fixture.extraData).toBeUndefined();
+    expect(fixture.endDate).toBeUndefined();
   });
 
   it('should ignore extraneous properties', (): void => {
