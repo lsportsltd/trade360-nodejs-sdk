@@ -6,7 +6,7 @@ import {
 describe('VenuesFilter', () => {
   it('should instantiate with default values', () => {
     const filter = new VenuesFilter();
-    
+
     expect(filter).toBeInstanceOf(VenuesFilter);
     expect(filter.venueIds).toBeUndefined();
     expect(filter.countryIds).toBeUndefined();
@@ -22,7 +22,7 @@ describe('VenuesFilter', () => {
       cityIds: [1000, 2000],
     };
     const filter = new VenuesFilter(data);
-    
+
     expect(filter.venueIds).toEqual(data.venueIds);
     expect(filter.countryIds).toEqual(data.countryIds);
     expect(filter.stateIds).toEqual(data.stateIds);
@@ -35,7 +35,7 @@ describe('VenuesFilter', () => {
       countryIds: [100],
     };
     const filter = new VenuesFilter(data);
-    
+
     expect(filter.venueIds).toEqual(data.venueIds);
     expect(filter.countryIds).toEqual(data.countryIds);
     expect(filter.stateIds).toBeUndefined();
@@ -50,7 +50,7 @@ describe('VenuesFilter', () => {
       cityIds: [],
     };
     const filter = new VenuesFilter(data);
-    
+
     expect(filter.venueIds).toEqual([]);
     expect(filter.countryIds).toEqual([]);
     expect(filter.stateIds).toEqual([]);
@@ -60,7 +60,7 @@ describe('VenuesFilter', () => {
   it('should handle null/undefined data', () => {
     const filter1 = new VenuesFilter(null);
     const filter2 = new VenuesFilter(undefined);
-    
+
     expect(filter1).toBeInstanceOf(VenuesFilter);
     expect(filter2).toBeInstanceOf(VenuesFilter);
   });
@@ -69,7 +69,7 @@ describe('VenuesFilter', () => {
 describe('GetVenuesRequest', () => {
   it('should instantiate with default values', () => {
     const request = new GetVenuesRequest();
-    
+
     expect(request).toBeInstanceOf(GetVenuesRequest);
     expect(request.filter).toBeUndefined();
   });
@@ -86,7 +86,7 @@ describe('GetVenuesRequest', () => {
       packageId: 123,
     };
     const request = new GetVenuesRequest(data);
-    
+
     expect(request.filter).toEqual(filterData);
     expect(request.userName).toBe('test-user');
     expect(request.password).toBe('test-password');
@@ -100,7 +100,7 @@ describe('GetVenuesRequest', () => {
       packageId: 123,
     };
     const request = new GetVenuesRequest(data);
-    
+
     expect(request.filter).toBeUndefined();
     expect(request.userName).toBe('test-user');
     expect(request.password).toBe('test-password');
@@ -109,7 +109,7 @@ describe('GetVenuesRequest', () => {
 
   it('should handle empty data object', () => {
     const request = new GetVenuesRequest({});
-    
+
     expect(request).toBeInstanceOf(GetVenuesRequest);
     expect(request.filter).toBeUndefined();
   });
@@ -117,10 +117,8 @@ describe('GetVenuesRequest', () => {
   it('should handle null/undefined data', () => {
     const request1 = new GetVenuesRequest(null);
     const request2 = new GetVenuesRequest(undefined);
-    
+
     expect(request1).toBeInstanceOf(GetVenuesRequest);
     expect(request2).toBeInstanceOf(GetVenuesRequest);
   });
 });
-
-

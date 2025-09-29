@@ -12,7 +12,7 @@ describe('IdNNameRecord', () => {
     const record = new IdNNameRecord();
     record.id = 1;
     record.name = 'Test Name';
-    
+
     expect(record.id).toBe(1);
     expect(record.name).toBe('Test Name');
   });

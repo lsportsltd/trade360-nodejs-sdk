@@ -6,7 +6,7 @@ import {
 describe('StatesFilter', () => {
   it('should instantiate with default values', () => {
     const filter = new StatesFilter();
-    
+
     expect(filter).toBeInstanceOf(StatesFilter);
     expect(filter.stateIds).toBeUndefined();
     expect(filter.countryIds).toBeUndefined();
@@ -18,7 +18,7 @@ describe('StatesFilter', () => {
       countryIds: [100, 200],
     };
     const filter = new StatesFilter(data);
-    
+
     expect(filter.stateIds).toEqual(data.stateIds);
     expect(filter.countryIds).toEqual(data.countryIds);
   });
@@ -28,7 +28,7 @@ describe('StatesFilter', () => {
       stateIds: [1, 2],
     };
     const filter = new StatesFilter(data);
-    
+
     expect(filter.stateIds).toEqual(data.stateIds);
     expect(filter.countryIds).toBeUndefined();
   });
@@ -39,7 +39,7 @@ describe('StatesFilter', () => {
       countryIds: [],
     };
     const filter = new StatesFilter(data);
-    
+
     expect(filter.stateIds).toEqual([]);
     expect(filter.countryIds).toEqual([]);
   });
@@ -47,7 +47,7 @@ describe('StatesFilter', () => {
   it('should handle null/undefined data', () => {
     const filter1 = new StatesFilter(null);
     const filter2 = new StatesFilter(undefined);
-    
+
     expect(filter1).toBeInstanceOf(StatesFilter);
     expect(filter2).toBeInstanceOf(StatesFilter);
   });
@@ -56,7 +56,7 @@ describe('StatesFilter', () => {
 describe('GetStatesRequest', () => {
   it('should instantiate with default values', () => {
     const request = new GetStatesRequest();
-    
+
     expect(request).toBeInstanceOf(GetStatesRequest);
     expect(request.filter).toBeUndefined();
   });
@@ -73,7 +73,7 @@ describe('GetStatesRequest', () => {
       packageId: 123,
     };
     const request = new GetStatesRequest(data);
-    
+
     expect(request.filter).toEqual(filterData);
     expect(request.userName).toBe('test-user');
     expect(request.password).toBe('test-password');
@@ -87,7 +87,7 @@ describe('GetStatesRequest', () => {
       packageId: 123,
     };
     const request = new GetStatesRequest(data);
-    
+
     expect(request.filter).toBeUndefined();
     expect(request.userName).toBe('test-user');
     expect(request.password).toBe('test-password');
@@ -96,7 +96,7 @@ describe('GetStatesRequest', () => {
 
   it('should handle empty data object', () => {
     const request = new GetStatesRequest({});
-    
+
     expect(request).toBeInstanceOf(GetStatesRequest);
     expect(request.filter).toBeUndefined();
   });
@@ -104,10 +104,8 @@ describe('GetStatesRequest', () => {
   it('should handle null/undefined data', () => {
     const request1 = new GetStatesRequest(null);
     const request2 = new GetStatesRequest(undefined);
-    
+
     expect(request1).toBeInstanceOf(GetStatesRequest);
     expect(request2).toBeInstanceOf(GetStatesRequest);
   });
 });
-
-

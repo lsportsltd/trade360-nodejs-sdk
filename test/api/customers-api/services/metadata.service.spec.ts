@@ -2,18 +2,9 @@ import {
   GetIncidentsRequestDto,
   IncidentsFilterDto,
 } from '@metadata-api/dtos/incidents-request.dto';
-import {
-  GetVenuesRequestDto,
-  VenueFilterDto,
-} from '@metadata-api/dtos/venues-request.dto';
-import {
-  GetCitiesRequestDto,
-  CityFilterDto,
-} from '@metadata-api/dtos/cities-request.dto';
-import {
-  GetStatesRequestDto,
-  StateFilterDto,
-} from '@metadata-api/dtos/states-request.dto';
+import { GetVenuesRequestDto, VenueFilterDto } from '@metadata-api/dtos/venues-request.dto';
+import { GetCitiesRequestDto, CityFilterDto } from '@metadata-api/dtos/cities-request.dto';
+import { GetStatesRequestDto, StateFilterDto } from '@metadata-api/dtos/states-request.dto';
 import { IMapper } from '@api/common/interfaces/mapper.interface';
 import { GetIncidentsRequest } from '@metadata-api/requests/incidents-request';
 import { GetVenuesRequest } from '@metadata-api/requests/venues-request';

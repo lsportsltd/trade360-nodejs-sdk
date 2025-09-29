@@ -4,18 +4,9 @@ import {
   GetIncidentsRequestDto,
   IncidentsFilterDto,
 } from '@metadata-api/dtos/incidents-request.dto';
-import {
-  GetVenuesRequestDto,
-  VenueFilterDto,
-} from '@metadata-api/dtos/venues-request.dto';
-import {
-  GetCitiesRequestDto,
-  CityFilterDto,
-} from '@metadata-api/dtos/cities-request.dto';
-import {
-  GetStatesRequestDto,
-  StateFilterDto,
-} from '@metadata-api/dtos/states-request.dto';
+import { GetVenuesRequestDto, VenueFilterDto } from '@metadata-api/dtos/venues-request.dto';
+import { GetCitiesRequestDto, CityFilterDto } from '@metadata-api/dtos/cities-request.dto';
+import { GetStatesRequestDto, StateFilterDto } from '@metadata-api/dtos/states-request.dto';
 import { GetIncidentsRequest, IncidentsFilter } from '@metadata-api/requests/incidents-request';
 import { GetVenuesRequest, VenuesFilter } from '@metadata-api/requests/venues-request';
 import { GetCitiesRequest, CitiesFilter } from '@metadata-api/requests/cities-request';
@@ -188,10 +179,7 @@ describe('Mapper - GetVenues Flow', () => {
       filter: filterDto,
     });
 
-    const request = mapper.map<GetVenuesRequestDto, GetVenuesRequest>(
-      requestDto,
-      GetVenuesRequest,
-    );
+    const request = mapper.map<GetVenuesRequestDto, GetVenuesRequest>(requestDto, GetVenuesRequest);
 
     expect(request).toBeInstanceOf(GetVenuesRequest);
     expect(request.filter).toBeInstanceOf(VenuesFilter);
@@ -205,10 +193,7 @@ describe('Mapper - GetVenues Flow', () => {
   it('should map GetVenuesRequestDto to GetVenuesRequest without filter', () => {
     const requestDto = new GetVenuesRequestDto();
 
-    const request = mapper.map<GetVenuesRequestDto, GetVenuesRequest>(
-      requestDto,
-      GetVenuesRequest,
-    );
+    const request = mapper.map<GetVenuesRequestDto, GetVenuesRequest>(requestDto, GetVenuesRequest);
 
     expect(request).toBeInstanceOf(GetVenuesRequest);
     expect(request.filter).toBeUndefined();
@@ -270,10 +255,7 @@ describe('Mapper - GetCities Flow', () => {
       filter: filterDto,
     });
 
-    const request = mapper.map<GetCitiesRequestDto, GetCitiesRequest>(
-      requestDto,
-      GetCitiesRequest,
-    );
+    const request = mapper.map<GetCitiesRequestDto, GetCitiesRequest>(requestDto, GetCitiesRequest);
 
     expect(request).toBeInstanceOf(GetCitiesRequest);
     expect(request.filter).toBeInstanceOf(CitiesFilter);
@@ -287,10 +269,7 @@ describe('Mapper - GetCities Flow', () => {
   it('should map GetCitiesRequestDto to GetCitiesRequest without filter', () => {
     const requestDto = new GetCitiesRequestDto();
 
-    const request = mapper.map<GetCitiesRequestDto, GetCitiesRequest>(
-      requestDto,
-      GetCitiesRequest,
-    );
+    const request = mapper.map<GetCitiesRequestDto, GetCitiesRequest>(requestDto, GetCitiesRequest);
 
     expect(request).toBeInstanceOf(GetCitiesRequest);
     expect(request.filter).toBeUndefined();
@@ -334,10 +313,7 @@ describe('Mapper - GetStates Flow', () => {
       filter: filterDto,
     });
 
-    const request = mapper.map<GetStatesRequestDto, GetStatesRequest>(
-      requestDto,
-      GetStatesRequest,
-    );
+    const request = mapper.map<GetStatesRequestDto, GetStatesRequest>(requestDto, GetStatesRequest);
 
     expect(request).toBeInstanceOf(GetStatesRequest);
     expect(request.filter).toBeInstanceOf(StatesFilter);
@@ -351,10 +327,7 @@ describe('Mapper - GetStates Flow', () => {
   it('should map GetStatesRequestDto to GetStatesRequest without filter', () => {
     const requestDto = new GetStatesRequestDto();
 
-    const request = mapper.map<GetStatesRequestDto, GetStatesRequest>(
-      requestDto,
-      GetStatesRequest,
-    );
+    const request = mapper.map<GetStatesRequestDto, GetStatesRequest>(requestDto, GetStatesRequest);
 
     expect(request).toBeInstanceOf(GetStatesRequest);
     expect(request.filter).toBeUndefined();

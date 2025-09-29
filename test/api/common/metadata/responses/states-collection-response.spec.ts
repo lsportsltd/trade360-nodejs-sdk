@@ -3,7 +3,7 @@ import { StatesCollectionResponse } from '../../../../../src/api/common/metadata
 describe('StatesCollectionResponse', () => {
   it('should instantiate with default values', () => {
     const response = new StatesCollectionResponse();
-    
+
     expect(response).toBeInstanceOf(StatesCollectionResponse);
     expect(response.data).toBeUndefined();
   });
@@ -18,7 +18,7 @@ describe('StatesCollectionResponse', () => {
       data: [stateData],
     };
     const response = new StatesCollectionResponse(data);
-    
+
     expect(response.data).toEqual([stateData]);
   });
 
@@ -27,7 +27,7 @@ describe('StatesCollectionResponse', () => {
       data: [],
     };
     const response = new StatesCollectionResponse(data);
-    
+
     expect(response.data).toEqual([]);
   });
 
@@ -48,7 +48,7 @@ describe('StatesCollectionResponse', () => {
       data: statesData,
     };
     const response = new StatesCollectionResponse(data);
-    
+
     expect(response.data).toEqual(statesData);
     expect(response.data).toHaveLength(2);
   });
@@ -56,7 +56,7 @@ describe('StatesCollectionResponse', () => {
   it('should handle null/undefined data', () => {
     const response1 = new StatesCollectionResponse(null);
     const response2 = new StatesCollectionResponse(undefined);
-    
+
     expect(response1).toBeInstanceOf(StatesCollectionResponse);
     expect(response2).toBeInstanceOf(StatesCollectionResponse);
   });
@@ -68,11 +68,9 @@ describe('StatesCollectionResponse', () => {
       customProperty: 'test',
     };
     const response = new StatesCollectionResponse(data);
-    
+
     expect(response.data).toEqual([]);
     expect(response.totalItems).toBe(0);
     expect(response.customProperty).toBe('test');
   });
 });
-
-

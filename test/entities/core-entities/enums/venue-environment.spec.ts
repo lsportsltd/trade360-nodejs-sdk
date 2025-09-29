@@ -13,10 +13,7 @@ describe('VenueEnvironment Enum', () => {
 
   it('should contain all expected enum keys', () => {
     const keys = Object.keys(VenueEnvironment).filter((k) => isNaN(Number(k)));
-    expect(keys).toEqual([
-      'Indoors',
-      'Outdoors',
-    ]);
+    expect(keys).toEqual(['Indoors', 'Outdoors']);
   });
 
   it('should contain all expected enum values', () => {
@@ -29,5 +26,3 @@ describe('VenueEnvironment Enum', () => {
     expect(keys).toHaveLength(2);
   });
 });
-
-

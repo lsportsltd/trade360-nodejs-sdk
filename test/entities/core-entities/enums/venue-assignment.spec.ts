@@ -15,11 +15,7 @@ describe('VenueAssignment Enum', () => {
 
   it('should contain all expected enum keys', () => {
     const keys = Object.keys(VenueAssignment).filter((k) => isNaN(Number(k)));
-    expect(keys).toEqual([
-      'Home',
-      'Away',
-      'Neutral',
-    ]);
+    expect(keys).toEqual(['Home', 'Away', 'Neutral']);
   });
 
   it('should contain all expected enum values', () => {
@@ -32,5 +28,3 @@ describe('VenueAssignment Enum', () => {
     expect(keys).toHaveLength(3);
   });
 });
-
-

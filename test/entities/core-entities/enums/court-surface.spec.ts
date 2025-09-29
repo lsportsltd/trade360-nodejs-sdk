@@ -17,12 +17,7 @@ describe('CourtSurface Enum', () => {
 
   it('should contain all expected enum keys', () => {
     const keys = Object.keys(CourtSurface).filter((k) => isNaN(Number(k)));
-    expect(keys).toEqual([
-      'Grass',
-      'Hard',
-      'Clay',
-      'ArtificialGrass',
-    ]);
+    expect(keys).toEqual(['Grass', 'Hard', 'Clay', 'ArtificialGrass']);
   });
 
   it('should contain all expected enum values', () => {
@@ -35,5 +30,3 @@ describe('CourtSurface Enum', () => {
     expect(keys).toHaveLength(4);
   });
 });
-
-

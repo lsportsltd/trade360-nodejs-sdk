@@ -1,10 +1,9 @@
 import { VenuesCollectionResponse } from '../../../../../src/api/common/metadata/responses/venues-collection-response';
-import { VenueBodyStructure } from '../../../../../src/api/common/body-entities/responses/venue-body-structure';
 
 describe('VenuesCollectionResponse', () => {
   it('should instantiate with default values', () => {
     const response = new VenuesCollectionResponse();
-    
+
     expect(response).toBeInstanceOf(VenuesCollectionResponse);
     expect(response.data).toBeUndefined();
   });
@@ -21,7 +20,7 @@ describe('VenuesCollectionResponse', () => {
       data: [venueData],
     };
     const response = new VenuesCollectionResponse(data);
-    
+
     expect(response.data).toEqual([venueData]);
   });
 
@@ -30,7 +29,7 @@ describe('VenuesCollectionResponse', () => {
       data: [],
     };
     const response = new VenuesCollectionResponse(data);
-    
+
     expect(response.data).toEqual([]);
   });
 
@@ -51,7 +50,7 @@ describe('VenuesCollectionResponse', () => {
       data: venuesData,
     };
     const response = new VenuesCollectionResponse(data);
-    
+
     expect(response.data).toEqual(venuesData);
     expect(response.data).toHaveLength(2);
   });
@@ -59,7 +58,7 @@ describe('VenuesCollectionResponse', () => {
   it('should handle null/undefined data', () => {
     const response1 = new VenuesCollectionResponse(null);
     const response2 = new VenuesCollectionResponse(undefined);
-    
+
     expect(response1).toBeInstanceOf(VenuesCollectionResponse);
     expect(response2).toBeInstanceOf(VenuesCollectionResponse);
   });
@@ -71,11 +70,9 @@ describe('VenuesCollectionResponse', () => {
       customProperty: 'test',
     };
     const response = new VenuesCollectionResponse(data);
-    
+
     expect(response.data).toEqual([]);
     expect(response.totalItems).toBe(0);
     expect(response.customProperty).toBe('test');
   });
 });
-
-

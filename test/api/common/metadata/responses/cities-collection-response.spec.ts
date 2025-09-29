@@ -3,7 +3,7 @@ import { CitiesCollectionResponse } from '../../../../../src/api/common/metadata
 describe('CitiesCollectionResponse', () => {
   it('should instantiate with default values', () => {
     const response = new CitiesCollectionResponse();
-    
+
     expect(response).toBeInstanceOf(CitiesCollectionResponse);
     expect(response.data).toBeUndefined();
   });
@@ -19,7 +19,7 @@ describe('CitiesCollectionResponse', () => {
       data: [cityData],
     };
     const response = new CitiesCollectionResponse(data);
-    
+
     expect(response.data).toEqual([cityData]);
   });
 
@@ -28,7 +28,7 @@ describe('CitiesCollectionResponse', () => {
       data: [],
     };
     const response = new CitiesCollectionResponse(data);
-    
+
     expect(response.data).toEqual([]);
   });
 
@@ -49,7 +49,7 @@ describe('CitiesCollectionResponse', () => {
       data: citiesData,
     };
     const response = new CitiesCollectionResponse(data);
-    
+
     expect(response.data).toEqual(citiesData);
     expect(response.data).toHaveLength(2);
   });
@@ -57,7 +57,7 @@ describe('CitiesCollectionResponse', () => {
   it('should handle null/undefined data', () => {
     const response1 = new CitiesCollectionResponse(null);
     const response2 = new CitiesCollectionResponse(undefined);
-    
+
     expect(response1).toBeInstanceOf(CitiesCollectionResponse);
     expect(response2).toBeInstanceOf(CitiesCollectionResponse);
   });
@@ -69,11 +69,9 @@ describe('CitiesCollectionResponse', () => {
       customProperty: 'test',
     };
     const response = new CitiesCollectionResponse(data);
-    
+
     expect(response.data).toEqual([]);
     expect(response.totalItems).toBe(0);
     expect(response.customProperty).toBe('test');
   });
 });
-
-
