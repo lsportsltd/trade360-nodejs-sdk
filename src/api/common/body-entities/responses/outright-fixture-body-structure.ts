@@ -4,6 +4,7 @@ import { SportsBodyStructure } from './sports-body-structure';
 import { LocationsBodyStructure } from './locations-body-structure';
 import { ParticipantSchedule } from './participant-schedule';
 import { Subscription } from '@lsports/entities/common';
+import { FixtureVenue } from '@lsports/entities/fixture/fixture-venue';
 
 /**
  * Outright Fixture Element class is responsible for
@@ -35,4 +36,8 @@ export class OutrightFixtureBodyStructure {
   @Expose({ name: 'Subscription' })
   @Type(() => Subscription)
   subscription!: Subscription;
+
+  @Expose({ name: 'Venue' })
+  @Type(() => FixtureVenue)
+  public venue?: FixtureVenue;
 }
