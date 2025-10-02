@@ -41,6 +41,8 @@ Extends messaging models and metadata API with comprehensive venue, city, and st
     - `round` property of type `IdNNameRecord` for tournament round information
   - **`OutrightFixture`** - Enhanced with:
     - `venue` property of type `FixtureVenue`
+  - **`OutrightFixtureBodyStructure`** - Enhanced API response structure with:
+    - `venue` property of type `FixtureVenue` for snapshot API responses
 
 - **New Venue-Related Enums**
   - `CourtSurface` - Enum for court surface types (Grass, Hard, Clay, ArtificialGrass)
