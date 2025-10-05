@@ -15,10 +15,10 @@ describe('Subscription', () => {
     const subscription = plainToInstance(Subscription, plain, { excludeExtraneousValues: true });
     expect(subscription.type).toBeUndefined();
     expect(subscription.status).toBeUndefined();
-  });s
+  });
 
   it('should ignore extraneous properties', (): void => {
-    const plain = { Type: 1, Extra: 'ignore me' }; // 1 = InPlay
+    const plain = { Type: 1, Extra: 'ignore me' }; // 1 = NotSubscribed
     const subscription = plainToInstance(Subscription, plain, { excludeExtraneousValues: true });
     expect((subscription as unknown as { Extra?: unknown }).Extra).toBeUndefined();
   });
