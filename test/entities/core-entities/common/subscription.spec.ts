@@ -1,13 +1,12 @@
 import { plainToInstance } from 'class-transformer';
 import { Subscription } from '../../../../src/entities/core-entities/common/subscription';
-import { SubscriptionType } from '../../../../src/entities/core-entities/enums/subscription-type';
 
 describe('Subscription', () => {
   it('should deserialize a plain object into a Subscription instance', (): void => {
-    const plain = { Type: SubscriptionType.Subscribed, Status: 'Active' };
+    const plain = { Type: 2, Status: 'Active' }; // 2 = Prematch
     const subscription = plainToInstance(Subscription, plain, { excludeExtraneousValues: true });
     expect(subscription).toBeInstanceOf(Subscription);
-    expect(subscription.type).toBe(SubscriptionType.Subscribed);
+    expect(subscription.type).toBe(2);
     expect(subscription.status).toBe('Active');
   });
 
@@ -19,7 +18,7 @@ describe('Subscription', () => {
   });
 
   it('should ignore extraneous properties', (): void => {
-    const plain = { Type: SubscriptionType.NotSubscribed, Extra: 'ignore me' };
+    const plain = { Type: 1, Extra: 'ignore me' }; // 1 = InPlay
     const subscription = plainToInstance(Subscription, plain, { excludeExtraneousValues: true });
     expect((subscription as unknown as { Extra?: unknown }).Extra).toBeUndefined();
   });

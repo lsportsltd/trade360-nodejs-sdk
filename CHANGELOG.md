@@ -5,11 +5,35 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.2.1](#version-321)
 - [Version 3.1.0](#version-310)
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
 ---
+
+## Version 3.2.1
+
+Bug fix release that removes unused code and dependencies.
+
+### Bug Fixes
+
+- **Removed Unused SubscriptionType Enum (TR-19889)**
+  - Deleted `SubscriptionType` enum from `src/entities/core-entities/enums/subscription-type.ts`
+  - Removed unused import from `Subscription` class
+  - Removed export from `enums/index.ts`
+  - Deleted associated test file `test/entities/core-entities/enums/subscription-type.spec.ts`
+  - Updated `subscription.spec.ts` to use numeric values directly instead of enum references
+
+### Impact
+
+- **Code Cleanup:** Removes dead code that was imported but never actually used
+- **Bundle Size:** Slightly reduces bundle size by removing unused enum
+- **Maintenance:** Eliminates maintenance burden of unused code
+
+### Backward Compatibility
+
+All changes are backward compatible. The `Subscription.type` property was already typed as `number`, so no external code changes are required.
 
 ## Version 3.1.0
 
