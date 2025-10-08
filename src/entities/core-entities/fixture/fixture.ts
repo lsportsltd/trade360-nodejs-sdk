@@ -1,12 +1,13 @@
 import { Expose, Type } from 'class-transformer';
 
 import { FixtureStatus } from '@lsports/enums';
-import { NameValueRecord, Subscription } from '@lsports/entities/common';
+import { IdNNameRecord, NameValueRecord, Subscription } from '@lsports/entities/common';
 
 import { League } from './league';
 import { Location } from './location';
 import { Participant } from './participant';
 import { Sport } from './sport';
+import { FixtureVenue } from './fixture-venue';
 
 export class Fixture {
   @Expose({ name: 'Subscription' })
@@ -43,4 +44,16 @@ export class Fixture {
   @Expose({ name: 'FixtureExtraData' })
   @Type(() => NameValueRecord)
   public fixtureExtraData?: NameValueRecord[];
+
+  @Expose({ name: 'Venue' })
+  @Type(() => FixtureVenue)
+  public venue?: FixtureVenue;
+
+  @Expose({ name: 'Stage' })
+  @Type(() => IdNNameRecord)
+  public stage?: IdNNameRecord;
+
+  @Expose({ name: 'Round' })
+  @Type(() => IdNNameRecord)
+  public round?: IdNNameRecord;
 }

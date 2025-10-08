@@ -5,12 +5,64 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.3.0](#version-330)
 - [Version 3.2.1](#version-321)
 - [Version 3.1.0](#version-310)
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
 ---
+
+## Version 3.3.0
+
+Extends messaging models and metadata API with comprehensive venue, city, and state support, plus enhanced fixture entities with venue, stage, and round information.
+
+### New Features
+
+- **Venue, City, and State Metadata APIs**
+  - `getVenues()` - New endpoint to fetch venue information with filtering capabilities
+  - `getCities()` - New endpoint to fetch city information with filtering capabilities  
+  - `getStates()` - New endpoint to fetch state information with filtering capabilities
+  - `GetVenuesRequestDto` / `VenueFilterDto` - Request DTOs for venue filtering by venue IDs, country IDs, state IDs, and city IDs
+  - `GetCitiesRequestDto` / `CityFilterDto` - Request DTOs for city filtering by country IDs, state IDs, and city IDs
+  - `GetStatesRequestDto` / `StateFilterDto` - Request DTOs for state filtering by country IDs and state IDs
+  - `VenueBodyStructure` - Response structure for venue data including country, state, and city information
+  - `CityBodyStructure` - Response structure for city data including country and state information
+  - `StateBodyStructure` - Response structure for state data including country information
+  - `VenuesCollectionResponse` / `CitiesCollectionResponse` / `StatesCollectionResponse` - Collection response wrappers
+
+- **Enhanced Fixture Entities**
+  - **`FixtureVenue`** - New comprehensive venue entity with:
+    - Basic venue information (ID, name, capacity, attendance)
+    - Court surface type, environment (indoor/outdoor), and assignment (home/away/neutral)
+    - Geographic information (country, state, city)
+  - **`Fixture`** - Enhanced with:
+    - `venue` property of type `FixtureVenue`
+    - `stage` property of type `IdNNameRecord` for tournament stage information
+    - `round` property of type `IdNNameRecord` for tournament round information
+  - **`OutrightFixture`** - Enhanced with:
+    - `venue` property of type `FixtureVenue`
+  - **`OutrightFixtureBodyStructure`** - Enhanced API response structure with:
+    - `venue` property of type `FixtureVenue` for snapshot API responses
+
+- **New Venue-Related Enums**
+  - `CourtSurface` - Enum for court surface types (Grass, Hard, Clay, ArtificialGrass)
+  - `VenueAssignment` - Enum for venue assignment (Home, Away, Neutral)
+  - `VenueEnvironment` - Enum for venue environment (Indoors, Outdoors)
+
+- **Enhanced Sample Projects**
+  - **customer-api-sample (v1.1.0)**: Added menu options and examples for venues, cities, and states metadata APIs
+  - **feed-sample**: Updated to demonstrate enhanced fixture entities with venue information
+
+### API Routes
+
+- Added `/Metadata/GetVenues` endpoint to metadata API
+- Added `/Metadata/GetCities` endpoint to metadata API  
+- Added `/Metadata/GetStates` endpoint to metadata API
+
+### Backward Compatibility
+
+All changes are backward compatible. Existing code will continue to work without modification. The new venue, stage, and round properties are optional additions to existing entities.
 
 ## Version 3.2.1
 

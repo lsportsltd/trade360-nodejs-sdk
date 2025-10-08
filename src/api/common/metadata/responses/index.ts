@@ -5,3 +5,6 @@ export * from './markets-collection-response';
 export * from './translations-collection-response';
 export * from './competitions-collection-response';
 export * from './incidents-collection-response';
+export * from './venues-collection-response';
+export * from './cities-collection-response';
+export * from './states-collection-response';

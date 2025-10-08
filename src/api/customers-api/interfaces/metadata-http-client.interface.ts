@@ -11,6 +11,12 @@ import {
   TranslationsCollectionResponse,
   GetIncidentsRequestDto,
   IncidentsCollectionResponse,
+  GetVenuesRequestDto,
+  VenuesCollectionResponse,
+  GetCitiesRequestDto,
+  CitiesCollectionResponse,
+  GetStatesRequestDto,
+  StatesCollectionResponse,
 } from '@api/common';
 
 /**
@@ -32,4 +38,7 @@ export interface IMetadataHttpClient {
   getIncidents(
     requestDto: GetIncidentsRequestDto,
   ): Promise<IncidentsCollectionResponse | undefined>;
+  getVenues(requestDto: GetVenuesRequestDto): Promise<VenuesCollectionResponse | undefined>;
+  getCities(requestDto: GetCitiesRequestDto): Promise<CitiesCollectionResponse | undefined>;
+  getStates(requestDto: GetStatesRequestDto): Promise<StatesCollectionResponse | undefined>;
 }

@@ -9,6 +9,9 @@ import {
   GetTranslationsRequestDto,
   GetIncidentsRequestDto,
   IncidentsFilterDto,
+  GetVenuesRequestDto,
+  GetCitiesRequestDto,
+  GetStatesRequestDto,
 } from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
@@ -17,6 +20,9 @@ import {
   GetTranslationsRequest,
   GetIncidentsRequest,
   IncidentsFilter,
+  GetVenuesRequest,
+  GetCitiesRequest,
+  GetStatesRequest,
 } from '@metadata-api/requests';
 import {
   ChangeManualSuspensionsRequestDto,
@@ -237,24 +243,26 @@ export class Mapper implements IMapper {
     this.registerMapping<GetIncidentsRequestDto, GetIncidentsRequest>(
       GetIncidentsRequestDto as Constructor<GetIncidentsRequestDto>,
       GetIncidentsRequest,
-      (sourceDtoUntyped: BaseEntity) => {
-        const sourceDto = sourceDtoUntyped as GetIncidentsRequestDto;
-        const request = new GetIncidentsRequest();
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetIncidentsRequest),
+    );
 
-        if (packageCredentials) {
-          request.userName = packageCredentials.username;
-          request.password = packageCredentials.password;
-          request.packageId = packageCredentials.packageId;
-        }
+    this.registerMapping<GetVenuesRequestDto, GetVenuesRequest>(
+      GetVenuesRequestDto as Constructor<GetVenuesRequestDto>,
+      GetVenuesRequest,
+      (source) => TransformerUtil.transform({ ...packageCredentials, ...source }, GetVenuesRequest),
+    );
 
-        if (sourceDto.filter) {
-          // Ensure sourceDto.filter is an instance of IncidentsFilterDto before mapping
-          // This should be guaranteed by the GetIncidentsRequestDto constructor change
-          request.filter = this.map(sourceDto.filter, IncidentsFilter);
-        }
+    this.registerMapping<GetCitiesRequestDto, GetCitiesRequest>(
+      GetCitiesRequestDto as Constructor<GetCitiesRequestDto>,
+      GetCitiesRequest,
+      (source) => TransformerUtil.transform({ ...packageCredentials, ...source }, GetCitiesRequest),
+    );
 
-        return request;
-      },
+    this.registerMapping<GetStatesRequestDto, GetStatesRequest>(
+      GetStatesRequestDto as Constructor<GetStatesRequestDto>,
+      GetStatesRequest,
+      (source) => TransformerUtil.transform({ ...packageCredentials, ...source }, GetStatesRequest),
     );
 
     this.registerMapping<GetMarketsRequestDto, GetMarketsRequest>(

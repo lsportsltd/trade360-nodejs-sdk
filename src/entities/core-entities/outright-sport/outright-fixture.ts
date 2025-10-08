@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { Sport, Location } from '@lsports/entities';
+import { Sport, Location, FixtureVenue } from '@lsports/entities';
 import { NameValueRecord, Subscription } from '@lsports/entities/common';
 
 import { OutrightParticipant } from './outright-participant';
@@ -36,4 +36,8 @@ export class OutrightFixture {
   @Expose({ name: 'ExtraData' })
   @Type(() => NameValueRecord)
   extraData?: NameValueRecord[];
+
+  @Expose({ name: 'Venue' })
+  @Type(() => FixtureVenue)
+  public venue?: FixtureVenue;
 }

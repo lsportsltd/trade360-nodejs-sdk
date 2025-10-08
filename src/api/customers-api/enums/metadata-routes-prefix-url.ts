@@ -9,4 +9,7 @@ export enum MetadataRoutesPrefixUrl {
   GET_TRANSLATION_PREFIX_URL = '/Translation/Get',
   GET_COMPETITIONS_PREFIX_URL = '/Outright/GetCompetitions',
   GET_INCIDENT_PREFIX_URL = '/Incidents/Get',
+  GET_VENUES_PREFIX_URL = '/Venues/Get',
+  GET_CITIES_PREFIX_URL = '/Cities/Get',
+  GET_STATES_PREFIX_URL = '/States/Get',
 }
