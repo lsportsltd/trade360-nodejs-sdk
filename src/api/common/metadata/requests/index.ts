@@ -6,3 +6,4 @@ export * from './incidents-request';
 export * from './venues-request';
 export * from './cities-request';
 export * from './states-request';
+export * from './participants-request';

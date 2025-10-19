@@ -6,3 +6,4 @@ export * from './incidents-request.dto';
 export * from './venues-request.dto';
 export * from './cities-request.dto';
 export * from './states-request.dto';
+export * from './participants-request.dto';
