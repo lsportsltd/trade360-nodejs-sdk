@@ -103,15 +103,15 @@ describe('Mapper - GetIncidents Flow', () => {
   });
 
   // Test Case 2.5: Map with an invalid source type
-  it('should create target instance with source properties when mapping unregistered types', () => {
+  it('should create target instance without copying unregistered properties', () => {
     // Create an object that doesn't implement BaseEntity and doesn't match expected type
     const invalidSource = { notAFilterProperty: 'test' };
     // Attempt to map to IncidentsFilter with an object that
     // doesn't match any registered mappings
     const result = mapper.map(invalidSource, IncidentsFilter);
-    // The mapper creates an instance of the target class and assigns properties from source
+    // The mapper creates an instance of the target class but respects type safety
     expect(result).toBeInstanceOf(IncidentsFilter);
-    expect(result.notAFilterProperty).toBe('test');
+    expect(result.notAFilterProperty).toBeUndefined(); // Unregistered properties are not copied
     // Standard IncidentsFilter properties should be undefined
     expect(result.ids).toBeUndefined();
     expect(result.sports).toBeUndefined();
