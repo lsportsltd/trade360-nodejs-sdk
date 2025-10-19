@@ -5,11 +5,74 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.4.0](#version-340)
 - [Version 3.3.0](#version-330)
 - [Version 3.2.1](#version-321)
 - [Version 3.1.0](#version-310)
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
+
+---
+
+## Version 3.4.0
+
+Adds comprehensive participant metadata support with filtering and pagination capabilities.
+
+### New Features
+
+- **Participants Metadata API**
+  - `getParticipants()` - New endpoint to fetch participant information with advanced filtering and pagination
+  - `GetParticipantsRequestDto` / `ParticipantFilterDto` - Request DTOs for participant filtering by:
+    - Participant IDs (`ids`)
+    - Sport IDs (`sportIds`)
+    - Location IDs (`locationIds`)
+    - Participant name (`name`) - partial match support
+    - Gender (`gender`) - Men, Women, or Mix
+    - Age category (`ageCategory`) - Regular, Youth, or Reserves
+    - Participant type (`type`) - Club, National, Individual, Virtual, Esports, VirtuReal, or Doubles
+  - Pagination support with `page` and `pageSize` parameters
+  - `ParticipantBodyStructure` - Response structure for participant data including:
+    - Basic information (id, sportId, locationId, name)
+    - Classification properties (gender, ageCategory, type) - all nullable
+  - `ParticipantsCollectionResponse` - Collection response wrapper with `data` array and `totalItems` count
+
+- **New Participant Classification Enums**
+  - `Gender` - Enum for gender classification:
+    - `Men = 1`
+    - `Women = 2`
+    - `Mix = 3`
+  - `AgeCategory` - Enum for age category classification:
+    - `Regular = 0`
+    - `Youth = 1`
+    - `Reserves = 2`
+  - `ParticipantType` - Enum for participant type classification:
+    - `Club = 1`
+    - `National = 2`
+    - `Individual = 3`
+    - `Virtual = 4`
+    - `Esports = 5`
+    - `VirtuReal = 6`
+    - `Doubles = 7`
+
+### API Enhancements
+
+- Added `/Participants/Get` endpoint to metadata routes
+- Comprehensive filtering capabilities for participant searches
+- Pagination support for efficient data retrieval
+- All filter properties are optional for flexible querying
+- Support for nullable enum properties in response structure
+
+### Sample Application
+
+- Added interactive demo for `getParticipants()` in customer-api-sample
+- Example usage with multiple filter options
+- Demonstrates pagination parameters
+
+### Testing
+
+- Comprehensive unit tests for `ParticipantsCollectionResponse`
+- Enum validation tests for Gender, AgeCategory, and ParticipantType
+- ParticipantBodyStructure tests including nullable property handling
 
 ---
 
