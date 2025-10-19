@@ -12,6 +12,11 @@ import {
   GetVenuesRequestDto,
   GetCitiesRequestDto,
   GetStatesRequestDto,
+  GetParticipantsRequestDto,
+  ParticipantFilterDto,
+  VenueFilterDto,
+  CityFilterDto,
+  StateFilterDto,
 } from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
@@ -23,6 +28,11 @@ import {
   GetVenuesRequest,
   GetCitiesRequest,
   GetStatesRequest,
+  GetParticipantsRequest,
+  ParticipantsFilter,
+  VenuesFilter,
+  CitiesFilter,
+  StatesFilter,
 } from '@metadata-api/requests';
 import {
   ChangeManualSuspensionsRequestDto,
@@ -222,7 +232,6 @@ export class Mapper implements IMapper {
         TransformerUtil.transform({ ...packageCredentials, ...source }, GetLeaguesRequest),
     );
 
-    // Mapping for IncidentsFilterDto to IncidentsFilter
     this.registerMapping<IncidentsFilterDto, IncidentsFilter>(
       IncidentsFilterDto as Constructor<IncidentsFilterDto>,
       IncidentsFilter,
@@ -239,7 +248,6 @@ export class Mapper implements IMapper {
       },
     );
 
-    // Mapping for GetIncidentsRequestDto to GetIncidentsRequest
     this.registerMapping<GetIncidentsRequestDto, GetIncidentsRequest>(
       GetIncidentsRequestDto as Constructor<GetIncidentsRequestDto>,
       GetIncidentsRequest,
@@ -356,6 +364,37 @@ export class Mapper implements IMapper {
 
         return destination;
       },
+    );
+
+    this.registerMapping<GetParticipantsRequestDto, GetParticipantsRequest>(
+      GetParticipantsRequestDto as Constructor<GetParticipantsRequestDto>,
+      GetParticipantsRequest,
+      (source) =>
+        TransformerUtil.transform({ ...packageCredentials, ...source }, GetParticipantsRequest),
+    );
+
+    this.registerMapping<ParticipantFilterDto, ParticipantsFilter>(
+      ParticipantFilterDto as Constructor<ParticipantFilterDto>,
+      ParticipantsFilter,
+      (source) => TransformerUtil.transform(source, ParticipantsFilter),
+    );
+
+    this.registerMapping<VenueFilterDto, VenuesFilter>(
+      VenueFilterDto as Constructor<VenueFilterDto>,
+      VenuesFilter,
+      (source) => TransformerUtil.transform(source, VenuesFilter),
+    );
+
+    this.registerMapping<CityFilterDto, CitiesFilter>(
+      CityFilterDto as Constructor<CityFilterDto>,
+      CitiesFilter,
+      (source) => TransformerUtil.transform(source, CitiesFilter),
+    );
+
+    this.registerMapping<StateFilterDto, StatesFilter>(
+      StateFilterDto as Constructor<StateFilterDto>,
+      StatesFilter,
+      (source) => TransformerUtil.transform(source, StatesFilter),
     );
   }
 
