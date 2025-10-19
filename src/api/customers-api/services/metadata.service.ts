@@ -18,6 +18,7 @@ import {
   GetVenuesRequestDto,
   GetCitiesRequestDto,
   GetStatesRequestDto,
+  GetParticipantsRequestDto,
 } from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
@@ -28,6 +29,7 @@ import {
   GetVenuesRequest,
   GetCitiesRequest,
   GetStatesRequest,
+  GetParticipantsRequest,
 } from '@metadata-api/requests';
 import {
   CompetitionCollectionResponse,
@@ -40,6 +42,7 @@ import {
   VenuesCollectionResponse,
   CitiesCollectionResponse,
   StatesCollectionResponse,
+  ParticipantsCollectionResponse,
 } from '@metadata-api/responses';
 
 const {
@@ -53,6 +56,7 @@ const {
   GET_VENUES_PREFIX_URL,
   GET_CITIES_PREFIX_URL,
   GET_STATES_PREFIX_URL,
+  GET_PARTICIPANTS_PREFIX_URL,
 } = MetadataRoutesPrefixUrl;
 
 /**
@@ -365,6 +369,34 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     const response = await this.postRequest<StatesCollectionResponse>({
       route: GET_STATES_PREFIX_URL,
       responseBodyType: StatesCollectionResponse,
+      requestBody: request,
+    });
+
+    return response;
+  }
+
+  /**
+   * getParticipants method is responsible for sending a request
+   * to the metadata API to get the participants.
+   * It sends a POST request to the metadata API with the
+   * GET_PARTICIPANTS_PREFIX_URL and ParticipantsCollectionResponse
+   * as the response type.
+   * @param requestDto The request DTO for getting participants
+   * from the metadata API.
+   * @returns A promise that contains the participants data and total count.
+   * @throws Error if the request is invalid or incorrect.
+   */
+  public async getParticipants(
+    requestDto: GetParticipantsRequestDto,
+  ): Promise<ParticipantsCollectionResponse | undefined> {
+    const request = this.mapper.map<GetParticipantsRequestDto, GetParticipantsRequest>(
+      requestDto,
+      GetParticipantsRequest,
+    );
+
+    const response = await this.postRequest<ParticipantsCollectionResponse>({
+      route: GET_PARTICIPANTS_PREFIX_URL,
+      responseBodyType: ParticipantsCollectionResponse,
       requestBody: request,
     });
 
