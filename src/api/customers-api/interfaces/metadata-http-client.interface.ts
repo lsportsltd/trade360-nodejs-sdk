@@ -17,6 +17,8 @@ import {
   CitiesCollectionResponse,
   GetStatesRequestDto,
   StatesCollectionResponse,
+  GetParticipantsRequestDto,
+  ParticipantsCollectionResponse,
 } from '@api/common';
 
 /**
@@ -41,4 +43,7 @@ export interface IMetadataHttpClient {
   getVenues(requestDto: GetVenuesRequestDto): Promise<VenuesCollectionResponse | undefined>;
   getCities(requestDto: GetCitiesRequestDto): Promise<CitiesCollectionResponse | undefined>;
   getStates(requestDto: GetStatesRequestDto): Promise<StatesCollectionResponse | undefined>;
+  getParticipants(
+    requestDto: GetParticipantsRequestDto,
+  ): Promise<ParticipantsCollectionResponse | undefined>;
 }
