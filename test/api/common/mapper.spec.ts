@@ -103,14 +103,20 @@ describe('Mapper - GetIncidents Flow', () => {
   });
 
   // Test Case 2.5: Map with an invalid source type
-  it('should return an empty object when mapping with an unregistered mapping', () => {
+  it('should create target instance with source properties when mapping unregistered types', () => {
     // Create an object that doesn't implement BaseEntity and doesn't match expected type
     const invalidSource = { notAFilterProperty: 'test' };
     // Attempt to map to IncidentsFilter with an object that
     // doesn't match any registered mappings
     const result = mapper.map(invalidSource, IncidentsFilter);
-    // In this implementation, the mapper returns an empty object for unmapped types
-    expect(result).toEqual({});
+    // The mapper creates an instance of the target class and assigns properties from source
+    expect(result).toBeInstanceOf(IncidentsFilter);
+    expect(result.notAFilterProperty).toBe('test');
+    // Standard IncidentsFilter properties should be undefined
+    expect(result.ids).toBeUndefined();
+    expect(result.sports).toBeUndefined();
+    expect(result.searchText).toBeUndefined();
+    expect(result.from).toBeUndefined();
   });
 
   // Edge Case 2.6: Timezone edge cases
