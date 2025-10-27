@@ -18,3 +18,7 @@ export * from './incidents-body-structure';
 export * from './venue-body-structure';
 export * from './city-body-structure';
 export * from './state-body-structure';
+export * from './gender.enum';
+export * from './age-category.enum';
+export * from './participant-type.enum';
+export * from './participant-body-structure';

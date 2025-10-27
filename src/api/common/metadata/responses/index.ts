@@ -8,3 +8,4 @@ export * from './incidents-collection-response';
 export * from './venues-collection-response';
 export * from './cities-collection-response';
 export * from './states-collection-response';
+export * from './participants-collection-response';

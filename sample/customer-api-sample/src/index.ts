@@ -45,6 +45,8 @@ import {
   CityFilterDto,
   GetStatesRequestDto,
   StateFilterDto,
+  GetParticipantsRequestDto,
+  ParticipantFilterDto,
 } from 'trade360-nodejs-sdk';
 
 import { getConfig } from './config';
@@ -106,6 +108,7 @@ const initApiSample = async () => {
       { label: 'Metadata API - Get Venues', handler: async () => await getVenues(metadataPrematchHttpClient) },
       { label: 'Metadata API - Get Cities', handler: async () => await getCities(metadataPrematchHttpClient) },
       { label: 'Metadata API - Get States', handler: async () => await getStates(metadataPrematchHttpClient) },
+      { label: 'Metadata API - Get Participants', handler: async () => await getParticipants(metadataPrematchHttpClient) },
       { label: 'Subscription API - Get Package Quota', handler: async () => await getPackageQuota(subscriptionInplayHttpClient) },
       { label: 'Subscription API - Get Fixture Schedule', handler: async () => await getFixtureSchedule(subscriptionInplayHttpClient) },
       { label: 'Subscription API - Subscribe by Fixtures', handler: async () => await subscribeByFixtures(subscriptionInplayHttpClient) },
@@ -634,6 +637,42 @@ const getStates = async (metadataHttpClient: IMetadataHttpClient): Promise<void>
     logger.info(`Successfully retrieved ${response?.data?.length} states`);
   } catch (error) {
     logger.error(`Error getting states: ${error}`);
+    if (error instanceof HttpResponseError && error.context) {
+      logger.error(`Error context: ${JSON.stringify(error.context)}`);
+    }
+  }
+};
+
+const getParticipants = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  logger.info('Getting participants...');
+
+  const participantsFilter = new ParticipantFilterDto({
+    sportIds: [6046], // Example: Filter by sport ID (Football)
+    // ids: [123, 456],
+    // locationIds: [1, 2],
+    // name: "United",
+    // gender: 1, // Men
+    // ageCategory: 0, // Regular
+    // type: 1, // Club
+  });
+
+  const request = new GetParticipantsRequestDto({
+    filter: participantsFilter,
+    page: 1,
+    pageSize: 50,
+  });
+
+  const requestPayload = instanceToPlain(request);
+  logger.info('Request Payload being sent (should have PascalCase, e.g., Filter.SportIds):');
+  logger.info(JSON.stringify(requestPayload, null, 2));
+
+  try {
+    const response = await metadataHttpClient.getParticipants(request);
+    logger.info('Raw response from API:');
+    logger.info(JSON.stringify(response, null, 2));
+    logger.info(`Successfully retrieved ${response?.data?.length} participants, total count: ${response?.totalItems}`);
+  } catch (error) {
+    logger.error(`Error getting participants: ${error}`);
     if (error instanceof HttpResponseError && error.context) {
       logger.error(`Error context: ${JSON.stringify(error.context)}`);
     }
