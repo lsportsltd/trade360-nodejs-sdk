@@ -8,7 +8,7 @@ import { Bet } from '@lsports/entities';
  * outright market element structure.
  */
 export class OutrightMarketBodyStructure {
-  @Expose({ name: 'id' })
+  @Expose({ name: 'Id' })
   id!: number;
 
   @Expose({ name: 'Name' })
