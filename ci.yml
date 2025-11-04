@@ -8,6 +8,38 @@ resources:
 trigger: none
 
 stages:
+  - stage: PreBuild
+    displayName: 'Pre-Build Setup'
+    jobs:
+      - job: HandleGitTag
+        pool: k8s-agents-ci
+        displayName: 'Handle Git Tag'
+        steps:
+          - checkout: self
+            persistCredentials: true
+            clean: true
+
+          - script: |
+              echo "Handling git tag before build..."
+              VERSION=$(node -p "require('./package.json').version")
+              TAG_NAME="trade360-nodejs-sdk-${VERSION}"
+              
+              # Always delete the tag if it exists (both local and remote) to allow template to recreate it
+              echo "Checking for existing tag: $TAG_NAME"
+              
+              # Delete local tag if exists
+              if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+                echo "Local tag $TAG_NAME exists, deleting..."
+                git tag -d "$TAG_NAME" || true
+              fi
+              
+              # Delete remote tag if exists (force delete)
+              echo "Attempting to delete remote tag $TAG_NAME..."
+              git push origin ":refs/tags/$TAG_NAME" 2>&1 || echo "Remote tag delete completed (may not have existed)"
+              
+              echo "Tag cleanup completed, template will create the tag"
+            displayName: 'Clean Existing Tag'
+
   - template: general/generic-package-CICD.yaml@pipeline-templates
     parameters: 
       packageManager: 'npm'
@@ -23,7 +55,7 @@ stages:
 
   - stage: PublishToNPM
     displayName: 'Publish to NPM Registry'
-    dependsOn: BuildAndDeployPackage_trade360_nodejs_sdk
+    dependsOn: [PreBuild, BuildAndDeployPackage_trade360_nodejs_sdk]
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
       - job: PublishPackage
@@ -33,6 +65,21 @@ stages:
           - checkout: self
             persistCredentials: true
             clean: true
+
+          - script: |
+              echo "Handling git tag creation..."
+              VERSION=$(node -p "require('./package.json').version")
+              TAG_NAME="trade360-nodejs-sdk-${VERSION}"
+              
+              # Check if tag already exists
+              if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+                echo "Tag $TAG_NAME already exists, skipping creation"
+              else
+                echo "Creating tag $TAG_NAME"
+                git tag "$TAG_NAME"
+                git push origin "$TAG_NAME" || echo "Failed to push tag, continuing..."
+              fi
+            displayName: 'Create Git Tag'
 
           - script: |
               echo "Starting NPM publish process..."
