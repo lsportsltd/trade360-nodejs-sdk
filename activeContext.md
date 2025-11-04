@@ -93,3 +93,4 @@ Unit tests for response structures:
 - All use capital case in `@Expose({ name: 'FieldName' })`
 - Lowercase field in `OutrightMarketBodyStructure` was an exception (now fixed)
 
+

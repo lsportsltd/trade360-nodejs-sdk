@@ -35,6 +35,21 @@ stages:
             clean: true
 
           - script: |
+              echo "Handling git tag creation..."
+              VERSION=$(node -p "require('./package.json').version")
+              TAG_NAME="trade360-nodejs-sdk-${VERSION}"
+              
+              # Check if tag already exists
+              if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+                echo "Tag $TAG_NAME already exists, skipping creation"
+              else
+                echo "Creating tag $TAG_NAME"
+                git tag "$TAG_NAME"
+                git push origin "$TAG_NAME" || echo "Failed to push tag, continuing..."
+              fi
+            displayName: 'Create Git Tag'
+
+          - script: |
               echo "Starting NPM publish process..."
               
               # Get NPM token from SSM
