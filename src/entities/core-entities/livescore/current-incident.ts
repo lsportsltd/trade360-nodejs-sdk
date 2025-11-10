@@ -1,10 +1,10 @@
 import { Expose, Type } from 'class-transformer';
 
-import { IncidentConfirmation } from '@lsports/enums';
+import { IncidentConfirmation, IncidentType } from '@lsports/enums';
 
 export class CurrentIncident {
   @Expose({ name: 'Id' })
-  id?: number;
+  id?: IncidentType;
 
   @Expose({ name: 'Name' })
   name?: string;

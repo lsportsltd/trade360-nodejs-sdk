@@ -274,4 +274,158 @@ describe('BaseBet Entity', () => {
       expect(typeof baseBet.id).toBe('string');
     });
   });
+
+  it('should handle PlayerId field correctly', (): void => {
+    const plain = {
+      Id: '123',
+      PlayerId: 456,
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.playerId).toBe(456);
+    expect(typeof baseBet.playerId).toBe('number');
+  });
+
+  it('should handle Order field correctly', (): void => {
+    const plain = {
+      Id: '123',
+      Order: 3,
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.order).toBe(3);
+    expect(typeof baseBet.order).toBe('number');
+  });
+
+  it('should handle all player-related fields together', (): void => {
+    const plain = {
+      Id: '123',
+      PlayerId: 789,
+      PlayerName: 'John Doe',
+      ParticipantId: 101,
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.playerId).toBe(789);
+    expect(baseBet.playerName).toBe('John Doe');
+    expect(baseBet.participantId).toBe(101);
+  });
+
+  it('should handle BaseLine field correctly', (): void => {
+    const plain = {
+      Id: '123',
+      BaseLine: '2.0',
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.baseLine).toBe('2.0');
+  });
+
+  it('should handle all price format fields', (): void => {
+    const plain = {
+      Id: '123',
+      PriceIN: '1.85',
+      PriceUS: '+185',
+      PriceUK: '17/20',
+      PriceMA: '1.85',
+      PriceHK: '0.85',
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.priceIN).toBe('1.85');
+    expect(baseBet.priceUS).toBe('+185');
+    expect(baseBet.priceUK).toBe('17/20');
+    expect(baseBet.priceMA).toBe('1.85');
+    expect(baseBet.priceHK).toBe('0.85');
+  });
+
+  it('should handle SuspensionReason field correctly', (): void => {
+    const plain = {
+      Id: '123',
+      SuspensionReason: 10,
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.suspensionReason).toBe(10);
+    expect(typeof baseBet.suspensionReason).toBe('number');
+  });
+
+  it('should handle StartPrice and PriceVolume fields', (): void => {
+    const plain = {
+      Id: '123',
+      StartPrice: '2.00',
+      PriceVolume: '5000.00',
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.startPrice).toBe('2.00');
+    expect(baseBet.priceVolume).toBe('5000.00');
+  });
+
+  it('should work with camelCase JSON keys (for Snapshot API compatibility)', (): void => {
+    // This test verifies that if normalization converts camelCase to PascalCase,
+    // the entity will correctly deserialize the data
+    const plainWithCamelCase = {
+      id: '123', // camelCase - would be normalized to PascalCase before transformation
+      name: 'Test Bet',
+      line: '1.5',
+      playerId: 456,
+      playerName: 'Test Player',
+      order: 1,
+    };
+
+    // Simulate normalized data (what would happen after key normalization)
+    const normalizedPlain = {
+      Id: '123',
+      Name: 'Test Bet',
+      Line: '1.5',
+      PlayerId: 456,
+      PlayerName: 'Test Player',
+      Order: 1,
+    };
+
+    const baseBet = plainToInstance(BaseBet, normalizedPlain, { excludeExtraneousValues: true });
+    expect(baseBet.id).toBe('123');
+    expect(baseBet.name).toBe('Test Bet');
+    expect(baseBet.line).toBe('1.5');
+    expect(baseBet.playerId).toBe(456);
+    expect(baseBet.playerName).toBe('Test Player');
+    expect(baseBet.order).toBe(1);
+  });
+
+  it('should work with PascalCase JSON keys (for RMQ compatibility)', (): void => {
+    // This test verifies that PascalCase keys work correctly (RMQ format)
+    const plainWithPascalCase = {
+      Id: '123',
+      Name: 'Test Bet',
+      Line: '1.5',
+      PlayerId: 456,
+      PlayerName: 'Test Player',
+      Order: 1,
+    };
+
+    const baseBet = plainToInstance(BaseBet, plainWithPascalCase, { excludeExtraneousValues: true });
+    expect(baseBet.id).toBe('123');
+    expect(baseBet.name).toBe('Test Bet');
+    expect(baseBet.line).toBe('1.5');
+    expect(baseBet.playerId).toBe(456);
+    expect(baseBet.playerName).toBe('Test Player');
+    expect(baseBet.order).toBe(1);
+  });
+
+  it('should handle IsChanged field with default value', (): void => {
+    const plain = {
+      Id: '123',
+      IsChanged: 1,
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.isChanged).toBe(1);
+  });
+
+  it('should handle missing optional fields gracefully', (): void => {
+    const plain = {
+      Id: '123',
+      // All other fields are optional and should be undefined
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.id).toBe('123');
+    expect(baseBet.playerId).toBeUndefined();
+    expect(baseBet.playerName).toBeUndefined();
+    expect(baseBet.order).toBeUndefined();
+    expect(baseBet.baseLine).toBeUndefined();
+    expect(baseBet.suspensionReason).toBeUndefined();
+  });
 });
