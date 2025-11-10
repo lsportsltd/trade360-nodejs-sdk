@@ -74,6 +74,12 @@ export class BaseBet {
   @Expose({ name: 'ParticipantId' })
   participantId?: number;
 
+  @Expose({ name: 'PlayerId' })
+  playerId?: number;
+
   @Expose({ name: 'PlayerName' })
   playerName?: string;
+
+  @Expose({ name: 'Order' })
+  order?: number;
 }
