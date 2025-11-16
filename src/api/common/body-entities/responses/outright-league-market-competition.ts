@@ -8,7 +8,7 @@ import { OutrightFixtureMarketsBodyStructure } from './outright-fixture-market-b
  * outright league markets competition body structure.
  */
 export class OutrightLeagueMarketsCompetition {
-  @Expose({ name: 'id' })
+  @Expose({ name: 'Id' })
   id!: number;
 
   @Expose({ name: 'Name' })

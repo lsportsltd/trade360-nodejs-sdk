@@ -8,7 +8,7 @@ import { Bet } from '@lsports/entities';
  * fixture market element structure.
  */
 export class FixtureMarketBodyStructure {
-  @Expose({ name: 'id' })
+  @Expose({ name: 'Id' })
   id!: number;
 
   @Expose({ name: 'Name' })

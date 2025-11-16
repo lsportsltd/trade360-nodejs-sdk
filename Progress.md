@@ -83,12 +83,13 @@
 
 ## Current Status
 
-### Version 3.4.1 (Latest)
+### Version 3.4.2 (Latest)
 
 **Status:** Stable
 
 **Recent Fixes:**
-- Fixed missing `id` field in `OutrightMarketBodyStructure` (TR-20395)
+- Fixed response type contract violation in `handleValidResponse` method
+- Fixed missing `id` field in multiple response classes (changed lowercase 'id' to 'Id' in @Expose decorators)
 - Fixed CI/CD pipeline git tag creation to handle existing tags gracefully
 - Created Memory Bank documentation for project knowledge management
 
