@@ -2,27 +2,38 @@
 
 ## Current Work Focus
 
-### Recent Changes (Version 3.4.1)
+### Recent Changes (Version 3.4.2)
 
-1. **Bug Fix: Missing Market ID in Outright League Markets (TR-20395)**
-   - **Issue:** The `id` field was missing from market objects in `getOutrightLeagueMarkets()` API response
-   - **Root Cause:** `OutrightMarketBodyStructure` used lowercase `'id'` in `@Expose` decorator, but API returns `'Id'` (capital I)
-   - **Fix:** Changed `@Expose({ name: 'id' })` to `@Expose({ name: 'Id' })` to match API response format
+1. **Bug Fix: Response Type Contract Violation**
+   - **Issue:** `handleValidResponse` was serializing responses to plain objects, breaking the type contract
+   - **Root Cause:** Method was converting class instances to plain objects using `serializeToApiFormat`, then casting back to `TResponse`
+   - **Fix:** Removed automatic serialization, now returns class instances as specified by the type contract
    - **Files Changed:**
-     - `src/api/common/body-entities/responses/outright-market-body-structure.ts`
-   - **Tests Added:**
-     - `test/api/common/body-entities/responses/outright-market-body-structure.spec.ts` - New comprehensive test suite
+     - `src/api/base-http-client/base-http-client.ts`
+   - **Impact:** Maintains backward compatibility and proper type safety
 
-2. **Version Update**
-   - Updated version from 3.4.0 to 3.4.1
-   - Updated `package.json` and `package-lock.json`
+2. **Bug Fix: Missing Market ID in Outright League Markets (TR-20395)**
+   - **Issue:** The `id` field was missing from market objects in `getOutrightLeagueMarkets()` API response
+   - **Root Cause:** Multiple response classes used lowercase `'id'` in `@Expose` decorator, but API returns `'Id'` (capital I)
+   - **Fix:** Changed `@Expose({ name: 'id' })` to `@Expose({ name: 'Id' })` in 4 response classes
+   - **Files Changed:**
+     - `src/api/common/body-entities/responses/fixture-market-body-strcture.ts`
+     - `src/api/common/body-entities/responses/outright-competitions-result-body-structure.ts`
+     - `src/api/common/body-entities/responses/outright-league-events-competition.ts`
+     - `src/api/common/body-entities/responses/outright-league-market-competition.ts`
+
+3. **Version Update**
+   - Updated version from 3.4.1 to 3.4.2
+   - Updated `package.json` and all `package-lock.json` files
 
 ## Next Steps
 
 ### Immediate Tasks
 - [x] Fix missing market ID field in Outright League Markets API
+- [x] Fix response type contract violation in `handleValidResponse`
 - [x] Create unit tests for `OutrightMarketBodyStructure`
-- [x] Update version to 3.4.1
+- [x] Update version to 3.4.2
+- [x] Update all version references across codebase
 - [ ] Verify fix works in sample application
 - [ ] Update CHANGELOG.md with bug fix details
 
@@ -79,7 +90,7 @@ Unit tests for response structures:
 ## Known Issues
 
 ### None Currently
-- All reported issues resolved in v3.4.1
+- All reported issues resolved in v3.4.2
 
 ## Context Notes
 

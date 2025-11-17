@@ -120,6 +120,7 @@ export abstract class BaseHttpClient {
    * @param responsePayloadDto The response payload DTO to be used
    * for transforming the response
    * @returns The response payload DTO with the required properties
+   * serialized to PascalCase format (API format)
    * @throws HttpResponseError if the response does not contain the
    * required properties
    */
@@ -133,7 +134,11 @@ export abstract class BaseHttpClient {
 
     this.validateResponsePayloadStructure(responsePayload);
 
-    return responsePayload.body;
+    // Serialize the response body back to PascalCase format (API format)
+    const serializedBody = TransformerUtil.serializeToApiFormat(responsePayload.body);
+
+    // Return the serialized object as TResponse (maintains type compatibility)
+    return serializedBody as TResponse;
   }
 
   /**

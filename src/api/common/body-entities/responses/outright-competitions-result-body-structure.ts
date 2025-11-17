@@ -8,7 +8,7 @@ import { OutrightCompetition } from './outright-competition';
  * outright competition body structure.
  */
 export class OutrightCompetitionsResultBodyStructure {
-  @Expose({ name: 'id' })
+  @Expose({ name: 'Id' })
   id!: number;
 
   @Expose({ name: 'Name' })
