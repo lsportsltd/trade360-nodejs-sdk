@@ -5,12 +5,51 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.4.2](#version-342)
 - [Version 3.4.0](#version-340)
 - [Version 3.3.0](#version-330)
 - [Version 3.2.1](#version-321)
 - [Version 3.1.0](#version-310)
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
+
+---
+
+## Version 3.4.2
+
+Bug fix release that resolves response type contract violations and field mapping issues.
+
+### Bug Fixes
+
+- **Fixed Response Type Contract Violation**
+  - **Issue:** `handleValidResponse` method was serializing responses to plain objects, breaking the type contract
+  - **Root Cause:** Method was converting class instances to plain objects using `serializeToApiFormat`, then casting back to `TResponse`
+  - **Fix:** Removed automatic serialization, now returns class instances as specified by the type contract
+  - **Files Changed:**
+    - `src/api/base-http-client/base-http-client.ts`
+  - **Impact:** Maintains backward compatibility and proper type safety. Responses now correctly return class instances with camelCase properties.
+
+- **Fixed Missing ID Fields in Response Classes**
+  - **Issue:** Multiple response classes had lowercase `'id'` in `@Expose` decorator, but API returns `'Id'` (capital I)
+  - **Root Cause:** Field mapping mismatch between API response format (PascalCase) and decorator configuration
+  - **Fix:** Changed `@Expose({ name: 'id' })` to `@Expose({ name: 'Id' })` in 4 response classes
+  - **Files Changed:**
+    - `src/api/common/body-entities/responses/fixture-market-body-strcture.ts`
+    - `src/api/common/body-entities/responses/outright-competitions-result-body-structure.ts`
+    - `src/api/common/body-entities/responses/outright-league-events-competition.ts`
+    - `src/api/common/body-entities/responses/outright-league-market-competition.ts`
+  - **Impact:** Ensures proper deserialization of `id` fields from API responses
+
+### New Features
+
+- **Added Serialization Utility Method**
+  - `TransformerUtil.serializeToApiFormat()` - Optional utility method for converting class instances back to PascalCase format
+  - Available for users who need explicit serialization to API format
+  - Does not affect default SDK behavior
+
+### Backward Compatibility
+
+All changes are backward compatible. Existing code will continue to work without modification. The SDK now correctly returns class instances as expected by the type system.
 
 ---
 

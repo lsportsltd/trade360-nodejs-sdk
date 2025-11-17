@@ -10,7 +10,7 @@ import { OutrightLeagueEventBodyStructure } from './outright-league-event-body-s
  * outright league events competition body structure.
  */
 export class OutrightLeagueEventsCompetition {
-  @Expose({ name: 'id' })
+  @Expose({ name: 'Id' })
   id!: number;
 
   @Expose({ name: 'Name' })
