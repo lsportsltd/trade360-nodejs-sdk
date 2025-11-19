@@ -7,25 +7,37 @@ import {
   GetFixtureMarketsResultElement,
   GetFixturesResultElement,
   GetLivescoreResultElement,
+  GetOutrightLeaguesResultElement,
+  GetOutrightLeagueMarketsResultElement,
+  GetOutrightLeagueEventsResultElement,
 } from '@api/common/snapshot/responses';
 import {
   GetFixtureRequest,
   GetInPlayEventRequest,
   GetLivescoreRequest,
   GetMarketRequest,
+  GetOutrightLeaguesRequest,
+  GetOutrightLeagueMarketRequest,
+  GetOutrightLeagueEventsRequest,
 } from '@api/common/snapshot/requests';
 import {
   GetFixtureRequestDto,
   GetInPlayEventRequestDto,
   GetLivescoreRequestDto,
   GetMarketRequestDto,
+  GetOutrightLeaguesRequestDto,
+  GetOutrightLeagueMarketRequestDto,
+  GetOutrightLeagueEventsRequestDto,
 } from '@api/common/snapshot/dtos';
 
 const {
   GET_EVENTS_PREFIX_URL,
   GET_FIXTURE_MARKETS_PREFIX_URL,
   GET_FIXTURES_PREFIX_URL,
-  GET_SCORES_PREFIX_URL,
+  GET_SCORES_PREFIX_URL,  
+  GET_OUTRIGHT_LEAGUES_PREFIX_URL,
+  GET_OUTRIGHT_LEAGUES_MARKETS_PREFIX_URL,
+  GET_OUTRIGHT_LEAGUE_EVENTS_PREFIX_URL,
 } = InplaySnapshotApiClientPrefixUrl;
 /**
  * MetadataHttpClient class is responsible for sending requests
@@ -150,4 +162,72 @@ export class InPlaySnapshotApiClientImplementation
 
     return eventsCollection;
   }
-}
+
+
+    /**
+   * Sends a request to the snapshot API to get outright leagues.
+   * @param requestDto The request DTO for getting outright leagues.
+   * @returns A promise that resolves to a
+   * GetOutrightLeaguesResultElement object containing the outright leagues information.
+   */
+    public async getOutrightLeagues(
+      requestDto: GetOutrightLeaguesRequestDto,
+    ): Promise<GetOutrightLeaguesResultElement | undefined> {
+      const request = this.mapper.map<GetOutrightLeaguesRequestDto, GetOutrightLeaguesRequest>(
+        requestDto,
+        GetOutrightLeaguesRequest,
+      );
+  
+      const leaguesCollection = await this.postRequest<GetOutrightLeaguesResultElement>({
+        route: GET_OUTRIGHT_LEAGUES_PREFIX_URL,
+        responseBodyType: GetOutrightLeaguesResultElement,
+        requestBody: request,
+      });
+      return leaguesCollection;
+    }
+  
+    /**
+     * Sends a request to the snapshot API to get outright league markets.
+     * @param requestDto The request DTO for getting outright leagues markets.
+     * @returns A promise that resolves to a
+     * GetOutrightLeagueMarketsResultElement object containing the outright leagues markets information.
+     */
+    public async getOutrightLeagueMarkets(
+      requestDto: GetOutrightLeagueMarketRequestDto,
+    ): Promise<GetOutrightLeagueMarketsResultElement | undefined> {
+      const request = this.mapper.map<
+        GetOutrightLeagueMarketRequestDto,
+        GetOutrightLeagueMarketRequest
+      >(requestDto, GetOutrightLeagueMarketRequest);
+  
+      const leagueMarketsCollection = await this.postRequest<GetOutrightLeagueMarketsResultElement>({
+        route: GET_OUTRIGHT_LEAGUES_MARKETS_PREFIX_URL,
+        responseBodyType: GetOutrightLeagueMarketsResultElement,
+        requestBody: request,
+      });
+      return leagueMarketsCollection;
+    }
+  
+    /**
+     * Sends a request to the snapshot API to get outright league events.
+     * @param requestDto The request DTO for getting outright league events.
+     * @returns A promise that resolves to an array of
+     * GetOutrightLeagueEventsResultElement objects containing the outright league events information.
+     */
+    public async getOutrightLeagueEvents(
+      requestDto: GetOutrightLeagueEventsRequestDto,
+    ): Promise<GetOutrightLeagueEventsResultElement | undefined> {
+      const request = this.mapper.map<
+        GetOutrightLeagueEventsRequestDto,
+        GetOutrightLeagueEventsRequest
+      >(requestDto, GetOutrightLeagueEventsRequest);
+  
+      const leagueEventsCollection = await this.postRequest<GetOutrightLeagueEventsResultElement>({
+        route: GET_OUTRIGHT_LEAGUE_EVENTS_PREFIX_URL,
+        responseBodyType: GetOutrightLeagueEventsResultElement,
+        requestBody: request,
+      });
+      return leagueEventsCollection;
+    }
+  }
+

@@ -71,13 +71,16 @@ const initApiSample = async () => {
       console.log('6. Get Pre-Match Livescores');
       console.log('7. Get Pre-Match Fixture Markets');
       console.log('8. Get Pre-Match Events');
-      console.log('9. Get Outright Events');
-      console.log('10. Get Outright Fixtures');
-      console.log('11. Get Outright Scores');
-      console.log('12. Get Outright Fixture Markets');
-      console.log('13. Get Outright Leagues');
-      console.log('14. Get Outright League Markets');
-      console.log('15. Get Outright League Events');
+      console.log('9. Get Pre-Match Outright Events');
+      console.log('10. Get Pre-Match Outright Fixtures');
+      console.log('11. Get Pre-Match Outright Scores');
+      console.log('12. Get Pre-Match Outright Fixture Markets');
+      console.log('13. Get Pre-Match Outright Leagues');
+      console.log('14. Get Pre-Match Outright League Markets');
+      console.log('15. Get Pre-Match Outright League Events');
+      console.log('16. Get In-Play Outright Leagues');
+      console.log('17. Get In-Play Outright League Markets');
+      console.log('18. Get In-Play Outright League Events');
       console.log('0. Exit');
       console.log('==============================');
     };
@@ -128,6 +131,15 @@ const initApiSample = async () => {
           break;
         case '15':
           await getOutrightLeagueEvents(preMatchSnapshotHttpClient);
+          break;
+        case '16':
+          await getInPlayOutrightLeagues(inPlaySnapshotHttpClient);
+          break;
+        case '17':
+          await getInPlayOutrightLeagueMarkets(inPlaySnapshotHttpClient);
+          break;
+        case '18':
+          await getInPlayOutrightLeagueEvents(inPlaySnapshotHttpClient);
           break;
         case '0':
           console.log('Exiting...');
@@ -334,6 +346,33 @@ const getOutrightLeagueEvents = async (prematchSnapshotHttpClient: PreMatchSnaps
   const response = await prematchSnapshotHttpClient.getOutrightLeagueEvents(request);
 
   logger.log(`${response?.length} Outright League Events retrieved.`);
+};
+
+const getInPlayOutrightLeagues = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
+  const request = new GetOutrightLeaguesRequestDto({
+  });
+
+  const response = await inplaySnapshotHttpClient.getOutrightLeagues(request);
+
+  logger.log(`${response?.length} In-Play Outright Leagues retrieved.`);
+};
+
+const getInPlayOutrightLeagueMarkets = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
+  const request = new GetOutrightLeagueMarketRequestDto({
+  });
+
+  const response = await inplaySnapshotHttpClient.getOutrightLeagueMarkets(request);
+
+  logger.log(`${response?.length} In-Play Outright League Markets retrieved.`);
+};
+
+const getInPlayOutrightLeagueEvents = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
+  const request = new GetOutrightLeagueEventsRequestDto({
+  });
+
+  const response = await inplaySnapshotHttpClient.getOutrightLeagueEvents(request);
+
+  logger.log(`${response?.length} In-Play Outright League Events retrieved.`);
 };
 
 initApiSample();
