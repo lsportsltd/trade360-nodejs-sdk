@@ -65,6 +65,9 @@ const initSample = async () => {
     feedInPlay.addEntityHandler(new SettlementUpdateHandler(), SettlementUpdate);
     feedInPlay.addEntityHandler(new HeartbeatUpdateHandler(), HeartbeatUpdate);
     feedInPlay.addEntityHandler(new KeepAliveUpdateHandler(), KeepAliveUpdate);
+    feedInPlay.addEntityHandler(new OutrightLeagueFixtureUpdateHandler(),OutrightLeagueFixtureUpdate);
+    feedInPlay.addEntityHandler(new OutrightLeagueMarketUpdateHandler(), OutrightLeagueMarketUpdate);
+    feedInPlay.addEntityHandler(new OutrightLeagueSettlementUpdateHandler(), OutrightLeagueSettlementUpdate);
 
     feedPreMatch.addEntityHandler(new FixtureMetadataUpdateHandler(), FixtureMetadataUpdate);
     feedPreMatch.addEntityHandler(new LivescoreUpdateHandler(), LivescoreUpdate);

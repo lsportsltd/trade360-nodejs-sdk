@@ -3,12 +3,18 @@ import {
   GetInPlayEventRequestDto,
   GetLivescoreRequestDto,
   GetMarketRequestDto,
+  GetOutrightLeaguesRequestDto,
+  GetOutrightLeagueMarketRequestDto,
+  GetOutrightLeagueEventsRequestDto,
 } from '@api/common/snapshot/dtos';
 import {
   GetEventsResultElement,
   GetFixtureMarketsResultElement,
   GetFixturesResultElement,
   GetLivescoreResultElement,
+  GetOutrightLeaguesResultElement,
+  GetOutrightLeagueMarketsResultElement,
+  GetOutrightLeagueEventsResultElement,
 } from '@api/common/snapshot';
 
 /**
@@ -24,4 +30,13 @@ export interface InPlaySnapshotApiClient {
     _requestDto: GetMarketRequestDto,
   ): Promise<GetFixtureMarketsResultElement | undefined>;
   getEvents(_requestDto: GetInPlayEventRequestDto): Promise<GetEventsResultElement | undefined>;
+  getOutrightLeagues(
+    _requestDto: GetOutrightLeaguesRequestDto,
+  ): Promise<GetOutrightLeaguesResultElement | undefined>;
+  getOutrightLeagueMarkets(
+    _requestDto: GetOutrightLeagueMarketRequestDto,
+  ): Promise<GetOutrightLeagueMarketsResultElement | undefined>;
+  getOutrightLeagueEvents(
+    _requestDto: GetOutrightLeagueEventsRequestDto,
+  ): Promise<GetOutrightLeagueEventsResultElement | undefined>;
 }
