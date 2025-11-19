@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.6.0](#version-360)
 - [Version 3.4.2](#version-342)
 - [Version 3.4.0](#version-340)
 - [Version 3.3.0](#version-330)
@@ -12,6 +13,43 @@ All notable changes to this project will be documented in this file.
 - [Version 3.1.0](#version-310)
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
+
+---
+
+## Version 3.6.0
+
+Adds in-play outright league snapshot API support with three new endpoints for retrieving outright league data.
+
+### New Features
+
+- **In-Play Outright League Snapshot API**
+  - `getOutrightLeagues()` - New endpoint to fetch in-play outright leagues
+  - `getOutrightLeagueMarkets()` - New endpoint to fetch in-play outright league markets
+  - `getOutrightLeagueEvents()` - New endpoint to fetch in-play outright league events
+  - `GetOutrightLeaguesRequestDto` / `GetOutrightLeagueMarketRequestDto` / `GetOutrightLeagueEventsRequestDto` - Request DTOs for in-play outright league operations
+  - `GetOutrightLeaguesResultElement` / `GetOutrightLeagueMarketsResultElement` / `GetOutrightLeagueEventsResultElement` - Response structures for in-play outright league data
+
+- **Enhanced Sample Projects**
+  - **snapshot-api-sample**: Added menu options (16-18) and examples for in-play outright league endpoints
+  - **feed-sample**: Added handlers for in-play outright league updates:
+    - `OutrightLeagueFixtureUpdateHandler`
+    - `OutrightLeagueMarketUpdateHandler`
+    - `OutrightLeagueSettlementUpdateHandler`
+
+### API Routes
+
+- Added `/Inplay/GetOutrightLeagues` endpoint to in-play snapshot API
+- Added `/Inplay/GetOutrightLeagueMarkets` endpoint to in-play snapshot API
+- Added `/Inplay/GetOutrightLeagueEvents` endpoint to in-play snapshot API
+
+### Testing
+
+- Comprehensive unit tests for all three new in-play outright league methods
+- Tests cover successful requests, route verification, mapper transformation, error handling, and undefined response scenarios
+
+### Backward Compatibility
+
+All changes are backward compatible. Existing code will continue to work without modification.
 
 ---
 
