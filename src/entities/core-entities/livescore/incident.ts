@@ -1,6 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 
 import { Result } from './result';
+import { SubstitutionPlayers } from './substitution-players';
 
 export class Incident {
   @Expose({ name: 'Period' })
@@ -24,4 +25,8 @@ export class Incident {
   @Expose({ name: 'Results' })
   @Type(() => Result)
   results?: Result[];
+
+  @Expose({ name: 'Players' })
+  @Type(() => SubstitutionPlayers)
+  players?: SubstitutionPlayers;
 }

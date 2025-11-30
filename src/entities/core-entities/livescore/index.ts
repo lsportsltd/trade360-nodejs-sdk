@@ -10,3 +10,5 @@ export * from './incident';
 export * from './clock';
 export * from './statistic-value';
 export * from './player-statistic';
+export * from './substitution-player';
+export * from './substitution-players';
