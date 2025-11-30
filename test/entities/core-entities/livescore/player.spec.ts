@@ -1,21 +1,21 @@
 import { plainToInstance } from 'class-transformer';
-import { SubstitutionPlayer } from '../../../../src/entities/core-entities/livescore/substitution-player';
+import { Player } from '../../../../src/entities/core-entities/livescore/player';
 
-describe('SubstitutionPlayer Entity', () => {
-  it('should deserialize a plain object into a SubstitutionPlayer instance', (): void => {
+describe('Player Entity', () => {
+  it('should deserialize a plain object into a Player instance', (): void => {
     const plain = {
       Id: 207444,
       Name: 'Ferran Torres',
     };
-    const player = plainToInstance(SubstitutionPlayer, plain, { excludeExtraneousValues: true });
-    expect(player).toBeInstanceOf(SubstitutionPlayer);
+    const player = plainToInstance(Player, plain, { excludeExtraneousValues: true });
+    expect(player).toBeInstanceOf(Player);
     expect(player.id).toBe(207444);
     expect(player.name).toBe('Ferran Torres');
   });
 
   it('should handle missing properties', (): void => {
     const plain = {};
-    const player = plainToInstance(SubstitutionPlayer, plain, { excludeExtraneousValues: true });
+    const player = plainToInstance(Player, plain, { excludeExtraneousValues: true });
     expect(player.id).toBeUndefined();
     expect(player.name).toBeUndefined();
   });
@@ -25,8 +25,7 @@ describe('SubstitutionPlayer Entity', () => {
       Id: 123,
       Extra: 'ignore me',
     };
-    const player = plainToInstance(SubstitutionPlayer, plain, { excludeExtraneousValues: true });
+    const player = plainToInstance(Player, plain, { excludeExtraneousValues: true });
     expect((player as unknown as { Extra?: unknown }).Extra).toBeUndefined();
   });
 });
-

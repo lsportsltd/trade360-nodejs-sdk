@@ -1,8 +1,8 @@
 import { plainToInstance } from 'class-transformer';
 import { Incident } from '../../../../src/entities/core-entities/livescore/incident';
 import { Result } from '../../../../src/entities/core-entities/livescore/result';
-import { SubstitutionPlayers } from '../../../../src/entities/core-entities/livescore/substitution-players';
-import { SubstitutionPlayer } from '../../../../src/entities/core-entities/livescore/substitution-player';
+import { Players } from '../../../../src/entities/core-entities/livescore/players';
+import { Player } from '../../../../src/entities/core-entities/livescore/player';
 
 describe('Incident Entity', () => {
   it('should deserialize a plain object into an Incident instance', (): void => {
@@ -52,11 +52,11 @@ describe('Incident Entity', () => {
     };
     const incident = plainToInstance(Incident, plain, { excludeExtraneousValues: true });
     expect(incident).toBeInstanceOf(Incident);
-    expect(incident.players).toBeInstanceOf(SubstitutionPlayers);
+    expect(incident.players).toBeInstanceOf(Players);
     expect(Array.isArray(incident.players?.item1)).toBe(true);
     expect(Array.isArray(incident.players?.item2)).toBe(true);
-    expect(incident.players?.item1?.[0]).toBeInstanceOf(SubstitutionPlayer);
-    expect(incident.players?.item2?.[0]).toBeInstanceOf(SubstitutionPlayer);
+    expect(incident.players?.item1?.[0]).toBeInstanceOf(Player);
+    expect(incident.players?.item2?.[0]).toBeInstanceOf(Player);
     expect(incident.players?.item1?.[0].id).toBe(207444);
     expect(incident.players?.item1?.[0].name).toBe('Ferran Torres');
     expect(incident.players?.item2?.[0].id).toBe(643815);

@@ -1,19 +1,19 @@
 import { plainToInstance } from 'class-transformer';
-import { SubstitutionPlayers } from '../../../../src/entities/core-entities/livescore/substitution-players';
-import { SubstitutionPlayer } from '../../../../src/entities/core-entities/livescore/substitution-player';
+import { Players } from '../../../../src/entities/core-entities/livescore/players';
+import { Player } from '../../../../src/entities/core-entities/livescore/player';
 
-describe('SubstitutionPlayers Entity', () => {
-  it('should deserialize a plain object into a SubstitutionPlayers instance', (): void => {
+describe('Players Entity', () => {
+  it('should deserialize a plain object into a Players instance', (): void => {
     const plain = {
       Item1: [{ Id: 207444, Name: 'Ferran Torres' }],
       Item2: [{ Id: 643815, Name: 'Lamine Yamal' }],
     };
-    const players = plainToInstance(SubstitutionPlayers, plain, { excludeExtraneousValues: true });
-    expect(players).toBeInstanceOf(SubstitutionPlayers);
+    const players = plainToInstance(Players, plain, { excludeExtraneousValues: true });
+    expect(players).toBeInstanceOf(Players);
     expect(Array.isArray(players.item1)).toBe(true);
     expect(Array.isArray(players.item2)).toBe(true);
-    expect(players.item1?.[0]).toBeInstanceOf(SubstitutionPlayer);
-    expect(players.item2?.[0]).toBeInstanceOf(SubstitutionPlayer);
+    expect(players.item1?.[0]).toBeInstanceOf(Player);
+    expect(players.item2?.[0]).toBeInstanceOf(Player);
     expect(players.item1?.[0].id).toBe(207444);
     expect(players.item1?.[0].name).toBe('Ferran Torres');
     expect(players.item2?.[0].id).toBe(643815);
@@ -22,7 +22,7 @@ describe('SubstitutionPlayers Entity', () => {
 
   it('should handle missing properties', (): void => {
     const plain = {};
-    const players = plainToInstance(SubstitutionPlayers, plain, { excludeExtraneousValues: true });
+    const players = plainToInstance(Players, plain, { excludeExtraneousValues: true });
     expect(players.item1).toBeUndefined();
     expect(players.item2).toBeUndefined();
   });
@@ -32,7 +32,7 @@ describe('SubstitutionPlayers Entity', () => {
       Item1: [],
       Item2: [],
     };
-    const players = plainToInstance(SubstitutionPlayers, plain, { excludeExtraneousValues: true });
+    const players = plainToInstance(Players, plain, { excludeExtraneousValues: true });
     expect(Array.isArray(players.item1)).toBe(true);
     expect(Array.isArray(players.item2)).toBe(true);
     expect(players.item1?.length).toBe(0);
@@ -44,8 +44,7 @@ describe('SubstitutionPlayers Entity', () => {
       Item1: [],
       Extra: 'ignore me',
     };
-    const players = plainToInstance(SubstitutionPlayers, plain, { excludeExtraneousValues: true });
+    const players = plainToInstance(Players, plain, { excludeExtraneousValues: true });
     expect((players as unknown as { Extra?: unknown }).Extra).toBeUndefined();
   });
 });
-
