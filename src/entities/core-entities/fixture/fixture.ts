@@ -56,4 +56,7 @@ export class Fixture {
   @Expose({ name: 'Round' })
   @Type(() => IdNNameRecord)
   public round?: IdNNameRecord;
+  
+  @Expose({ name: 'ExternalFixtureId' })
+  public externalFixtureId?: string | null;
 }

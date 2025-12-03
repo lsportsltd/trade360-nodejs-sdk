@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.7.1](#version-380)
 - [Version 3.6.0](#version-360)
 - [Version 3.4.2](#version-342)
 - [Version 3.4.0](#version-340)
@@ -13,6 +14,30 @@ All notable changes to this project will be documented in this file.
 - [Version 3.1.0](#version-310)
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
+
+---
+
+## Version 3.7.1
+
+Adds external fixture ID support to the Fixture entity.
+
+### New Features
+
+- **Fixture Entity Enhancement**
+  - Added `externalFixtureId` field to `Fixture` class
+  - Field type: `string | null` (nullable)
+  - API field name: `ExternalFixtureId`
+  - The external ID can be used to reference fixtures from external systems
+
+### Testing
+
+- Added comprehensive unit tests for `externalFixtureId` field
+- Tests cover string value, null value, and undefined/missing value scenarios
+- All existing tests continue to pass
+
+### Backward Compatibility
+
+All changes are backward compatible. Existing code will continue to work without modification. The new field is optional and will be `undefined` if not present in the API response.
 
 ---
 
