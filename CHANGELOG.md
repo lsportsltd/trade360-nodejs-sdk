@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
-- [Version 3.7.1](#version-380)
+- [Version 3.7.1](#version-371)
 - [Version 3.6.0](#version-360)
 - [Version 3.4.2](#version-342)
 - [Version 3.4.0](#version-340)
