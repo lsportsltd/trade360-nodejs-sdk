@@ -22,6 +22,7 @@ describe('Fixture Entity', () => {
         { id: 11, name: 'Team B' },
       ],
       FixtureExtraData: [{ name: 'Referee', value: 'John Doe' }],
+      ExternalFixtureId: 'EXT-12345',
     };
     const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
     expect(fixture).toBeInstanceOf(Fixture);
@@ -38,6 +39,7 @@ describe('Fixture Entity', () => {
     expect(fixture.participants?.[0]).toBeInstanceOf(Participant);
     expect(Array.isArray(fixture.fixtureExtraData)).toBe(true);
     expect(fixture.fixtureExtraData?.[0]).toBeInstanceOf(NameValueRecord);
+    expect(fixture.externalFixtureId).toBe('EXT-12345');
   });
 
   it('should handle missing optional properties', (): void => {
@@ -55,6 +57,7 @@ describe('Fixture Entity', () => {
     expect(fixture.lastUpdate).toBeUndefined();
     expect(fixture.participants).toBeUndefined();
     expect(fixture.fixtureExtraData).toBeUndefined();
+    expect(fixture.externalFixtureId).toBeUndefined();
   });
 
   it('should handle empty arrays for participants and fixtureExtraData', (): void => {
@@ -76,5 +79,31 @@ describe('Fixture Entity', () => {
     };
     const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
     expect((fixture as unknown as { ExtraField?: unknown }).ExtraField).toBeUndefined();
+  });
+
+  it('should handle externalFixtureId with string value', (): void => {
+    const plain = {
+      Sport: { id: 2, name: 'Football' },
+      ExternalFixtureId: 'EXT-98765',
+    };
+    const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
+    expect(fixture.externalFixtureId).toBe('EXT-98765');
+  });
+
+  it('should handle externalFixtureId with null value', (): void => {
+    const plain = {
+      Sport: { id: 2, name: 'Football' },
+      ExternalFixtureId: null,
+    };
+    const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
+    expect(fixture.externalFixtureId).toBeNull();
+  });
+
+  it('should handle externalFixtureId when missing from plain object', (): void => {
+    const plain = {
+      Sport: { id: 2, name: 'Football' },
+    };
+    const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
+    expect(fixture.externalFixtureId).toBeUndefined();
   });
 });
