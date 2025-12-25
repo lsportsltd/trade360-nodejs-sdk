@@ -114,7 +114,10 @@ export class MessageConsumer {
         const missedEntityType = knownEntityKeys.get(entityType);
 
         if (!isNil(missedEntityType)) {
-          this.logger?.warn(`entity handler for ${missedEntityType} is not configured`);
+          // HeartbeatUpdate (entityKey 32) is handled automatically by the SDK, suppress warning
+          if (entityType !== 32) {
+            this.logger?.warn(`entity handler for ${missedEntityType} is not configured`);
+          }
         } else {
           this.logger?.warn(`received unknown entity type ${entityType}`);
         }

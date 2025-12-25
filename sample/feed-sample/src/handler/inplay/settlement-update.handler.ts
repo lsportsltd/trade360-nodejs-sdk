@@ -10,7 +10,12 @@ export class SettlementUpdateHandler implements IEntityHandler<SettlementUpdate>
       timestampInMs: transportHeaders.timestampInMs,
       messageSequence: transportHeaders.messageSequence,
     });
-    console.log(entity);
+    // Entities are wrapped in metadata update classes with events[] arrays
+    if (entity?.events) {
+      entity.events.forEach((event) => {
+        console.log('Settlement Event:', event);
+      });
+    }
     return;
   };
 }

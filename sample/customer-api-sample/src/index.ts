@@ -57,6 +57,41 @@ const config = getConfig();
 let logger = console;
 const readline = require('readline');
 
+// Helper function to safely get array data from response (handles both camelCase and PascalCase)
+const getResponseArray = (response: any, propertyName: string): any[] | undefined => {
+  if (!response) return undefined;
+  const camelCase = response[propertyName];
+  const pascalCase = response[propertyName.charAt(0).toUpperCase() + propertyName.slice(1)];
+  const array = camelCase ?? pascalCase;
+  return Array.isArray(array) ? array : undefined;
+};
+
+// Helper function to safely get value from response (handles both camelCase and PascalCase)
+const getResponseValue = (response: any, propertyName: string): any => {
+  if (!response) return undefined;
+  return response[propertyName] ?? response[propertyName.charAt(0).toUpperCase() + propertyName.slice(1)];
+};
+
+// Helper function to log API response with data count
+const logApiResponse = (
+  response: any,
+  dataPropertyName: string,
+  successMessage: string,
+  totalItemsPropertyName?: string
+): void => {
+  logger.info('Raw response from API:');
+  logger.info(JSON.stringify(response, null, 2));
+  
+  const data = getResponseArray(response, dataPropertyName);
+  if (data?.length) {
+    const totalItems = totalItemsPropertyName ? getResponseValue(response, totalItemsPropertyName) : undefined;
+    const totalMsg = totalItems !== undefined ? `, total count: ${totalItems}` : '';
+    logger.info(`${successMessage} ${data.length}${totalMsg}`);
+  } else {
+    logger.warn(`Response received but ${dataPropertyName} is undefined or empty`);
+  }
+};
+
 const initApiSample = async () => {
   try {
     const customersApiFactory = new CustomersApiFactory();
@@ -205,7 +240,8 @@ const getFixtureSchedule = async (
   const response: FixtureScheduleCollectionResponse | undefined =
     await subscriptionHttpClient.getFixturesSchedule(request);
 
-  logger.log(`${response?.fixtures?.length} Fixture schedule retrieved.`);
+  const fixtures = getResponseArray(response, 'fixtures');
+  logger.log(`${fixtures?.length ?? 0} Fixture schedule retrieved.`);
 };
 
 const subscribeByFixtures = async (
@@ -218,7 +254,8 @@ const subscribeByFixtures = async (
   const response: FixturesSubscriptionCollectionResponse | undefined =
     await subscriptionHttpClient.subscribeByFixtures(request);
 
-  logger.info(`Successfully subscribed to ${response?.fixtures?.length} fixtures`);
+  const fixtures = getResponseArray(response, 'fixtures');
+  logger.info(`Successfully subscribed to ${fixtures?.length ?? 0} fixtures`);
 };
 
 const unSubscribeFromFixture = async (
@@ -231,7 +268,8 @@ const unSubscribeFromFixture = async (
   const response: FixturesSubscriptionCollectionResponse | undefined =
     await subscriptionHttpClient.unSubscribeByFixtures(request);
 
-  logger.info(`Successfully unsubscribed from ${response?.fixtures?.length} fixtures`);
+  const fixtures = getResponseArray(response, 'fixtures');
+  logger.info(`Successfully unsubscribed from ${fixtures?.length ?? 0} fixtures`);
 };
 
 const subscribeByLeagues = async (
@@ -250,7 +288,8 @@ const subscribeByLeagues = async (
   const response: LeaguesSubscriptionCollectionResponse | undefined =
     await subscriptionHttpClient.subscribeByLeagues(request);
 
-  logger.info(`Successfully subscribed to ${response?.subscription?.length} leagues`);
+  const subscription = getResponseArray(response, 'subscription');
+  logger.info(`Successfully subscribed to ${subscription?.length ?? 0} leagues`);
 };
 
 const unSubscribeFromLeagues = async (
@@ -269,7 +308,8 @@ const unSubscribeFromLeagues = async (
   const response: LeaguesSubscriptionCollectionResponse | undefined =
     await subscriptionHttpClient.unSubscribeByLeagues(request);
 
-  logger.info(`Successfully unsubscribed from ${response?.subscription?.length} leagues`);
+  const subscription = getResponseArray(response, 'subscription');
+  logger.info(`Successfully unsubscribed from ${subscription?.length ?? 0} leagues`);
 };
 
 const getManualSuspensions = async (
@@ -337,14 +377,33 @@ const removeManualSuspensions = async (
 const getSubscriptions = async (
   subscriptionHttpClient: ISubscriptionHttpClient
 ): Promise<void> => {
-  const request = new GetSubscriptionsRequestDto({
-    sportIds: [6046],
-  });
+  try {
+    const request = new GetSubscriptionsRequestDto({
+      sportIds: [6046],
+    });
 
-  const response: SubscriptionsCollectionResponse | undefined =
-    await subscriptionHttpClient.getSubscriptions(request);
+    const requestPayload = instanceToPlain(request);
+    logger.info('Request Payload being sent:');
+    logger.info(JSON.stringify(requestPayload, null, 2));
 
-  logger.log(`Subscriptions received: ${response?.fixtures?.length}`);
+    const response: SubscriptionsCollectionResponse | undefined =
+      await subscriptionHttpClient.getSubscriptions(request);
+
+    logger.info('Raw response from API:');
+    logger.info(JSON.stringify(response, null, 2));
+
+    const fixtures = getResponseArray(response, 'fixtures');
+    if (fixtures?.length) {
+      logger.info(`Successfully retrieved ${fixtures.length} subscriptions`);
+    } else {
+      logger.warn('Response received but fixtures is undefined or empty');
+    }
+  } catch (error) {
+    logger.error(`Error getting subscriptions: ${error}`);
+    if (error instanceof HttpResponseError && error.context) {
+      logger.error(`Error context: ${JSON.stringify(error.context)}`);
+    }
+  }
 };
 
 const subscribeByCompetitions = async (
@@ -362,7 +421,8 @@ const subscribeByCompetitions = async (
 
   const response = await subscriptionHttpClient.subscribeByCompetitions(request);
 
-  logger.log(`Subscribed to ${response?.subscription?.length} competitions`);
+  const subscription = getResponseArray(response, 'subscription');
+  logger.log(`Subscribed to ${subscription?.length ?? 0} competitions`);
 };
 
 const unSubscribeFromCompetitions = async (
@@ -380,7 +440,8 @@ const unSubscribeFromCompetitions = async (
 
   const response = await subscriptionHttpClient.unSubscribeByCompetitions(request);
 
-  logger.log(`Unsubscribed from ${response?.subscription?.length} competitions`);
+  const subscription = getResponseArray(response, 'subscription');
+  logger.log(`Unsubscribed from ${subscription?.length ?? 0} competitions`);
 };
 
 const getFixturesMetadataSubscriptions = async (
@@ -394,7 +455,8 @@ const getFixturesMetadataSubscriptions = async (
   const response: FixturesMetadataSubscriptionsCollectionResponse | undefined =
     await subscriptionHttpClient.getFixturesMetadataSubscriptions(request);
 
-  logger.log(`Fixtures metadata subscriptions received: ${response?.subscribedFixtures?.length}`);
+  const subscribedFixtures = getResponseArray(response, 'subscribedFixtures');
+  logger.log(`Fixtures metadata subscriptions received: ${subscribedFixtures?.length ?? 0}`);
 };
 //endregion
 
@@ -519,7 +581,8 @@ const getCompetitions = async (metadataHttpClient: IMetadataHttpClient): Promise
 
   const response = await metadataHttpClient.getCompetitions(request);
 
-  logger.log(`${response?.competitions?.length} Competitions retrieved.`);
+  const competitions = getResponseArray(response, 'competitions');
+  logger.log(`${competitions?.length ?? 0} Competitions retrieved.`);
 };
 
 const getIncidents = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
@@ -542,9 +605,7 @@ const getIncidents = async (metadataHttpClient: IMetadataHttpClient): Promise<vo
 
   try {
     const response = await metadataHttpClient.getIncidents(request);
-    logger.info('Raw response from API:');
-    logger.info(JSON.stringify(response, null, 2));
-    logger.info(`Successfully retrieved ${response?.data?.length} incidents, total count: ${response?.totalItems}`);
+    logApiResponse(response, 'data', 'Successfully retrieved incidents', 'totalItems');
   } catch (error) {
     logger.error(`Error getting incidents: ${error}`);
     if (error instanceof HttpResponseError && error.context) {
@@ -573,9 +634,7 @@ const getVenues = async (metadataHttpClient: IMetadataHttpClient): Promise<void>
 
   try {
     const response = await metadataHttpClient.getVenues(request);
-    logger.info('Raw response from API:');
-    logger.info(JSON.stringify(response, null, 2));
-    logger.info(`Successfully retrieved ${response?.data?.length} venues`);
+    logApiResponse(response, 'data', 'Successfully retrieved venues');
   } catch (error) {
     logger.error(`Error getting venues: ${error}`);
     if (error instanceof HttpResponseError && error.context) {
@@ -603,9 +662,7 @@ const getCities = async (metadataHttpClient: IMetadataHttpClient): Promise<void>
 
   try {
     const response = await metadataHttpClient.getCities(request);
-    logger.info('Raw response from API:');
-    logger.info(JSON.stringify(response, null, 2));
-    logger.info(`Successfully retrieved ${response?.data?.length} cities`);
+    logApiResponse(response, 'data', 'Successfully retrieved cities');
   } catch (error) {
     logger.error(`Error getting cities: ${error}`);
     if (error instanceof HttpResponseError && error.context) {
@@ -618,7 +675,7 @@ const getStates = async (metadataHttpClient: IMetadataHttpClient): Promise<void>
   logger.info('Getting states...');
 
   const statesFilter = new StateFilterDto({
-    countryIds: [1], // Example: Filter by country ID
+   // countryIds: [1], // Example: Filter by country ID
     // stateIds: [10, 20],
   });
 
@@ -632,9 +689,7 @@ const getStates = async (metadataHttpClient: IMetadataHttpClient): Promise<void>
 
   try {
     const response = await metadataHttpClient.getStates(request);
-    logger.info('Raw response from API:');
-    logger.info(JSON.stringify(response, null, 2));
-    logger.info(`Successfully retrieved ${response?.data?.length} states`);
+    logApiResponse(response, 'data', 'Successfully retrieved states');
   } catch (error) {
     logger.error(`Error getting states: ${error}`);
     if (error instanceof HttpResponseError && error.context) {
@@ -668,9 +723,7 @@ const getParticipants = async (metadataHttpClient: IMetadataHttpClient): Promise
 
   try {
     const response = await metadataHttpClient.getParticipants(request);
-    logger.info('Raw response from API:');
-    logger.info(JSON.stringify(response, null, 2));
-    logger.info(`Successfully retrieved ${response?.data?.length} participants, total count: ${response?.totalItems}`);
+    logApiResponse(response, 'data', 'Successfully retrieved participants', 'totalItems');
   } catch (error) {
     logger.error(`Error getting participants: ${error}`);
     if (error instanceof HttpResponseError && error.context) {

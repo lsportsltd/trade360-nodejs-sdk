@@ -12,12 +12,25 @@ import { MqConnectionSettingsValidator } from './validators';
  * Class that represents all Feed requests
  */
 export class Feed implements IFeed {
-  private consumerMq: IFeed;
+  /**
+   * The underlying consumer MQ instance (RabbitMQFeed).
+   * Event listeners should be attached to feed.consumerMq, not feed directly.
+   * @remarks Use feed.consumerMq to access the underlying RabbitMQ feed implementation.
+   *          Note: The RabbitMQFeed manages connection events internally.
+   */
+  public readonly consumerMq: IFeed;
 
   private preConnectionAtStart: boolean = false;
 
   private mqSettings: MQSettingsOptions;
 
+  /**
+   * Creates a new Feed instance.
+   * @param mqSettings - MQ connection settings (hostname, port, vhost, username, password, packageId, etc.)
+   * @param logger - Logger instance (optional, defaults to ConsoleAdapter)
+   * @remarks The Feed constructor only accepts 2 parameters: mqSettings and logger.
+   *          The preConnectionAtStart parameter is passed to the start() method, not the constructor.
+   */
   constructor(
     mqSettings: unknown,
     private logger: ILogger = new ConsoleAdapter(),

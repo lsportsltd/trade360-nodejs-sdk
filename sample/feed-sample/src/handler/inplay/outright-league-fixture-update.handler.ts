@@ -20,7 +20,20 @@ export class OutrightLeagueFixtureUpdateHandler
       timestampInMs: transportHeaders.timestampInMs,
       messageSequence: transportHeaders.messageSequence,
     });
-    console.log(entity);
+    // Outright entities are wrapped in metadata update classes with competition property
+    if (entity?.competition) {
+      console.log('Competition:', entity.competition);
+      // OutrightLeagueCompetition has competitions array, each with events
+      if (entity.competition.competitions) {
+        entity.competition.competitions.forEach((comp) => {
+          if (comp.events) {
+            comp.events.forEach((event) => {
+              console.log('Outright League Fixture Event:', event);
+            });
+          }
+        });
+      }
+    }
     return;
   };
 }
