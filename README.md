@@ -513,13 +513,14 @@ The test suite includes:
 
 1. **Enable Verbose Logging:**
 
-Configure a logger with appropriate log level:
+Configure a logger adapter. Note that log level is typically configured through the adapter's constructor options, not via a `setLogLevel()` method:
 
 ```typescript
-import { ConsoleAdapter, LogLevel } from 'trade360-sdk';
+import { ConsoleAdapter } from 'trade360-sdk';
 
 const logger = new ConsoleAdapter();
-logger.setLogLevel(LogLevel.DEBUG); // or INFO, WARN, ERROR
+// Log level is controlled by the adapter implementation
+// For custom adapters, configure log level in the adapter constructor
 ```
 
 2. **Check Connection Status:**
@@ -566,12 +567,21 @@ try {
 Enable message logging in feed handlers:
 
 ```typescript
-feed.addEntityHandler({
-  async handle(entity: FixtureMetadataUpdate) {
-    logger.debug('Received fixture update:', JSON.stringify(entity, null, 2));
-    // Process entity
+import { IEntityHandler, IMessageStructure } from 'trade360-sdk';
+
+class MyHandler implements IEntityHandler<FixtureMetadataUpdate> {
+  async processAsync({ header, entity, transportHeaders }: IMessageStructure<FixtureMetadataUpdate>) {
+    // Important: Entities are wrapped in metadata update classes with events[] arrays, not direct access
+    if (entity?.events) {
+      entity.events.forEach((event) => {
+        logger.debug('Received fixture event:', JSON.stringify(event, null, 2));
+        // Process event (not entity directly)
+      });
+    }
   }
-}, FixtureMetadataUpdate);
+}
+
+feed.addEntityHandler(new MyHandler(), FixtureMetadataUpdate);
 ```
 
 ### Known Issues
@@ -627,6 +637,18 @@ if (status?.isDistributionOn) {
 **Connection Monitoring:**
 
 Monitor RabbitMQ connection status through feed events and logger output.
+
+**Event Listeners:**
+
+Event listeners should be attached to `feed.consumerMq`, not `feed` directly:
+
+```typescript
+const feed = new Feed(mqSettings, logger);
+
+// Event listeners are on feed.consumerMq, not feed.on()
+// Note: The underlying RabbitMQFeed manages connection events internally
+// Connection events (error, close) are handled automatically by the SDK
+```
 
 ### Metrics
 
@@ -691,6 +713,7 @@ Configure different settings for Development, QA, and Production environments:
 - `requestedHeartbeatSeconds` - Heartbeat interval (default: 30)
 - `dispatchConsumersAsync` - Async message dispatch (default: true)
 - `PACKAGE_FORMAT_TYPE` - Package format type ("1" for in-play, "2" for pre-match)
+- `customersApiBaseUrl` - **Required** Customers API base URL (e.g., "https://stm-api.lsports.eu/"). This field is required for all MQ settings and is used by the SDK for distribution management operations.
 
 **HTTP Client Settings:**
 - `restApiBaseUrl` - Customers API base URL

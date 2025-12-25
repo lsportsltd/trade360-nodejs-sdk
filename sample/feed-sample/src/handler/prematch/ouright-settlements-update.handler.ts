@@ -14,7 +14,16 @@ export class OutrightSettlementsUpdateHandler implements IEntityHandler<Outright
       timestampInMs: transportHeaders.timestampInMs,
       messageSequence: transportHeaders.messageSequence,
     });
-    console.log(entity);
+    // Outright entities are wrapped in metadata update classes with competition property
+    if (entity?.competition) {
+      console.log('Competition:', entity.competition);
+      // Access events within the competition if available
+      if (entity.competition.events) {
+        entity.competition.events.forEach((event) => {
+          console.log('Outright Settlement Event:', event);
+        });
+      }
+    }
     return;
   };
 }

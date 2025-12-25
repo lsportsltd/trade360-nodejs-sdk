@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.7.3](#version-373)
+- [Version 3.7.2](#version-372)
 - [Version 3.7.1](#version-371)
 - [Version 3.6.0](#version-360)
 - [Version 3.4.2](#version-342)
@@ -14,6 +16,81 @@ All notable changes to this project will be documented in this file.
 - [Version 3.1.0](#version-310)
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
+
+---
+
+## Version 3.7.3
+
+Additional fixes and improvements to sample code and API structure.
+
+### Bug Fixes
+
+- **Feed Event Listeners**
+  - Made `consumerMq` property public in Feed class
+  - Added documentation clarifying that event listeners should be on `feed.consumerMq`, not `feed.on()`
+
+- **Entity Handler Documentation**
+  - Enhanced JSDoc in `IEntityHandler` interface to clarify entities are wrapped in metadata update classes with `events[]` arrays
+  - Updated examples to show correct entity structure access patterns
+
+- **Sample Code Fixes**
+  - Fixed outright entity handlers to correctly access `competition.competitions[].events[]` structure for OutrightLeagueCompetition types
+  - Fixed outright entity handlers to correctly access `competition.events[]` structure for OutrightCompetition types
+  - Updated all sample handlers to demonstrate proper entity structure access
+
+- **Customer API Sample**
+  - Fixed undefined response handling in customer API sample
+  - Added proper checks for `response?.data` before accessing length
+  - Improved error handling and logging for undefined responses
+
+### Documentation Improvements
+
+- **Feed Constructor**
+  - Added JSDoc documentation clarifying Feed constructor only accepts 2 parameters (mqSettings, logger)
+  - Added remark that `preConnectionAtStart` is passed to `start()` method, not constructor
+
+- **Entity Structure**
+  - Enhanced documentation explaining that entities are wrapped in metadata update classes
+  - Clarified difference between standard entities (with `events[]`) and outright entities (with `competition` property)
+
+### Backward Compatibility
+
+All changes are backward compatible. The `consumerMq` property was made public to allow proper event listener access, but existing code will continue to work.
+
+---
+
+## Version 3.7.2
+
+Fixes documentation and API usage issues based on customer feedback.
+
+### Bug Fixes
+
+- **Logger Adapter Documentation**
+  - Removed incorrect `setLogLevel()` method reference from README.md
+  - Updated logging examples to clarify that log levels are configured through adapter constructors
+
+- **Entity Handler Interface**
+  - Fixed README.md example that incorrectly showed `handle()` method
+  - Updated example to use correct `processAsync()` method with `IMessageStructure` interface
+
+- **MQSettings Configuration**
+  - Made `customersApiBaseUrl` required in MQSettings schema (was incorrectly marked as optional)
+  - Added documentation in README.md explaining that `customersApiBaseUrl` is required
+
+- **HeartbeatUpdate Warning**
+  - Suppressed warning for HeartbeatUpdate (entityKey 32) since it's handled automatically by the SDK
+  - Prevents unnecessary "entity handler for HeartbeatUpdate is not configured" warnings
+
+### Documentation Improvements
+
+- **Sample Code Updates**
+  - Updated sample handlers to demonstrate accessing `events[]` arrays from metadata update classes
+  - Improved examples in `sample/feed-sample/src/handler/inplay/` to show correct entity structure access
+  - Updated handlers for FixtureMetadataUpdate, MarketUpdate, LivescoreUpdate, and SettlementUpdate
+
+### Backward Compatibility
+
+All changes are backward compatible. The `customersApiBaseUrl` field was already being used as required in practice, so making it required in the schema aligns the code with actual usage patterns.
 
 ---
 

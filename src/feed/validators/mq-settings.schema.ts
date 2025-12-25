@@ -18,6 +18,9 @@ import {
  * used to parse and validate the MQ settings object.
  * The MQ settings object is used to configure the
  * connection to the RabbitMQ server.
+ * 
+ * @remarks The `customersApiBaseUrl` field is required for all MQ settings.
+ *          It is used by the DistributionUtil for distribution management operations.
  */
 export const MQSettingsSchema = z.object({
   hostname: z.string(),
@@ -53,7 +56,8 @@ export const MQSettingsSchema = z.object({
     .default(DEFUALT_REQUESTED_HEARTBEAT_SECONDS),
   dispatchConsumersAsync: z.boolean().default(DEFUALT_DISPATCH_CONSUMERS),
   automaticRecoveryEnabled: z.boolean().default(DEFUALT_AUTOMATIC_RECOVERY_ENABLED),
-  customersApiBaseUrl: z.string().url().optional(),
+  /** Required. Customers API base URL (e.g., "https://stm-api.lsports.eu/") used for distribution management. */
+  customersApiBaseUrl: z.string().url(),
 });
 
 // Type inference
