@@ -7,3 +7,5 @@ export * from './venues-request.dto';
 export * from './cities-request.dto';
 export * from './states-request.dto';
 export * from './participants-request.dto';
+export * from './seasons-request.dto';
+export * from './tours-request.dto';

@@ -6,10 +6,12 @@ import { Location } from '../../../../src/entities/core-entities/fixture/locatio
 import { League } from '../../../../src/entities/core-entities/fixture/league';
 import { Participant } from '../../../../src/entities/core-entities/fixture/participant';
 import { NameValueRecord } from '../../../../src/entities/core-entities/common/name-value-record';
+import { IdNNameRecord } from '../../../../src/entities/core-entities/common/id-and-name-record';
 
 describe('Fixture Entity', () => {
   it('should deserialize a plain object into a Fixture instance', (): void => {
     const plain = {
+      FixtureName: 'Team A vs Team B',
       Subscription: { id: 1 },
       Sport: { id: 2, name: 'Football' },
       Location: { id: 3, name: 'England' },
@@ -23,9 +25,11 @@ describe('Fixture Entity', () => {
       ],
       FixtureExtraData: [{ name: 'Referee', value: 'John Doe' }],
       ExternalFixtureId: 'EXT-12345',
+      Season: { Id: 2024, Name: '2024-2025' },
     };
     const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
     expect(fixture).toBeInstanceOf(Fixture);
+    expect(fixture.fixtureName).toBe('Team A vs Team B');
     expect(fixture.subscription).toBeInstanceOf(Subscription);
     expect(fixture.sport).toBeInstanceOf(Sport);
     expect(fixture.location).toBeInstanceOf(Location);
@@ -40,6 +44,9 @@ describe('Fixture Entity', () => {
     expect(Array.isArray(fixture.fixtureExtraData)).toBe(true);
     expect(fixture.fixtureExtraData?.[0]).toBeInstanceOf(NameValueRecord);
     expect(fixture.externalFixtureId).toBe('EXT-12345');
+    expect(fixture.season).toBeInstanceOf(IdNNameRecord);
+    expect(fixture.season?.id).toBe(2024);
+    expect(fixture.season?.name).toBe('2024-2025');
   });
 
   it('should handle missing optional properties', (): void => {
@@ -50,6 +57,7 @@ describe('Fixture Entity', () => {
     const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
     expect(fixture.sport).toBeInstanceOf(Sport);
     expect(fixture.status).toBe('InProgress');
+    expect(fixture.fixtureName).toBeUndefined();
     expect(fixture.subscription).toBeUndefined();
     expect(fixture.location).toBeUndefined();
     expect(fixture.league).toBeUndefined();
@@ -58,6 +66,7 @@ describe('Fixture Entity', () => {
     expect(fixture.participants).toBeUndefined();
     expect(fixture.fixtureExtraData).toBeUndefined();
     expect(fixture.externalFixtureId).toBeUndefined();
+    expect(fixture.season).toBeUndefined();
   });
 
   it('should handle empty arrays for participants and fixtureExtraData', (): void => {
@@ -105,5 +114,65 @@ describe('Fixture Entity', () => {
     };
     const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
     expect(fixture.externalFixtureId).toBeUndefined();
+  });
+
+  it('should deserialize FixtureName property correctly', (): void => {
+    const plain = {
+      Sport: { id: 2, name: 'Football' },
+      FixtureName: 'Manchester United vs Liverpool',
+    };
+    const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
+    expect(fixture.fixtureName).toBe('Manchester United vs Liverpool');
+  });
+
+  it('should deserialize Season property correctly', (): void => {
+    const plain = {
+      Sport: { id: 2, name: 'Football' },
+      Season: { Id: 2024, Name: '2024-2025' },
+    };
+    const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
+    expect(fixture.season).toBeInstanceOf(IdNNameRecord);
+    expect(fixture.season?.id).toBe(2024);
+    expect(fixture.season?.name).toBe('2024-2025');
+  });
+
+  it('should handle Season with null value', (): void => {
+    const plain = {
+      Sport: { id: 2, name: 'Football' },
+      Season: null,
+    };
+    const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
+    expect(fixture.season).toBeNull();
+  });
+
+  it('should handle FixtureName with null value', (): void => {
+    const plain = {
+      Sport: { id: 2, name: 'Football' },
+      FixtureName: null,
+    };
+    const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
+    expect(fixture.fixtureName).toBeNull();
+  });
+
+  it('should deserialize complete fixture with all new properties', (): void => {
+    const plain = {
+      FixtureName: 'Champions League Final',
+      Sport: { Id: 1, Name: 'Football' },
+      Location: { Id: 1, Name: 'England' },
+      League: { Id: 1, Name: 'UEFA Champions League' },
+      StartDate: '2024-12-25T15:00:00Z',
+      Status: 'NSY',
+      Stage: { Id: 1, Name: 'Final' },
+      Round: { Id: 1, Name: 'Final' },
+      Season: { Id: 2024, Name: '2024-2025' },
+      ExternalFixtureId: 'EXT-FINAL-2024',
+    };
+    const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
+    expect(fixture.fixtureName).toBe('Champions League Final');
+    expect(fixture.sport?.name).toBe('Football');
+    expect(fixture.stage?.name).toBe('Final');
+    expect(fixture.round?.name).toBe('Final');
+    expect(fixture.season?.name).toBe('2024-2025');
+    expect(fixture.season?.id).toBe(2024);
   });
 });

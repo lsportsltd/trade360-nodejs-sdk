@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.8.0](#version-380)
 - [Version 3.7.3](#version-373)
 - [Version 3.7.2](#version-372)
 - [Version 3.7.1](#version-371)
@@ -16,6 +17,40 @@ All notable changes to this project will be documented in this file.
 - [Version 3.1.0](#version-310)
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
+
+
+---
+
+## Version 3.8.0
+
+Added Seasons and Tours metadata API endpoints for enhanced fixture metadata support.
+
+### New Features
+
+- **Seasons Metadata API**
+    - `getSeasons()` - New endpoint to fetch season information
+    - `GetSeasonsRequestDto` - Request DTO with optional `seasonId` filter
+    - `SeasonsCollectionResponse` - Response wrapper containing seasons array
+    - `SeasonBodyStructure` - Response structure with `seasonId` and `seasonName`
+
+- **Tours Metadata API**
+    - `getTours()` - New endpoint to fetch tour information
+    - `GetToursRequestDto` - Request DTO with optional `tourId` and `sportId` filters
+    - `ToursCollectionResponse` - Response wrapper containing tours array
+    - `TourBodyStructure` - Response structure with `tourId`, `tourName`, `sportId`, and `sportName`
+
+### API Routes
+
+- Added `/Seasons/Get` endpoint to metadata API
+- Added `/Tours/Get` endpoint to metadata API
+
+### Sample Application
+
+- Added interactive demo for `getSeasons()` and `getTours()` in customer-api-sample
+
+### Backward Compatibility
+
+All changes are backward compatible. Existing code will continue to work without modification.
 
 ---
 

@@ -22,3 +22,5 @@ export * from './gender.enum';
 export * from './age-category.enum';
 export * from './participant-type.enum';
 export * from './participant-body-structure';
+export * from './season-body-structure';
+export * from './tour-body-structure';

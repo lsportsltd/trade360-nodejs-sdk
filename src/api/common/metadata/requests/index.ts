@@ -7,3 +7,5 @@ export * from './venues-request';
 export * from './cities-request';
 export * from './states-request';
 export * from './participants-request';
+export * from './seasons-request';
+export * from './tours-request';

@@ -10,6 +10,9 @@ import { Sport } from './sport';
 import { FixtureVenue } from './fixture-venue';
 
 export class Fixture {
+  @Expose({ name: 'FixtureName' })
+  public fixtureName?: string;
+
   @Expose({ name: 'Subscription' })
   @Type(() => Subscription)
   public subscription?: Subscription;
@@ -56,6 +59,11 @@ export class Fixture {
   @Expose({ name: 'Round' })
   @Type(() => IdNNameRecord)
   public round?: IdNNameRecord;
+
+  @Expose({ name: 'Season' })
+  @Type(() => IdNNameRecord)
+  public season?: IdNNameRecord;
+
   @Expose({ name: 'ExternalFixtureId' })
   public externalFixtureId?: string | null;
 }

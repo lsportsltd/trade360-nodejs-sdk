@@ -9,3 +9,5 @@ export * from './venues-collection-response';
 export * from './cities-collection-response';
 export * from './states-collection-response';
 export * from './participants-collection-response';
+export * from './seasons-collection-response';
+export * from './tours-collection-response';

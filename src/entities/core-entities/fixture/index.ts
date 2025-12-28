@@ -1,5 +1,7 @@
 export * from './fixture';
 export * from './fixture-event';
+export * from './fixture-player';
+export * from './fixture-player-info';
 export * from './fixture-venue';
 export * from './league';
 export * from './location';

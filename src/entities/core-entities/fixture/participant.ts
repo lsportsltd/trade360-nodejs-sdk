@@ -1,5 +1,7 @@
 import { ActiveParticipant } from '@lsports/enums';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+
+import { FixturePlayer } from './fixture-player';
 
 export class Participant {
   @Expose({ name: 'Id' })
@@ -15,6 +17,24 @@ export class Participant {
   public rotationId?: number;
 
   @Expose({ name: 'IsActive' })
-  isActive?: ActiveParticipant;
+  public isActive?: ActiveParticipant;
 
+  @Expose({ name: 'Form' })
+  public form?: string;
+
+  @Expose({ name: 'Formation' })
+  public formation?: string;
+
+  @Expose({ name: 'FixturePlayers' })
+  @Type(() => FixturePlayer)
+  public fixturePlayers?: FixturePlayer[];
+
+  @Expose({ name: 'Gender' })
+  public gender?: number;
+
+  @Expose({ name: 'AgeCategory' })
+  public ageCategory?: number;
+
+  @Expose({ name: 'Type' })
+  public type?: number;
 }
