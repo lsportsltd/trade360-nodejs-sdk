@@ -47,6 +47,8 @@ import {
   StateFilterDto,
   GetParticipantsRequestDto,
   ParticipantFilterDto,
+  GetSeasonsRequestDto,
+  GetToursRequestDto,
 } from 'trade360-nodejs-sdk';
 
 import { getConfig } from './config';
@@ -144,6 +146,8 @@ const initApiSample = async () => {
       { label: 'Metadata API - Get Cities', handler: async () => await getCities(metadataPrematchHttpClient) },
       { label: 'Metadata API - Get States', handler: async () => await getStates(metadataPrematchHttpClient) },
       { label: 'Metadata API - Get Participants', handler: async () => await getParticipants(metadataPrematchHttpClient) },
+      { label: 'Metadata API - Get Seasons', handler: async () => await getSeasons(metadataPrematchHttpClient) },
+      { label: 'Metadata API - Get Tours', handler: async () => await getTours(metadataPrematchHttpClient) },
       { label: 'Subscription API - Get Package Quota', handler: async () => await getPackageQuota(subscriptionInplayHttpClient) },
       { label: 'Subscription API - Get Fixture Schedule', handler: async () => await getFixtureSchedule(subscriptionInplayHttpClient) },
       { label: 'Subscription API - Subscribe by Fixtures', handler: async () => await subscribeByFixtures(subscriptionInplayHttpClient) },
@@ -726,6 +730,55 @@ const getParticipants = async (metadataHttpClient: IMetadataHttpClient): Promise
     logApiResponse(response, 'data', 'Successfully retrieved participants', 'totalItems');
   } catch (error) {
     logger.error(`Error getting participants: ${error}`);
+    if (error instanceof HttpResponseError && error.context) {
+      logger.error(`Error context: ${JSON.stringify(error.context)}`);
+    }
+  }
+};
+
+const getSeasons = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  logger.info('Getting seasons...');
+
+  const request = new GetSeasonsRequestDto({
+    seasonId: undefined, // Optional filter by season ID
+  });
+
+  const requestPayload = instanceToPlain(request);
+  logger.info('Request Payload being sent:');
+  logger.info(JSON.stringify(requestPayload, null, 2));
+
+  try {
+    const response = await metadataHttpClient.getSeasons(request);
+    logger.info('Raw response from API:');
+    logger.info(JSON.stringify(response, null, 2));
+    logger.info(`Successfully retrieved ${response?.seasons?.length} seasons`);
+  } catch (error) {
+    logger.error(`Error getting seasons: ${error}`);
+    if (error instanceof HttpResponseError && error.context) {
+      logger.error(`Error context: ${JSON.stringify(error.context)}`);
+    }
+  }
+};
+
+const getTours = async (metadataHttpClient: IMetadataHttpClient): Promise<void> => {
+  logger.info('Getting tours...');
+
+  const request = new GetToursRequestDto({
+    tourId: undefined,
+    sportId: undefined,
+  });
+
+  const requestPayload = instanceToPlain(request);
+  logger.info('Request Payload being sent:');
+  logger.info(JSON.stringify(requestPayload, null, 2));
+
+  try {
+    const response = await metadataHttpClient.getTours(request);
+    logger.info('Raw response from API:');
+    logger.info(JSON.stringify(response, null, 2));
+    logger.info(`Successfully retrieved ${response?.tours?.length} tours`);
+  } catch (error) {
+    logger.error(`Error getting tours: ${error}`);
     if (error instanceof HttpResponseError && error.context) {
       logger.error(`Error context: ${JSON.stringify(error.context)}`);
     }

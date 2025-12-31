@@ -17,3 +17,4 @@ export * from './incident-type';
 export * from './court-surface';
 export * from './venue-assignment';
 export * from './venue-environment';
+export * from './player-type';

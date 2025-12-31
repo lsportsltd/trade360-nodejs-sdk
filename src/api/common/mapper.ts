@@ -17,6 +17,8 @@ import {
   VenueFilterDto,
   CityFilterDto,
   StateFilterDto,
+  GetSeasonsRequestDto,
+  GetToursRequestDto,
 } from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
@@ -33,6 +35,8 @@ import {
   VenuesFilter,
   CitiesFilter,
   StatesFilter,
+  GetSeasonsRequest,
+  GetToursRequest,
 } from '@metadata-api/requests';
 import {
   ChangeManualSuspensionsRequestDto,
@@ -395,6 +399,18 @@ export class Mapper implements IMapper {
       StateFilterDto as Constructor<StateFilterDto>,
       StatesFilter,
       (source) => TransformerUtil.transform(source, StatesFilter),
+    );
+
+    this.registerMapping<GetSeasonsRequestDto, GetSeasonsRequest>(
+      GetSeasonsRequestDto as Constructor<GetSeasonsRequestDto>,
+      GetSeasonsRequest,
+      (source) => TransformerUtil.transform({ ...packageCredentials, ...source }, GetSeasonsRequest),
+    );
+
+    this.registerMapping<GetToursRequestDto, GetToursRequest>(
+      GetToursRequestDto as Constructor<GetToursRequestDto>,
+      GetToursRequest,
+      (source) => TransformerUtil.transform({ ...packageCredentials, ...source }, GetToursRequest),
     );
   }
 

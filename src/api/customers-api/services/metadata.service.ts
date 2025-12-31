@@ -19,6 +19,8 @@ import {
   GetCitiesRequestDto,
   GetStatesRequestDto,
   GetParticipantsRequestDto,
+  GetSeasonsRequestDto,
+  GetToursRequestDto,
 } from '@metadata-api/dtos';
 import {
   GetCompetitionsRequest,
@@ -30,6 +32,8 @@ import {
   GetCitiesRequest,
   GetStatesRequest,
   GetParticipantsRequest,
+  GetSeasonsRequest,
+  GetToursRequest,
 } from '@metadata-api/requests';
 import {
   CompetitionCollectionResponse,
@@ -43,6 +47,8 @@ import {
   CitiesCollectionResponse,
   StatesCollectionResponse,
   ParticipantsCollectionResponse,
+  SeasonsCollectionResponse,
+  ToursCollectionResponse,
 } from '@metadata-api/responses';
 
 const {
@@ -57,6 +63,8 @@ const {
   GET_CITIES_PREFIX_URL,
   GET_STATES_PREFIX_URL,
   GET_PARTICIPANTS_PREFIX_URL,
+  GET_SEASONS_PREFIX_URL,
+  GET_TOURS_PREFIX_URL,
 } = MetadataRoutesPrefixUrl;
 
 /**
@@ -397,6 +405,62 @@ export class MetadataHttpClient extends BaseHttpClient implements IMetadataHttpC
     const response = await this.postRequest<ParticipantsCollectionResponse>({
       route: GET_PARTICIPANTS_PREFIX_URL,
       responseBodyType: ParticipantsCollectionResponse,
+      requestBody: request,
+    });
+
+    return response;
+  }
+
+  /**
+   * getSeasons method is responsible for sending a request
+   * to the metadata API to get the seasons.
+   * It sends a POST request to the metadata API with the
+   * GET_SEASONS_PREFIX_URL and SeasonsCollectionResponse
+   * as the response type.
+   * @param requestDto The request DTO for getting seasons
+   * from the metadata API.
+   * @returns A promise that contains the seasons data.
+   * @throws Error if the request is invalid or incorrect.
+   */
+  public async getSeasons(
+    requestDto: GetSeasonsRequestDto,
+  ): Promise<SeasonsCollectionResponse | undefined> {
+    const request = this.mapper.map<GetSeasonsRequestDto, GetSeasonsRequest>(
+      requestDto,
+      GetSeasonsRequest,
+    );
+
+    const response = await this.postRequest<SeasonsCollectionResponse>({
+      route: GET_SEASONS_PREFIX_URL,
+      responseBodyType: SeasonsCollectionResponse,
+      requestBody: request,
+    });
+
+    return response;
+  }
+
+  /**
+   * getTours method is responsible for sending a request
+   * to the metadata API to get the tours.
+   * It sends a POST request to the metadata API with the
+   * GET_TOURS_PREFIX_URL and ToursCollectionResponse
+   * as the response type.
+   * @param requestDto The request DTO for getting tours
+   * from the metadata API.
+   * @returns A promise that contains the tours data.
+   * @throws Error if the request is invalid or incorrect.
+   */
+  public async getTours(
+    requestDto: GetToursRequestDto,
+  ): Promise<ToursCollectionResponse | undefined> {
+    const request = this.mapper.map<GetToursRequestDto, GetToursRequest>(
+      requestDto,
+      GetToursRequest,
+    );
+
+    const response = await this.postRequest<ToursCollectionResponse>({
+      route: GET_TOURS_PREFIX_URL,
+      responseBodyType: ToursCollectionResponse,
       requestBody: request,
     });
 

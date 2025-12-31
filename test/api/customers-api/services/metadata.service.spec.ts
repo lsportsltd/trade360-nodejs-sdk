@@ -63,6 +63,8 @@ describe('MetadataHttpClient - getIncidents', () => {
       getCities: jest.fn(),
       getStates: jest.fn(),
       getParticipants: jest.fn(),
+      getSeasons: jest.fn(),
+      getTours: jest.fn(),
     };
   });
 
@@ -225,6 +227,8 @@ describe('MetadataHttpClient - getVenues', () => {
       getCities: jest.fn(),
       getStates: jest.fn(),
       getParticipants: jest.fn(),
+      getSeasons: jest.fn(),
+      getTours: jest.fn(),
     };
   });
 
@@ -345,6 +349,8 @@ describe('MetadataHttpClient - getCities', () => {
       }),
       getStates: jest.fn(),
       getParticipants: jest.fn(),
+      getSeasons: jest.fn(),
+      getTours: jest.fn(),
     };
   });
 
@@ -430,6 +436,8 @@ describe('MetadataHttpClient - getStates', () => {
         });
       }),
       getParticipants: jest.fn(),
+      getSeasons: jest.fn(),
+      getTours: jest.fn(),
     };
   });
 

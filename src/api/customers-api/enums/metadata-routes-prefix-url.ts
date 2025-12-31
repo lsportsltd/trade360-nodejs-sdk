@@ -13,4 +13,6 @@ export enum MetadataRoutesPrefixUrl {
   GET_CITIES_PREFIX_URL = '/Cities/Get',
   GET_STATES_PREFIX_URL = '/States/Get',
   GET_PARTICIPANTS_PREFIX_URL = '/Participants/Get',
+  GET_SEASONS_PREFIX_URL = '/Seasons/Get',
+  GET_TOURS_PREFIX_URL = '/Tours/Get',
 }
