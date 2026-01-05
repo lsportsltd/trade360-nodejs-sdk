@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.8.1](#version-381)
 - [Version 3.8.0](#version-380)
 - [Version 3.7.3](#version-373)
 - [Version 3.7.2](#version-372)
@@ -18,6 +19,21 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.8.1
+
+### Enhancements
+
+- Enhanced league, fixture and participant fields with additional metadata support
+- Added PlayerType enum with Player, Other, and Coach values
+- Added FixturePlayer and FixturePlayerInfo entities for better player information handling
+- Updated sample project configurations
+
+### Backward Compatibility
+
+All changes are backward compatible. Existing code will continue to work without modification.
 
 ---
 
