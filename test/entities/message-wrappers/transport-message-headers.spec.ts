@@ -9,6 +9,7 @@ describe('TransportMessageHeaders', () => {
         timestamp_in_ms: '1640995200000',
         MessageSequence: 'seq-456',
         FixtureId: 'fixture-789',
+        SportId: 'sport-101',
       };
 
       const headers = TransportMessageHeaders.createFromProperties(properties);
@@ -18,6 +19,7 @@ describe('TransportMessageHeaders', () => {
       expect(headers.timestampInMs).toBe('1640995200000');
       expect(headers.messageSequence).toBe('seq-456');
       expect(headers.fixtureId).toBe('fixture-789');
+      expect(headers.sportId).toBe('sport-101');
     });
 
     it('should create TransportMessageHeaders with only required properties', () => {
@@ -34,6 +36,7 @@ describe('TransportMessageHeaders', () => {
       expect(headers.timestampInMs).toBe('1640995200000');
       expect(headers.messageSequence).toBe('');
       expect(headers.fixtureId).toBe('');
+      expect(headers.sportId).toBe('');
     });
 
     it('should handle Buffer values correctly', () => {
@@ -154,12 +157,14 @@ describe('TransportMessageHeaders', () => {
         timestamp_in_ms: '1640995200000',
         MessageSequence: null,
         FixtureId: undefined,
+        SportId: null,
       };
 
       const headers = TransportMessageHeaders.createFromProperties(properties);
 
       expect(headers.messageSequence).toBe('');
       expect(headers.fixtureId).toBe('');
+      expect(headers.sportId).toBe('');
     });
 
     it('should return empty string for optional properties when empty string', () => {
@@ -184,6 +189,7 @@ describe('TransportMessageHeaders', () => {
         timestamp_in_ms: 1640995200000,
         MessageSequence: null,
         FixtureId: Buffer.from('fixture-789', 'utf8'),
+        SportId: Buffer.from('sport-456', 'utf8'),
       };
 
       const headers = TransportMessageHeaders.createFromProperties(properties);
@@ -193,6 +199,7 @@ describe('TransportMessageHeaders', () => {
       expect(headers.timestampInMs).toBe('1640995200000');
       expect(headers.messageSequence).toBe('');
       expect(headers.fixtureId).toBe('fixture-789');
+      expect(headers.sportId).toBe('sport-456');
     });
 
     it('should throw error when attempting to access invalid property key', () => {
