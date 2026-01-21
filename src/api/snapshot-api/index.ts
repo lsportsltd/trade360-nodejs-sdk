@@ -1,3 +1,4 @@
+export * from '../common/snapshot/dtos';
 export * from '../common/snapshot/requests';
 export * from '../common/snapshot/responses';
 export * from './snapshot-api';
