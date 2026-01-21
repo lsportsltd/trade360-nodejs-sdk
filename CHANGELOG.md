@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.8.2](#version-382)
 - [Version 3.8.1](#version-381)
 - [Version 3.8.0](#version-380)
 - [Version 3.7.3](#version-373)
@@ -19,6 +20,18 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.8.2
+
+### Bug Fixes
+
+- **Fixed missing Snapshot API DTOs export** - Added missing export of Snapshot DTOs (`GetFixtureRequestDto`, `GetLivescoreRequestDto`, `GetMarketRequestDto`, `GetInPlayEventRequestDto`, `GetEventRequestDto`, `GetOutrightEventRequestDto`, `GetOutrightFixtureRequestDto`, `GetOutrightLeaguesRequestDto`, `GetOutrightLeagueMarketRequestDto`, `GetOutrightLeagueEventsRequestDto`, `GetOutrightLivescoreRequestDto`, `GetOutrightMarketRequestDto`) from the SDK package. Previously, these DTOs were not accessible when installing the SDK via npm, preventing users from using the Snapshot API functionality.
+
+### Technical Details
+
+- Added `export * from '../common/snapshot/dtos'` to `src/api/snapshot-api/index.ts`
 
 ---
 
