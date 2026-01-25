@@ -119,8 +119,8 @@ export abstract class BaseHttpClient {
    * @param httpResponse The response received from the API call
    * @param responsePayloadDto The response payload DTO to be used
    * for transforming the response
-   * @returns The response payload DTO with the required properties
-   * serialized to PascalCase format (API format)
+   * @returns The response payload DTO body with properties in camelCase
+   * format as defined by the TypeScript class decorators
    * @throws HttpResponseError if the response does not contain the
    * required properties
    */
@@ -134,11 +134,8 @@ export abstract class BaseHttpClient {
 
     this.validateResponsePayloadStructure(responsePayload);
 
-    // Serialize the response body back to PascalCase format (API format)
-    const serializedBody = TransformerUtil.serializeToApiFormat(responsePayload.body);
-
-    // Return the serialized object as TResponse (maintains type compatibility)
-    return serializedBody as TResponse;
+    // Return the transformed body directly (camelCase format matching TypeScript types)
+    return responsePayload.body;
   }
 
   /**
