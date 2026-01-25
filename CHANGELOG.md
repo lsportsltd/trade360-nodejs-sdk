@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.8.3](#version-383)
 - [Version 3.8.2](#version-382)
 - [Version 3.8.1](#version-381)
 - [Version 3.8.0](#version-380)
@@ -20,6 +21,29 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.8.3
+
+### Bug Fixes
+
+- **Fixed API Response Transformation Returning Wrong Property Names**
+  - **Issue:** API response properties were returning `undefined` even when data was present (e.g., `sportsCollection.sports` returned `undefined`)
+  - **Root Cause:** The `handleValidResponse` method was calling `serializeToApiFormat()` which converted the response body back to PascalCase format (e.g., `Sports` instead of `sports`), causing a mismatch with TypeScript type definitions
+  - **Fix:** Removed the `serializeToApiFormat()` call and now returns `responsePayload.body` directly, preserving camelCase property names as defined by the `@Expose` decorators
+  - **Files Changed:**
+    - `src/api/base-http-client/base-http-client.ts`
+  - **Impact:** All API responses now correctly return camelCase properties matching TypeScript types. Properties like `locations`, `sports`, `leagues`, `markets` and nested properties like `location.id`, `location.name` now work as expected.
+
+### Technical Details
+
+- The `@Expose({ name: 'Sports' })` decorator is designed to transform API responses from PascalCase (`Sports`) to camelCase (`sports`) for TypeScript usage
+- The `serializeToApiFormat` function should only be used when sending data TO the API, not when returning data FROM the API
+
+### Backward Compatibility
+
+All changes are backward compatible. This fix restores the expected behavior where API responses use camelCase property names matching the TypeScript type definitions.
 
 ---
 
