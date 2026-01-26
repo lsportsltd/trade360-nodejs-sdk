@@ -1,11 +1,14 @@
 import { Expose, Type } from 'class-transformer';
 
 import { Sport, Location, FixtureVenue } from '@lsports/entities';
-import { NameValueRecord, Subscription } from '@lsports/entities/common';
+import { IdNNameRecord, NameValueRecord, Subscription } from '@lsports/entities/common';
 
 import { OutrightParticipant } from './outright-participant';
 
 export class OutrightFixture {
+  @Expose({ name: 'FixtureName' })
+  public fixtureName?: string;
+
   @Expose({ name: 'Subscription' })
   @Type(() => Subscription)
   subscription?: Subscription;
@@ -40,4 +43,8 @@ export class OutrightFixture {
   @Expose({ name: 'Venue' })
   @Type(() => FixtureVenue)
   public venue?: FixtureVenue;
+
+  @Expose({ name: 'Season' })
+  @Type(() => IdNNameRecord)
+  public season?: IdNNameRecord;
 }

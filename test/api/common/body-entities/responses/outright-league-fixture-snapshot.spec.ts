@@ -2,12 +2,14 @@ import { plainToInstance } from 'class-transformer';
 import { OutrightLeagueFixtureSnapshot } from '../../../../../src/api/common/body-entities/responses/outright-league-fixture-snapshot';
 import { Subscription } from '../../../../../src/entities/core-entities/common/subscription';
 import { NameValueRecord } from '../../../../../src/entities/core-entities/common/name-value-record';
+import { IdNNameRecord } from '../../../../../src/entities/core-entities/common/id-and-name-record';
 import { SportsBodyStructure } from '../../../../../src/api/common/body-entities/responses/sports-body-structure';
 import { LocationsBodyStructure } from '../../../../../src/api/common/body-entities/responses/locations-body-structure';
 
 describe('OutrightLeagueFixtureSnapshot', () => {
   it('should deserialize a plain object into an OutrightLeagueFixtureSnapshot instance with all properties including EndDate', (): void => {
     const plain = {
+      FixtureName: 'Champions League 2024',
       Subscription: { Type: 1, Status: 'Active' },
       Sport: { id: 2, name: 'Football' },
       Location: { id: 3, name: 'Europe' },
@@ -15,6 +17,7 @@ describe('OutrightLeagueFixtureSnapshot', () => {
       Status: 1,
       ExtraData: [{ Name: 'foo', Value: 'bar' }],
       EndDate: '2030-06-01T13:00:00Z',
+      Season: { Id: 2024, Name: '2024-2025' },
     };
     
     const snapshot = plainToInstance(OutrightLeagueFixtureSnapshot, plain, {
@@ -22,6 +25,7 @@ describe('OutrightLeagueFixtureSnapshot', () => {
     });
     
     expect(snapshot).toBeInstanceOf(OutrightLeagueFixtureSnapshot);
+    expect(snapshot.fixtureName).toBe('Champions League 2024');
     expect(snapshot.subscription).toBeInstanceOf(Subscription);
     expect(snapshot.sport).toBeInstanceOf(SportsBodyStructure);
     expect(snapshot.location).toBeInstanceOf(LocationsBodyStructure);
@@ -32,6 +36,9 @@ describe('OutrightLeagueFixtureSnapshot', () => {
     expect(snapshot.status).toBe(1);
     expect(snapshot.endDate).toBeInstanceOf(Date);
     expect(snapshot.endDate?.toISOString()).toBe('2030-06-01T13:00:00.000Z');
+    expect(snapshot.season).toBeInstanceOf(IdNNameRecord);
+    expect(snapshot.season?.id).toBe(2024);
+    expect(snapshot.season?.name).toBe('2024-2025');
   });
 
   it('should handle ISO 8601 date format correctly for EndDate field', (): void => {
@@ -66,6 +73,7 @@ describe('OutrightLeagueFixtureSnapshot', () => {
       excludeExtraneousValues: true,
     });
     
+    expect(snapshot.fixtureName).toBeUndefined();
     expect(snapshot.subscription).toBeUndefined();
     expect(snapshot.sport).toBeUndefined();
     expect(snapshot.location).toBeUndefined();
@@ -73,6 +81,23 @@ describe('OutrightLeagueFixtureSnapshot', () => {
     expect(snapshot.status).toBeUndefined();
     expect(snapshot.extraData).toBeUndefined();
     expect(snapshot.endDate).toBeUndefined();
+    expect(snapshot.season).toBeUndefined();
+  });
+
+  it('should deserialize FixtureName and Season properties correctly', (): void => {
+    const plain = {
+      FixtureName: 'World Cup Final',
+      Season: { Id: 2025, Name: '2025-2026' },
+    };
+    
+    const snapshot = plainToInstance(OutrightLeagueFixtureSnapshot, plain, {
+      excludeExtraneousValues: true,
+    });
+    
+    expect(snapshot.fixtureName).toBe('World Cup Final');
+    expect(snapshot.season).toBeInstanceOf(IdNNameRecord);
+    expect(snapshot.season?.id).toBe(2025);
+    expect(snapshot.season?.name).toBe('2025-2026');
   });
 
   it('should handle partial data with only EndDate provided', (): void => {

@@ -2,7 +2,7 @@ import { Expose, Type } from 'class-transformer';
 
 import { SportsBodyStructure } from './sports-body-structure';
 import { LocationsBodyStructure } from './locations-body-structure';
-import { NameValueRecord, Subscription } from '@lsports/entities/common';
+import { IdNNameRecord, NameValueRecord, Subscription } from '@lsports/entities/common';
 
 /**
  * Outright League Fixture Snapshot class is responsible for
@@ -10,6 +10,9 @@ import { NameValueRecord, Subscription } from '@lsports/entities/common';
  * outright league fixture structure.
  */
 export class OutrightLeagueFixtureSnapshot {
+  @Expose({ name: 'FixtureName' })
+  public fixtureName?: string;
+
   @Expose({ name: 'Subscription' })
   @Type(() => Subscription)
   subscription!: Subscription;
@@ -36,4 +39,8 @@ export class OutrightLeagueFixtureSnapshot {
   @Expose({ name: 'EndDate' })
   @Type(() => Date)
   endDate?: Date;
+
+  @Expose({ name: 'Season' })
+  @Type(() => IdNNameRecord)
+  public season?: IdNNameRecord;
 }

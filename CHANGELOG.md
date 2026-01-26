@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.9.0](#version-390)
 - [Version 3.8.3](#version-383)
 - [Version 3.8.2](#version-382)
 - [Version 3.8.1](#version-381)
@@ -21,6 +22,47 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.9.0
+
+Adds FixtureName, Season, and enhanced participant fields to outright entities and snapshot responses for improved fixture metadata support.
+
+### New Features
+
+- **Enhanced Outright Fixture Entities**
+  - Added `fixtureName` property (optional string) to `OutrightFixture` for fixture name information
+  - Added `season` property (optional `IdNNameRecord`) to `OutrightFixture` for season information
+
+- **Enhanced Outright League Fixture Entities**
+  - Added `fixtureName` property (optional string) to `OutrightLeagueFixture` for fixture name information
+  - Added `season` property (optional `IdNNameRecord`) to `OutrightLeagueFixture` for season information
+
+- **Enhanced Outright Participant Entities**
+  - Added `form` property (optional string) to `OutrightParticipant` for recent form (e.g., "WWDLW")
+  - Added `formation` property (optional string) to `OutrightParticipant` for tactical formation (e.g., "4-3-3")
+  - Added `fixturePlayers` property (optional `FixturePlayer[]`) to `OutrightParticipant` for player lineup information
+  - Added `gender` property (optional number) to `OutrightParticipant`
+  - Added `ageCategory` property (optional number) to `OutrightParticipant`
+  - Added `type` property (optional number) to `OutrightParticipant`
+
+- **Enhanced Outright Fixture Snapshot Response**
+  - Added `fixtureName` property (optional string) to `OutrightFixtureBodyStructure`
+  - Added `season` property (optional `IdNNameRecord`) to `OutrightFixtureBodyStructure`
+
+- **Enhanced Outright League Fixture Snapshot Response**
+  - Added `fixtureName` property (optional string) to `OutrightLeagueFixtureSnapshot`
+  - Added `season` property (optional `IdNNameRecord`) to `OutrightLeagueFixtureSnapshot`
+
+### Testing
+
+- Added comprehensive unit tests for all new properties
+- Tests cover serialization/deserialization and nullable scenarios
+
+### Backward Compatibility
+
+All changes are backward compatible. Existing code will continue to work without modification. The new properties are optional additions to existing entities, ensuring consistency between feed and snapshot response entities.
 
 ---
 

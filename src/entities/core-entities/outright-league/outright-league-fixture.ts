@@ -2,9 +2,12 @@ import { Expose, Type } from 'class-transformer';
 
 import { Location, Sport } from '@lsports/entities';
 import { FixtureStatus } from '@lsports/enums';
-import { NameValueRecord, Subscription } from '@lsports/entities/common';
+import { IdNNameRecord, NameValueRecord, Subscription } from '@lsports/entities/common';
 
 export class OutrightLeagueFixture {
+  @Expose({ name: 'FixtureName' })
+  public fixtureName?: string;
+
   @Expose({ name: 'Subscription' })
   @Type(() => Subscription)
   subscription?: Subscription;
@@ -31,4 +34,8 @@ export class OutrightLeagueFixture {
   @Expose({ name: 'EndDate' })
   @Type(() => Date)
   endDate?: Date;
+
+  @Expose({ name: 'Season' })
+  @Type(() => IdNNameRecord)
+  public season?: IdNNameRecord;
 }
