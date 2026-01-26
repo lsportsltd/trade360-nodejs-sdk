@@ -7,6 +7,7 @@ export class OutrightFixtureUpdateHandler implements IEntityHandler<OutrightFixt
       messageGuid: transportHeaders.messageGuid,
       messageType: transportHeaders.messageType,
       fixtureId: transportHeaders.fixtureId,
+      sportId: transportHeaders.sportId,
       timestampInMs: transportHeaders.timestampInMs,
       messageSequence: transportHeaders.messageSequence,
     });
