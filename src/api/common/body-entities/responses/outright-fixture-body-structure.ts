@@ -3,7 +3,7 @@ import { Expose, Type } from 'class-transformer';
 import { SportsBodyStructure } from './sports-body-structure';
 import { LocationsBodyStructure } from './locations-body-structure';
 import { ParticipantSchedule } from './participant-schedule';
-import { Subscription } from '@lsports/entities/common';
+import { IdNNameRecord, Subscription } from '@lsports/entities/common';
 import { FixtureVenue } from '@lsports/entities';
 
 /**
@@ -12,6 +12,9 @@ import { FixtureVenue } from '@lsports/entities';
  * outright fixture element structure.
  */
 export class OutrightFixtureBodyStructure {
+  @Expose({ name: 'FixtureName' })
+  public fixtureName?: string;
+
   @Expose({ name: 'Sport' })
   @Type(() => SportsBodyStructure)
   sport!: SportsBodyStructure;
@@ -40,4 +43,8 @@ export class OutrightFixtureBodyStructure {
   @Expose({ name: 'Venue' })
   @Type(() => FixtureVenue)
   public venue?: FixtureVenue;
+
+  @Expose({ name: 'Season' })
+  @Type(() => IdNNameRecord)
+  public season?: IdNNameRecord;
 }
