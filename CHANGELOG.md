@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.9.2](#version-392)
 - [Version 3.9.1](#version-391)
 - [Version 3.8.3](#version-383)
 - [Version 3.8.2](#version-382)
@@ -22,6 +23,28 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.9.2
+
+Adds ProviderMarkets support to outright league market responses.
+
+### New Features
+
+- **Enhanced Outright Market Body Structure**
+  - Added `providerMarkets` property (optional `ProviderMarket[]`) to `OutrightMarketBodyStructure`
+  - This enables access to provider market data in `GetOutrightLeagueMarkets` snapshot API responses
+  - Each `ProviderMarket` includes `id`, `name`, `Bets` (ProviderBet[]), and `lastUpdate`
+
+### Testing
+
+- Added comprehensive unit tests for `providerMarkets` field in `OutrightMarketBodyStructure`
+- Tests cover deserialization, empty arrays, and full structure scenarios
+
+### Backward Compatibility
+
+All changes are backward compatible. Existing code will continue to work without modification. The new field is optional and will be `undefined` if not present in the API response.
 
 ---
 
