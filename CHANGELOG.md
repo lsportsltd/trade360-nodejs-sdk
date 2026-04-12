@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.9.3](#version-393)
 - [Version 3.9.2](#version-392)
 - [Version 3.9.1](#version-391)
 - [Version 3.8.3](#version-383)
@@ -23,6 +24,28 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.9.3
+
+Improves HTTP error handling for non-standard API error bodies and updates the snapshot API sample for fixture markets and logging.
+
+### Fixed
+
+- **HTTP error responses without TRADE360 envelope**
+  - When the server returns a plain JSON error (e.g. `{ "error": "..." }`) instead of a `Header`/`Body` structure, `HttpResponseError` now surfaces that message (and common `message` / `Message` fields) instead of reporting only that the header is missing.
+  - Raw body remains available on the error `context` for debugging.
+
+### Samples
+
+- **snapshot-api-sample**
+  - Demo logging uses a small helper so counts work when snapshot endpoints return an array at runtime while typings still describe a single element.
+  - In-Play and Pre-Match **Get Fixture Markets** now call **Get Fixtures** first and pass **fixture IDs** (capped per request), which matches typical snapshot API usage and avoids generic server errors when only `sports` was sent.
+
+### Backward Compatibility
+
+No breaking changes to public method signatures or expected success-response shapes.
 
 ---
 

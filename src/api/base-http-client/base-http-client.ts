@@ -166,6 +166,27 @@ export abstract class BaseHttpClient {
   }
 
   /**
+   * When the HTTP error body is not a TRADE360 envelope (no Header), try to read a
+   * message from common API shapes (e.g. { error: "..." }).
+   */
+  private static messageFromNonEnvelopeErrorBody(data: unknown): string | undefined {
+    if (isNil(data)) {
+      return undefined;
+    }
+    if (typeof data === 'string') {
+      return data;
+    }
+    if (typeof data === 'object' && !isArray(data)) {
+      const record = data as Record<string, unknown>;
+      const candidate = record.error ?? record.Error ?? record.message ?? record.Message;
+      if (typeof candidate === 'string' && candidate.length > 0) {
+        return candidate;
+      }
+    }
+    return undefined;
+  }
+
+  /**
    * This method is responsible for handling the error response.
    * It throws an error with the appropriate message based on the error
    * response received. If the error response is not an AxiosError, it
@@ -213,7 +234,14 @@ export abstract class BaseHttpClient {
 
     const transformed = TransformerUtil.transform(data, responsePayloadDto);
     if (!transformed.header) {
-      throw new HttpResponseError("Missing 'header' in error response", { context: data });
+      const detail = BaseHttpClient.messageFromNonEnvelopeErrorBody(data);
+      const statusCode = response.status;
+      const serialized =
+        typeof data === 'object' && !isNil(data) ? JSON.stringify(data) : String(data);
+      throw new HttpResponseError(
+        detail ?? `response does not include a Header object (HTTP ${statusCode})`,
+        { context: serialized, cause: errorResponse },
+      );
     }
     const { httpStatusCode, errors } = transformed.header;
 

@@ -39,6 +39,24 @@ const config = getConfig();
 
 let logger = console;
 
+function snapshotResultCountForLog(response: unknown): number {
+  if (response == null) {
+    return 0;
+  }
+  return Array.isArray(response) ? response.length : 1;
+}
+
+/** Runtime bodies are often arrays; SDK typings may still be a single element (TR-23142). */
+function snapshotBodyAsArray<T>(response: T | T[] | undefined): T[] {
+  if (response == null) {
+    return [];
+  }
+  return Array.isArray(response) ? response : [response];
+}
+
+/** Avoid very large GetFixtureMarkets requests in the interactive demo. */
+const SAMPLE_MARKETS_MAX_FIXTURE_IDS = 50;
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -197,155 +215,199 @@ const initApiSample = async () => {
 
 const getInPlayFixtures = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
   const request = new GetFixtureRequestDto({
-    sports: [6046]
+    sports: [6046],
+    locations: [171],
+    leagues: [170]
   });
 
   const response = await inplaySnapshotHttpClient.getFixtures(request);
 
-  logger.log(`${response?.length} Fixtures retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Fixtures retrieved.`);
 };
 
 const getInPlayLivescores = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
   const request = new GetLivescoreRequestDto({
-    sports: [6046]
+    sports: [6046],
+    locations: [171]
   });
 
   const response = await inplaySnapshotHttpClient.getLivescores(request);
 
-  logger.log(`${response?.length} Livescores retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Livescores retrieved.`);
 };
 
 const getInPlayFixtureMarkets = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
+  const fixturesResponse = await inplaySnapshotHttpClient.getFixtures(
+    new GetFixtureRequestDto({     
+      sports: [6046],
+      locations: [171] 
+    }),
+  );
+  const fixtureIds = snapshotBodyAsArray(fixturesResponse)
+    .map((row) => row.fixtureId)
+    .filter((id): id is number => typeof id === 'number' && Number.isFinite(id));
+
+  if (fixtureIds.length === 0) {
+    logger.log(
+      'No fixture IDs from GetFixtures; skipping markets (snapshot markets are scoped to fixtures).',
+    );
+    return;
+  }
+
+  const fixturesForMarkets = fixtureIds.slice(0, SAMPLE_MARKETS_MAX_FIXTURE_IDS);
   const request = new GetMarketRequestDto({
-    sports: [6046]
+    sports: 6046,
+    locations: 171,
+    fixtures: fixturesForMarkets,
   });
 
   const response = await inplaySnapshotHttpClient.getFixtureMarkets(request);
 
-  logger.log(`${response?.length} Fixture Markets retrieved.`);
+  logger.log(
+    `${snapshotResultCountForLog(response)} Fixture Markets retrieved (using ${fixturesForMarkets.length} fixture ID(s)).`,
+  );
 };
 
 const getInPlayEvents = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
   const request = new GetInPlayEventRequestDto({
-    sports: [6046]
+    sports: [6046],
+    locations: [171]
   });
 
   const response = await inplaySnapshotHttpClient.getEvents(request);
 
-  logger.log(`${response?.length} Events retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Events retrieved.`);
 };
 
 const getPreMatchFixtures = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetFixtureRequestDto({
-    sports: [6046]
+    sports: [6046],
+    locations: [4]
   });
 
   const response = await prematchSnapshotHttpClient.getFixtures(request);
 
-  logger.log(`${response?.length} Fixtures retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Fixtures retrieved.`);
 };
 
 const getPreMatchLivescores = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetLivescoreRequestDto({
-    sports: [6046]
+    sports: [35232],
+    locations: [73]
   });
 
   const response = await prematchSnapshotHttpClient.getLivescores(request);
 
-  logger.log(`${response?.length} Livescores retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Livescores retrieved.`);
 };
 
 const getPreMatchFixtureMarkets = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
+  const fixturesResponse = await prematchSnapshotHttpClient.getFixtures(
+    new GetFixtureRequestDto({ 
+      sports: [35232],
+      locations: [73]
+    }),
+  );
+  const fixtureIds = snapshotBodyAsArray(fixturesResponse)
+    .map((row) => row.fixtureId)
+    .filter((id): id is number => typeof id === 'number' && Number.isFinite(id));
+
+  if (fixtureIds.length === 0) {
+    logger.log(
+      'No fixture IDs from GetFixtures; skipping markets (snapshot markets are scoped to fixtures).',
+    );
+    return;
+  }
+
+  const fixturesForMarkets = fixtureIds.slice(0, SAMPLE_MARKETS_MAX_FIXTURE_IDS);
   const request = new GetMarketRequestDto({
-    sports: [6046]
+    sports: [35232],
+    locations: [73],
+    fixtures: fixturesForMarkets,
   });
 
   const response = await prematchSnapshotHttpClient.getFixtureMarkets(request);
 
-  logger.log(`${response?.length} Fixture Markets retrieved.`);
+  logger.log(
+    `${snapshotResultCountForLog(response)} Fixture Markets retrieved (using ${fixturesForMarkets.length} fixture ID(s)).`,
+  );
 };
 
 const getPreMatchEvents = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetEventRequestDto({
-    sports : [6046]
+    sports : [35232],
+    locations: [73]
   });
 
   const response = await prematchSnapshotHttpClient.getEvents(request);
 
-  logger.log(`${response?.length} Events retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Events retrieved.`);
 };
 
 
 const getOutrightEvents = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightEventRequestDto({
-    sports: [6046]
   });
 
   const response = await prematchSnapshotHttpClient.getOutrightEvents(request);
 
-  logger.log(`${response?.length} Outright Events retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Outright Events retrieved.`);
 };
 
 
 const getOutrightFixtures = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightFixtureRequestDto({
-    sports: [6046]
   });
 
   const response = await prematchSnapshotHttpClient.getOutrightFixtures(request);
 
-  logger.log(`${response?.length} Outright Fixtures retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Outright Fixtures retrieved.`);
 };
 
 const getOutrightScores = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightLivescoreRequestDto({
-    sports: [6046]
   });
 
   const response = await prematchSnapshotHttpClient.getOutrightScores(request);
 
-  logger.log(`${response?.length} Outright Scores retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Outright Scores retrieved.`);
 };
 
 const getOutrightFixtureMarkets = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightMarketRequestDto({
-    sports: [6046]
   });
 
   const response = await prematchSnapshotHttpClient.getOutrightFixtureMarkets(request);
 
-  logger.log(`${response?.length} Outright Fixture Markets retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Outright Fixture Markets retrieved.`);
 };
 
 
 const getOutrightLeagues = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightLeaguesRequestDto({
-    sports: [6046]
   });
 
   const response = await prematchSnapshotHttpClient.getOutrightLeagues(request);
 
-  logger.log(`${response?.length} Outright Leagues retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Outright Leagues retrieved.`);
 };
 
 const getOutrightLeagueMarkets = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightLeagueMarketRequestDto({
-    sports: [6046]
   });
 
   const response = await prematchSnapshotHttpClient.getOutrightLeagueMarkets(request);
 
-  logger.log(`${response?.length} Outright League Markets retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Outright League Markets retrieved.`);
 };
 
 const getOutrightLeagueEvents = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetOutrightLeagueEventsRequestDto({
-    sports: [6046]
   });
 
   const response = await prematchSnapshotHttpClient.getOutrightLeagueEvents(request);
 
-  logger.log(`${response?.length} Outright League Events retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} Outright League Events retrieved.`);
 };
 
 const getInPlayOutrightLeagues = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
@@ -354,7 +416,7 @@ const getInPlayOutrightLeagues = async (inplaySnapshotHttpClient: InPlaySnapshot
 
   const response = await inplaySnapshotHttpClient.getOutrightLeagues(request);
 
-  logger.log(`${response?.length} In-Play Outright Leagues retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} In-Play Outright Leagues retrieved.`);
 };
 
 const getInPlayOutrightLeagueMarkets = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
@@ -363,7 +425,7 @@ const getInPlayOutrightLeagueMarkets = async (inplaySnapshotHttpClient: InPlaySn
 
   const response = await inplaySnapshotHttpClient.getOutrightLeagueMarkets(request);
 
-  logger.log(`${response?.length} In-Play Outright League Markets retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} In-Play Outright League Markets retrieved.`);
 };
 
 const getInPlayOutrightLeagueEvents = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
@@ -372,7 +434,7 @@ const getInPlayOutrightLeagueEvents = async (inplaySnapshotHttpClient: InPlaySna
 
   const response = await inplaySnapshotHttpClient.getOutrightLeagueEvents(request);
 
-  logger.log(`${response?.length} In-Play Outright League Events retrieved.`);
+  logger.log(`${snapshotResultCountForLog(response)} In-Play Outright League Events retrieved.`);
 };
 
 initApiSample();
