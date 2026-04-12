@@ -39,10 +39,6 @@ const config = getConfig();
 
 let logger = console;
 
-/**
- * Snapshot endpoints return an array in the HTTP Body at runtime; SDK method return types
- * are still declared as a single element (TR-23142). This counts items for demo logs only.
- */
 function snapshotResultCountForLog(response: unknown): number {
   if (response == null) {
     return 0;
@@ -219,7 +215,9 @@ const initApiSample = async () => {
 
 const getInPlayFixtures = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
   const request = new GetFixtureRequestDto({
-    sports: [452674]
+    sports: [6046],
+    locations: [171],
+    leagues: [170]
   });
 
   const response = await inplaySnapshotHttpClient.getFixtures(request);
@@ -229,7 +227,8 @@ const getInPlayFixtures = async (inplaySnapshotHttpClient: InPlaySnapshotApiClie
 
 const getInPlayLivescores = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
   const request = new GetLivescoreRequestDto({
-    sports: [452674]
+    sports: [6046],
+    locations: [171]
   });
 
   const response = await inplaySnapshotHttpClient.getLivescores(request);
@@ -238,9 +237,11 @@ const getInPlayLivescores = async (inplaySnapshotHttpClient: InPlaySnapshotApiCl
 };
 
 const getInPlayFixtureMarkets = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
-  const sportIds = [452674];
   const fixturesResponse = await inplaySnapshotHttpClient.getFixtures(
-    new GetFixtureRequestDto({ sports: sportIds }),
+    new GetFixtureRequestDto({     
+      sports: [6046],
+      locations: [171] 
+    }),
   );
   const fixtureIds = snapshotBodyAsArray(fixturesResponse)
     .map((row) => row.fixtureId)
@@ -255,7 +256,8 @@ const getInPlayFixtureMarkets = async (inplaySnapshotHttpClient: InPlaySnapshotA
 
   const fixturesForMarkets = fixtureIds.slice(0, SAMPLE_MARKETS_MAX_FIXTURE_IDS);
   const request = new GetMarketRequestDto({
-    sports: sportIds,
+    sports: 6046,
+    locations: 171,
     fixtures: fixturesForMarkets,
   });
 
@@ -268,7 +270,8 @@ const getInPlayFixtureMarkets = async (inplaySnapshotHttpClient: InPlaySnapshotA
 
 const getInPlayEvents = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient): Promise<void> => {
   const request = new GetInPlayEventRequestDto({
-    sports: [452674]
+    sports: [6046],
+    locations: [171]
   });
 
   const response = await inplaySnapshotHttpClient.getEvents(request);
@@ -278,7 +281,8 @@ const getInPlayEvents = async (inplaySnapshotHttpClient: InPlaySnapshotApiClient
 
 const getPreMatchFixtures = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetFixtureRequestDto({
-    sports: [452674]
+    sports: [6046],
+    locations: [4]
   });
 
   const response = await prematchSnapshotHttpClient.getFixtures(request);
@@ -288,7 +292,8 @@ const getPreMatchFixtures = async (prematchSnapshotHttpClient: PreMatchSnapshotA
 
 const getPreMatchLivescores = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetLivescoreRequestDto({
-    sports: [452674]
+    sports: [35232],
+    locations: [73]
   });
 
   const response = await prematchSnapshotHttpClient.getLivescores(request);
@@ -297,9 +302,11 @@ const getPreMatchLivescores = async (prematchSnapshotHttpClient: PreMatchSnapsho
 };
 
 const getPreMatchFixtureMarkets = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
-  const sportIds = [452674];
   const fixturesResponse = await prematchSnapshotHttpClient.getFixtures(
-    new GetFixtureRequestDto({ sports: sportIds }),
+    new GetFixtureRequestDto({ 
+      sports: [35232],
+      locations: [73]
+    }),
   );
   const fixtureIds = snapshotBodyAsArray(fixturesResponse)
     .map((row) => row.fixtureId)
@@ -314,7 +321,8 @@ const getPreMatchFixtureMarkets = async (prematchSnapshotHttpClient: PreMatchSna
 
   const fixturesForMarkets = fixtureIds.slice(0, SAMPLE_MARKETS_MAX_FIXTURE_IDS);
   const request = new GetMarketRequestDto({
-    sports: sportIds,
+    sports: [35232],
+    locations: [73],
     fixtures: fixturesForMarkets,
   });
 
@@ -327,7 +335,8 @@ const getPreMatchFixtureMarkets = async (prematchSnapshotHttpClient: PreMatchSna
 
 const getPreMatchEvents = async (prematchSnapshotHttpClient: PreMatchSnapshotApiClient): Promise<void> => {
   const request = new GetEventRequestDto({
-    sports : [452674]
+    sports : [35232],
+    locations: [73]
   });
 
   const response = await prematchSnapshotHttpClient.getEvents(request);
