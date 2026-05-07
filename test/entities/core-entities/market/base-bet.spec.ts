@@ -337,10 +337,20 @@ describe('BaseBet Entity', () => {
   it('should handle SuspensionReason field correctly', (): void => {
     const plain = {
       Id: '123',
-      SuspensionReason: 10,
+      SuspensionReason: 20,
     };
     const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
-    expect(baseBet.suspensionReason).toBe(10);
+    expect(baseBet.suspensionReason).toBe(20);
+    expect(typeof baseBet.suspensionReason).toBe('number');
+  });
+
+  it('should keep unknown SuspensionReason values for forward compatibility', (): void => {
+    const plain = {
+      Id: '123',
+      SuspensionReason: 999,
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.suspensionReason).toBe(999);
     expect(typeof baseBet.suspensionReason).toBe('number');
   });
 

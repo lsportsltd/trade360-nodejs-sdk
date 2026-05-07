@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.9.4](#version-394)
 - [Version 3.9.3](#version-393)
 - [Version 3.9.2](#version-392)
 - [Version 3.9.1](#version-391)
@@ -24,6 +25,34 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.9.4
+
+Aligns SDK models and compatibility behavior for recent outright, livescore, and market updates.
+
+### Added
+
+- **Outright League StartDate support**
+  - Added `startDate` mapping (`StartDate`) to:
+    - `OutrightLeagueFixtureSnapshot`
+    - `OutrightLeagueFixture`
+  - Added unit tests to verify deserialization and undefined defaults.
+
+- **Livescore status description values 46-59**
+  - Extended `StatusDescription` enum and updated enum tests (forward/reverse mappings and keys list).
+
+### Added
+
+- **Uniform color mapping for participants**
+  - Added object-based `shirtColor` and `goalKeeperShirtColor` fields to fixture participants.
+  - Added `UniformColor` model with `primary`, `number`, and `outline`.
+  - Added deserialization tests for both color objects.
+
+### Backward Compatibility
+
+All changes are backward compatible. New fields are additive and integer-based parsing remains unchanged.
 
 ---
 

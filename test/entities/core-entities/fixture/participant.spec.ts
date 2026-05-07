@@ -35,6 +35,8 @@ describe('Participant Entity', () => {
     expect(participant.gender).toBeUndefined();
     expect(participant.ageCategory).toBeUndefined();
     expect(participant.type).toBeUndefined();
+    expect(participant.shirtColor).toBeUndefined();
+    expect(participant.goalKeeperShirtColor).toBeUndefined();
   });
 
   it('should ignore extraneous properties', (): void => {
@@ -171,6 +173,16 @@ describe('Participant Entity', () => {
       Gender: 1,
       AgeCategory: 0,
       Type: 1,
+      ShirtColor: {
+        Primary: 'ffffff',
+        Number: '000000',
+        Outline: 'ffffff',
+      },
+      GoalKeeperShirtColor: {
+        Primary: 'ffff00',
+        Number: '000000',
+        Outline: 'ffff00',
+      },
     };
     const participant = plainToInstance(Participant, plain, { excludeExtraneousValues: true });
     expect(participant.id).toBe(1);
@@ -181,5 +193,35 @@ describe('Participant Entity', () => {
     expect(participant.gender).toBe(1);
     expect(participant.ageCategory).toBe(0);
     expect(participant.type).toBe(1);
+    expect(participant.shirtColor?.primary).toBe('ffffff');
+    expect(participant.shirtColor?.number).toBe('000000');
+    expect(participant.shirtColor?.outline).toBe('ffffff');
+    expect(participant.goalKeeperShirtColor?.primary).toBe('ffff00');
+    expect(participant.goalKeeperShirtColor?.number).toBe('000000');
+    expect(participant.goalKeeperShirtColor?.outline).toBe('ffff00');
+  });
+
+  it('should deserialize ShirtColor and GoalKeeperShirtColor objects', (): void => {
+    const plain = {
+      Id: 1,
+      Name: 'Test Team',
+      ShirtColor: {
+        Primary: '112233',
+        Number: '445566',
+        Outline: '778899',
+      },
+      GoalKeeperShirtColor: {
+        Primary: 'aabbcc',
+        Number: 'ddeeff',
+        Outline: '123456',
+      },
+    };
+    const participant = plainToInstance(Participant, plain, { excludeExtraneousValues: true });
+    expect(participant.shirtColor?.primary).toBe('112233');
+    expect(participant.shirtColor?.number).toBe('445566');
+    expect(participant.shirtColor?.outline).toBe('778899');
+    expect(participant.goalKeeperShirtColor?.primary).toBe('aabbcc');
+    expect(participant.goalKeeperShirtColor?.number).toBe('ddeeff');
+    expect(participant.goalKeeperShirtColor?.outline).toBe('123456');
   });
 });

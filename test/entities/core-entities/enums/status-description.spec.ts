@@ -48,6 +48,20 @@ describe('StatusDescription Enum', () => {
     expect(StatusDescription.PointScored).toBe(43);
     expect(StatusDescription.PointFault).toBe(44);
     expect(StatusDescription.PointReplayed).toBe(45);
+    expect(StatusDescription.BreakAfter1stPeriod).toBe(46);
+    expect(StatusDescription.BreakAfter2ndPeriod).toBe(47);
+    expect(StatusDescription.BreakAfter3rdPeriod).toBe(48);
+    expect(StatusDescription.BreakAfter4thPeriod).toBe(49);
+    expect(StatusDescription.BreakAfter5thPeriod).toBe(50);
+    expect(StatusDescription.BreakAfter6thPeriod).toBe(51);
+    expect(StatusDescription.BreakAfter1stOvertime).toBe(52);
+    expect(StatusDescription.BreakAfter2ndOvertime).toBe(53);
+    expect(StatusDescription.BreakAfter3rdOvertime).toBe(54);
+    expect(StatusDescription.WaitingForExtraTime).toBe(55);
+    expect(StatusDescription.WaitingForPenalties).toBe(56);
+    expect(StatusDescription.EnteringExtraTime).toBe(57);
+    expect(StatusDescription.ExtraTimeBreak).toBe(58);
+    expect(StatusDescription.EnteringPenaltyShootout).toBe(59);
   });
 
   it('should map values to names correctly (reverse mapping)', () => {
@@ -97,6 +111,20 @@ describe('StatusDescription Enum', () => {
     expect(StatusDescription[43]).toBe('PointScored');
     expect(StatusDescription[44]).toBe('PointFault');
     expect(StatusDescription[45]).toBe('PointReplayed');
+    expect(StatusDescription[46]).toBe('BreakAfter1stPeriod');
+    expect(StatusDescription[47]).toBe('BreakAfter2ndPeriod');
+    expect(StatusDescription[48]).toBe('BreakAfter3rdPeriod');
+    expect(StatusDescription[49]).toBe('BreakAfter4thPeriod');
+    expect(StatusDescription[50]).toBe('BreakAfter5thPeriod');
+    expect(StatusDescription[51]).toBe('BreakAfter6thPeriod');
+    expect(StatusDescription[52]).toBe('BreakAfter1stOvertime');
+    expect(StatusDescription[53]).toBe('BreakAfter2ndOvertime');
+    expect(StatusDescription[54]).toBe('BreakAfter3rdOvertime');
+    expect(StatusDescription[55]).toBe('WaitingForExtraTime');
+    expect(StatusDescription[56]).toBe('WaitingForPenalties');
+    expect(StatusDescription[57]).toBe('EnteringExtraTime');
+    expect(StatusDescription[58]).toBe('ExtraTimeBreak');
+    expect(StatusDescription[59]).toBe('EnteringPenaltyShootout');
   });
 
   it('should contain all expected enum keys', () => {
@@ -148,6 +176,20 @@ describe('StatusDescription Enum', () => {
       'PointScored',
       'PointFault',
       'PointReplayed',
+      'BreakAfter1stPeriod',
+      'BreakAfter2ndPeriod',
+      'BreakAfter3rdPeriod',
+      'BreakAfter4thPeriod',
+      'BreakAfter5thPeriod',
+      'BreakAfter6thPeriod',
+      'BreakAfter1stOvertime',
+      'BreakAfter2ndOvertime',
+      'BreakAfter3rdOvertime',
+      'WaitingForExtraTime',
+      'WaitingForPenalties',
+      'EnteringExtraTime',
+      'ExtraTimeBreak',
+      'EnteringPenaltyShootout',
     ]);
   });
 });
