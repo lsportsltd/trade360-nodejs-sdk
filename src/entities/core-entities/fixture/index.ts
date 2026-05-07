@@ -7,3 +7,4 @@ export * from './league';
 export * from './location';
 export * from './participant';
 export * from './sport';
+export * from './uniform-color';

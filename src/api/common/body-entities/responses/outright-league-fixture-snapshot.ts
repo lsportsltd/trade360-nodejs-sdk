@@ -29,6 +29,10 @@ export class OutrightLeagueFixtureSnapshot {
   @Type(() => Date)
   lastUpdate!: Date;
 
+  @Expose({ name: 'StartDate' })
+  @Type(() => Date)
+  startDate?: Date;
+
   @Expose({ name: 'Status' })
   status!: number;
 

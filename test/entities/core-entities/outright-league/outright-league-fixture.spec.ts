@@ -12,6 +12,7 @@ describe('OutrightLeagueFixture', () => {
       Sport: { id: 2, name: 'Football' },
       Location: { id: 3, name: 'Europe' },
       LastUpdate: '2024-06-01T12:00:00Z',
+      StartDate: '2024-06-01T11:00:00Z',
       Status: 1,
       ExtraData: [{ Name: 'foo', Value: 'bar' }],
       EndDate: '2030-06-01T13:00:00Z',
@@ -27,6 +28,8 @@ describe('OutrightLeagueFixture', () => {
     expect(fixture.location).toBeDefined();
     expect(fixture.lastUpdate).toBeInstanceOf(Date);
     expect(fixture.lastUpdate?.toISOString()).toBe('2024-06-01T12:00:00.000Z');
+    expect(fixture.startDate).toBeInstanceOf(Date);
+    expect(fixture.startDate?.toISOString()).toBe('2024-06-01T11:00:00.000Z');
     expect(Array.isArray(fixture.extraData)).toBe(true);
     expect(fixture.extraData?.[0]).toBeInstanceOf(NameValueRecord);
     expect(fixture.status).toBe(1);
@@ -47,6 +50,7 @@ describe('OutrightLeagueFixture', () => {
     expect(fixture.sport).toBeUndefined();
     expect(fixture.location).toBeUndefined();
     expect(fixture.lastUpdate).toBeUndefined();
+    expect(fixture.startDate).toBeUndefined();
     expect(fixture.status).toBeUndefined();
     expect(fixture.extraData).toBeUndefined();
     expect(fixture.endDate).toBeUndefined();
@@ -83,5 +87,16 @@ describe('OutrightLeagueFixture', () => {
     expect(fixture.season).toBeInstanceOf(IdNNameRecord);
     expect(fixture.season?.id).toBe(2025);
     expect(fixture.season?.name).toBe('2025-2026');
+  });
+
+  it('should deserialize StartDate property correctly', (): void => {
+    const plain = {
+      StartDate: '2025-01-02T03:04:05Z',
+    };
+    const fixture = plainToInstance(OutrightLeagueFixture, plain, {
+      excludeExtraneousValues: true,
+    });
+    expect(fixture.startDate).toBeInstanceOf(Date);
+    expect(fixture.startDate?.toISOString()).toBe('2025-01-02T03:04:05.000Z');
   });
 });

@@ -14,6 +14,7 @@ describe('OutrightLeagueFixtureSnapshot', () => {
       Sport: { id: 2, name: 'Football' },
       Location: { id: 3, name: 'Europe' },
       LastUpdate: '2024-06-01T12:00:00Z',
+      StartDate: '2024-06-01T11:00:00Z',
       Status: 1,
       ExtraData: [{ Name: 'foo', Value: 'bar' }],
       EndDate: '2030-06-01T13:00:00Z',
@@ -31,6 +32,8 @@ describe('OutrightLeagueFixtureSnapshot', () => {
     expect(snapshot.location).toBeInstanceOf(LocationsBodyStructure);
     expect(snapshot.lastUpdate).toBeInstanceOf(Date);
     expect(snapshot.lastUpdate?.toISOString()).toBe('2024-06-01T12:00:00.000Z');
+    expect(snapshot.startDate).toBeInstanceOf(Date);
+    expect(snapshot.startDate?.toISOString()).toBe('2024-06-01T11:00:00.000Z');
     expect(Array.isArray(snapshot.extraData)).toBe(true);
     expect(snapshot.extraData?.[0]).toBeInstanceOf(NameValueRecord);
     expect(snapshot.status).toBe(1);
@@ -47,6 +50,7 @@ describe('OutrightLeagueFixtureSnapshot', () => {
       Sport: { id: 1, name: 'Soccer' },
       Location: { id: 1, name: 'International' },
       LastUpdate: '2024-12-25T14:30:00Z',
+      StartDate: '2024-12-25T13:30:00Z',
       Status: 2,
       EndDate: '2025-01-15T18:45:30.123Z',
     };
@@ -78,6 +82,7 @@ describe('OutrightLeagueFixtureSnapshot', () => {
     expect(snapshot.sport).toBeUndefined();
     expect(snapshot.location).toBeUndefined();
     expect(snapshot.lastUpdate).toBeUndefined();
+    expect(snapshot.startDate).toBeUndefined();
     expect(snapshot.status).toBeUndefined();
     expect(snapshot.extraData).toBeUndefined();
     expect(snapshot.endDate).toBeUndefined();
@@ -115,7 +120,21 @@ describe('OutrightLeagueFixtureSnapshot', () => {
     expect(snapshot.sport).toBeUndefined();
     expect(snapshot.location).toBeUndefined();
     expect(snapshot.lastUpdate).toBeUndefined();
+    expect(snapshot.startDate).toBeUndefined();
     expect(snapshot.status).toBeUndefined();
+  });
+
+  it('should deserialize StartDate field correctly', (): void => {
+    const plain = {
+      StartDate: '2024-08-20T08:15:45Z',
+    };
+
+    const snapshot = plainToInstance(OutrightLeagueFixtureSnapshot, plain, {
+      excludeExtraneousValues: true,
+    });
+
+    expect(snapshot.startDate).toBeInstanceOf(Date);
+    expect(snapshot.startDate?.toISOString()).toBe('2024-08-20T08:15:45.000Z');
   });
 
   it('should ignore extraneous properties while preserving EndDate', (): void => {

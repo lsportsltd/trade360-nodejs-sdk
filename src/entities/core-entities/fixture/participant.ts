@@ -2,6 +2,7 @@ import { ActiveParticipant } from '@lsports/enums';
 import { Expose, Type } from 'class-transformer';
 
 import { FixturePlayer } from './fixture-player';
+import { UniformColor } from './uniform-color';
 
 export class Participant {
   @Expose({ name: 'Id' })
@@ -37,4 +38,12 @@ export class Participant {
 
   @Expose({ name: 'Type' })
   public type?: number;
+
+  @Expose({ name: 'ShirtColor' })
+  @Type(() => UniformColor)
+  public shirtColor?: UniformColor;
+
+  @Expose({ name: 'GoalKeeperShirtColor' })
+  @Type(() => UniformColor)
+  public goalKeeperShirtColor?: UniformColor;
 }
