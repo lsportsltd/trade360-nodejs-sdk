@@ -13,6 +13,7 @@ export class OutrightLeagueMarketUpdateHandler
       messageGuid: transportHeaders.messageGuid,
       messageType: transportHeaders.messageType,
       fixtureId: transportHeaders.fixtureId,
+      sportId: transportHeaders.sportId,
       timestampInMs: transportHeaders.timestampInMs,
       messageSequence: transportHeaders.messageSequence,
     });
