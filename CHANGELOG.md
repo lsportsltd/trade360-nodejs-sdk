@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.9.5](#version-395)
 - [Version 3.9.4](#version-394)
 - [Version 3.9.3](#version-393)
 - [Version 3.9.2](#version-392)
@@ -25,6 +26,28 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.9.5
+
+Fixes unstable deserialization of nested outright league feed events (message types 38, 40, and 43).
+
+### Fixed
+
+- **Circular imports in outright league event transformation (TR-23836)**
+  - Removed barrel (`@entities` / `@lsports/entities`) imports from `transformToEventInstance`, `OutrightLeagueCompetitions`, and `OutrightCompetition` in favor of direct module imports.
+  - Event type resolution now builds the class map at call time so nested `Events` are always transformed into proper instances (`fixtureId`, `outrightLeague`, `markets`, `bets`) instead of intermittently remaining raw PascalCase plain objects.
+  - Resolves `TypeError: transformToEventInstance is not a function` in some module load orders.
+
+### Testing
+
+- Added regression tests for message types 38, 40, and 43 nested event deserialization.
+- Added unit tests for `transformToEventInstance`.
+
+### Backward Compatibility
+
+No breaking changes to public APIs. Consumers who added PascalCase fallbacks for nested outright league events can rely on camelCase class instances consistently after upgrading.
 
 ---
 

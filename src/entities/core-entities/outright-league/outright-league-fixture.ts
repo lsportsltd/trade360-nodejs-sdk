@@ -1,6 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 
-import { Location, Sport } from '@lsports/entities';
+import { Location } from '../fixture/location';
+import { Sport } from '../fixture/sport';
 import { FixtureStatus } from '@lsports/enums';
 import { IdNNameRecord, NameValueRecord, Subscription } from '@lsports/entities/common';
 
