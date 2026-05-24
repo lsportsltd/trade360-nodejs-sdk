@@ -5,9 +5,15 @@ import {
   DEFUALT_AUTO_ACK,
   DEFUALT_CONSUMPTION_LATENCY_THRESHOLD,
   DEFUALT_DISPATCH_CONSUMERS,
+  DEFUALT_DISTRIBUTION_PROPAGATION_DELAY_MS,
+  DEFUALT_INITIAL_CONNECTION_MAX_ATTEMPTS,
+  DEFUALT_INITIAL_CONNECTION_RETRY_INTERVAL_MS,
   DEFUALT_NETWORK_RECOVERY_INTERVAL_IN_MS,
   DEFUALT_PREFETCH_COUNT,
   DEFUALT_REQUESTED_HEARTBEAT_SECONDS,
+  MIN_DISTRIBUTION_PROPAGATION_DELAY_MS,
+  MIN_INITIAL_CONNECTION_MAX_ATTEMPTS,
+  MIN_INITIAL_CONNECTION_RETRY_INTERVAL_MS,
   MIN_NETWORK_RECOVERY_INTERVAL_IN_MS,
   MIN_PREFETCH_COUNT,
   MIN_REQUESTED_HEARTBEAT_SECONDS,
@@ -56,6 +62,24 @@ export const MQSettingsSchema = z.object({
     .default(DEFUALT_REQUESTED_HEARTBEAT_SECONDS),
   dispatchConsumersAsync: z.boolean().default(DEFUALT_DISPATCH_CONSUMERS),
   automaticRecoveryEnabled: z.boolean().default(DEFUALT_AUTOMATIC_RECOVERY_ENABLED),
+  distributionPropagationDelayMs: z
+    .number()
+    .int()
+    .nonnegative()
+    .min(MIN_DISTRIBUTION_PROPAGATION_DELAY_MS)
+    .default(DEFUALT_DISTRIBUTION_PROPAGATION_DELAY_MS),
+  initialConnectionRetryIntervalMs: z
+    .number()
+    .int()
+    .positive()
+    .min(MIN_INITIAL_CONNECTION_RETRY_INTERVAL_MS)
+    .default(DEFUALT_INITIAL_CONNECTION_RETRY_INTERVAL_MS),
+  initialConnectionMaxAttempts: z
+    .number()
+    .int()
+    .positive()
+    .min(MIN_INITIAL_CONNECTION_MAX_ATTEMPTS)
+    .default(DEFUALT_INITIAL_CONNECTION_MAX_ATTEMPTS),
   /** Required. Customers API base URL (e.g., "https://stm-api.lsports.eu/") used for distribution management. */
   customersApiBaseUrl: z.string().url(),
 });

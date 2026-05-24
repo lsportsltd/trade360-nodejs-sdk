@@ -1,4 +1,27 @@
+import { MqConnectionSettingsValidator } from '../../src/feed/validators';
 import { DistributionUtil } from '../../src/utilities/distribution-util';
+
+jest.mock('@api/customers-api', () => ({
+  CustomersApiFactory: jest.fn().mockImplementation(() => ({
+    createPackageDistributionHttpClient: jest.fn().mockReturnValue({
+      getDistributionStatus: jest.fn(),
+      startDistribution: jest.fn(),
+      stopDistribution: jest.fn(),
+    }),
+  })),
+}));
+
+const baseMqSettings = MqConnectionSettingsValidator.validate({
+  hostname: 'localhost',
+  port: 5672,
+  vhost: '/',
+  username: 'user',
+  password: 'pass',
+  packageId: 1,
+  maxRetryAttempts: 5,
+  customersApiBaseUrl: 'https://stm-api.lsports.eu/',
+  distributionPropagationDelayMs: 3500,
+});
 
 // Mocks for dependencies
 const mockGetDistributionStatus = jest.fn();
@@ -52,6 +75,32 @@ describe('DistributionUtil', () => {
       expect(mockStartDistribution).toHaveBeenCalled();
       expect(mockLogger.debug).toHaveBeenCalledWith('started');
       setTimeoutSpy.mockRestore();
+    });
+
+    it('should wait for distributionPropagationDelayMs from mq settings', async () => {
+      jest.useFakeTimers();
+      mockStartDistribution.mockResolvedValueOnce({ message: 'started' });
+
+      new DistributionUtil(baseMqSettings, mockLogger as never);
+      // @ts-expect-error: restore test mock after constructor initializes the API client
+      DistributionUtil.packageDistributionApi = mockPackageDistributionApi;
+
+      const startPromise = DistributionUtil.start();
+
+      expect(mockStartDistribution).toHaveBeenCalled();
+
+      await jest.advanceTimersByTimeAsync(3499);
+      let settled = false;
+      startPromise.then(() => {
+        settled = true;
+      });
+      await Promise.resolve();
+      expect(settled).toBe(false);
+
+      await jest.advanceTimersByTimeAsync(1);
+      await startPromise;
+
+      jest.useRealTimers();
     });
 
     it('should throw if not initialized', async () => {

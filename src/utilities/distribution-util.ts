@@ -25,6 +25,8 @@ export class DistributionUtil {
   private static delayMs = 2000;
 
   constructor(settings: MQSettingsOptions, logger: ILogger) {
+    DistributionUtil.delayMs = settings.distributionPropagationDelayMs;
+
     const customersApiFactory = new CustomersApiFactory();
 
     DistributionUtil.packageDistributionApi =
