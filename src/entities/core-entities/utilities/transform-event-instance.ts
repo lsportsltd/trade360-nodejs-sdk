@@ -1,11 +1,9 @@
 import { find, has, isArray, isEmpty, isNil, keys } from 'lodash';
 
-import {
-  MarketEvent,
-  OutrightFixtureEvent,
-  OutrightLeagueFixtureEvent,
-  OutrightScoreEvent,
-} from '@lsports/entities';
+import { MarketEvent } from '../market/market-event';
+import { OutrightFixtureEvent } from '../outright-sport/outright-fixture-event';
+import { OutrightScoreEvent } from '../outright-sport/outright-score-event';
+import { OutrightLeagueFixtureEvent } from '../outright-league/outright-league-fixture-event';
 import { TransformerUtil } from '@utilities';
 
 /**
@@ -19,14 +17,17 @@ interface IEventTypeMap {
 }
 
 /**
- * map of event types to event classes
+ * Resolved at call time so event classes are defined even when this module
+ * loads while core-entities/index.ts is still initializing (TR-23836).
  */
-const eventTypeMap: IEventTypeMap = {
-  OutrightScore: OutrightScoreEvent,
-  OutrightFixture: OutrightFixtureEvent,
-  Markets: MarketEvent,
-  OutrightLeague: OutrightLeagueFixtureEvent,
-};
+function getEventTypeMap(): IEventTypeMap {
+  return {
+    OutrightScore: OutrightScoreEvent,
+    OutrightFixture: OutrightFixtureEvent,
+    Markets: MarketEvent,
+    OutrightLeague: OutrightLeagueFixtureEvent,
+  };
+}
 
 /**
  * get the event class based on the object properties
@@ -40,6 +41,7 @@ function getEventClass(
   | typeof OutrightFixtureEvent
   | typeof MarketEvent
   | typeof OutrightLeagueFixtureEvent {
+  const eventTypeMap = getEventTypeMap();
   const eventType = find(keys(eventTypeMap), (key) => has(obj, key) && !isNil(obj[key]));
   return eventTypeMap[eventType as keyof IEventTypeMap];
 }
