@@ -49,7 +49,27 @@ export class Feed implements IFeed {
 
     if (this.preConnectionAtStart) await this.preConnectionInitialization();
 
-    await this.consumerMq.start();
+    if (this.preConnectionAtStart) {
+      const {
+        initialConnectionMaxAttempts,
+        initialConnectionRetryIntervalMs,
+      } = this.mqSettings;
+
+      await withRetry(
+        async () => {
+          await this.consumerMq.start();
+        },
+        {
+          maxAttempts: initialConnectionMaxAttempts,
+          delayMs: initialConnectionRetryIntervalMs,
+          backoffFactor: 1,
+        },
+        'Initial RabbitMQ connection',
+        this.logger,
+      );
+    } else {
+      await this.consumerMq.start();
+    }
   }
 
   /**
@@ -65,13 +85,15 @@ export class Feed implements IFeed {
 
     const distributionStatus = await DistributionUtil.checkStatus();
 
+    let distributionWasAlreadyOn = false;
+
     if (!isNil(distributionStatus)) {
       const { isDistributionOn } = distributionStatus;
 
       if (!isDistributionOn) {
         this.logger.info('Distribution flow is off, will trying to start the flow');
 
-        return withRetry(
+        await withRetry(
           async () => {
             await DistributionUtil.start();
 
@@ -89,10 +111,25 @@ export class Feed implements IFeed {
           'Start distribution',
           this.logger,
         );
-      } else if (isDistributionOn) {
+      } else {
+        distributionWasAlreadyOn = true;
         this.logger.info('Distribution flow is already on');
       }
     }
+
+    if (distributionWasAlreadyOn) {
+      await this.waitForDistributionPropagation();
+    }
+  }
+
+  private async waitForDistributionPropagation(): Promise<void> {
+    const { distributionPropagationDelayMs } = this.mqSettings;
+
+    if (distributionPropagationDelayMs <= 0) return;
+
+    await new Promise<void>((resolve) => {
+      setTimeout(resolve, distributionPropagationDelayMs);
+    });
   }
 
   public async stop(): Promise<void> {

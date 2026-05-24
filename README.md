@@ -289,9 +289,14 @@ sequenceDiagram
         Feed->>DistUtil: Start distribution
         DistUtil->>API: POST start distribution
         API->>DistUtil: Success
+        Note over DistUtil: distributionPropagationDelayMs
         DistUtil->>Feed: Distribution started
+    else Distribution is ON
+        Note over Feed: distributionPropagationDelayMs
     end
-    Feed->>RMQ: Connect and consume
+    loop initialConnectionMaxAttempts
+        Feed->>RMQ: Connect and consume
+    end
 ```
 
 ---
@@ -378,6 +383,9 @@ Create a configuration file (JSON or TypeScript) with your Trade360 credentials:
       "packageId": 430,
       "prefetchCount": 100,
       "networkRecoveryIntervalInMs": 5000,
+      "distributionPropagationDelayMs": 2000,
+      "initialConnectionRetryIntervalMs": 1000,
+      "initialConnectionMaxAttempts": 5,
       "maxRetryAttempts": 3000,
       "automaticRecoveryEnabled": true,
       "autoAck": true,
@@ -705,7 +713,10 @@ Configure different settings for Development, QA, and Production environments:
 - `username` / `password` - Authentication credentials
 - `packageId` - Trade360 package identifier
 - `prefetchCount` - Number of unacknowledged messages (default: 100)
-- `networkRecoveryIntervalInMs` - Reconnection interval (default: 5000)
+- `networkRecoveryIntervalInMs` - Reconnection interval after connection loss (default: 5000, minimum: 5000)
+- `distributionPropagationDelayMs` - Wait after distribution is on before the first RabbitMQ connect when using `feed.start(true)` (default: 2000). Applied after `Distribution/Start` and when distribution was already on.
+- `initialConnectionRetryIntervalMs` - Delay between initial RabbitMQ connection retries when `feed.start(true)` (default: 1000, minimum: 500)
+- `initialConnectionMaxAttempts` - Maximum initial RabbitMQ connection attempts when `feed.start(true)` (default: 5)
 - `maxRetryAttempts` - Maximum retry attempts (default: 3000)
 - `automaticRecoveryEnabled` - Enable automatic reconnection (default: true)
 - `autoAck` - Auto-acknowledge messages (default: true)

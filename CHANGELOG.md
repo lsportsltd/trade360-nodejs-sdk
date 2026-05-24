@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.9.6](#version-396)
 - [Version 3.9.5](#version-395)
 - [Version 3.9.4](#version-394)
 - [Version 3.9.3](#version-393)
@@ -26,6 +27,26 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.9.6
+
+Adds configurable distribution propagation delay and initial RabbitMQ connection retry settings (TR-23899).
+
+### Added
+
+- **`distributionPropagationDelayMs`** (default: 2000) — Configurable wait after distribution is enabled before the first RabbitMQ connection when using `feed.start(true)`.
+- **`initialConnectionRetryIntervalMs`** (default: 1000, minimum: 500) — Configurable delay between initial connection retries after `feed.start(true)`.
+- **`initialConnectionMaxAttempts`** (default: 5) — Configurable maximum attempts for the initial RabbitMQ connection when `feed.start(true)`.
+
+### Fixed
+
+- **403 ACCESS_REFUSED after Distribution/Start (TR-23899)** — Consumers can tune propagation wait and initial connect retries without code changes. When distribution was already on, the SDK now applies `distributionPropagationDelayMs` before connecting (previously no wait in that path).
+
+### Backward Compatibility
+
+No breaking changes. Default behavior matches v3.9.5 unless new settings are set explicitly.
 
 ---
 
