@@ -1,9 +1,10 @@
-import { Expose, Type } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 
-import { BaseEntity } from '@entities';
+import { BaseEntity } from '../../message-types';
 
-import { OutrightLeagueCompetitions } from './outright-league-competitions';
+import { MarketEvent } from '../market/market-event';
 
+@Exclude()
 export class OutrightLeagueCompetition<TEvent extends BaseEntity> {
   @Expose({ name: 'Id' })
   id?: number;
@@ -15,6 +16,12 @@ export class OutrightLeagueCompetition<TEvent extends BaseEntity> {
   type?: number;
 
   @Expose({ name: 'Competitions' })
-  @Type(() => OutrightLeagueCompetitions)
-  competitions?: OutrightLeagueCompetitions<TEvent>[];
+  @Type(() => require('./outright-league-competitions').OutrightLeagueCompetitions)
+  competitions?: import('./outright-league-competitions').OutrightLeagueCompetitions<TEvent>[];
+}
+
+export class OutrightLeagueMarketCompetition extends OutrightLeagueCompetition<MarketEvent> {
+  @Expose({ name: 'NextFixtureStartTime' })
+  @Type(() => Date)
+  nextFixtureStartTime?: Date;
 }
