@@ -7,6 +7,7 @@ export class OutrightScoreUpdateHandler implements IEntityHandler<OutrightScoreU
       messageGuid: transportHeaders.messageGuid,
       messageType: transportHeaders.messageType,
       fixtureId: transportHeaders.fixtureId,
+      sportId: transportHeaders.sportId,
       timestampInMs: transportHeaders.timestampInMs,
       messageSequence: transportHeaders.messageSequence,
     });
