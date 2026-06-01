@@ -62,6 +62,19 @@ describe('StatusDescription Enum', () => {
     expect(StatusDescription.EnteringExtraTime).toBe(57);
     expect(StatusDescription.ExtraTimeBreak).toBe(58);
     expect(StatusDescription.EnteringPenaltyShootout).toBe(59);
+    expect(StatusDescription.Fighter1Disqualification).toBe(60);
+    expect(StatusDescription.Fighter2Disqualification).toBe(61);
+    expect(StatusDescription.Fighter1MajorityDecision).toBe(62);
+    expect(StatusDescription.Fighter2MajorityDecision).toBe(63);
+    expect(StatusDescription.Fighter1UnanimousDecision).toBe(64);
+    expect(StatusDescription.Fighter2UnanimousDecision).toBe(65);
+    expect(StatusDescription.Fighter1Submission).toBe(66);
+    expect(StatusDescription.Fighter2Submission).toBe(67);
+    expect(StatusDescription.Fighter1KoTko).toBe(68);
+    expect(StatusDescription.Fighter2KoTko).toBe(69);
+    expect(StatusDescription.NoContest).toBe(70);
+    expect(StatusDescription.Top).toBe(71);
+    expect(StatusDescription.Bottom).toBe(72);
   });
 
   it('should map values to names correctly (reverse mapping)', () => {
@@ -125,6 +138,19 @@ describe('StatusDescription Enum', () => {
     expect(StatusDescription[57]).toBe('EnteringExtraTime');
     expect(StatusDescription[58]).toBe('ExtraTimeBreak');
     expect(StatusDescription[59]).toBe('EnteringPenaltyShootout');
+    expect(StatusDescription[60]).toBe('Fighter1Disqualification');
+    expect(StatusDescription[61]).toBe('Fighter2Disqualification');
+    expect(StatusDescription[62]).toBe('Fighter1MajorityDecision');
+    expect(StatusDescription[63]).toBe('Fighter2MajorityDecision');
+    expect(StatusDescription[64]).toBe('Fighter1UnanimousDecision');
+    expect(StatusDescription[65]).toBe('Fighter2UnanimousDecision');
+    expect(StatusDescription[66]).toBe('Fighter1Submission');
+    expect(StatusDescription[67]).toBe('Fighter2Submission');
+    expect(StatusDescription[68]).toBe('Fighter1KoTko');
+    expect(StatusDescription[69]).toBe('Fighter2KoTko');
+    expect(StatusDescription[70]).toBe('NoContest');
+    expect(StatusDescription[71]).toBe('Top');
+    expect(StatusDescription[72]).toBe('Bottom');
   });
 
   it('should contain all expected enum keys', () => {
@@ -190,6 +216,19 @@ describe('StatusDescription Enum', () => {
       'EnteringExtraTime',
       'ExtraTimeBreak',
       'EnteringPenaltyShootout',
+      'Fighter1Disqualification',
+      'Fighter2Disqualification',
+      'Fighter1MajorityDecision',
+      'Fighter2MajorityDecision',
+      'Fighter1UnanimousDecision',
+      'Fighter2UnanimousDecision',
+      'Fighter1Submission',
+      'Fighter2Submission',
+      'Fighter1KoTko',
+      'Fighter2KoTko',
+      'NoContest',
+      'Top',
+      'Bottom',
     ]);
   });
 });
