@@ -31,6 +31,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- **`StatusDescription`**: 13 new MMA/fight-outcome and positional enum values — `Fighter1Disqualification` (60), `Fighter2Disqualification` (61), `Fighter1MajorityDecision` (62), `Fighter2MajorityDecision` (63), `Fighter1UnanimousDecision` (64), `Fighter2UnanimousDecision` (65), `Fighter1Submission` (66), `Fighter2Submission` (67), `Fighter1KoTko` (68), `Fighter2KoTko` (69), `NoContest` (70), `Top` (71), `Bottom` (72).
+
+---
+
 ## Version 3.9.7
 
 Adds `NextFixtureStartTime` support on Outright League Market Update (type 40) messages (TR-22695).
