@@ -7,6 +7,7 @@ export class SettlementUpdateHandler implements IEntityHandler<SettlementUpdate>
       messageGuid: transportHeaders.messageGuid,
       messageType: transportHeaders.messageType,
       fixtureId: transportHeaders.fixtureId,
+      marketId: transportHeaders.marketId,
       timestampInMs: transportHeaders.timestampInMs,
       messageSequence: transportHeaders.messageSequence,
     });

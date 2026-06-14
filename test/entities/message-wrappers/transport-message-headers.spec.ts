@@ -9,6 +9,7 @@ describe('TransportMessageHeaders', () => {
         timestamp_in_ms: '1640995200000',
         MessageSequence: 'seq-456',
         FixtureId: 'fixture-789',
+        MarketId: 'market-202',
         SportId: 'sport-101',
       };
 
@@ -19,6 +20,7 @@ describe('TransportMessageHeaders', () => {
       expect(headers.timestampInMs).toBe('1640995200000');
       expect(headers.messageSequence).toBe('seq-456');
       expect(headers.fixtureId).toBe('fixture-789');
+      expect(headers.marketId).toBe('market-202');
       expect(headers.sportId).toBe('sport-101');
     });
 
@@ -36,6 +38,7 @@ describe('TransportMessageHeaders', () => {
       expect(headers.timestampInMs).toBe('1640995200000');
       expect(headers.messageSequence).toBe('');
       expect(headers.fixtureId).toBe('');
+      expect(headers.marketId).toBe('');
       expect(headers.sportId).toBe('');
     });
 
@@ -157,6 +160,7 @@ describe('TransportMessageHeaders', () => {
         timestamp_in_ms: '1640995200000',
         MessageSequence: null,
         FixtureId: undefined,
+        MarketId: null,
         SportId: null,
       };
 
@@ -164,6 +168,7 @@ describe('TransportMessageHeaders', () => {
 
       expect(headers.messageSequence).toBe('');
       expect(headers.fixtureId).toBe('');
+      expect(headers.marketId).toBe('');
       expect(headers.sportId).toBe('');
     });
 
@@ -189,6 +194,7 @@ describe('TransportMessageHeaders', () => {
         timestamp_in_ms: 1640995200000,
         MessageSequence: null,
         FixtureId: Buffer.from('fixture-789', 'utf8'),
+        MarketId: Buffer.from('market-202', 'utf8'),
         SportId: Buffer.from('sport-456', 'utf8'),
       };
 
@@ -199,6 +205,7 @@ describe('TransportMessageHeaders', () => {
       expect(headers.timestampInMs).toBe('1640995200000');
       expect(headers.messageSequence).toBe('');
       expect(headers.fixtureId).toBe('fixture-789');
+      expect(headers.marketId).toBe('market-202');
       expect(headers.sportId).toBe('sport-456');
     });
 
