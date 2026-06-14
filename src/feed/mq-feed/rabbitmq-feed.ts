@@ -1,4 +1,4 @@
-import { Channel, Connection, MessageProperties, connect } from 'amqplib';
+import { Channel, Connection, MessageProperties } from 'amqplib';
 import { isNil } from 'lodash';
 
 import { BaseEntity, Constructor, TransportMessageHeaders } from '@entities';
@@ -8,6 +8,11 @@ import { ILogger } from '@logger';
 import { ConsumptionMessageError } from '@lsports/errors';
 import { AsyncLock, withRetry } from '@utilities';
 
+import {
+  connectToRabbitMq,
+  formatRabbitMqConnectionLog,
+  resolveConsumeQueueName,
+} from '../utilities';
 import { MessageConsumer } from './message-consumer';
 
 /**
@@ -46,7 +51,7 @@ class RabbitMQFeed implements IFeed {
     private mqSettings: MQSettingsOptions,
     private logger: ILogger = new ConsoleAdapter(),
   ) {
-    this.requestQueue = `_${this.mqSettings.packageId}_`;
+    this.requestQueue = resolveConsumeQueueName(this.mqSettings);
     this.stopTryReconnect = false;
     this.consumer = new MessageConsumer(this.logger);
   }
@@ -123,25 +128,16 @@ class RabbitMQFeed implements IFeed {
   private async connect(): Promise<void> {
     if (this.isConnected && this.channel) return;
 
-    const { hostname, port, username, password, vhost } = this.mqSettings;
-
     try {
       this.logger.info('initialize connection to RabbitMQ');
 
-      // Establish connection to RabbitMQ server
-      const connectionString = encodeURI(
-        `amqp://${username}:${password}@${hostname}:${port}/${vhost}`,
-      );
-
-      this.connection = await connect(connectionString);
+      this.connection = await connectToRabbitMq(this.mqSettings);
 
       if (!this.connection) {
         throw new Error('failed initializing connection!');
       }
 
-      this.logger.info(
-        `connection initialized successfully!\nconnectionString: ${connectionString}\nListen to ${this.requestQueue} queue`,
-      );
+      this.logger.info(formatRabbitMqConnectionLog(this.mqSettings, this.requestQueue));
 
       // create channel through the connection
       this.channel = await this.connection.createChannel();

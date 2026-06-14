@@ -50,4 +50,50 @@ describe('MQSettingsSchema (TR-23899)', () => {
 
     expect(result.success).toBe(false);
   });
+
+  it('applies sslEnabled default to false', () => {
+    const result = MQSettingsSchema.parse(validMqSettings);
+
+    expect(result.sslEnabled).toBe(false);
+  });
+
+  it('accepts customQueueName and sslEnabled', () => {
+    const result = MQSettingsSchema.parse({
+      ...validMqSettings,
+      customQueueName: 'my-queue',
+      sslEnabled: true,
+      port: 5671,
+    });
+
+    expect(result.customQueueName).toBe('my-queue');
+    expect(result.sslEnabled).toBe(true);
+  });
+
+  it('rejects zero packageId without customQueueName', () => {
+    const result = MQSettingsSchema.safeParse({
+      ...validMqSettings,
+      packageId: 0,
+    });
+
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts zero packageId with customQueueName', () => {
+    const result = MQSettingsSchema.safeParse({
+      ...validMqSettings,
+      packageId: 0,
+      customQueueName: 'my-queue',
+    });
+
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects customQueueName longer than 255 characters', () => {
+    const result = MQSettingsSchema.safeParse({
+      ...validMqSettings,
+      customQueueName: 'a'.repeat(256),
+    });
+
+    expect(result.success).toBe(false);
+  });
 });

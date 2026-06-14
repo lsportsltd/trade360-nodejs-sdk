@@ -19,6 +19,11 @@ import {
   MIN_REQUESTED_HEARTBEAT_SECONDS,
 } from '@feed/types';
 
+import {
+  CONSUME_QUEUE_NAME_MAX_LENGTH,
+  resolveConsumeQueueName,
+} from '../utilities/consume-queue-name';
+
 /**
  * Schema for the MQ settings object. This schema is
  * used to parse and validate the MQ settings object.
@@ -34,7 +39,9 @@ export const MQSettingsSchema = z.object({
   vhost: z.string(),
   username: z.string(),
   password: z.string(),
-  packageId: z.number().int().positive(),
+  packageId: z.number().int().nonnegative(),
+  customQueueName: z.string().optional(),
+  sslEnabled: z.boolean().default(false),
   prefetchCount: z
     .number()
     .int()
@@ -82,6 +89,41 @@ export const MQSettingsSchema = z.object({
     .default(DEFUALT_INITIAL_CONNECTION_MAX_ATTEMPTS),
   /** Required. Customers API base URL (e.g., "https://stm-api.lsports.eu/") used for distribution management. */
   customersApiBaseUrl: z.string().url(),
+}).superRefine((settings, ctx) => {
+  if (settings.packageId === 0 && !settings.customQueueName?.trim()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message:
+        'packageId is required when customQueueName is not set, or set customQueueName when packageId is omitted.',
+      path: ['packageId'],
+    });
+  }
+
+  if (
+    settings.customQueueName?.trim() &&
+    settings.customQueueName.trim().length > CONSUME_QUEUE_NAME_MAX_LENGTH
+  ) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `customQueueName must be at most ${CONSUME_QUEUE_NAME_MAX_LENGTH} characters.`,
+      path: ['customQueueName'],
+    });
+  }
+
+  const queueName = resolveConsumeQueueName(settings);
+  if (!queueName) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'The effective queue name is empty. Check customQueueName and packageId.',
+      path: ['customQueueName'],
+    });
+  } else if (queueName.length > CONSUME_QUEUE_NAME_MAX_LENGTH) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `The effective queue name exceeds ${CONSUME_QUEUE_NAME_MAX_LENGTH} characters. Shorten customQueueName.`,
+      path: ['customQueueName'],
+    });
+  }
 });
 
 // Type inference

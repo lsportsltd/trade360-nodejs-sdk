@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.0](#version-3100)
 - [Version 3.9.8](#version-398)
 - [Version 3.9.7](#version-397)
 - [Version 3.9.6](#version-396)
@@ -29,6 +30,22 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.10.0
+
+Adds optional RabbitMQ TLS and custom consume queue configuration (TRGN-181, TRGN-182), aligned with .NET and Java SDKs.
+
+### Added
+
+- **`MQSettings`**: optional **`customQueueName`** to consume a fixed queue instead of the default pattern `_{packageId}_`; **`sslEnabled`** toggles TLS (AMQPS) for the RabbitMQ transport.
+- **`resolveConsumeQueueName`**: resolves the effective consume queue name from `packageId` and `customQueueName`.
+- **`RabbitMQFeed`**: connects via AMQPS when **`sslEnabled`** is true (`servername` set from hostname); actionable connection error messages for TLS/port mismatches and authentication failures.
+
+### Changed
+
+- **`MQSettingsSchema`**: validates **`packageId`** vs **`customQueueName`** (for example `packageId == 0` requires **`customQueueName`**), and effective queue name length (max 255 characters).
 
 ---
 
