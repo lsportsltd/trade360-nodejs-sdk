@@ -713,8 +713,8 @@ Configure different settings for Development, QA, and Production environments:
 - `port` - RabbitMQ server port (default: 5672)
 - `vhost` - Virtual host name
 - `username` / `password` - Authentication credentials
-- `packageId` - Trade360 package identifier (required unless `customQueueName` is set)
-- `customQueueName` - Optional fixed queue name instead of the default `_{packageId}_` pattern
+- `packageId` - Trade360 package identifier (always required and positive). Used for distribution management and, unless overridden, the default consume queue `_{packageId}_`.
+- `customQueueName` - Optional fixed queue name instead of the default `_{packageId}_` pattern (package id is still required for distribution when using `feed.start(true)`)
 - `sslEnabled` - Enable TLS (AMQPS) for RabbitMQ (default: false). When true, use the broker TLS port (often 5671)
 - `prefetchCount` - Number of unacknowledged messages (default: 100)
 - `networkRecoveryIntervalInMs` - Reconnection interval after connection loss (default: 5000, minimum: 5000)

@@ -8,13 +8,7 @@ describe('resolveConsumeQueueName', () => {
     expect(resolveConsumeQueueName({ packageId: 430 })).toBe('_430_');
   });
 
-  it('uses customQueueName when packageId is zero', () => {
-    expect(
-      resolveConsumeQueueName({ packageId: 0, customQueueName: 'fixed-queue' }),
-    ).toBe('fixed-queue');
-  });
-
-  it('customQueueName replaces default pattern', () => {
+  it('customQueueName replaces default pattern while packageId remains for distribution', () => {
     expect(
       resolveConsumeQueueName({ packageId: 430, customQueueName: 'my-enterprise-queue' }),
     ).toBe('my-enterprise-queue');
@@ -24,10 +18,6 @@ describe('resolveConsumeQueueName', () => {
     expect(
       resolveConsumeQueueName({ packageId: 430, customQueueName: '  trim-me  ' }),
     ).toBe('trim-me');
-  });
-
-  it('returns empty string when packageId is zero and customQueueName is unset', () => {
-    expect(resolveConsumeQueueName({ packageId: 0 })).toBe('');
   });
 
   it('exports max queue name length aligned with RabbitMQ limit', () => {

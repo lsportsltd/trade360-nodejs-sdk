@@ -9,7 +9,7 @@ export const STANDARD_AMQP_TLS_PORT = 5671;
 
 /**
  * Resolves the queue to consume: customQueueName (trimmed) when set,
- * otherwise _{packageId}_ when packageId > 0, otherwise empty string.
+ * otherwise _{packageId}_.
  */
 export function resolveConsumeQueueName(settings: ConsumeQueueSettings): string {
   const customQueueName = settings.customQueueName?.trim();
@@ -17,9 +17,5 @@ export function resolveConsumeQueueName(settings: ConsumeQueueSettings): string 
     return customQueueName;
   }
 
-  if (settings.packageId > 0) {
-    return `_${settings.packageId}_`;
-  }
-
-  return '';
+  return `_${settings.packageId}_`;
 }

@@ -69,23 +69,20 @@ describe('MQSettingsSchema (TR-23899)', () => {
     expect(result.sslEnabled).toBe(true);
   });
 
-  it('rejects zero packageId without customQueueName', () => {
-    const result = MQSettingsSchema.safeParse({
+  it('rejects zero packageId even when customQueueName is set', () => {
+    const withoutCustomQueue = MQSettingsSchema.safeParse({
       ...validMqSettings,
       packageId: 0,
     });
 
-    expect(result.success).toBe(false);
-  });
-
-  it('accepts zero packageId with customQueueName', () => {
-    const result = MQSettingsSchema.safeParse({
+    const withCustomQueue = MQSettingsSchema.safeParse({
       ...validMqSettings,
       packageId: 0,
       customQueueName: 'my-queue',
     });
 
-    expect(result.success).toBe(true);
+    expect(withoutCustomQueue.success).toBe(false);
+    expect(withCustomQueue.success).toBe(false);
   });
 
   it('rejects customQueueName longer than 255 characters', () => {

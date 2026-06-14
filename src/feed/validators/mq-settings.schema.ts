@@ -39,7 +39,7 @@ export const MQSettingsSchema = z.object({
   vhost: z.string(),
   username: z.string(),
   password: z.string(),
-  packageId: z.number().int().nonnegative(),
+  packageId: z.number().int().positive(),
   customQueueName: z.string().optional(),
   sslEnabled: z.boolean().default(false),
   prefetchCount: z
@@ -90,15 +90,6 @@ export const MQSettingsSchema = z.object({
   /** Required. Customers API base URL (e.g., "https://stm-api.lsports.eu/") used for distribution management. */
   customersApiBaseUrl: z.string().url(),
 }).superRefine((settings, ctx) => {
-  if (settings.packageId === 0 && !settings.customQueueName?.trim()) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message:
-        'packageId is required when customQueueName is not set, or set customQueueName when packageId is omitted.',
-      path: ['packageId'],
-    });
-  }
-
   if (
     settings.customQueueName?.trim() &&
     settings.customQueueName.trim().length > CONSUME_QUEUE_NAME_MAX_LENGTH

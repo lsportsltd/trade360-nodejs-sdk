@@ -45,7 +45,7 @@ Adds optional RabbitMQ TLS and custom consume queue configuration (TRGN-181, TRG
 
 ### Changed
 
-- **`MQSettingsSchema`**: validates **`packageId`** vs **`customQueueName`** (for example `packageId == 0` requires **`customQueueName`**), and effective queue name length (max 255 characters).
+- **`MQSettingsSchema`**: **`packageId`** must be positive (Node.js uses one settings object for both distribution and RabbitMQ; unlike .NET/Java split configuration, `packageId: 0` is not supported). Optional **`customQueueName`** overrides only the consume queue; effective queue name length is validated (max 255 characters).
 
 ---
 
