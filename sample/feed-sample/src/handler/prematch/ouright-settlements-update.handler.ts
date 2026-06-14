@@ -11,6 +11,7 @@ export class OutrightSettlementsUpdateHandler implements IEntityHandler<Outright
       messageGuid: transportHeaders.messageGuid,
       messageType: transportHeaders.messageType,
       fixtureId: transportHeaders.fixtureId,
+      marketId: transportHeaders.marketId,
       timestampInMs: transportHeaders.timestampInMs,
       messageSequence: transportHeaders.messageSequence,
     });

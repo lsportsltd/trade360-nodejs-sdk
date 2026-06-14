@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.9.8](#version-398)
 - [Version 3.9.7](#version-397)
 - [Version 3.9.6](#version-396)
 - [Version 3.9.5](#version-395)
@@ -28,6 +29,16 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.9.8
+
+Adds optional `MarketId` customer message header support (TRGN-3848).
+
+### Added
+
+- **`TransportMessageHeaders`**: optional `marketId` customer message header (`MarketId`, TRGN-3848).
 
 ---
 

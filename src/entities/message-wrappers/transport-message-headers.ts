@@ -9,6 +9,8 @@ export class TransportMessageHeaders {
 
   private static readonly FIXTURE_ID_KEY = 'FixtureId';
 
+  private static readonly MARKET_ID_KEY = 'MarketId';
+
   private static readonly SPORT_ID_KEY = 'SportId';
 
   private static readonly ALLOWED_KEYS = new Set([
@@ -17,6 +19,7 @@ export class TransportMessageHeaders {
     TransportMessageHeaders.TIMESTAMP_IN_MS_KEY,
     TransportMessageHeaders.MESSAGE_SEQUENCE_KEY,
     TransportMessageHeaders.FIXTURE_ID_KEY,
+    TransportMessageHeaders.MARKET_ID_KEY,
     TransportMessageHeaders.SPORT_ID_KEY,
   ]);
 
@@ -27,6 +30,8 @@ export class TransportMessageHeaders {
   public messageGuid!: string;
 
   public fixtureId!: string;
+
+  public marketId!: string;
 
   public sportId!: string;
 
@@ -47,6 +52,7 @@ export class TransportMessageHeaders {
       false,
     );
     headers.fixtureId = this.getRequiredProperty(properties, this.FIXTURE_ID_KEY, false);
+    headers.marketId = this.getRequiredProperty(properties, this.MARKET_ID_KEY, false);
     headers.sportId = this.getRequiredProperty(properties, this.SPORT_ID_KEY, false);
 
     return headers;
