@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.1](#version-3101)
 - [Version 3.10.0](#version-3100)
 - [Version 3.9.8](#version-398)
 - [Version 3.9.7](#version-397)
@@ -30,6 +31,17 @@ All notable changes to this project will be documented in this file.
 - [Version 3.0.0](#version-300)
 - [Version 2.0.1](#version-201)
 
+
+---
+
+## Version 3.10.1
+
+Adds authoritative market-level `Status` on Market messages (PRD-1516).
+
+### Added
+
+- **`MarketStatus`** enum (`NotSet`, `Open`, `Suspended`, `Settled`) for market-level status values.
+- **`Market.status`**: maps JSON `Status` on market payloads (1=Open, 2=Suspended, 3=Settled).
 
 ---
 

@@ -1,6 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 
 import { Bet } from './bet';
+import { MarketStatus } from './market-status';
 import { ProviderMarket } from './provider-market';
 
 export class Market {
@@ -20,4 +21,7 @@ export class Market {
 
   @Expose({ name: 'MainLine' })
   mainLine?: string;
+
+  @Expose({ name: 'Status' })
+  status?: MarketStatus;
 }
