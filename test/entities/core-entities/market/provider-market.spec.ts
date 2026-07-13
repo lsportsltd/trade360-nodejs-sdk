@@ -1,6 +1,7 @@
 import { plainToInstance } from 'class-transformer';
 import { ProviderMarket } from '../../../../src/entities/core-entities/market/provider-market';
 import { ProviderBet } from '../../../../src/entities/core-entities/market/provider-bet';
+import { MarketStatus } from '../../../../src/entities/core-entities/market/market-status';
 
 describe('ProviderMarket Entity', () => {
   it('should deserialize a plain object into a ProviderMarket instance', (): void => {
@@ -46,5 +47,19 @@ describe('ProviderMarket Entity', () => {
       excludeExtraneousValues: true,
     });
     expect((providerMarket as unknown as { Extra?: unknown }).Extra).toBeUndefined();
+  });
+
+  it('should deserialize MarketStatus from JSON', (): void => {
+    const plain = {
+      Id: 57,
+      Name: 'Bet365',
+      MarketStatus: MarketStatus.Suspended,
+      Bets: [],
+      LastUpdate: '2024-06-01T12:00:00Z',
+    };
+    const providerMarket = plainToInstance(ProviderMarket, plain, {
+      excludeExtraneousValues: true,
+    });
+    expect(providerMarket.marketStatus).toBe(MarketStatus.Suspended);
   });
 });
