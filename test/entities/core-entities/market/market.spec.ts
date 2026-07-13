@@ -2,6 +2,7 @@ import { plainToInstance } from 'class-transformer';
 import { Market } from '../../../../src/entities/core-entities/market/market';
 import { Bet } from '../../../../src/entities/core-entities/market/bet';
 import { ProviderMarket } from '../../../../src/entities/core-entities/market/provider-market';
+import { MarketStatus } from '../../../../src/entities/core-entities/market/market-status';
 
 describe('Market Entity', () => {
   it('should deserialize a plain object into a Market instance', (): void => {
@@ -44,5 +45,16 @@ describe('Market Entity', () => {
     };
     const market = plainToInstance(Market, plain, { excludeExtraneousValues: true });
     expect((market as unknown as { Extra?: unknown }).Extra).toBeUndefined();
+  });
+
+  it('should deserialize Status from JSON', (): void => {
+    const plain = {
+      Id: 52,
+      Name: '1X2',
+      Status: MarketStatus.Suspended,
+      Bets: [],
+    };
+    const market = plainToInstance(Market, plain, { excludeExtraneousValues: true });
+    expect(market.status).toBe(MarketStatus.Suspended);
   });
 });
