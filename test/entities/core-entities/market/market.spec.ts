@@ -55,6 +55,6 @@ describe('Market Entity', () => {
       Bets: [],
     };
     const market = plainToInstance(Market, plain, { excludeExtraneousValues: true });
-    expect(market.marketStatus).toBe(MarketStatus.Suspended);
+    expect(market.status).toBe(MarketStatus.Suspended);
   });
 });

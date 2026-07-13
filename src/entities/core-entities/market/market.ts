@@ -23,5 +23,5 @@ export class Market {
   mainLine?: string;
 
   @Expose({ name: 'Status' })
-  marketStatus?: MarketStatus;
+  status?: MarketStatus;
 }

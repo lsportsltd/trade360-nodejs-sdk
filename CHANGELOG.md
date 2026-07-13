@@ -38,7 +38,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- **`Market.marketStatus`**: RMQ JSON field renamed from `MarketStatus` to `Status` on calculated market payloads (PRD-1516).
+- **`Market.status`**: RMQ JSON field is `Status` on calculated market payloads (PRD-1516). No property rename from 3.10.1.
 
 ---
 
@@ -49,7 +49,7 @@ Adds authoritative market-level status on Market and ProviderMarket messages (PR
 ### Added
 
 - **`MarketStatus`** enum (`NotSet`, `Open`, `Suspended`, `Settled`) for market-level status values.
-- **`Market.marketStatus`**: maps JSON `Status` on RMQ market payloads (1=Open, 2=Suspended, 3=Settled).
+- **`Market.status`**: maps JSON `Status` on RMQ market payloads (1=Open, 2=Suspended, 3=Settled).
 - **`ProviderMarket.marketStatus`**: maps JSON `MarketStatus` on provider market payloads from the feed.
 
 ---

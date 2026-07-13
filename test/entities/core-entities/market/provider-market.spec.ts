@@ -37,6 +37,18 @@ describe('ProviderMarket Entity', () => {
     expect(providerMarket.lastUpdate).toBeUndefined();
   });
 
+  it('should ignore extraneous properties', (): void => {
+    const plain = {
+      Id: 2,
+      Name: 'Test ProviderMarket',
+      Extra: 'ignore me',
+    };
+    const providerMarket = plainToInstance(ProviderMarket, plain, {
+      excludeExtraneousValues: true,
+    });
+    expect((providerMarket as unknown as { Extra?: unknown }).Extra).toBeUndefined();
+  });
+
   it('should deserialize MarketStatus from JSON', (): void => {
     const plain = {
       Id: 57,
