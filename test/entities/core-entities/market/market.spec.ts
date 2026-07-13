@@ -47,25 +47,14 @@ describe('Market Entity', () => {
     expect((market as unknown as { Extra?: unknown }).Extra).toBeUndefined();
   });
 
-  it('should deserialize MarketStatus from JSON', (): void => {
+  it('should deserialize Status from JSON', (): void => {
     const plain = {
       Id: 52,
       Name: '1X2',
-      MarketStatus: MarketStatus.Suspended,
+      Status: MarketStatus.Suspended,
       Bets: [],
     };
     const market = plainToInstance(Market, plain, { excludeExtraneousValues: true });
     expect(market.marketStatus).toBe(MarketStatus.Suspended);
-  });
-
-  it('should deserialize settlement Status alias from JSON', (): void => {
-    const plain = {
-      Id: 52,
-      Name: '1X2',
-      Status: MarketStatus.Settled,
-      Bets: [],
-    };
-    const market = plainToInstance(Market, plain, { excludeExtraneousValues: true });
-    expect(market.marketStatus).toBe(MarketStatus.Settled);
   });
 });

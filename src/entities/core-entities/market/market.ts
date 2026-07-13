@@ -22,13 +22,6 @@ export class Market {
   @Expose({ name: 'MainLine' })
   mainLine?: string;
 
-  @Expose({ name: 'MarketStatus' })
-  marketStatus?: MarketStatus;
-
   @Expose({ name: 'Status' })
-  set status(value: MarketStatus | undefined) {
-    if (value !== undefined && this.marketStatus === undefined) {
-      this.marketStatus = value;
-    }
-  }
+  marketStatus?: MarketStatus;
 }
