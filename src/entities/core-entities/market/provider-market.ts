@@ -1,6 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 
 import { ProviderBet } from './provider-bet';
+import { MarketStatus } from './market-status';
 
 export class ProviderMarket {
   @Expose({ name: 'Id' })
@@ -16,4 +17,7 @@ export class ProviderMarket {
   @Expose({ name: 'LastUpdate' })
   @Type(() => Date)
   lastUpdate?: Date;
+
+  @Expose({ name: 'MarketStatus' })
+  marketStatus?: MarketStatus;
 }

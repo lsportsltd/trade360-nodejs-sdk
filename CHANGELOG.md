@@ -36,12 +36,13 @@ All notable changes to this project will be documented in this file.
 
 ## Version 3.10.1
 
-Adds authoritative market-level `Status` on Market messages (PRD-1516).
+Adds authoritative market-level status on Market and ProviderMarket messages (PRD-1516).
 
 ### Added
 
 - **`MarketStatus`** enum (`NotSet`, `Open`, `Suspended`, `Settled`) for market-level status values.
-- **`Market.status`**: maps JSON `Status` on market payloads (1=Open, 2=Suspended, 3=Settled).
+- **`Market.marketStatus`**: maps JSON `MarketStatus` on market payloads (1=Open, 2=Suspended, 3=Settled); also accepts settlement JSON `Status`.
+- **`ProviderMarket.marketStatus`**: maps JSON `MarketStatus` on provider market payloads from the feed.
 
 ---
 
