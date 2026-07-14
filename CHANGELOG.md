@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.3](#version-3103)
 - [Version 3.10.1](#version-3101)
 - [Version 3.10.0](#version-3100)
 - [Version 3.9.8](#version-398)
@@ -39,6 +40,16 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - **`Market.status`**: RMQ JSON field is `Status` on calculated market payloads (PRD-1516). No property rename from 3.10.1.
+
+---
+
+## Version 3.10.3
+
+Adds MMA/fight-outcome and positional `StatusDescription` values (TRGN-3981).
+
+### Added
+
+- **`StatusDescription`**: 13 new MMA/fight-outcome and positional enum values — `Fighter1Disqualification` (60), `Fighter2Disqualification` (61), `Fighter1MajorityDecision` (62), `Fighter2MajorityDecision` (63), `Fighter1UnanimousDecision` (64), `Fighter2UnanimousDecision` (65), `Fighter1Submission` (66), `Fighter2Submission` (67), `Fighter1KoTko` (68), `Fighter2KoTko` (69), `NoContest` (70), `Top` (71), `Bottom` (72).
 
 ---
 
