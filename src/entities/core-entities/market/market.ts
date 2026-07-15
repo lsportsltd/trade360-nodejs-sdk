@@ -3,6 +3,7 @@ import { Expose, Type } from 'class-transformer';
 import { Bet } from './bet';
 import { MarketStatus } from './market-status';
 import { ProviderMarket } from './provider-market';
+import { PredictionData } from './prediction-data';
 
 export class Market {
   @Expose({ name: 'Id' })
@@ -24,4 +25,8 @@ export class Market {
 
   @Expose({ name: 'Status' })
   status?: MarketStatus;
+
+  @Expose({ name: 'PredictionData' })
+  @Type(() => PredictionData)
+  predictionData?: PredictionData;
 }

@@ -438,4 +438,21 @@ describe('BaseBet Entity', () => {
     expect(baseBet.baseLine).toBeUndefined();
     expect(baseBet.suspensionReason).toBeUndefined();
   });
+
+  it('should deserialize PredictionData on bet', (): void => {
+    const plain = {
+      Id: '1',
+      PredictionData: {
+        Volume: 2529.72,
+        Liquidity: 0,
+        StartDate: '2026-01-15T10:00:00.000Z',
+        EndDate: '2026-01-15T12:00:00.000Z',
+      },
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.predictionData?.volume).toBe(2529.72);
+    expect(baseBet.predictionData?.liquidity).toBe(0);
+    expect(baseBet.predictionData?.startDate).toBeInstanceOf(Date);
+    expect(baseBet.predictionData?.endDate).toBeInstanceOf(Date);
+  });
 });

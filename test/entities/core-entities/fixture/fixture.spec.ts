@@ -49,6 +49,16 @@ describe('Fixture Entity', () => {
     expect(fixture.season?.name).toBe('2024-2025');
   });
 
+  it('should deserialize Rules fixture extra data', (): void => {
+    const rulesText = 'Match consists of two halves of 45 minutes each.';
+    const plain = {
+      FixtureExtraData: [{ Name: 'Rules', Value: rulesText }],
+    };
+    const fixture = plainToInstance(Fixture, plain, { excludeExtraneousValues: true });
+    expect(fixture.fixtureExtraData?.[0].name).toBe('Rules');
+    expect(fixture.fixtureExtraData?.[0].value).toBe(rulesText);
+  });
+
   it('should handle missing optional properties', (): void => {
     const plain = {
       Sport: { id: 2, name: 'Football' },
