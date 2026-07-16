@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-export class PredictionData {
+export class BetPredictionData {
   @Expose({ name: 'Volume' })
   volume?: number;
 

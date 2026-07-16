@@ -439,7 +439,7 @@ describe('BaseBet Entity', () => {
     expect(baseBet.suspensionReason).toBeUndefined();
   });
 
-  it('should deserialize PredictionData on bet', (): void => {
+  it('should deserialize BetPredictionData on bet', (): void => {
     const plain = {
       Id: '1',
       PredictionData: {
