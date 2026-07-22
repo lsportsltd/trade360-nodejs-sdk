@@ -5,7 +5,6 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
-- [Version 3.10.5](#version-3105)
 - [Version 3.10.4](#version-3104)
 - [Version 3.10.3](#version-3103)
 - [Version 3.10.1](#version-3101)
@@ -41,24 +40,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## Version 3.10.5
-
-Splits unified `PredictionData` into market- and bet-specific types (PRD-1516).
-
-### Changed
-
-- **`MarketPredictionData`**: volume-only type on `Market` and `ProviderMarket` (JSON field `PredictionData`).
-- **`BetPredictionData`**: full type with `volume`, `liquidity`, `startDate`, and `endDate` on `BaseBet` (JSON field `PredictionData`).
-
----
-
 ## Version 3.10.4
 
-Adds DI `PredictionData` on market and bet entities (PRD-1516).
+Adds DI prediction metadata on market and bet entities (PRD-1516).
 
 ### Added
 
-- **`PredictionData`**: optional `volume`, `liquidity`, `startDate`, and `endDate` on `Market`, `ProviderMarket`, and `BaseBet` (JSON field `PredictionData`).
+- **`MarketPredictionData`**: volume-only type on `Market` and `ProviderMarket` (JSON field `PredictionData`).
+- **`BetPredictionData`**: full type with `volume`, `liquidity`, `startDate`, and `endDate` on `BaseBet` (JSON field `PredictionData`).
 
 ---
 
