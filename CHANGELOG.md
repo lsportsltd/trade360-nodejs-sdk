@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.4](#version-3104)
 - [Version 3.10.3](#version-3103)
 - [Version 3.10.1](#version-3101)
 - [Version 3.10.0](#version-3100)
@@ -37,9 +38,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-### Changed
+---
 
-- **`Market.status`**: RMQ JSON field is `Status` on calculated market payloads (PRD-1516). No property rename from 3.10.1.
+## Version 3.10.4
+
+Adds DI prediction metadata on market and bet entities (PRD-1516).
+
+### Added
+
+- **`MarketPredictionData`**: volume-only type on `Market` and `ProviderMarket` (JSON field `PredictionData`).
+- **`BetPredictionData`**: full type with `volume`, `liquidity`, `startDate`, and `endDate` on `BaseBet` (JSON field `PredictionData`).
 
 ---
 

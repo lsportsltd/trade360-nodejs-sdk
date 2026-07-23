@@ -6,3 +6,5 @@ export * from './base-bet';
 export * from './provider-bet';
 export * from './provider-market';
 export * from './provider';
+export * from './market-prediction-data';
+export * from './bet-prediction-data';

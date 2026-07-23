@@ -2,6 +2,7 @@ import { Expose, Type, Transform } from 'class-transformer';
 
 import { BetStatus, SettlementType } from '@lsports/enums';
 import { IdTransformerUtil } from '../../../utilities/id-transformer-util';
+import { BetPredictionData } from './bet-prediction-data';
 
 /**
  * Base betting entity with string-based ID handling for JSON compatibility.
@@ -82,4 +83,8 @@ export class BaseBet {
 
   @Expose({ name: 'Order' })
   order?: number;
+
+  @Expose({ name: 'PredictionData' })
+  @Type(() => BetPredictionData)
+  predictionData?: BetPredictionData;
 }
