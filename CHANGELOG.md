@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.5](#version-3105)
 - [Version 3.10.4](#version-3104)
 - [Version 3.10.3](#version-3103)
 - [Version 3.10.1](#version-3101)
@@ -37,6 +38,16 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## Version 3.10.5
+
+Exposes feed interruption signal on heartbeat updates (TRGN-3934).
+
+### Added
+
+- **`HeartbeatUpdate.feedInterrupted`**: optional feed interruption signal on type-32 heartbeat body (`undefined`/absent = normal, non-zero = interrupted). Maps JSON field `FeedInterrupted`. Signal only — does not trigger auto-suspend or recovery.
 
 ---
 

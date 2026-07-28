@@ -9,9 +9,9 @@ export class HeartbeatUpdate implements BaseEntity {
   [key: string]: unknown;
 
   /**
-   * Feed health signal. `undefined`/absent means no problem, non-zero indicates a
-   * problem detected upstream. Signal only — does not trigger auto-suspend or recovery.
+   * Feed interruption signal. `undefined`/absent means normal, non-zero indicates a
+   * feed interruption detected upstream. Signal only — does not trigger auto-suspend or recovery.
    */
-  @Expose({ name: 'Problem' })
-  public problem?: number;
+  @Expose({ name: 'FeedInterrupted' })
+  public feedInterrupted?: number;
 }
