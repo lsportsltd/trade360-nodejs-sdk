@@ -54,6 +54,21 @@ const pinoLogger = new PinoAdapter();
 // Using Winston
 const winstonLogger = new WinstonAdapter();
 
+function resolveFihRunSeconds(): number {
+  const raw = process.env.FIH_RUN_SECONDS;
+  if (raw == null || raw.trim() === '') {
+    return 60;
+  }
+
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    logger.warn(`[FIH] Invalid FIH_RUN_SECONDS="${raw}"; falling back to 60`);
+    return 60;
+  }
+
+  return parsed;
+}
+
 const initSample = async () => {
   try {
     const feedInPlay = new Feed(config.trade360.inPlayMQSettings!, logger);
@@ -104,7 +119,7 @@ const initSample = async () => {
       logger.info('[FIH] PreMatch skipped (FIH_IP_ONLY=1)');
     }
 
-    const runMs = Number(process.env.FIH_RUN_SECONDS || 60) * 1000;
+    const runMs = resolveFihRunSeconds() * 1000;
     await new Promise<void>((resolve) => {
       setTimeout(() => {
         return resolve();
