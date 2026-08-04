@@ -54,6 +54,21 @@ const pinoLogger = new PinoAdapter();
 // Using Winston
 const winstonLogger = new WinstonAdapter();
 
+function resolveFihRunSeconds(): number {
+  const raw = process.env.FIH_RUN_SECONDS;
+  if (raw == null || raw.trim() === '') {
+    return 60;
+  }
+
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    logger.warn(`[FIH] Invalid FIH_RUN_SECONDS="${raw}"; falling back to 60`);
+    return 60;
+  }
+
+  return parsed;
+}
+
 const initSample = async () => {
   try {
     const feedInPlay = new Feed(config.trade360.inPlayMQSettings!, logger);
@@ -63,7 +78,7 @@ const initSample = async () => {
     feedInPlay.addEntityHandler(new LivescoreUpdateHandler(), LivescoreUpdate);
     feedInPlay.addEntityHandler(new MarketUpdateHandler(), MarketUpdate);
     feedInPlay.addEntityHandler(new SettlementUpdateHandler(), SettlementUpdate);
-    feedInPlay.addEntityHandler(new HeartbeatUpdateHandler(), HeartbeatUpdate);
+    feedInPlay.addEntityHandler(new HeartbeatUpdateHandler('InPlay'), HeartbeatUpdate);
     feedInPlay.addEntityHandler(new KeepAliveUpdateHandler(), KeepAliveUpdate);
     feedInPlay.addEntityHandler(new OutrightLeagueFixtureUpdateHandler(),OutrightLeagueFixtureUpdate);
     feedInPlay.addEntityHandler(new OutrightLeagueMarketUpdateHandler(), OutrightLeagueMarketUpdate);
@@ -77,7 +92,7 @@ const initSample = async () => {
     feedPreMatch.addEntityHandler(new OutrightScoreUpdateHandler(), OutrightScoreUpdate);
     feedPreMatch.addEntityHandler(new OutrightFixtureMarketUpdateHandler(),OutrightFixtureMarketUpdate);
     feedPreMatch.addEntityHandler(new OutrightSettlementsUpdateHandler(), OutrightSettlementsUpdate);
-    feedPreMatch.addEntityHandler(new HeartbeatUpdateHandler(), HeartbeatUpdate);
+    feedPreMatch.addEntityHandler(new HeartbeatUpdateHandler('PreMatch'), HeartbeatUpdate);
     feedPreMatch.addEntityHandler(new OutrightLeagueFixtureUpdateHandler(),OutrightLeagueFixtureUpdate);
     feedPreMatch.addEntityHandler(new OutrightLeagueMarketUpdateHandler(), OutrightLeagueMarketUpdate);
     feedPreMatch.addEntityHandler(new OutrightLeagueSettlementUpdateHandler(), OutrightLeagueSettlementUpdate);
@@ -92,13 +107,23 @@ const initSample = async () => {
     process.on('SIGINT', shutdown);
     process.on('exit', shutdown);
 
-    await feedInPlay.start(true);
-    await feedPreMatch.start(true);
+    // FIH_IP_ONLY=1 / FIH_PM_ONLY=1 for single-product live checks.
+    if (process.env.FIH_PM_ONLY !== '1') {
+      await feedInPlay.start(true);
+    } else {
+      logger.info('[FIH] InPlay skipped (FIH_PM_ONLY=1)');
+    }
+    if (process.env.FIH_IP_ONLY !== '1') {
+      await feedPreMatch.start(true);
+    } else {
+      logger.info('[FIH] PreMatch skipped (FIH_IP_ONLY=1)');
+    }
 
+    const runMs = resolveFihRunSeconds() * 1000;
     await new Promise<void>((resolve) => {
       setTimeout(() => {
         return resolve();
-      }, 60 * 1000);
+      }, runMs);
     });
     shutdown();
     
