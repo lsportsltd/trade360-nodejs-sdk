@@ -28,6 +28,22 @@ describe('MarketEvent Entity', () => {
     expect(event.markets).toBeUndefined();
   });
 
+  it('should omit FixtureName when payload value is null or empty', (): void => {
+    const withNull = plainToInstance(
+      MarketEvent,
+      { FixtureId: 1, FixtureName: null },
+      { excludeExtraneousValues: true },
+    );
+    expect(withNull.fixtureName).toBeUndefined();
+
+    const withEmpty = plainToInstance(
+      MarketEvent,
+      { FixtureId: 1, FixtureName: '' },
+      { excludeExtraneousValues: true },
+    );
+    expect(withEmpty.fixtureName).toBeUndefined();
+  });
+
   it('should ignore extraneous properties', (): void => {
     const plain = {
       FixtureId: 456,
