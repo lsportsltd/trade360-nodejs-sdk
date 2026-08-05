@@ -6,6 +6,7 @@ describe('MarketEvent Entity', () => {
   it('should deserialize a plain object into a MarketEvent instance', (): void => {
     const plain = {
       FixtureId: 123,
+      FixtureName: 'Premier League 2023/2024 Outright Winner',
       Markets: [
         { Id: 1, Name: 'Market1' },
         { Id: 2, Name: 'Market2' },
@@ -14,6 +15,7 @@ describe('MarketEvent Entity', () => {
     const event = plainToInstance(MarketEvent, plain, { excludeExtraneousValues: true });
     expect(event).toBeInstanceOf(MarketEvent);
     expect(event.fixtureId).toBe(123);
+    expect(event.fixtureName).toBe('Premier League 2023/2024 Outright Winner');
     expect(Array.isArray(event.markets)).toBe(true);
     expect(event.markets?.[0]).toBeInstanceOf(Market);
   });
@@ -22,6 +24,7 @@ describe('MarketEvent Entity', () => {
     const plain = {};
     const event = plainToInstance(MarketEvent, plain, { excludeExtraneousValues: true });
     expect(event.fixtureId).toBeUndefined();
+    expect(event.fixtureName).toBeUndefined();
     expect(event.markets).toBeUndefined();
   });
 

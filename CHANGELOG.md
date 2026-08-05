@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.6](#version-3106)
 - [Version 3.10.5](#version-3105)
 - [Version 3.10.4](#version-3104)
 - [Version 3.10.3](#version-3103)
@@ -38,6 +39,16 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## Version 3.10.6
+
+Adds optional fixture name on OutrightLeague market and settlement nested events (TRGN-1739).
+
+### Added
+
+- **`MarketEvent.fixtureName`**: optional fixture name on nested events in OutrightLeagueMarketUpdate (type 40) and OutrightLeagueSettlementUpdate (type 43). Maps JSON field `FixtureName`; omitted when absent from the payload.
 
 ---
 

@@ -34,6 +34,7 @@ describe('OutrightLeagueMarketUpdate (type 40)', () => {
     const event = season?.events?.[0];
     expect(event).toBeInstanceOf(MarketEvent);
     expect(event?.fixtureId).toBe(26721036);
+    expect(event?.fixtureName).toBe('Premier League 2023/2024 Outright Winner');
 
     const market = event?.markets?.[0];
     expect(market?.id).toBe(274);

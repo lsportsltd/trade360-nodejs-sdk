@@ -10,6 +10,9 @@ export class MarketEvent implements BaseEntity {
   @Expose({ name: 'FixtureId' })
   fixtureId!: number;
 
+  @Expose({ name: 'FixtureName' })
+  fixtureName?: string;
+
   @Expose({ name: 'Markets' })
   @Type(() => Market)
   markets?: Market[];
