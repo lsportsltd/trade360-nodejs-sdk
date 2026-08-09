@@ -1,4 +1,4 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 
 import { BaseEntity } from '../../message-types';
 
@@ -9,6 +9,10 @@ export class MarketEvent implements BaseEntity {
 
   @Expose({ name: 'FixtureId' })
   fixtureId!: number;
+
+  @Expose({ name: 'FixtureName' })
+  @Transform(({ value }) => (value === null || value === '' ? undefined : value))
+  fixtureName?: string;
 
   @Expose({ name: 'Markets' })
   @Type(() => Market)

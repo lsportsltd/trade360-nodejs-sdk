@@ -34,6 +34,7 @@ describe('Outright league nested event transform (TR-23836)', () => {
         Events: [
           {
             FixtureId: 99,
+            FixtureName: 'Premier League 2023/2024 Outright Winner',
             Markets: [{ Id: 1, Name: 'M1', Bets: [{ Id: 2, Name: 'B1', Status: 1 }] }],
           },
         ],
@@ -66,6 +67,7 @@ describe('Outright league nested event transform (TR-23836)', () => {
 
     expect(event).toBeInstanceOf(MarketEvent);
     expect(event?.fixtureId).toBe(99);
+    expect(event?.fixtureName).toBe('Premier League 2023/2024 Outright Winner');
     expect(market?.id).toBe(1);
     expect(market?.name).toBe('M1');
     expect(bet?.id).toBe('2');
@@ -85,6 +87,7 @@ describe('Outright league nested event transform (TR-23836)', () => {
 
     expect(event).toBeInstanceOf(MarketEvent);
     expect(event?.fixtureId).toBe(99);
+    expect(event?.fixtureName).toBe('Premier League 2023/2024 Outright Winner');
     expect(event?.markets?.[0]?.bets?.[0]?.id).toBe('2');
   });
 });
