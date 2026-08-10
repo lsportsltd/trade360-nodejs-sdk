@@ -8,13 +8,11 @@ import {
   DEFUALT_DISTRIBUTION_PROPAGATION_DELAY_MS,
   DEFUALT_INITIAL_CONNECTION_MAX_ATTEMPTS,
   DEFUALT_INITIAL_CONNECTION_RETRY_INTERVAL_MS,
-  DEFUALT_NETWORK_RECOVERY_INTERVAL_IN_MS,
   DEFUALT_PREFETCH_COUNT,
   DEFUALT_REQUESTED_HEARTBEAT_SECONDS,
   MIN_DISTRIBUTION_PROPAGATION_DELAY_MS,
   MIN_INITIAL_CONNECTION_MAX_ATTEMPTS,
   MIN_INITIAL_CONNECTION_RETRY_INTERVAL_MS,
-  MIN_NETWORK_RECOVERY_INTERVAL_IN_MS,
   MIN_PREFETCH_COUNT,
   MIN_REQUESTED_HEARTBEAT_SECONDS,
 } from '@feed/types';
@@ -49,12 +47,7 @@ export const MQSettingsSchema = z.object({
     .min(MIN_PREFETCH_COUNT)
     .default(DEFUALT_PREFETCH_COUNT),
   autoAck: z.boolean().default(DEFUALT_AUTO_ACK),
-  networkRecoveryIntervalInMs: z
-    .number()
-    .int()
-    .positive()
-    .min(MIN_NETWORK_RECOVERY_INTERVAL_IN_MS)
-    .default(DEFUALT_NETWORK_RECOVERY_INTERVAL_IN_MS),
+  networkRecoveryIntervalInMs: z.number().int().positive(),
   maxRetryAttempts: z.number().int().positive(),
   consumptionLatencyThreshold: z
     .number()

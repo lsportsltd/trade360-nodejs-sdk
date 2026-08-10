@@ -384,7 +384,7 @@ Create a configuration file (JSON or TypeScript) with your Trade360 credentials:
       "customQueueName": "",
       "sslEnabled": false,
       "prefetchCount": 100,
-      "networkRecoveryIntervalInMs": 5000,
+      "networkRecoveryIntervalInMs": 30000,
       "distributionPropagationDelayMs": 2000,
       "initialConnectionRetryIntervalMs": 1000,
       "initialConnectionMaxAttempts": 5,
@@ -717,7 +717,7 @@ Configure different settings for Development, QA, and Production environments:
 - `customQueueName` - Optional fixed queue name instead of the default `_{packageId}_` pattern (package id is still required for distribution when using `feed.start(true)`)
 - `sslEnabled` - Enable TLS (AMQPS) for RabbitMQ (default: false). When true, use the broker TLS port (often 5671)
 - `prefetchCount` - Number of unacknowledged messages (default: 100)
-- `networkRecoveryIntervalInMs` - Reconnection interval after connection loss (default: 5000, minimum: 5000)
+- `networkRecoveryIntervalInMs` - Reconnection interval after connection loss in ms (required; sample: 30000 / 30s). Customers may set lower values such as 5000 (5s).
 - `distributionPropagationDelayMs` - Wait after distribution is on before the first RabbitMQ connect when using `feed.start(true)` (default: 2000). Applied after `Distribution/Start` and when distribution was already on.
 - `initialConnectionRetryIntervalMs` - Delay between initial RabbitMQ connection retries when `feed.start(true)` (default: 1000, minimum: 500)
 - `initialConnectionMaxAttempts` - Maximum initial RabbitMQ connection attempts when `feed.start(true)` (default: 5)

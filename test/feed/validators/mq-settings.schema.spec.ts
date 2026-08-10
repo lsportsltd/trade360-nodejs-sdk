@@ -8,6 +8,7 @@ const validMqSettings = {
   password: 'pass',
   packageId: 1,
   maxRetryAttempts: 5,
+  networkRecoveryIntervalInMs: 30000,
   customersApiBaseUrl: 'https://stm-api.lsports.eu/',
 };
 

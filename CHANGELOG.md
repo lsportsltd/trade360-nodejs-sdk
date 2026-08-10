@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.7](#version-3107)
 - [Version 3.10.6](#version-3106)
 - [Version 3.10.5](#version-3105)
 - [Version 3.10.4](#version-3104)
@@ -39,6 +40,17 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## Version 3.10.7
+
+Removes the network recovery interval floor so customers can tune reconnect delay (TRGN-4200).
+
+### Changed
+
+- **`networkRecoveryIntervalInMs`**: removed schema default and minimum (`5000`). Value must be set in configuration; sample/docs use `30000` (30s). Customers may set `5000` (5s) or other positive values.
+- Removed unused `MIN_NETWORK_RECOVERY_INTERVAL_IN_MS` constant; recommended sample constant remains `DEFUALT_NETWORK_RECOVERY_INTERVAL_IN_MS` at `30000`.
 
 ---
 
