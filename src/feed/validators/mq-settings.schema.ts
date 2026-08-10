@@ -47,7 +47,7 @@ export const MQSettingsSchema = z.object({
     .min(MIN_PREFETCH_COUNT)
     .default(DEFUALT_PREFETCH_COUNT),
   autoAck: z.boolean().default(DEFUALT_AUTO_ACK),
-  networkRecoveryIntervalInMs: z.number().int().positive(),
+  networkRecoveryIntervalInMs: z.number().int().nonnegative(),
   maxRetryAttempts: z.number().int().positive(),
   consumptionLatencyThreshold: z
     .number()

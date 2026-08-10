@@ -8,7 +8,7 @@ const validMqSettings = {
   password: 'pass',
   packageId: 1,
   maxRetryAttempts: 5,
-  networkRecoveryIntervalInMs: 30000,
+  networkRecoveryIntervalInMs: 5000,
   customersApiBaseUrl: 'https://stm-api.lsports.eu/',
 };
 
@@ -90,6 +90,24 @@ describe('MQSettingsSchema (TR-23899)', () => {
     const result = MQSettingsSchema.safeParse({
       ...validMqSettings,
       customQueueName: 'a'.repeat(256),
+    });
+
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts networkRecoveryIntervalInMs of 0', () => {
+    const result = MQSettingsSchema.parse({
+      ...validMqSettings,
+      networkRecoveryIntervalInMs: 0,
+    });
+
+    expect(result.networkRecoveryIntervalInMs).toBe(0);
+  });
+
+  it('rejects negative networkRecoveryIntervalInMs', () => {
+    const result = MQSettingsSchema.safeParse({
+      ...validMqSettings,
+      networkRecoveryIntervalInMs: -1,
     });
 
     expect(result.success).toBe(false);

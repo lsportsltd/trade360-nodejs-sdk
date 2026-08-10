@@ -49,8 +49,8 @@ Removes the network recovery interval floor so customers can tune reconnect dela
 
 ### Changed
 
-- **`networkRecoveryIntervalInMs`**: removed schema default and minimum (`5000`). Value must be set in configuration; sample/docs use `30000` (30s). Customers may set `5000` (5s) or other positive values.
-- Removed unused `MIN_NETWORK_RECOVERY_INTERVAL_IN_MS` constant; recommended sample constant remains `DEFUALT_NETWORK_RECOVERY_INTERVAL_IN_MS` at `30000`.
+- **`networkRecoveryIntervalInMs`**: removed schema default/min floor. Required non-negative integer; sample/docs use `5000` (5s). `0` is allowed (TRGN-4200).
+- Removed unused `MIN_NETWORK_RECOVERY_INTERVAL_IN_MS`; recommended sample constant `DEFUALT_NETWORK_RECOVERY_INTERVAL_IN_MS` is `5000`.
 
 ---
 

@@ -1,7 +1,7 @@
 export const DEFUALT_PREFETCH_COUNT: number = 1;
 export const DEFUALT_AUTO_ACK: boolean = false;
-/** Recommended sample value (30 seconds). Not applied as a schema default — set via configuration. */
-export const DEFUALT_NETWORK_RECOVERY_INTERVAL_IN_MS: number = 30 * 1000;
+/** Recommended sample value (5 seconds). Not applied as a schema default — set via configuration. */
+export const DEFUALT_NETWORK_RECOVERY_INTERVAL_IN_MS: number = 5 * 1000;
 export const DEFUALT_AUTOMATIC_RECOVERY_ENABLED: boolean = true;
 export const DEFUALT_CONSUMPTION_LATENCY_THRESHOLD: number = 5; // 5 seconds
 export const DEFUALT_REQUESTED_HEARTBEAT_SECONDS: number = 10; // 10 seconds
