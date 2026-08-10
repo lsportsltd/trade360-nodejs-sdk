@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.7](#version-3107)
 - [Version 3.10.6](#version-3106)
 - [Version 3.10.5](#version-3105)
 - [Version 3.10.4](#version-3104)
@@ -39,6 +40,16 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## Version 3.10.7
+
+Aligns `networkRecoveryIntervalInMs` with .NET TRGN-4200 (default 30s, minimum 5s, sample 5s).
+
+### Changed
+
+- **`networkRecoveryIntervalInMs`**: default **30000** ms (30s); minimum remains **5000** ms (5s). Sample stays `5000`.
 
 ---
 

@@ -18,6 +18,16 @@ describe('MQSettingsSchema (TR-23899)', () => {
     expect(result.distributionPropagationDelayMs).toBe(2000);
     expect(result.initialConnectionRetryIntervalMs).toBe(1000);
     expect(result.initialConnectionMaxAttempts).toBe(5);
+    expect(result.networkRecoveryIntervalInMs).toBe(30000);
+  });
+
+  it('rejects networkRecoveryIntervalInMs below minimum', () => {
+    const result = MQSettingsSchema.safeParse({
+      ...validMqSettings,
+      networkRecoveryIntervalInMs: 4999,
+    });
+
+    expect(result.success).toBe(false);
   });
 
   it('accepts custom distribution and initial connection values', () => {

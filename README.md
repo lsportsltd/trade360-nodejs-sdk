@@ -717,7 +717,7 @@ Configure different settings for Development, QA, and Production environments:
 - `customQueueName` - Optional fixed queue name instead of the default `_{packageId}_` pattern (package id is still required for distribution when using `feed.start(true)`)
 - `sslEnabled` - Enable TLS (AMQPS) for RabbitMQ (default: false). When true, use the broker TLS port (often 5671)
 - `prefetchCount` - Number of unacknowledged messages (default: 100)
-- `networkRecoveryIntervalInMs` - Reconnection interval after connection loss (default: 5000, minimum: 5000)
+- `networkRecoveryIntervalInMs` - Reconnection interval after connection loss in ms (default: 30000 / 30s, minimum: 5000 / 5s). Sample uses `5000`.
 - `distributionPropagationDelayMs` - Wait after distribution is on before the first RabbitMQ connect when using `feed.start(true)` (default: 2000). Applied after `Distribution/Start` and when distribution was already on.
 - `initialConnectionRetryIntervalMs` - Delay between initial RabbitMQ connection retries when `feed.start(true)` (default: 1000, minimum: 500)
 - `initialConnectionMaxAttempts` - Maximum initial RabbitMQ connection attempts when `feed.start(true)` (default: 5)
