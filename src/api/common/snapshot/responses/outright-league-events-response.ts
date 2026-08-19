@@ -25,6 +25,10 @@ export class OutrightLeagueEventsCompetitionElement implements BaseEntity {
   @Type(() => Number)
   public type!: number;
 
+  @Expose({ name: 'NextFixtureStartTime' })
+  @Type(() => Date)
+  public nextFixtureStartTime?: Date;
+
   @Expose({ name: 'Competitions' })
   @Type(() => OutrightLeagueEventsCompetition)
   competitions?: OutrightLeagueEventsCompetition[];

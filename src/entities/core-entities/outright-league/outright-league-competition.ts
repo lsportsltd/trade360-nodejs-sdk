@@ -15,13 +15,13 @@ export class OutrightLeagueCompetition<TEvent extends BaseEntity> {
   @Expose({ name: 'Type' })
   type?: number;
 
+  @Expose({ name: 'NextFixtureStartTime' })
+  @Type(() => Date)
+  public nextFixtureStartTime?: Date;
+
   @Expose({ name: 'Competitions' })
   @Type(() => require('./outright-league-competitions').OutrightLeagueCompetitions)
   competitions?: import('./outright-league-competitions').OutrightLeagueCompetitions<TEvent>[];
 }
 
-export class OutrightLeagueMarketCompetition extends OutrightLeagueCompetition<MarketEvent> {
-  @Expose({ name: 'NextFixtureStartTime' })
-  @Type(() => Date)
-  nextFixtureStartTime?: Date;
-}
+export class OutrightLeagueMarketCompetition extends OutrightLeagueCompetition<MarketEvent> {}

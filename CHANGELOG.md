@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.8](#version-3108)
 - [Version 3.10.7](#version-3107)
 - [Version 3.10.6](#version-3106)
 - [Version 3.10.5](#version-3105)
@@ -40,6 +41,16 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## Version 3.10.8
+
+Exposes `NextFixtureStartTime` on snapshot outright-league competition models (TRGN-4310).
+
+### Added
+
+- **`nextFixtureStartTime`**: optional next fixture start time on the league `Competition` node for snapshot `GetOutrightLeagueEvents` and `GetOutrightLeagueMarkets`. Maps JSON field `NextFixtureStartTime`; omitted when absent from the payload.
 
 ---
 
