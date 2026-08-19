@@ -28,4 +28,18 @@ describe('OutrightLeagueCompetition', () => {
     });
     expect((competition as unknown as { Extra?: unknown }).Extra).toBeUndefined();
   });
+
+  it('should deserialize NextFixtureStartTime', (): void => {
+    const plain = {
+      Id: 67,
+      Name: 'League_67',
+      Type: 3,
+      NextFixtureStartTime: '2026-05-29T14:44:55Z',
+    };
+    const competition = plainToInstance(OutrightLeagueCompetition, plain, {
+      excludeExtraneousValues: true,
+      exposeUnsetFields: false,
+    });
+    expect(competition.nextFixtureStartTime).toEqual(new Date('2026-05-29T14:44:55Z'));
+  });
 });
