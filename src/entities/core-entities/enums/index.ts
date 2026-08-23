@@ -3,6 +3,7 @@ export * from './subscription-status';
 export * from './statistic-type';
 export * from './status-description';
 export * from './bet-status';
+export * from './bet-status-id';
 export * from './settlement-type';
 export * from './active-participant';
 export * from './outright-score-status';
