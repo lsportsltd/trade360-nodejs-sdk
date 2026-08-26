@@ -1,6 +1,6 @@
 import { Expose, Type, Transform } from 'class-transformer';
 
-import { BetStatus, SettlementType } from '@lsports/enums';
+import { BetStatus, BetStatusId, SettlementType } from '@lsports/enums';
 import { IdTransformerUtil } from '../../../utilities/id-transformer-util';
 import { BetPredictionData } from './bet-prediction-data';
 
@@ -31,6 +31,9 @@ export class BaseBet {
 
   @Expose({ name: 'Status' })
   status?: BetStatus;
+
+  @Expose({ name: 'BetStatusId' })
+  betStatusId?: BetStatusId;
 
   @Expose({ name: 'StartPrice' })
   startPrice?: string;

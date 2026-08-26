@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.9](#version-3109)
 - [Version 3.10.8](#version-3108)
 - [Version 3.10.7](#version-3107)
 - [Version 3.10.6](#version-3106)
@@ -41,6 +42,16 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## Version 3.10.9
+
+Adds `BetStatusId` (enum 1–4) on feed and snapshot bet models (TRGN-4441).
+
+### Added
+
+- **`BetStatusId`**: new enum `Open=1`, `Suspended=2`, `Settled=3`, `Closed=4` (no 0) and optional `BaseBet.betStatusId` on feed and snapshot bet models. Legacy `status` (0–3) is unchanged. Markets may send `Closed=4` while `status` stays Suspended; settlement sends `betStatusId=3` beside the existing `settlement` outcome.
 
 ---
 
