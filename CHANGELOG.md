@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.10](#version-31010)
 - [Version 3.10.9](#version-3109)
 - [Version 3.10.8](#version-3108)
 - [Version 3.10.7](#version-3107)
@@ -42,6 +43,16 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## Version 3.10.10
+
+Adds `MarketStatus.Closed = 4` so `Markets[].Status` and `ProviderMarkets[].MarketStatus` deserialize (TRGN-4561).
+
+### Added
+
+- **`MarketStatus.Closed = 4`**: feed/snapshot can send Closed on `Markets[].Status` and `ProviderMarkets[].MarketStatus`. Existing `0–3` values are unchanged.
 
 ---
 
