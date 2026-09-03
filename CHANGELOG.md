@@ -48,11 +48,11 @@ All notable changes to this project will be documented in this file.
 
 ## Version 3.10.10
 
-Adds `MarketStatus.Closed = 4` so ProviderOdds+ Type 3 `ProviderMarkets[].MarketStatus` deserializes (TRGN-4561).
+Adds `MarketStatus.Closed = 4` so `Markets[].Status` and `ProviderMarkets[].MarketStatus` deserialize (TRGN-4561).
 
 ### Added
 
-- **`MarketStatus.Closed = 4`**: ProviderOdds+ can send Closed on `ProviderMarkets[].MarketStatus` and market `Status`. Existing `0–3` values are unchanged.
+- **`MarketStatus.Closed = 4`**: feed/snapshot can send Closed on `Markets[].Status` and `ProviderMarkets[].MarketStatus`. Existing `0–3` values are unchanged.
 
 ---
 
