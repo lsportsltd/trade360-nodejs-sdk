@@ -57,4 +57,15 @@ describe('Market Entity', () => {
     const market = plainToInstance(Market, plain, { excludeExtraneousValues: true });
     expect(market.status).toBe(MarketStatus.Suspended);
   });
+
+  it('should deserialize Closed Status from JSON', (): void => {
+    const plain = {
+      Id: 1,
+      Name: '1X2',
+      Status: 4,
+      Bets: [],
+    };
+    const market = plainToInstance(Market, plain, { excludeExtraneousValues: true });
+    expect(market.status).toBe(MarketStatus.Closed);
+  });
 });
