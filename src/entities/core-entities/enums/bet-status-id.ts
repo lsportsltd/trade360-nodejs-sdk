@@ -1,5 +1,4 @@
-export enum MarketStatus {
-  NotSet = 0,
+export enum BetStatusId {
   Open = 1,
   Suspended = 2,
   Settled = 3,

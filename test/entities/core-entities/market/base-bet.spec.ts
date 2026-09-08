@@ -1,6 +1,7 @@
 import { plainToInstance } from 'class-transformer';
 import { BaseBet } from '../../../../src/entities/core-entities/market/base-bet';
 import { BetStatus } from '../../../../src/entities/core-entities/enums/bet-status';
+import { BetStatusId } from '../../../../src/entities/core-entities/enums/bet-status-id';
 import { SettlementType } from '../../../../src/entities/core-entities/enums/settlement-type';
 
 describe('BaseBet Entity', () => {
@@ -454,5 +455,56 @@ describe('BaseBet Entity', () => {
     expect(baseBet.predictionData?.liquidity).toBe(0);
     expect(baseBet.predictionData?.startDate).toBeInstanceOf(Date);
     expect(baseBet.predictionData?.endDate).toBeInstanceOf(Date);
+  });
+
+  it('should deserialize Closed BetStatusId without changing Status', (): void => {
+    const plain = {
+      Id: '1',
+      Status: BetStatus.Suspended,
+      BetStatusId: BetStatusId.Closed,
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.status).toBe(BetStatus.Suspended);
+    expect(baseBet.betStatusId).toBe(BetStatusId.Closed);
+  });
+
+  it.each([
+    [BetStatus.Open, BetStatusId.Open],
+    [BetStatus.Suspended, BetStatusId.Suspended],
+    [BetStatus.Settled, BetStatusId.Settled],
+  ])('should deserialize BetStatusId copied from Status %s', (status, betStatusId): void => {
+    const plain = {
+      Id: '1',
+      Status: status,
+      BetStatusId: betStatusId,
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.status).toBe(status);
+    expect(baseBet.betStatusId).toBe(betStatusId);
+  });
+
+  it('should deserialize settlement BetStatusId without changing outcome', (): void => {
+    const plain = {
+      Id: '1',
+      Status: BetStatus.Settled,
+      BetStatusId: BetStatusId.Settled,
+      Settlement: SettlementType.Winner,
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.status).toBe(BetStatus.Settled);
+    expect(baseBet.betStatusId).toBe(BetStatusId.Settled);
+    expect(baseBet.settlement).toBe(SettlementType.Winner);
+  });
+
+  it('should leave BetStatusId undefined on legacy payloads', (): void => {
+    const plain = {
+      Id: '1',
+      Status: BetStatus.Open,
+      Settlement: SettlementType.Loser,
+    };
+    const baseBet = plainToInstance(BaseBet, plain, { excludeExtraneousValues: true });
+    expect(baseBet.status).toBe(BetStatus.Open);
+    expect(baseBet.betStatusId).toBeUndefined();
+    expect(baseBet.settlement).toBe(SettlementType.Loser);
   });
 });

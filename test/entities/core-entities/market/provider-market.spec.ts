@@ -62,4 +62,17 @@ describe('ProviderMarket Entity', () => {
     });
     expect(providerMarket.marketStatus).toBe(MarketStatus.Suspended);
   });
+
+  it('should deserialize Closed MarketStatus from JSON', (): void => {
+    const plain = {
+      Id: 13,
+      Name: 'BWin',
+      MarketStatus: 4,
+      Bets: [],
+    };
+    const providerMarket = plainToInstance(ProviderMarket, plain, {
+      excludeExtraneousValues: true,
+    });
+    expect(providerMarket.marketStatus).toBe(MarketStatus.Closed);
+  });
 });
