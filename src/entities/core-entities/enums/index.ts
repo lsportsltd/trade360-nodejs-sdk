@@ -5,6 +5,7 @@ export * from './status-description';
 export * from './bet-status';
 export * from './bet-status-id';
 export * from './settlement-type';
+export * from './refund-reason';
 export * from './active-participant';
 export * from './outright-score-status';
 export * from './competition-type';
