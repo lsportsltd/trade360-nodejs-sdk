@@ -49,11 +49,11 @@ All notable changes to this project will be documented in this file.
 
 ## Version 3.10.11
 
-Adds optional `RefundReason` on `BaseBet` for settlement refund messages (TR-23341).
+Adds optional `RefundReasonId` on `BaseBet` for settlement refund messages (TR-23341).
 
 ### Added
 
-- **`RefundReason`**: optional enum on `BaseBet` for settlement refund messages. Field is omitted when not present on the payload.
+- **`RefundReasonId`**: optional enum on `BaseBet` for settlement refund messages. Field is omitted when not present on the payload.
 
 ---
 

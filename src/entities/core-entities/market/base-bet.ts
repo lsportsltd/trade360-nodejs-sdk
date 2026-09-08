@@ -50,8 +50,8 @@ export class BaseBet {
   @Expose({ name: 'SuspensionReason' })
   suspensionReason?: number;
 
-  @Expose({ name: 'RefundReason' })
-  refundReason?: RefundReason;
+  @Expose({ name: 'RefundReasonId' })
+  refundReasonId?: RefundReason;
 
   @Expose({ name: 'LastUpdate' })
   @Type(() => Date)

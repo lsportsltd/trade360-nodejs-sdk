@@ -1,4 +1,5 @@
 export enum RefundReason {
+  NotSupported = -1,
   NotSet = 0,
   MarketSettlementRules = 1,
   EventCancelled = 2,
