@@ -1,6 +1,6 @@
 import { Expose, Type, Transform } from 'class-transformer';
 
-import { BetStatus, BetStatusId, SettlementType } from '@lsports/enums';
+import { BetStatus, BetStatusId, RefundReason, SettlementType } from '@lsports/enums';
 import { IdTransformerUtil } from '../../../utilities/id-transformer-util';
 import { BetPredictionData } from './bet-prediction-data';
 
@@ -49,6 +49,9 @@ export class BaseBet {
 
   @Expose({ name: 'SuspensionReason' })
   suspensionReason?: number;
+
+  @Expose({ name: 'RefundReasonId' })
+  refundReasonId?: RefundReason;
 
   @Expose({ name: 'LastUpdate' })
   @Type(() => Date)
