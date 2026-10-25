@@ -85,8 +85,7 @@ stages:
               echo "Starting NPM publish process..."
               
               # Get NPM token from SM
-              # NPM_AUTOMATION_TOKEN=$(aws ssm get-parameter --name "/devopsr/npm/automation-token" --with-decryption --query "Parameter.Value" --output text)
-              NPM_AUTOMATION_TOKEN=$(gcloud secrets versions access latest --project lsports-tooling --secret="_aws_devopsr_npm_automation-token")
+              NPM_AUTOMATION_TOKEN=$(gcloud secrets versions access latest --project lsports-tooling --secret="_infra_devopsr_npm_automation-token")
               
               if [ -z "$NPM_AUTOMATION_TOKEN" ]; then
                 echo "Error: NPM_AUTOMATION_TOKEN is empty"
