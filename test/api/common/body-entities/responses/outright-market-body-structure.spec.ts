@@ -1,6 +1,7 @@
 import { plainToInstance } from 'class-transformer';
 import { OutrightMarketBodyStructure } from '../../../../../src/api/common/body-entities/responses/outright-market-body-structure';
 import { Bet } from '../../../../../src/entities/core-entities/market/bet';
+import { MarketStatus } from '../../../../../src/entities/core-entities/market/market-status';
 import { ProviderMarket } from '../../../../../src/entities/core-entities/market/provider-market';
 
 describe('OutrightMarketBodyStructure', () => {
@@ -34,6 +35,7 @@ describe('OutrightMarketBodyStructure', () => {
     expect(market.name).toBeUndefined();
     expect(market.bets).toBeUndefined();
     expect(market.providerMarkets).toBeUndefined();
+    expect(market.status).toBeUndefined();
   });
 
   it('should ignore extraneous properties', (): void => {
@@ -121,5 +123,32 @@ describe('OutrightMarketBodyStructure', () => {
     expect(market.bets?.length).toBe(1);
     expect(market.providerMarkets?.length).toBe(1);
     expect(market.providerMarkets?.[0]?.id).toBe(500);
+  });
+
+  it('should deserialize Status from JSON', (): void => {
+    const plain = {
+      Id: 590,
+      Name: 'To Be Relegated',
+      Status: 2,
+      Bets: [],
+    };
+    const market = plainToInstance(OutrightMarketBodyStructure, plain, {
+      excludeExtraneousValues: true,
+    });
+    expect(market.id).toBe(590);
+    expect(market.name).toBe('To Be Relegated');
+    expect(market.status).toBe(MarketStatus.Suspended);
+  });
+
+  it('should deserialize Closed Status from JSON', (): void => {
+    const plain = {
+      Id: 590,
+      Name: 'To Be Relegated',
+      Status: 4,
+    };
+    const market = plainToInstance(OutrightMarketBodyStructure, plain, {
+      excludeExtraneousValues: true,
+    });
+    expect(market.status).toBe(MarketStatus.Closed);
   });
 });
