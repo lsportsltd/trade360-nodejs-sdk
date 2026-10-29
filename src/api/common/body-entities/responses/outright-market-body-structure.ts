@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
-import { Bet, ProviderMarket } from '@lsports/entities';
+import { Bet, MarketStatus, ProviderMarket } from '@lsports/entities';
 
 /**
  * Outright Market Element Structure class is responsible for
@@ -21,4 +21,7 @@ export class OutrightMarketBodyStructure {
   @Expose({ name: 'ProviderMarkets' })
   @Type(() => ProviderMarket)
   providerMarkets?: ProviderMarket[];
+
+  @Expose({ name: 'Status' })
+  status?: MarketStatus;
 }

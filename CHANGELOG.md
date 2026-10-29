@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.12](#version-31012)
 - [Version 3.10.11](#version-31011)
 - [Version 3.10.10](#version-31010)
 - [Version 3.10.9](#version-3109)
@@ -44,6 +45,16 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## Version 3.10.12
+
+Exposes `Markets[].Status` on snapshot outright market models, including outright league markets (TRGN-5114).
+
+### Added
+
+- **`OutrightMarketBodyStructure.status`**: snapshot `GetOutrightLeagueMarkets`, `GetOutrightLeagueEvents`, and `GetOutrightFixtureMarkets` now keep `Markets[].Status` (`MarketStatus`). Feed outright-league market updates already map this field through `Market.status`.
 
 ---
 

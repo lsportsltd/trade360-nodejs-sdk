@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { plainToInstance } from 'class-transformer';
 
-import { MarketEvent, OutrightLeagueMarketCompetition } from '@lsports/entities';
+import { MarketEvent, MarketStatus, OutrightLeagueMarketCompetition } from '@lsports/entities';
 import { OutrightLeagueMarketUpdate } from '../../../src/entities/message-types/outright-league-market-update';
 import { TransformerUtil } from '../../../src/utilities/transformer-util';
 import { BaseEntity } from '../../../src/entities/message-types';
@@ -39,6 +39,7 @@ describe('OutrightLeagueMarketUpdate (type 40)', () => {
     const market = event?.markets?.[0];
     expect(market?.id).toBe(274);
     expect(market?.name).toBe('Outright Winner');
+    expect(market?.status).toBe(MarketStatus.Suspended);
     expect(market?.bets).toHaveLength(2);
     expect(market?.bets?.[0]?.id).toBe('2655634626721036');
     expect(market?.bets?.[0]?.name).toBe('Not Simply Simon');
