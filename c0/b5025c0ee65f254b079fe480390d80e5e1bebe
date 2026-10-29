@@ -1,0 +1,36 @@
+test/entities/message-types/outright-league-market-update.spec.ts
+  s_7e1e2f177afea8::t_ee9aac0a7ccbf2 5
+  s_7e1e2f177afea8::t_10811162fec0e7 42
+test/fixtures/outright-league-market-update-type40.json
+  s_7e1e2f177afea8::t_5414d523fee1c7 21
+src/api/common/body-entities/responses/outright-market-body-structure.ts
+  s_7e1e2f177afea8::t_bc163461ef67d1 24-26
+  s_7e1e2f177afea8::t_1ddd95f4474d11 3
+package.json
+  s_7e1e2f177afea8::t_48c0c2fcb51bbc 3
+CHANGELOG.md
+  s_7e1e2f177afea8::t_5dfc248e1af89b 8
+  s_7e1e2f177afea8::t_e78e6ddf44906e 51-60
+test/api/common/body-entities/responses/outright-market-body-structure.spec.ts
+  s_7e1e2f177afea8::t_a6dba3bd1f4c27 38
+  s_7e1e2f177afea8::t_f5e2a8912a75e4 127-153
+  s_7e1e2f177afea8::t_05170a0ab2a8dc 4
+package-lock.json
+  s_7e1e2f177afea8::t_07fd8c80d5532f 3,9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "c0b5025c0ee65f254b079fe480390d80e5e1bebe",
+  "prompts": {},
+  "sessions": {
+    "s_7e1e2f177afea8": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "dcf3e531-9f0f-447a-9164-60e7d1a91638",
+        "model": "grok-4.7"
+      },
+      "human_author": "shir.b <shir.b@lsports.eu>"
+    }
+  }
+}
