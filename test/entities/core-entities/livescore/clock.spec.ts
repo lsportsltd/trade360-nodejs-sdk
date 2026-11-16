@@ -6,12 +6,14 @@ describe('Clock Entity', () => {
   it('should deserialize a plain object into a Clock instance', (): void => {
     const plain = {
       Status: ClockStatus.Running,
-      Seconds: 45
+      Seconds: 45,
+      StoppageTimeSeconds: 300
     };
     const clock = plainToInstance(Clock, plain, { excludeExtraneousValues: true });
     expect(clock).toBeInstanceOf(Clock);
     expect(clock.status).toBe(ClockStatus.Running);
     expect(clock.seconds).toBe(45);
+    expect(clock.stoppageTimeSeconds).toBe(300);
   });
 
   it('should handle missing properties', (): void => {
@@ -19,6 +21,7 @@ describe('Clock Entity', () => {
     const clock = plainToInstance(Clock, plain, { excludeExtraneousValues: true });
     expect(clock.status).toBeUndefined();
     expect(clock.seconds).toBeUndefined();
+    expect(clock.stoppageTimeSeconds).toBeUndefined();
   });
 
   it('should ignore extraneous properties', (): void => {

@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Version 3.10.13](#version-31013)
 - [Version 3.10.12](#version-31012)
 - [Version 3.10.11](#version-31011)
 - [Version 3.10.10](#version-31010)
@@ -45,6 +46,16 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## Version 3.10.13
+
+Adds optional `Clock.StoppageTimeSeconds` on the livescore clock used by feed updates and snapshot `GetLivescore` / `GetEvents`.
+
+### Added
+
+- **`Clock.stoppageTimeSeconds`**: announced stoppage time. Snapshot responses and feed messages share this clock. An omitted value stays unset.
 
 ---
 
