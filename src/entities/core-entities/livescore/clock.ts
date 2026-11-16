@@ -8,4 +8,7 @@ export class Clock {
 
     @Expose({ name: 'Seconds' })
     seconds?: number;
+
+    @Expose({ name: 'StoppageTimeSeconds' })
+    stoppageTimeSeconds?: number;
 }
