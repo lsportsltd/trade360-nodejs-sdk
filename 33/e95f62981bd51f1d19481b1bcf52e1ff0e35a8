@@ -1,0 +1,23 @@
+test/entities/core-entities/livescore/clock.spec.ts
+  s_73bc53e8d56a73::t_1cf2035a8fc446 16
+  s_73bc53e8d56a73::t_0e5f6ae915a187 24
+  s_73bc53e8d56a73::t_da48ee4db22a5e 9-10
+src/entities/core-entities/livescore/clock.ts
+  s_73bc53e8d56a73::t_fff2876075bc6e 11-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "33e95f62981bd51f1d19481b1bcf52e1ff0e35a8",
+  "prompts": {},
+  "sessions": {
+    "s_73bc53e8d56a73": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "09eb0df2-0066-45f2-82e1-f14a61fcaf0c",
+        "model": "grok-4.7"
+      },
+      "human_author": "shir.b <shir.b@lsports.eu>"
+    }
+  }
+}
