@@ -1,0 +1,26 @@
+package.json
+  s_73bc53e8d56a73::t_befbf5e754e0b4 3
+CHANGELOG.md
+  s_73bc53e8d56a73::t_eb86448da8e04e 8
+  s_73bc53e8d56a73::t_e97dfa4e7db996 52-61
+test/api/common/snapshot/responses/livescore-response.spec.ts
+  s_73bc53e8d56a73::t_36a84f232ed249 1-46
+package-lock.json
+  s_73bc53e8d56a73::t_a184af062b57be 3,9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "092b4b19992ef35da2f9a329a4323c6ffbb92be1",
+  "prompts": {},
+  "sessions": {
+    "s_73bc53e8d56a73": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "09eb0df2-0066-45f2-82e1-f14a61fcaf0c",
+        "model": "grok-4.7"
+      },
+      "human_author": "shir.b <shir.b@lsports.eu>"
+    }
+  }
+}
